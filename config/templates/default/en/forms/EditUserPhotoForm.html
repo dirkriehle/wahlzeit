@@ -1,0 +1,31 @@
+<form action="editUserPhotoForm.form" method="post" name="editUserPhotoForm">
+
+	<h2>Edit my photo data!</h2>
+	<p><b>{$message}</b></p>
+
+	<table class="border"><tr><td class="spacer"><table class="form">
+		<tr>
+			<td class="thumb" rowspan="6">{$thumb}</td>
+			<td class="fiveCol2">Photo id:&nbsp;</td>
+			<td class="fiveCol3x" colspan="3"><b>{$id}</b></td>
+		</tr>
+		<tr>
+			<td class="inline" align="right"><input type="checkbox" name="isInvisible" {$isInvisible} /></td>
+			<td class="fiveCol3">Is invisible</td>
+		</tr>
+		<tr>
+			<td class="fiveCol2">Photo tags:&nbsp;</td>
+			<td class="fiveCol3x" colspan="3">
+				<input type="text" name="tags" value="{$tags}" size="40">&nbsp;(comma separated)
+			</td>
+		</tr>
+		<tr>
+			<td class="fiveCol2">&nbsp;</td>
+			<td class="fiveCol3x" colspan="3">
+				<input type="hidden" name="id" value="{$id}" />
+				<input type="submit" name="update" value="Update!" />
+			</td>
+		</tr>
+	</table></td></tr></table>
+
+</form>

@@ -1,0 +1,27 @@
+<form action="loginForm.form" method="post" name="loginForm">
+
+	<h2>Einloggen!</h2>
+	<p><b>{$message}</b></p>
+
+	<table class="border"><tr><td class="spacer"><table class="form">
+		<tr>
+			<td class="twoCol1">Benutzername:&nbsp;</td>
+			<td class="twoCol2"><input type="text" name="name" value="{$name}" size="24" /></td>
+		</tr>
+		<tr>
+			<td class="twoCol1">Passwort:&nbsp;</td>
+			<td class="twoCol2"><input type="password" name="password" value="{$password}" size="24" /></td>
+		</tr>
+		<tr>
+			<td class="twoCol1">&nbsp;</td>
+			<td class="twoCol2"><input type="submit" name="login" value="Einloggen!" /></td>
+		</tr>
+	</table></td></tr></table>
+
+	<p>
+		Huch, bitte erinneren Sie mich an 
+		<a href="emailun.html">meinen Benutzernamen</a> oder 
+		<a href="emailpw.html">mein Passwort</a>!
+	</p>
+
+</form>

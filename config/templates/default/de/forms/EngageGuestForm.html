@@ -1,0 +1,23 @@
+<form action="engageGuestForm.form" method="post" name="engageGuestForm">
+
+	<input type="hidden" name="id" value="{$id}" />
+
+	<table class="inline">
+		<tr>
+			<td class="inline"><input type="submit" name="tellFriendLink" value="Erzählen" /> </td>
+			<td class="inline">Sie von diesem Foto: {$link}&nbsp;&#8213;&nbsp;Oder </td>
+			<td class="inline"><input type="submit" name="sendEmailLink" value="Emailen" /> </td>
+			<td class="inline">Sie dem Besitzer dieses Fotos!</td>
+		</tr>
+	</table>
+
+	<table class="inline">
+		<tr>
+			<td class="inline">Bitte helfen Sie mit, diesen Webplatz sauber zu halten!&nbsp;</td>
+			<td class="inline"><input type="submit" name="flagPhotoLink" value="Flaggen" /> </td>
+			<td class="inline">Sie dieses Foto als unangebracht, falls nötig.</td>
+		</tr>
+	</table>
+
+</form>
+

@@ -1,0 +1,31 @@
+Refactoring to wahlzeit.com notes
+
+* General
+** Refactor to work with JValue?
+** Fix home-grown logging
+** Clean-up WebValue; needed?
+** Clean-up FileUtil for configuration purposes
+** Work through masking operations for special chars
+** Move datatypes out of services component?
+** Create new/own datatype component?
+** When clicking on "by xxx" fix-up filter rather than jump to home page
+
+* Model
+** Move EmailAddress handling from StringUtil to model
+
+* File system
+** Fix file naming, conventions
+** getEmptyImageLink is hard-coded to English configuration
+
+* Services
+** Database handling
+*** Log.getContext().getDatabase() considered evil
+*** Develop strategy for saving state upon request
+
+* Component: webparts
+** Refactor WebPart to work with real values?
+** Remove file size limit for loading in tmpl server
+** Protect keys and slots in WebPartTmpl? (Clone?)
+
+* Remove application stuff?
+

@@ -1,0 +1,142 @@
+/*
+ * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
+ *
+ * This file is part of the Wahlzeit photo rating application.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
+package org.wahlzeit.services;
+
+import java.io.*;
+import java.sql.*;
+
+import org.wahlzeit.utils.*;
+
+
+/**
+ * Logging class for logging system-level messages.
+ * System-level log entries are the result of system services and activities.
+ * 
+ * @author driehle
+ *
+ */
+public class SysLog extends Log {
+	
+	/**
+	 * More stuff
+	 */
+	protected static boolean isInProductionFlag = false;
+	
+	/**
+	 * 
+	 */
+	public static void initialize(boolean myIsInProduction) {
+		isInProductionFlag = myIsInProduction;
+		if (isInProductionMode()) {
+			logInfo("set to production mode");
+		} else {
+			logInfo("set to development mode");
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public static boolean isInProductionMode() {
+		return isInProductionFlag;
+	}
+	
+	/**
+	 * 
+	 */
+	public static boolean isInDevelopmentMode() {
+		return !isInProductionMode();
+	}
+	
+	/**
+	 * 
+	 */
+	public static StringBuffer createSysLogEntry() {
+		return createLogEntry("sl");
+	}
+
+	/**
+	 * 
+	 */
+	public static void logInfo(String s) {
+		logInfo("sl", s);
+	}
+	
+	/**
+	 * 
+	 */
+	public static void logError(String s) {
+		logError("sl", s);
+	}
+	
+	/**
+	 * 
+	 */
+	public static void logValue(String type, String value) {
+		logValue("sl", type, value);
+	}
+	
+	/**
+	 * 
+	 */
+	public static void logValueWithInfo(String type, String value, String info) {
+		logValueWithInfo("sl", type, value, info);
+	}
+	
+	/**
+	 * 
+	 */
+	public static void logCreatedObject(String type, String object) {
+		logCreatedObject("sl", type, object);
+	}
+	
+	/**
+	 * 
+	 */
+	public static final void logQuery(Statement q) {
+		StringBuffer sb = createSysLogEntry();
+		addLogType(sb, "info");
+		addQuery(sb, q);
+		log(sb);
+	}
+	
+	/**
+	 * 
+	 */
+	public static final void logQuery(String s) {
+		StringBuffer sb = createSysLogEntry();
+		addLogType(sb, "info");
+		addField(sb, "query", s);
+		log(sb);
+	}
+	
+	/**
+	 * 
+	 */
+	public static final void logThrowable(Throwable t) {
+		StringBuffer sb = createSysLogEntry();
+		addLogType(sb, "exception");
+		addThrowable(sb, t);
+		addStacktrace(sb, t);
+		log(sb);
+	}
+
+}
