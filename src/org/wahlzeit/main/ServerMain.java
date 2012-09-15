@@ -127,10 +127,37 @@ public abstract class ServerMain extends ModelMain {
 	 * 
 	 */
 	protected void configureHttpServer(HttpServer server) {
+
+		// Favicon hack
+		
+		HttpContext faviconContext = new HttpContext();
+		faviconContext.setContextPath("/favicon.ico");
+		server.addContext(faviconContext);
+
+		ResourceHandler faviconHandler = new ResourceHandler();
+		faviconContext.setResourceBase(SysConfig.getStaticDir().getRootPath());
+		faviconContext.addHandler(faviconHandler);
+
+		faviconContext.addHandler(new NotFoundHandler());
+
+		// robots.txt hack
+		
+		HttpContext robotsContext = new HttpContext();
+		robotsContext.setContextPath("/robots.txt");
+		server.addContext(robotsContext);
+
+		ResourceHandler robotsHandler = new ResourceHandler();
+		robotsContext.setResourceBase(SysConfig.getStaticDir().getRootPath());
+		robotsContext.addHandler(robotsHandler);
+
+		robotsContext.addHandler(new NotFoundHandler());
+		
+		// Dynamic content
+		
 		HttpContext servletContext = new HttpContext();
 		servletContext.setContextPath("/");
 		server.addContext(servletContext);
-	    
+		
 		ServletHandler servlets = new ServletHandler();
 		servletContext.addHandler(servlets);
 		servlets.addServlet("/*","org.wahlzeit.main.MainServlet");
@@ -155,9 +182,9 @@ public abstract class ServerMain extends ModelMain {
 		staticContext.setContextPath(SysConfig.getStaticDir().getRootPath());
 		server.addContext(staticContext);
 
-		ResourceHandler imagesHandler = new ResourceHandler();
+		ResourceHandler staticHandler = new ResourceHandler();
 		staticContext.setResourceBase(SysConfig.getStaticDir().getRootPath());
-		staticContext.addHandler(imagesHandler);
+		staticContext.addHandler(staticHandler);
 
 		staticContext.addHandler(new NotFoundHandler());
 	}
