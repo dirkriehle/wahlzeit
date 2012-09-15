@@ -40,6 +40,11 @@ public class AdminServlet extends AbstractServlet {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 42L; // any one does; class never serialized
+
+	/**
+	 * 
+	 */
 	public void myGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String link = request.getRequestURI();
 		UserLog.logValue("requested", link);

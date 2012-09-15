@@ -43,6 +43,7 @@ public abstract class AbstractServlet extends HttpServlet {
 	 * 
 	 */
 	protected static int lastSessionId = 0; // system and agent are named differently
+	private static final long serialVersionUID = 42L; // any one does; class never serialized
 	
 	/**
 	 * 

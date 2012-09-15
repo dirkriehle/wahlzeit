@@ -21,8 +21,7 @@
 package org.wahlzeit.tools;
 
 import java.io.*;
-import java.sql.*;
-import org.wahlzeit.services.*;
+
 import org.wahlzeit.utils.*;
 import org.wahlzeit.main.*;
 import org.wahlzeit.model.*;

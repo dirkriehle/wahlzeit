@@ -49,6 +49,11 @@ public class MainServlet extends AbstractServlet {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 42L; // any one does; class never serialized
+
+	/**
+	 * 
+	 */
 	public void myGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		long startTime = System.currentTimeMillis();
 		UserSession ctx = ensureWebContext(request);
