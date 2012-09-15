@@ -34,13 +34,13 @@ public enum Gender implements EnumValue {
 	/**
 	 * UNDEFINED = user never entered anything
 	 */
-	UNDEFINED(0), MALE(1), FEMALE(2), BOTH(3);
+	UNDEFINED(0), MALE(1), FEMALE(2), OTHER(3);
 	
 	/**
 	 * 
 	 */
 	private static Gender[] allValues = {
-		UNDEFINED, MALE, FEMALE, BOTH
+		UNDEFINED, MALE, FEMALE, OTHER
 	};
 	
 	/**
@@ -58,7 +58,7 @@ public enum Gender implements EnumValue {
 	 * 
 	 */
 	private static final String[] valueNames = {
-		"undefined", "male", "female", "both"
+		"undefined", "male", "female", "other"
 	};
 	
 	/**
@@ -138,8 +138,8 @@ public enum Gender implements EnumValue {
 	/**
 	 * 
 	 */
-	public boolean isBoth() {
-		return (this == BOTH);
+	public boolean isOther() {
+		return (this == OTHER);
 	}
 
 }
