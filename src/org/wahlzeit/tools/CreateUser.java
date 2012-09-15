@@ -45,8 +45,8 @@ public class CreateUser extends ModelMain {
 	/**
 	 * 
 	 */
-	protected String userName = "dirk";
-	protected String password = "dirk";
+	protected String userName = "testuser";
+	protected String password = "testuser";
 	protected String photoDir = "config/photos";
 	
 	/**

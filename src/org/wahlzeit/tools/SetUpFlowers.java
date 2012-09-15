@@ -36,7 +36,12 @@ public class SetUpFlowers {
 	public static void main(String[] argv) {
 		RunScript.main(new String[] {"--teardown"});
 		RunScript.main(new String[] {"--setup"});
-		CreateUser.main(new String[] {"--photodir", "config/flowers"});
-	}
 		
+		CreateUser.main(new String[] {
+			"--username", "testuser",
+			"--password", "testuser",
+			"--photodir", "config/flowers"
+		});
+	}
+
 }

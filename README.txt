@@ -36,7 +36,7 @@ PART II: WAHLZEIT SETUP
 
 4. Download and compile Wahlzeit
 
-	Check out the codebase from wahlzeit.sourceforge.net into your Eclipse environment
+	Check out the source code from https://github.com/dirkriehle/wahlzeit.git into your Eclipse environment
 	
 5. On a command line, populate the database:
 
@@ -44,7 +44,7 @@ PART II: WAHLZEIT SETUP
 
 	java -cp .:bin:lib/* org.wahlzeit.tools.SetUpFlowers
 	
-	This should initialize the database for the Flowers application.
+	This should initialize the database for the Flowers example application.
 
 
 
