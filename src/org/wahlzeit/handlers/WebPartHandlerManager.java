@@ -25,7 +25,7 @@ import java.util.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class WebPartHandlerManager {

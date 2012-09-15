@@ -21,16 +21,13 @@
 package org.wahlzeit.main;
 
 import java.io.*;
-import java.util.*;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-
-
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class NullServlet extends AbstractServlet {

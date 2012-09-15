@@ -24,7 +24,7 @@ import org.wahlzeit.utils.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  * 
  */
 public enum Language implements EnumValue {

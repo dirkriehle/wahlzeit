@@ -22,13 +22,11 @@ package org.wahlzeit.agents;
 
 import java.util.*;
 
-import org.wahlzeit.agents.*;
 import org.wahlzeit.services.SysLog;
-
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class AgentManager {

@@ -22,26 +22,14 @@ package org.wahlzeit.handlers;
 
 import java.util.*;
 
-import org.wahlzeit.model.AccessRights;
-import org.wahlzeit.model.FlagReason;
-import org.wahlzeit.model.Photo;
-import org.wahlzeit.model.PhotoCase;
-import org.wahlzeit.model.PhotoCaseManager;
-import org.wahlzeit.model.PhotoManager;
-import org.wahlzeit.model.UserLog;
-import org.wahlzeit.model.UserSession;
-import org.wahlzeit.services.EmailAddress;
-import org.wahlzeit.services.EmailServer;
-import org.wahlzeit.services.SysConfig;
-import org.wahlzeit.utils.StringUtil;
-import org.wahlzeit.webparts.WebPart;
-import org.wahlzeit.webparts.WebValue;
-
-
+import org.wahlzeit.model.*;
+import org.wahlzeit.services.*;
+import org.wahlzeit.utils.*;
+import org.wahlzeit.webparts.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class FlagPhotoFormHandler extends AbstractWebFormHandler {

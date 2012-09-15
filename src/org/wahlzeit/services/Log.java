@@ -27,7 +27,7 @@ import java.text.*;
 /**
  * Simple logging class; should be replaced with log4j or the like.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class Log {

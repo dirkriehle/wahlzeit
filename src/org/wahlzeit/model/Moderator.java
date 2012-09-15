@@ -25,7 +25,7 @@ import org.wahlzeit.services.*;
 /**
  * A Moderator is a system user with moderator privileges.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class Moderator extends User {

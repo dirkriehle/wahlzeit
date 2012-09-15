@@ -22,7 +22,7 @@ package org.wahlzeit.handlers;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public interface PartUtil {

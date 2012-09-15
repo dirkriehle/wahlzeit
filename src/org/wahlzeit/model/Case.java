@@ -26,7 +26,7 @@ import org.wahlzeit.services.*;
  * A case is a user complaint, most notably about an inappropriate photo.
  * Subclasses capture the specifics of different types of cases; here only an id is provided.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public abstract class Case extends DataObject {

@@ -20,14 +20,11 @@
 
 package org.wahlzeit.agents;
 
-import java.util.*;
-
 import org.wahlzeit.services.*;
-
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public abstract class Agent implements Runnable {

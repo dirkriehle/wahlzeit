@@ -29,7 +29,7 @@ import org.wahlzeit.webparts.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public abstract class AbstractWebFormHandler extends AbstractWebPartHandler implements WebFormHandler {

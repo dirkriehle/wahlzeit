@@ -35,7 +35,7 @@ import org.wahlzeit.webparts.WritableList;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class ShowPhotoCasesPageHandler extends AbstractWebPageHandler {

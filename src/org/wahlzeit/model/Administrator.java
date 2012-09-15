@@ -26,7 +26,7 @@ import org.wahlzeit.services.EmailAddress;
 /**
  * An Administrator is a moderator with administration privileges.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class Administrator extends Moderator {

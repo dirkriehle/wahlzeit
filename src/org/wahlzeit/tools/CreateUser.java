@@ -29,7 +29,7 @@ import org.wahlzeit.model.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class CreateUser extends ModelMain {

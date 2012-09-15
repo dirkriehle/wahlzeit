@@ -21,7 +21,6 @@
 package org.wahlzeit.handlers;
 
 import java.util.*;
-import java.net.*;
 
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
@@ -30,7 +29,7 @@ import org.wahlzeit.webparts.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebFormHandler {
@@ -160,7 +159,7 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
 	 */
 	protected void makePhotoCaption(UserSession ctx, WebPart page) {
 		Photo photo = ctx.getPhoto();
-		String photoId = photo.getId().asString();
+		// String photoId = photo.getId().asString();
 			
 		WebPart caption = createWebPart(ctx, PartUtil.CAPTION_INFO_FILE);
 		caption.addString(Photo.CAPTION, getPhotoCaption(ctx, photo));
@@ -204,7 +203,7 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
 		WebPart result = createWebPart(ctx, PartUtil.PHOTO_INFO_FILE);
 
 		Photo photo = ctx.getPriorPhoto();
-		String id = photo.getId().asString();
+		// String id = photo.getId().asString();
 
 		result.addString(Photo.PRAISE, photo.getPraiseAsString(ctx.cfg()));
 		result.addString(Photo.THUMB, getPhotoThumb(ctx, photo));

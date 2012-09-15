@@ -20,12 +20,10 @@
 
 package org.wahlzeit.tools;
 
-import org.wahlzeit.main.*;
-
 /**
  * Sets up a fresh clean Wahlzeit Flowers application database.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class SetUpFlowers {

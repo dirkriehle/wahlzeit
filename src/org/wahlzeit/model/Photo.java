@@ -20,7 +20,6 @@
 
 package org.wahlzeit.model;
 
-import java.text.*;
 import java.sql.*;
 import java.net.*;
 
@@ -30,7 +29,7 @@ import org.wahlzeit.utils.*;
 /**
  * A photo represents a user-provided (uploaded) photo.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class Photo extends DataObject {

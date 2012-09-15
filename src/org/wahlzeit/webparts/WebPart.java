@@ -30,7 +30,7 @@ import org.wahlzeit.utils.*;
  * A WebPart has its data set from a client using key/value pairs.
  * A WebPart has a recursive structure; it may contain further WebParts.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class WebPart implements Writable {

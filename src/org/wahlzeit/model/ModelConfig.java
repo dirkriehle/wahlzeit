@@ -20,7 +20,6 @@
 
 package org.wahlzeit.model;
 
-import java.util.*;
 import java.net.*;
 
 import org.wahlzeit.services.*;
@@ -30,7 +29,7 @@ import org.wahlzeit.utils.*;
 /**
  * A configuration that provide easy access to Wahlzeit model configuration data.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public interface ModelConfig extends Configuration {

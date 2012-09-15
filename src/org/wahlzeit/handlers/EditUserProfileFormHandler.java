@@ -21,27 +21,15 @@
 package org.wahlzeit.handlers;
 
 import java.util.*;
-import java.net.*;
 
-import org.wahlzeit.model.AccessRights;
-import org.wahlzeit.model.LanguageConfigs;
-import org.wahlzeit.model.Gender;
-import org.wahlzeit.model.Photo;
-import org.wahlzeit.model.User;
-import org.wahlzeit.model.UserLog;
-import org.wahlzeit.model.UserSession;
-import org.wahlzeit.services.EmailAddress;
-import org.wahlzeit.services.Language;
-import org.wahlzeit.utils.HtmlUtil;
-import org.wahlzeit.utils.StringUtil;
-import org.wahlzeit.webparts.WebPart;
-import org.wahlzeit.webparts.WebValue;
-
-
+import org.wahlzeit.model.*;
+import org.wahlzeit.services.*;
+import org.wahlzeit.utils.*;
+import org.wahlzeit.webparts.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class EditUserProfileFormHandler extends AbstractWebFormHandler {

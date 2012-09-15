@@ -27,7 +27,7 @@ import org.wahlzeit.utils.*;
  * The defined sizes are: thumb, extra small, small, medium, large, and extra large.
  * For each size, there is a defined pixel size to which photos are scaled.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public enum PhotoSize implements EnumValue {

@@ -20,17 +20,13 @@
 
 package org.wahlzeit.services;
 
-import java.io.*;
 import java.sql.*;
-
-import org.wahlzeit.utils.*;
-
 
 /**
  * Logging class for logging system-level messages.
  * System-level log entries are the result of system services and activities.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class SysLog extends Log {

@@ -20,14 +20,8 @@
 
 package org.wahlzeit.main;
 
-import java.io.*;
 import java.sql.*;
 
-import org.mortbay.http.*;
-import org.mortbay.http.handler.*;
-import org.mortbay.jetty.servlet.*;
-
-import org.wahlzeit.handlers.*;
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
 import org.wahlzeit.webparts.*;
@@ -36,7 +30,7 @@ import org.wahlzeit.webparts.*;
  * A single-threaded Main class with database connection.
  * Can be used by tools that don't want to start a server.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public abstract class ModelMain extends AbstractMain {

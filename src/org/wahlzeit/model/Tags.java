@@ -29,7 +29,7 @@ import org.wahlzeit.utils.*;
  * All tags are maintained lowercase and without whitespace.
  * I.e. "Captain America" turns into "captainamerica"
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class Tags {

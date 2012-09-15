@@ -32,7 +32,7 @@ import junit.framework.*;
 /**
  * Acceptance tests for the TellFriend feature.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class TellFriendTest extends TestCase {

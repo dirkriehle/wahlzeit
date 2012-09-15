@@ -20,11 +20,9 @@
 
 package org.wahlzeit.agents;
 
-import java.util.*;
-
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class AgentThread extends Thread {

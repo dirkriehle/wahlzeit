@@ -20,12 +20,10 @@
 
 package org.wahlzeit.utils;
 
-import java.text.*;
-
 /**
  * A set of utility functions for HTML formatting.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class HtmlUtil {

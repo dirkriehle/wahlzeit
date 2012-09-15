@@ -24,7 +24,7 @@ import java.io.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class ConfigDir {

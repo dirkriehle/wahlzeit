@@ -31,7 +31,7 @@ import org.wahlzeit.webparts.*;
  * Typically, this means an external link points to the site.
  * Example: www.wahlzeit.com/filter?userName=laura
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class FilterPhotosPageHandler extends AbstractWebPageHandler {

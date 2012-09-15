@@ -22,19 +22,13 @@ package org.wahlzeit.handlers;
 
 import java.util.*;
 
-import org.wahlzeit.model.AccessRights;
-import org.wahlzeit.model.Guest;
-import org.wahlzeit.model.ModelConfig;
-import org.wahlzeit.model.LanguageConfigs;
-import org.wahlzeit.model.UserSession;
-import org.wahlzeit.services.EmailAddress;
-import org.wahlzeit.services.Language;
-import org.wahlzeit.utils.HtmlUtil;
-import org.wahlzeit.webparts.WebPart;
+import org.wahlzeit.model.*;
+import org.wahlzeit.utils.*;
+import org.wahlzeit.webparts.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class ResetSessionPageHandler extends AbstractWebPageHandler {

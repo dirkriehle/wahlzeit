@@ -27,7 +27,7 @@ import java.util.*;
  * A database connection wraps an RDMBS connection object.
  * It pools and reuses existing connections; it caches common SQL statements.
  *
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class DatabaseConnection {

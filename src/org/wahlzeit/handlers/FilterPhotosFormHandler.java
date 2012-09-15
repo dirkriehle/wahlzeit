@@ -28,7 +28,7 @@ import org.wahlzeit.webparts.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class FilterPhotosFormHandler extends AbstractWebFormHandler {

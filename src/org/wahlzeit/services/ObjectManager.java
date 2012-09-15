@@ -28,7 +28,7 @@ import java.util.*;
  * It is an abstract superclass that relies an inheritance interface and the Persistent interface.
  * Subclasses for specific types of object need to implement createObject and provide Statements.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public abstract class ObjectManager {

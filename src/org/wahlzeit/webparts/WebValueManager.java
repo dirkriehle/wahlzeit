@@ -21,15 +21,12 @@
 package org.wahlzeit.webparts;
 
 import java.util.*;
-import java.io.*;
-
-import org.wahlzeit.utils.*;
 
 /**
  * The WebValueManager provides (and creates on-demand) WebValues.
  * It constructs the data for a WebValue from the provided arguments.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class WebValueManager {

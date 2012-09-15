@@ -34,7 +34,7 @@ import org.wahlzeit.services.SysConfig;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class NotifyAboutPraiseAgent extends Agent {

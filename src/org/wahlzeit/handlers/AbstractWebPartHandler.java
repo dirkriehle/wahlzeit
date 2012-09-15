@@ -20,7 +20,6 @@
 
 package org.wahlzeit.handlers;
 
-import java.net.*;
 import java.util.*;
 
 import org.wahlzeit.model.*;
@@ -30,7 +29,7 @@ import org.wahlzeit.webparts.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public abstract class AbstractWebPartHandler implements WebPartHandler {

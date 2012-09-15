@@ -30,7 +30,7 @@ import org.wahlzeit.webparts.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebFormHandler {

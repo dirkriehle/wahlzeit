@@ -25,7 +25,7 @@ import java.net.*;
 /**
  * A set of utility functions for basic string manipulations.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class StringUtil {

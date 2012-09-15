@@ -26,7 +26,7 @@ import java.util.*;
  * A WebPartTmpl is a template for a WebPart. 
  * It gets initialized once and is read-only after that.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class WebPartTemplate {

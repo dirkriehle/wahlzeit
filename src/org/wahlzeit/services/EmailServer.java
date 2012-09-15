@@ -20,8 +20,6 @@
 
 package org.wahlzeit.services;
 
-import java.io.*;
-import java.net.*;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.Session;
@@ -30,7 +28,7 @@ import javax.mail.internet.*;
 /**
  * The EmailServer service lets clients send emails.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class EmailServer {

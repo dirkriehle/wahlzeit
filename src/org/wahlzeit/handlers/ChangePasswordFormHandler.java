@@ -21,7 +21,6 @@
 package org.wahlzeit.handlers;
 
 import java.util.*;
-import java.net.*;
 
 import org.wahlzeit.model.AccessRights;
 import org.wahlzeit.model.User;
@@ -34,7 +33,7 @@ import org.wahlzeit.webparts.WebPart;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class ChangePasswordFormHandler extends AbstractWebFormHandler {

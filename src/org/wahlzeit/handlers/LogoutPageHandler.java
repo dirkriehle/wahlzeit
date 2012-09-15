@@ -33,7 +33,7 @@ import org.wahlzeit.webparts.WebPart;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class LogoutPageHandler extends AbstractWebPageHandler {

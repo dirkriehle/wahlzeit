@@ -26,7 +26,7 @@ import java.io.*;
 /**
  * A WritableList is a list of Writables.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class WritableList implements Writable {

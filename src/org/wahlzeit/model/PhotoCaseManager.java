@@ -24,13 +24,11 @@ import java.sql.*;
 import java.util.*;
 
 import org.wahlzeit.services.*;
-import org.wahlzeit.utils.*;
-
 
 /**
  * The photo case manager provides access to and manages persistent photo cases.
  *  
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class PhotoCaseManager extends ObjectManager {

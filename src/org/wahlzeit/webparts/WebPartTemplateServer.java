@@ -30,7 +30,7 @@ import org.wahlzeit.services.*;
  * It requires configuration with a template directory and uses the following naming convention:
  * tmplDir/language/part-type/part-name.html
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class WebPartTemplateServer {

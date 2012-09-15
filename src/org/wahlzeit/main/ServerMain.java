@@ -21,7 +21,6 @@
 package org.wahlzeit.main;
 
 import java.io.*;
-import java.sql.*;
 
 import org.mortbay.http.*;
 import org.mortbay.http.handler.*;
@@ -31,12 +30,11 @@ import org.wahlzeit.agents.AgentManager;
 import org.wahlzeit.handlers.*;
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
-import org.wahlzeit.webparts.*;
 
 /**
  * A Main class that runs a Wahlzeit web server.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public abstract class ServerMain extends ModelMain {

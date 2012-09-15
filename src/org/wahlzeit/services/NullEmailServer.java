@@ -25,7 +25,7 @@ import javax.mail.*;
 /**
  * The NullEmailServer only pretends to send email.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class NullEmailServer extends EmailServer {

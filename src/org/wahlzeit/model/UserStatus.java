@@ -27,7 +27,7 @@ import org.wahlzeit.utils.*;
  * A user (account) may have been created, confirmed, or disabled.
  * These states are not mutually exclusive.
  *  
- * @author driehle
+ * @author dirkriehle
  *
  */
 public enum UserStatus implements EnumValue {

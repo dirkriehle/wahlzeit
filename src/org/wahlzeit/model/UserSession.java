@@ -21,14 +21,13 @@
 package org.wahlzeit.model;
 
 import java.util.*;
-import java.sql.*;
 
 import org.wahlzeit.services.*;
 import org.wahlzeit.utils.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class UserSession extends Session {

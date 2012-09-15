@@ -20,7 +20,6 @@
 
 package org.wahlzeit.model;
 
-import java.util.*;
 import java.io.*;
 import java.text.*;
 
@@ -31,7 +30,7 @@ import org.wahlzeit.utils.*;
  * A generic implementation of ModelConfig.
  * Subclasses provide the parameters and language-specific handling of text and data.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public abstract class AbstractModelConfig extends AbstractConfig implements ModelConfig {

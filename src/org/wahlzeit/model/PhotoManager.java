@@ -23,19 +23,14 @@ package org.wahlzeit.model;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
-import java.awt.*;
-import java.awt.image.*;
-
-import javax.imageio.*;
 
 import org.wahlzeit.main.*;
 import org.wahlzeit.services.*;
-import org.wahlzeit.utils.*;
 
 /**
  * A photo manager provides access to and manages photos.
  * 
- * @author driehle
+ * @author dirkriehle
  * 
  */
 public class PhotoManager extends ObjectManager {

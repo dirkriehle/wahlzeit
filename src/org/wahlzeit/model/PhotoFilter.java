@@ -26,7 +26,7 @@ import org.wahlzeit.utils.StringUtil;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class PhotoFilter {

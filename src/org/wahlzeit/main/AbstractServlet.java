@@ -34,7 +34,7 @@ import org.wahlzeit.webparts.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public abstract class AbstractServlet extends HttpServlet {

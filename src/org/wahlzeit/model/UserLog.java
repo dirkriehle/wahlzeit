@@ -21,13 +21,12 @@
 package org.wahlzeit.model;
 
 import org.wahlzeit.services.*;
-import org.wahlzeit.utils.*;
 
 /**
  * Logging class for logging user-level messages.
  * User-level log entries are the result of user activities.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class UserLog extends Log {

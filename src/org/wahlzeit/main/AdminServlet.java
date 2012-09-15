@@ -21,7 +21,6 @@
 package org.wahlzeit.main;
 
 import java.io.*;
-import java.util.*;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -33,7 +32,7 @@ import org.wahlzeit.services.SysLog;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class AdminServlet extends AbstractServlet {

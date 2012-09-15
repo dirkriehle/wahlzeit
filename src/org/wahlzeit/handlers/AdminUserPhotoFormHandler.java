@@ -23,13 +23,11 @@ package org.wahlzeit.handlers;
 import java.util.*;
 
 import org.wahlzeit.model.*;
-import org.wahlzeit.services.*;
-import org.wahlzeit.utils.*;
 import org.wahlzeit.webparts.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class AdminUserPhotoFormHandler extends AbstractWebFormHandler {
@@ -62,15 +60,15 @@ public class AdminUserPhotoFormHandler extends AbstractWebFormHandler {
 	 * 
 	 */
 	protected String doHandlePost(UserSession ctx, Map args) {
-		PhotoManager pm = PhotoManager.getInstance();
 		String id = ctx.getAndSaveAsString(args, "photoId");
-		Photo photo = pm.getPhoto(id);
+		Photo photo = PhotoManager.getPhoto(id);
 	
 		String tags = ctx.getAndSaveAsString(args, Photo.TAGS);
 		photo.setTags(new Tags(tags));
 		String status = ctx.getAndSaveAsString(args, Photo.STATUS);
 		photo.setStatus(PhotoStatus.getFromString(status));
 
+		PhotoManager pm = PhotoManager.getInstance();
 		pm.savePhoto(photo);
 		
 		StringBuffer sb = UserLog.createActionEntry("AdminUserPhoto");

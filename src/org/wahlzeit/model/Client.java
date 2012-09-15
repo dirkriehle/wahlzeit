@@ -21,13 +21,12 @@
 package org.wahlzeit.model;
 
 import org.wahlzeit.services.*;
-import org.wahlzeit.utils.*;
 
 /**
  * A Client uses the system. It is an abstract superclass.
  * This package defines guest, user, moderator, and administrator clients.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public abstract class Client {

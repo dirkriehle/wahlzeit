@@ -26,7 +26,7 @@ import org.wahlzeit.main.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class RunScript extends AbstractMain {

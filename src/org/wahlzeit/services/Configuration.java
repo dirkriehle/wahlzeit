@@ -20,7 +20,6 @@
 
 package org.wahlzeit.services;
 
-import java.util.*;
 import java.io.*;
 
 /**
@@ -29,7 +28,7 @@ import java.io.*;
  * Key names are configured during initialization and can't be changed afterwards.
  * Hence, any access using an unknown key leads to an IllegalArgumentException.
  *
- * @author driehle
+ * @author dirkriehle
  *
  */
 public interface Configuration {

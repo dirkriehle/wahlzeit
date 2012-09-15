@@ -28,7 +28,7 @@ import org.wahlzeit.utils.*;
  * However, higher levels of access subsume lower levels of access rights.
  * How they are handled depends on the application.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public enum AccessRights implements EnumValue {

@@ -26,7 +26,7 @@ import java.sql.*;
 /**
  * A photo case is a case where someone flagged a photo as inappropriate.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class PhotoCase extends Case {

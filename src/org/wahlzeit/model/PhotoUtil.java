@@ -26,13 +26,12 @@ import java.awt.image.*;
 import javax.imageio.*;
 
 import org.wahlzeit.services.*;
-import org.wahlzeit.utils.*;
 
 /**
  * PhotoUtil provides a set of utility functions to create defined images.
  * Images are created from a source in different sizes as needed by the app.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class PhotoUtil {

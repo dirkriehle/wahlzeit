@@ -20,20 +20,11 @@
 
 package org.wahlzeit.main;
 
-import java.net.InetAddress;
-
-import org.wahlzeit.agents.*;
-import org.wahlzeit.handlers.*;
-import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
-
-import org.mortbay.http.*;
-import org.mortbay.http.handler.*;
-import org.mortbay.jetty.servlet.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class Wahlzeit extends ServerMain {

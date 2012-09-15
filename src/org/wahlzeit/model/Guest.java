@@ -21,12 +21,11 @@
 package org.wahlzeit.model;
 
 import org.wahlzeit.services.*;
-import org.wahlzeit.utils.*;
 
 /**
  * A Guest is a client that is not logged in.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class Guest extends Client {

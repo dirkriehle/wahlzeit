@@ -20,21 +20,11 @@
 
 package org.wahlzeit.main;
 
-import java.io.*;
-import java.sql.*;
-
-import org.mortbay.http.*;
-import org.mortbay.http.handler.*;
-import org.mortbay.jetty.servlet.*;
-
-import org.wahlzeit.handlers.*;
-import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
-import org.wahlzeit.webparts.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public abstract class AbstractMain {
@@ -47,19 +37,19 @@ public abstract class AbstractMain {
 	/**
 	 * 
 	 */
-	protected static boolean isToStop = false;
+	protected static boolean isToStopFlag = false;
 
 	/**
 	 * 
 	 */
-	protected static boolean isInProduction = false;
+	protected static boolean isInProductionFlag = false;
 	
 	/**
 	 * 
 	 */
 	public static void requestStop() {
 		synchronized(instance) {
-			isToStop = true;
+			isToStopFlag = true;
 			instance.notify();
 		}
 	}
@@ -68,14 +58,14 @@ public abstract class AbstractMain {
 	 * 
 	 */
 	public static boolean isShuttingDown() {
-		return isToStop;
+		return isToStopFlag;
 	}
 		
 	/**
 	 * 
 	 */
 	public static boolean isInProduction() {
-		return isInProduction;
+		return isInProductionFlag;
 	}
 	
 	/**
@@ -105,9 +95,9 @@ public abstract class AbstractMain {
 		for (int i = 0; i < argv.length; i++) {
 			String arg = argv[i];
 			if (arg.equals("-P") || arg.equals("--production")) {
-				instance.isInProduction = true;
+				AbstractMain.isInProductionFlag = true;
 			} else if (arg.equals("-D") || arg.equals("--development")) {
-				instance.isInProduction = false;
+				AbstractMain.isInProductionFlag = false;
 			}
 		}		
 	}
@@ -116,7 +106,7 @@ public abstract class AbstractMain {
 	 * 
 	 */
 	protected void startUp() throws Exception {
-		SysLog.initialize(isInProduction);
+		SysLog.initialize(isInProductionFlag);
 		SysConfig.setInstance(createSysConfig());
 		
 		Session ctx = new SysSession("system");

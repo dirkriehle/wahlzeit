@@ -26,7 +26,7 @@ import java.util.*;
  * An email address provides a simple email address representation.
  * It is a value object and implemented as immutable.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class EmailAddress {

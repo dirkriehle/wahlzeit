@@ -23,13 +23,12 @@ package org.wahlzeit.handlers;
 import java.util.*;
 
 import org.wahlzeit.model.*;
-import org.wahlzeit.services.*;
 import org.wahlzeit.utils.*;
 import org.wahlzeit.webparts.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class EditUserPhotoFormHandler extends AbstractWebFormHandler {

@@ -24,7 +24,7 @@ import junit.framework.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  * 
  */
 public class VersionTest extends TestCase {

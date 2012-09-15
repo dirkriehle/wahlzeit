@@ -24,7 +24,7 @@ import junit.framework.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  * 
  */
 public class SafeInputTest extends TestCase {

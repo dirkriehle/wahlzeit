@@ -27,7 +27,7 @@ import java.util.Random;
  * The number has an equivalent string for web access.
  * This class also hands out the ids.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class PhotoId {

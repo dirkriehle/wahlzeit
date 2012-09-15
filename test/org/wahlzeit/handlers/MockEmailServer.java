@@ -27,7 +27,7 @@ import org.wahlzeit.services.*;
 /**
  * The MockEmailServer compares calls with test data.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class MockEmailServer extends EmailServer {

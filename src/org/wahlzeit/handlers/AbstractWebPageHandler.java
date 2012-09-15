@@ -27,7 +27,7 @@ import org.wahlzeit.webparts.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public abstract class AbstractWebPageHandler extends AbstractWebPartHandler implements WebPageHandler {

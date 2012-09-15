@@ -26,7 +26,7 @@ import org.wahlzeit.services.*;
 
 /**
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 

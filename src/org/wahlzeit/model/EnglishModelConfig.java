@@ -29,7 +29,7 @@ import org.wahlzeit.utils.*;
 /**
  * A model configuration for the English language.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class EnglishModelConfig extends AbstractModelConfig {

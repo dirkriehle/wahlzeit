@@ -33,7 +33,7 @@ import org.wahlzeit.utils.*;
  * Also, his/her contact information and whether the account has been confirmed.
  * Users can have a home page which may be elsewhere on the net.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class User extends Client implements Persistent {

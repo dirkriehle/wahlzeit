@@ -25,7 +25,7 @@ import java.io.*;
 /**
  * Some convenience methods for dealing with the file system.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class FileUtil {

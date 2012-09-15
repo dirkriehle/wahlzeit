@@ -21,17 +21,14 @@
 package org.wahlzeit.services;
 
 import java.io.*;
-import java.net.*;
-import java.util.*;
 
-import org.wahlzeit.model.PhotoFactory;
-import org.wahlzeit.utils.StringUtil;
+import org.wahlzeit.utils.*;
 
 /**
  * A set of utility functions to retrieve URLs and files.
  * Call setValue(key, value) to change default values, see below.
  * 
- * @author driehle
+ * @author dirkriehle
  *
  */
 public class SysConfig extends AbstractConfig {
