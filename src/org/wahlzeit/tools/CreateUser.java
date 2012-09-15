@@ -73,9 +73,6 @@ public class CreateUser extends ModelMain {
 	 * 
 	 */
 	protected void execute() throws Exception {
-		DatabaseConnection dbc = ContextManager.getDatabaseConnection();
-		Connection conn = dbc.getRdbmsConnection();
-		
 		UserManager userManager = UserManager.getInstance();
 		long confirmationCode = userManager.createConfirmationCode();
 		User user = new User(userName, password, "info@wahlzeit.org", confirmationCode);

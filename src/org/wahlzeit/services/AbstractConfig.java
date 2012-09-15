@@ -111,7 +111,9 @@ public abstract class AbstractConfig implements Configuration {
 				doSetValue(key, input.getProperty(key));
 			}
 		} finally {
-			stream.close();	
+			if (stream != null) {
+				stream.close();				
+			}
 		}
 	}
 }

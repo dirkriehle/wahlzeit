@@ -203,7 +203,7 @@ public class UserManager extends ObjectManager {
 	 * 
 	 */
 	public long createConfirmationCode() {
-		return Math.abs(codeGenerator.nextLong());
+		return Math.abs(codeGenerator.nextLong() / 2);
 	}
 	
 	/**
