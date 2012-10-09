@@ -34,4 +34,4 @@ Future releases
 - add general competition top 10 photos
 - add events tied to conventions
 - add Spanish translation
-
+- add more flowers
