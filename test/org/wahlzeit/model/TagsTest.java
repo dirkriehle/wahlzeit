@@ -37,6 +37,27 @@ public class TagsTest extends TestCase {
 		super(name);
 	}
 	
+	public void testHasTag() {
+		Tags tags1 = new Tags("flower,bingo,bongo,123");
+		assertEquals(tags1.hasTag("flower"), true);
+		assertEquals(tags1.hasTag("bingo"), true);
+		assertEquals(tags1.hasTag("bongo"), true);
+		assertEquals(tags1.hasTag("123"), true);
+		assertEquals(tags1.hasTag("batscho"), false);
+		assertEquals(tags1.hasTag(""), false);
+		assertEquals(tags1.hasTag(null), false);
+
+		Tags tags2 = new Tags("");
+		assertEquals(tags2.hasTag("flower"), false);
+		assertEquals(tags2.hasTag(""), false);
+		assertEquals(tags2.hasTag(null), false);
+
+		Tags tags3 = new Tags(",,,");
+		assertEquals(tags3.hasTag(","), false);
+		assertEquals(tags3.hasTag(""), false);
+		assertEquals(tags3.hasTag(null), false);
+	}
+
 	public void testAsTag() {		
 		assertEquals(Tags.asTag("flo wer"), "flower");
 		assertEquals(Tags.asTag(" 35j lNM#&In>B << f2"), "35jlnminbf2");
