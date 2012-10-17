@@ -42,7 +42,7 @@ PART II: WAHLZEIT SETUP
 
 	cd workspace/wahlzeit
 
-	java -cp .:bin:lib/* org.wahlzeit.tools.SetUpFlowers
+	java -cp '.:bin:lib/*' org.wahlzeit.tools.SetUpFlowers
 	
 	This should initialize the database for the Flowers example application.
 
@@ -52,7 +52,7 @@ PART III: RUNNING WAHLZEIT
 	
 6. Run Wahlzeit itself
 
-	java -cp .:bin:lib/* org.wahlzeit.main.Wahlzeit
+	java -cp '.:bin:lib/*' org.wahlzeit.main.Wahlzeit
 	
 	Direct your browser to http://localhost:8585
 	
