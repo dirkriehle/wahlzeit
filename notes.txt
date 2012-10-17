@@ -27,5 +27,5 @@ Refactoring to wahlzeit.com notes
 ** Remove file size limit for loading in tmpl server
 ** Protect keys and slots in WebPartTmpl? (Clone?)
 
-* Remove application stuff?
+* Remove application stuff
 
