@@ -65,4 +65,13 @@ public class TagsTest extends TestCase {
 		assertEquals(tags2array[0], "2ahum5ugyah");
 		assertEquals(tags2array[1], "ohmpf");
 	}
+	
+	public void testHasTag() {
+		Tags tag1 = new Tags("a, b, c, d,,");
+		assertTrue(tag1.hasTag("b"));
+		assertTrue(tag1.hasTag("c"));
+		assertFalse(tag1.hasTag(""));
+		assertFalse(tag1.hasTag("a, b"));
+		assertFalse(tag1.hasTag(","));
+	}
 }
