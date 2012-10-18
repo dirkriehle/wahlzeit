@@ -20,7 +20,11 @@
 
 package org.wahlzeit.utils;
 
-import java.net.*;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A set of utility functions for basic string manipulations.
@@ -194,6 +198,26 @@ public class StringUtil {
 		return String.valueOf(seconds) + "." + asThreeDigits(milliSeconds);
 	}
 	
+	/**
+	 * The string, which separates path segments in a URL
+	 */
+	private static final String URL_SEPARATOR = "/";
+
+	/**
+	 * Convert separators in a filesystem path to url separators.
+	 * It does not escape the url characters. Use java.net.URLEncoder for this.
+	 * @param path
+	 * @return
+	 */
+	public final static String pathAsUrlString(String path) {
+		if(!File.separator.equals(URL_SEPARATOR)) {
+			// We are not on a plattform where file separator matches the url separator,
+			// we need to convert between them.
+			path = path.replaceAll(Pattern.quote(File.separator), Matcher.quoteReplacement(URL_SEPARATOR));
+		}
+		return path;
+	}
+
 	/**
 	 * 
 	 */

@@ -20,25 +20,36 @@
 
 package org.wahlzeit.utils;
 
+import java.io.File;
+
 import junit.framework.*;
 
 /**
- * 
+ *
  * @author dirkriehle
- * 
+ *
  */
-public class AllTests extends TestSuite {
+public class StringUtilTest extends TestCase {
 
 	public static void main(String[] args) {
-		junit.textui.TestRunner.run(suite());
+		junit.textui.TestRunner.run(StringUtilTest.class);
 	}
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite();
-		suite.addTestSuite(SafeInputTest.class);
-		suite.addTestSuite(VersionTest.class);
-		suite.addTestSuite(StringUtilTest.class);
-		return suite;
+	public StringUtilTest(String name) {
+		super(name);
+	}
+
+	public void testPathAsUrlString() {
+		String path1 = "folder" + File.separator + "subfolder" + File.separator + "file.test";
+		String url1 = StringUtil.pathAsUrlString(path1);
+		assertEquals("folder/subfolder/file.test", url1);
+
+		String path2 = File.separator + "folder" + File.separator + "sub123 fol_der_" + File.separator;
+		String url2 = StringUtil.pathAsUrlString(path2);
+		assertEquals("/folder/sub123 fol_der_/", url2);
+
+		assertEquals("/", StringUtil.pathAsUrlString(File.separator));
 	}
 
 }
+
