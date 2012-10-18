@@ -37,6 +37,15 @@ public class TagsTest extends TestCase {
 		super(name);
 	}
 	
+	public void testHasTag() {
+		Tags testTag = new Tags("blume , flower ,,,");
+		
+		assertTrue(testTag.hasTag("blume"));
+		assertTrue(testTag.hasTag("flower"));
+		assertFalse(testTag.hasTag(","));
+		assertFalse(testTag.hasTag(""));
+	}
+	
 	public void testAsTag() {		
 		assertEquals(Tags.asTag("flo wer"), "flower");
 		assertEquals(Tags.asTag(" 35j lNM#&In>B << f2"), "35jlnminbf2");
