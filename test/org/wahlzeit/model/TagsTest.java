@@ -20,6 +20,8 @@
 
 package org.wahlzeit.model;
 
+import java.util.ArrayList;
+
 import junit.framework.*;
 
 /**
@@ -35,6 +37,32 @@ public class TagsTest extends TestCase {
 
 	public TagsTest(String name) {
 		super(name);
+	}
+	
+	public void testHasTag() {
+		Tags tags1 = new Tags("3k30 asd, fRizT007'a;p , a tag");
+		assertTrue(tags1.hasTag("3k30asd"));
+		assertFalse(tags1.hasTag("fRizT007ap"));
+		assertTrue(tags1.hasTag("frizt007ap"));
+		assertTrue(tags1.hasTag("atag"));
+	}
+	
+	public void testGetTagListFromString() {
+		ArrayList<String> taglist = Tags.getTagListFromString("wa/HL3z@$.e/1tT", '/');
+		assertNotNull(taglist);
+		assertTrue(taglist.size() == 3);
+		assertFalse(taglist.isEmpty());
+		assertTrue(taglist.contains("wa"));
+		assertTrue(taglist.contains("hl3ze"));
+		assertTrue(taglist.contains("1tt"));
+		assertFalse(taglist.contains("HL3z"));
+	}
+	
+	public void testGetSize() {
+		Tags tags1 = new Tags("w24a/,HL<>3,6z@$.e/,1tT");
+		Tags empty_tags = new Tags("        ");
+		assertEquals(4, tags1.getSize());
+		assertEquals(0, empty_tags.getSize());
 	}
 	
 	public void testAsTag() {		
