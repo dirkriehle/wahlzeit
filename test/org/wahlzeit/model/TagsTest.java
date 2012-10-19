@@ -20,6 +20,8 @@
 
 package org.wahlzeit.model;
 
+import java.util.ArrayList;
+
 import junit.framework.*;
 
 /**
@@ -35,6 +37,27 @@ public class TagsTest extends TestCase {
 
 	public TagsTest(String name) {
 		super(name);
+	}
+	
+	public void testHasTag()	{
+		Tags t = new Tags("tag, long tag, even@longer;tag");
+		
+		assertTrue(t.hasTag("tag"));
+		assertTrue(t.hasTag("longtag"));
+		assertTrue(t.hasTag("evenlongertag"));
+
+		assertFalse(t.hasTag(null));
+		assertFalse(t.hasTag(""));
+	}
+	
+	public void testGetSize()	{
+		Tags t1 = new Tags("x,y,y,,");
+		
+		assertEquals(2, t1.getSize());
+		
+		Tags t2 = new Tags();
+		
+		assertEquals(0, t2.getSize());
 	}
 	
 	public void testAsTag() {		
@@ -64,5 +87,16 @@ public class TagsTest extends TestCase {
 		String[] tags2array = tags2.asArray();
 		assertEquals(tags2array[0], "2ahum5ugyah");
 		assertEquals(tags2array[1], "ohmpf");
+	}
+	
+	public void testGetTagListFromString()	{
+		ArrayList<String> list = Tags.getTagListFromString("x-y--z@!;,b---ni hao", '-');
+		
+		assertTrue(list != null);
+		assertTrue(list.size() == 4);
+		assertTrue(list.contains("x"));
+		assertTrue(list.contains("y"));
+		assertTrue(list.contains("zb"));
+		assertTrue(list.contains("nihao"));
 	}
 }
