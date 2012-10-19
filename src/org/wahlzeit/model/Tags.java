@@ -67,7 +67,7 @@ public class Tags {
 	public Tags(String myTags) {
 		tags = getTagListFromString(myTags);
 	}
-	
+	    
 	/**
 	 * 
 	 */
