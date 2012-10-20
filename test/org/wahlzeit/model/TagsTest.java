@@ -20,6 +20,8 @@
 
 package org.wahlzeit.model;
 
+import java.util.Arrays;
+
 import junit.framework.*;
 
 /**
@@ -64,5 +66,29 @@ public class TagsTest extends TestCase {
 		String[] tags2array = tags2.asArray();
 		assertEquals(tags2array[0], "2ahum5ugyah");
 		assertEquals(tags2array[1], "ohmpf");
+	}
+
+	public void testAsArray() {
+		Tags tags1 = new Tags("tag1, t a g 2, tag 3 ");
+		String[] tags1AsArray1 = tags1.asArray();
+		assertEquals(3, tags1AsArray1.length);
+		assertEquals("tag1", tags1AsArray1[0]);
+		assertEquals("tag2", tags1AsArray1[1]);
+		assertEquals("tag3", tags1AsArray1[2]);
+
+		String[] tags1AsArray2 = tags1.asArray();
+		assertFalse(tags1AsArray1 == tags1AsArray2); // should return new instances
+		assertTrue(Arrays.deepEquals(tags1AsArray1, tags1AsArray2)); // but with equal elements
+
+		String[] tags2AsArray = new Tags().asArray();
+		assertEquals(0, tags2AsArray.length);
+
+		String test = "tag0";
+		for(int i = 1; i < 100; i++)
+			test += ", tag" + i;
+		String[] tags3AsArray = new Tags(test).asArray();
+		assertEquals(100, tags3AsArray.length);
+		for(int i = 0; i < 100; i++)
+			assertEquals("tag" + i, tags3AsArray[i]);
 	}
 }
