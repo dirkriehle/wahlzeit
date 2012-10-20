@@ -20,6 +20,8 @@
 
 package org.wahlzeit.model;
 
+import java.util.ArrayList;
+
 import junit.framework.*;
 
 /**
@@ -48,6 +50,18 @@ public class TagsTest extends TestCase {
 		assertSame(tags1.getSize(), 2);
 		assertEquals(tags1.asString(), "tag1, tag2");
 		assertEquals(tags1.asString(true, '+'), "tag1 + tag2");		
+	}
+	
+	public void testAsArray()  {
+		Tags tags1 = new Tags("blume, zeug");
+		String[] array1 = tags1.asArray();
+		assertEquals(array1.length, 2);
+		assertEquals(array1[0], "blume");
+		assertEquals(array1[1], "zeug");
+		
+		Tags tags2 = new Tags();
+		String[] array2 = tags2.asArray();
+		assertEquals(array2.length, 0);
 	}
 
 	public void testTagList() {
