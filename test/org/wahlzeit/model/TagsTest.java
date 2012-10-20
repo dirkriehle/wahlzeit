@@ -47,7 +47,11 @@ public class TagsTest extends TestCase {
 		Tags tags1 = new Tags("tag1, tag2");
 		assertSame(tags1.getSize(), 2);
 		assertEquals(tags1.asString(), "tag1, tag2");
-		assertEquals(tags1.asString(true, '+'), "tag1 + tag2");		
+		assertEquals(tags1.asString(true, '+'), "tag1 + tag2");
+		
+		//testing some thoughts
+		Tags tags2 = new Tags("tag1 + tag2 , tag3, + tag4 + ,");
+		assertEquals(tags2.asString(true, '+'), "tag1tag2 + tag3 + tag4");
 	}
 
 	public void testTagList() {
@@ -64,5 +68,42 @@ public class TagsTest extends TestCase {
 		String[] tags2array = tags2.asArray();
 		assertEquals(tags2array[0], "2ahum5ugyah");
 		assertEquals(tags2array[1], "ohmpf");
+		
+		//testing some thoughts
+		Tags tags3 = new Tags("  $%&/(,     $%&/()");
+		String[] tags3array = tags3.asArray();
+		assertEquals(tags3array.length, 0);
+	}
+	
+	//Testmethode fuer hasTag()
+	public void testHasTag() {		
+		Tags tags1 = new Tags("a,a a,b!@b");
+		assertTrue(tags1.hasTag("a"));
+		assertTrue(tags1.hasTag("aa"));
+		assertTrue(tags1.hasTag("bb"));
+		assertFalse(tags1.hasTag(""));
+		assertFalse(tags1.hasTag("a a"));
+		
+		Tags tags2 = new Tags("");
+		assertFalse(tags2.hasTag(""));
+	}
+	
+	//Testmethode fuer asArray()
+	public void testAsArray() {
+		Tags tags1 = new Tags("a, b, c, d, e");
+		assertEquals(tags1.asArray().length, 5);
+		assertEquals(tags1.asArray()[0], "a");
+		
+		Tags tags2 = new Tags("a a, &/B,     , c");
+		assertSame(tags2.getSize(), tags2.asArray().length);
+		assertEquals(tags2.asArray().length, 3);
+		assertEquals(tags2.asArray()[1], "b");
+		assertEquals(tags2.asArray()[2], "c");
+	}
+	
+	//Test auf doppelte Tags
+	public void testDoubleTags() {
+		Tags tags1 = new Tags("bla, blub, bla, Bla, b$%&l    a");
+		assertEquals("bla, blub", tags1.asString());
 	}
 }
