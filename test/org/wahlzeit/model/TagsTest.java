@@ -37,6 +37,18 @@ public class TagsTest extends TestCase {
 		super(name);
 	}
 	
+	public void testHasTag() {
+		Tags tags1 = new Tags("tag1, tag2");
+		assertTrue(tags1.hasTag("tag1"));
+		assertTrue(tags1.hasTag("tag2"));
+		assertFalse(tags1.hasTag("tag3"));
+	}
+	
+	public void testTagNotDouble() {
+		Tags tags1 = new Tags("tag1, tag1");
+		assertTrue(tags1.getSize() == 1);
+	}
+	
 	public void testAsTag() {		
 		assertEquals(Tags.asTag("flo wer"), "flower");
 		assertEquals(Tags.asTag(" 35j lNM#&In>B << f2"), "35jlnminbf2");
