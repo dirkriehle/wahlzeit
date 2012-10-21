@@ -24,6 +24,7 @@ public class UserStatusTest extends TestCase{
 		assertTrue(UserStatus.getFromString(UserStatus.CONFIRMED.asString())==UserStatus.CONFIRMED);
 		assertTrue(UserStatus.getFromString(UserStatus.DISABLED.asString())==UserStatus.DISABLED);
 		assertTrue(UserStatus.getFromString(UserStatus.DISABLED2.asString())==UserStatus.DISABLED2);
+		//evtl. created, confirmed, created (disabled), confirmed (disabled) ?
 	}
 	
 	public void testIsConfirmed(){
@@ -45,6 +46,11 @@ public class UserStatusTest extends TestCase{
 		assertTrue(UserStatus.CONFIRMED.asDisabled().isDisabled());
 		assertTrue(UserStatus.DISABLED.asDisabled().isDisabled());
 		assertTrue(UserStatus.DISABLED2.asDisabled().isDisabled());
+		
+		assertFalse(UserStatus.CREATED.asDisabled().isConfirmed());
+		assertTrue(UserStatus.CONFIRMED.asDisabled().isConfirmed());
+		assertFalse(UserStatus.DISABLED.asDisabled().isConfirmed());
+		assertTrue(UserStatus.DISABLED2.asDisabled().isConfirmed());
 	}
 	
 	public void testAsConfirmed(){
@@ -52,15 +58,27 @@ public class UserStatusTest extends TestCase{
 		assertTrue(UserStatus.CONFIRMED.asConfirmed().isConfirmed());
 		assertTrue(UserStatus.DISABLED.asConfirmed().isConfirmed());
 		assertTrue(UserStatus.DISABLED2.asConfirmed().isConfirmed());
+		
+		assertFalse(UserStatus.CREATED.asConfirmed().isDisabled());
+		assertFalse(UserStatus.CONFIRMED.asConfirmed().isDisabled());
+		assertTrue(UserStatus.DISABLED.asConfirmed().isDisabled());
+		assertTrue(UserStatus.DISABLED2.asConfirmed().isDisabled());
 	}
 	
 	public void testAsEnabled(){
+		//so?
 		//return getFromInt(value & ~(1 << DISABLED_BIT));
 		assertFalse(UserStatus.CREATED.asEnabled().isDisabled());
 		assertFalse(UserStatus.CONFIRMED.asEnabled().isDisabled());
 		assertFalse(UserStatus.DISABLED.asEnabled().isDisabled());
 		assertFalse(UserStatus.DISABLED2.asEnabled().isDisabled());
+		
 		assertFalse(UserStatus.DISABLED.asEnabled().asEnabled().isDisabled());
+		
+		assertFalse(UserStatus.CREATED.asEnabled().isConfirmed());
+		assertTrue(UserStatus.CONFIRMED.asEnabled().isConfirmed());
+		assertFalse(UserStatus.DISABLED.asEnabled().isConfirmed());
+		assertTrue(UserStatus.DISABLED2.asEnabled().isConfirmed());
 	}
 	
 }
