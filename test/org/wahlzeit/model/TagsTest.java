@@ -43,6 +43,21 @@ public class TagsTest extends TestCase {
 		assertEquals(Tags.asTag(",,,,,,"), "");
 	}
 	
+	public void testHasTag(){
+		Tags tags1 = new Tags("tag1, tag2");
+		assertTrue(tags1.hasTag("tag1"));
+		assertTrue(tags1.hasTag("tag2"));
+		assertFalse(tags1.hasTag("tag3"));
+		assertFalse(tags1.hasTag(""));
+		assertFalse(tags1.hasTag(null));
+	}
+	
+	public void testGetSize(){
+		assertTrue(Tags.EMPTY_TAGS.getSize()==0);
+		Tags tags2 = new Tags("tag1, tag2");
+		assertTrue(tags2.getSize()==2);
+	}
+	
 	public void testAsString() {
 		Tags tags1 = new Tags("tag1, tag2");
 		assertSame(tags1.getSize(), 2);
