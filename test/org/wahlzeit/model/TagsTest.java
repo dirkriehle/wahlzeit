@@ -44,9 +44,16 @@ public class TagsTest extends TestCase {
 		assertFalse(tags1.hasTag("tag3"));
 	}
 	
+	public void testGetSize() {
+		Tags tags1 = new Tags("tag1, tag2, tag3");
+		assertEquals(3, tags1.getSize());
+		Tags tags2 = new Tags();
+		assertEquals(0, tags2.getSize());
+	}
+	
 	public void testTagNotDouble() {
 		Tags tags1 = new Tags("tag1, tag1");
-		assertTrue(tags1.getSize() == 1);
+		assertEquals(1, tags1.getSize());
 	}
 	
 	public void testAsTag() {		
