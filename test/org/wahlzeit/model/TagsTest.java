@@ -48,7 +48,7 @@ public class TagsTest extends TestCase {
 			assertTrue(tags.hasTag("b"));
 			
 			// Causes failure because separator is not stored
-			assertEquals("a-b", tags.asString());
+			assertEquals("a- b", tags.asString());
 		}
 		{
 			Tags tags = new Tags("a,b",'-');

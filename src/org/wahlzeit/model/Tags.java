@@ -54,25 +54,31 @@ public class Tags {
 	 */
 	protected ArrayList<String> tags = new ArrayList<String>();
 	
+	
+	private final char separator;
+	
 	/**
 	 * 
 	 */
 	public Tags() {
 		// do nothing
+		this.separator = SEPARATOR_CHAR;
 	}
 	
 	/**
 	 * 
 	 */
 	public Tags(String myTags) {
-		tags = getTagListFromString(myTags);
+		this.tags = getTagListFromString(myTags);
+		this.separator = SEPARATOR_CHAR;
 	}
 	
 	/**
 	 * 
 	 */
 	public Tags(String myTags, char separator) {
-		tags = getTagListFromString(myTags, separator);
+		this.tags = getTagListFromString(myTags, separator);
+		this.separator = separator;
 	}
 	
 	/**
@@ -93,7 +99,7 @@ public class Tags {
 	 * 
 	 */
 	public String asString() {
-		return asString(false, SEPARATOR_CHAR);
+		return asString(false, separator);
 	}
 
 	/**
