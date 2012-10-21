@@ -37,6 +37,51 @@ public class TagsTest extends TestCase {
 		super(name);
 	}
 	
+	
+	/**
+	 * Make sure not only ',' can be used a separator
+	 */
+	public void testCustomSeparator(){
+		{
+			Tags tags = new Tags("a-b",'-');
+			assertTrue(tags.hasTag("a"));
+			assertTrue(tags.hasTag("b"));
+			
+			// Causes failure because separator is not stored
+			assertEquals("a-b", tags.asString());
+		}
+		{
+			Tags tags = new Tags("a,b",'-');
+			assertTrue(tags.hasTag("ab"));
+		}
+		{
+			Tags tags = new Tags("aab",'a');
+			assertTrue(tags.hasTag("b"));
+			assertFalse(tags.hasTag("a"));	
+		}
+	}
+	
+	public void testHasTag() {
+		assertFalse(new Tags(null).hasTag(null));
+		assertFalse(new Tags("").hasTag(null));
+		assertFalse(new Tags("").hasTag(""));
+		
+		assertTrue(new Tags("tag").hasTag("tag"));
+
+		assertTrue(new Tags("tag,tag").hasTag("tag"));
+		
+		assertTrue(new Tags("tag1,tag2").hasTag("tag1"));
+		assertTrue(new Tags("tag1,tag2").hasTag("tag2"));
+
+		
+		assertFalse("Only complete Tags should match", 
+						new Tags("tag1,tag2").hasTag("t"));
+
+		assertFalse("No filtering on hasTag",
+						new Tags("tag1,tag 2").hasTag("tag 2"));
+	}
+	
+	
 	public void testAsTag() {		
 		assertEquals(Tags.asTag("flo wer"), "flower");
 		assertEquals(Tags.asTag(" 35j lNM#&In>B << f2"), "35jlnminbf2");
@@ -64,5 +109,7 @@ public class TagsTest extends TestCase {
 		String[] tags2array = tags2.asArray();
 		assertEquals(tags2array[0], "2ahum5ugyah");
 		assertEquals(tags2array[1], "ohmpf");
+		
+		
 	}
 }
