@@ -43,13 +43,28 @@ public class TagsTest extends TestCase {
 		assertEquals(Tags.asTag(",,,,,,"), "");
 	}
 	
+	
 	public void testAsString() {
 		Tags tags1 = new Tags("tag1, tag2");
 		assertSame(tags1.getSize(), 2);
 		assertEquals(tags1.asString(), "tag1, tag2");
 		assertEquals(tags1.asString(true, '+'), "tag1 + tag2");		
 	}
-
+	
+	public void testHasTag() {
+		Tags tags1 = new Tags("tag1, tag2");
+		assertTrue(tags1.hasTag("tag1"));
+		assertTrue(tags1.hasTag("tag2"));
+	}
+	
+	public void testHasTag2() {
+		Tags tags1 = new Tags("\"/&%$(&a,\"\\'");
+		assertTrue(tags1.hasTag("a"));
+		assertFalse(tags1.hasTag("\"\\'"));
+		assertFalse(tags1.hasTag(""));
+			
+	}
+	
 	public void testTagList() {
 		Tags tags1 = new Tags(" flo wer , Kinokuniya, bingo, bongo");
 		String[] tags1array = tags1.asArray();
