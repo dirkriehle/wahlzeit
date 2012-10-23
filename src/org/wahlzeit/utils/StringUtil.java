@@ -34,14 +34,14 @@ public class StringUtil {
 	 * 
 	 */
 	public final static boolean isLegalUserName(String s) {
-		return isSafeString(s);
+		return isSafeString(s) && !s.equals("");
 	}
 	
 	/**
 	 * 
 	 */
 	public final static boolean isLegalPassword(String s) {
-		return isSafeString(s);
+		return isSafeString(s) && !s.equals("");
 	}
 	
 	/**
