@@ -165,7 +165,7 @@ public abstract class ServerMain extends ModelMain {
 		// Photos content
 		
 		HttpContext photosContext = new HttpContext();
-		photosContext.setContextPath(SysConfig.getPhotosDirAsString());
+		photosContext.setContextPath(SysConfig.getPhotosUrlPathAsString());
 		server.addContext(photosContext);
 
 		ResourceHandler photosHandler = new ResourceHandler();
@@ -177,12 +177,14 @@ public abstract class ServerMain extends ModelMain {
 		// Static content
 		
 		HttpContext staticContext = new HttpContext();
-		staticContext.setContextPath(SysConfig.getStaticDir().getRootPath());
+		staticContext.setContextPath(SysConfig.getStaticDir().getRootUrl());
 		server.addContext(staticContext);
 
 		ResourceHandler staticHandler = new ResourceHandler();
 		staticContext.setResourceBase(SysConfig.getStaticDir().getRootPath());
 		staticContext.addHandler(staticHandler);
+
+		// Not Found
 
 		staticContext.addHandler(new NotFoundHandler());
 	}
