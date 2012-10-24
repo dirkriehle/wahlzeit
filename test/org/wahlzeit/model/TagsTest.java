@@ -47,7 +47,7 @@ public class TagsTest extends TestCase {
 		Tags tags1 = new Tags("tag1, tag2");
 		assertSame(tags1.getSize(), 2);
 		assertEquals(tags1.asString(), "tag1, tag2");
-		assertEquals(tags1.asString(true, '+'), "tag1 + tag2");		
+		assertEquals(tags1.asString(true, '+'), "tag1 + tag2");	
 	}
 
 	public void testTagList() {
@@ -62,6 +62,7 @@ public class TagsTest extends TestCase {
 		
 		Tags tags2 = new Tags(" @ 2a hum5ug ; yah!, ohmpf ,,,");
 		String[] tags2array = tags2.asArray();
+		assertTrue(tags2array.length == 2);
 		assertEquals(tags2array[0], "2ahum5ugyah");
 		assertEquals(tags2array[1], "ohmpf");
 	}
