@@ -20,7 +20,9 @@
 
 package org.wahlzeit.model;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import junit.framework.*;
 
@@ -41,15 +43,20 @@ public class TagsTest extends TestCase {
 
 	public void testEquals() {
 		Tags tags1 = new Tags("a, b, c");
-		Tags tags2 = new Tags("a, b, c");
-		Tags tags3 = new Tags("a, c, b");
-		Tags tags4 = new Tags("a, b");
-		Tags tags5 = new Tags("a, a, b, c");
-		// assertTrue(tags1.equals(tags1));
-		// assertTrue(tags1.equals(tags2));
-		// assertTrue(tags1.equals(tags3));
-		// assertFalse(tags1.equals(tags4));
-		// assertTrue(tags1.equals(tags5));
+		Tags tags2 = new Tags("a,-b,-c-");
+		Tags tags3 = new Tags("a,    c,   % b%%%,,");
+		Tags tags4 = new Tags("a, a,a,a,a,a, b, c");
+
+		Tags tags5 = new Tags("a, b");
+		
+		assertTrue(tags1.equals(tags1));
+		assertTrue(tags1.equals(tags2));
+		assertTrue(tags1.equals(tags3));
+		assertTrue(tags1.equals(tags4));
+		
+		assertFalse(tags1.equals(tags5));
+		assertFalse(tags1.equals(null));
+		assertFalse(tags1.equals(new Tags()));
 	}
 
 	public void testAsTag() {
@@ -193,18 +200,27 @@ public class TagsTest extends TestCase {
 	public void testTagList() {
 		Tags tags1 = new Tags(" flo wer , Kinokuniya, bingo, bongo");
 		String[] tags1array = tags1.asArray();
+		
+		assertTrue(tags1array != null);
 		assertTrue(tags1array.length == 4);
-		assertEquals(tags1array[0], "flower");
-		assertEquals(tags1array[1], "kinokuniya");
-		assertEquals(tags1array[2], "bingo");
-		assertEquals(tags1array[3], "bongo");
-		assertEquals(tags1.asString(), "flower, kinokuniya, bingo, bongo");
+		
+		List<String> result1 = Arrays.asList(tags1array);
+		
+		assertTrue(result1.contains("flower"));
+		assertTrue(result1.contains("kinokuniya"));
+		assertTrue(result1.contains("bingo"));
+		assertTrue(result1.contains("bongo"));
 
 		Tags tags2 = new Tags(" @ 2a hum5ug ; yah!, ohmpf ,,,");
 		String[] tags2array = tags2.asArray();
+		
+		assertTrue(tags2array != null);
 		assertTrue(tags2array.length == 2);
-		assertEquals(tags2array[0], "2ahum5ugyah");
-		assertEquals(tags2array[1], "ohmpf");
+		
+		List<String> result2 = Arrays.asList(tags2array);
+		
+		assertTrue(result2.contains("2ahum5ugyah"));
+		assertTrue(result2.contains("ohmpf"));
 		
 		//testing some thoughts
 		Tags tags3 = new Tags("  $%&/(,     $%&/()");
@@ -213,9 +229,9 @@ public class TagsTest extends TestCase {
 	}
 
 	
-	public void testGetTagListFromString()	{
-		ArrayList<String> list = Tags.getTagListFromString("x-y--z@!;,b---ni hao", '-');
-		
+	public void testGetTagsFromString()	{
+		Collection<String> list = Tags.getTagsFromString("x-x-y--z@!;,b---ni hao", '-');
+	
 		assertTrue(list != null);
 		assertTrue(list.size() == 4);
 		assertTrue(list.contains("x"));
