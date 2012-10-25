@@ -172,4 +172,23 @@ public class Tags {
 		return result.toString();
 	}
 	
+	public boolean equals(Object obj) {
+		return isEqual(obj);
+	}
+	
+	public boolean isEqual(Object obj) {
+		// first check for self-comparison, then check if object is of the correct type (or null)
+		if (obj == this) {
+			return true;
+		} else if (!(obj instanceof Tags)) {
+			return false;
+		}
+		
+		// cast passed object to Tags object
+		Tags newTags = (Tags) obj;
+		
+		// return result of the the comparison of the sorted tags
+		return (new TreeSet<String>(tags).equals(new TreeSet<String>(newTags.tags)));
+	}
+	
 }
