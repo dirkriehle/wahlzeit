@@ -37,6 +37,19 @@ public class TagsTest extends TestCase {
 		super(name);
 	}
 	
+	public void testEquals() {
+		Tags tags1 = new Tags("a, b, c");
+		Tags tags2 = new Tags("a, b, c");
+		Tags tags3 = new Tags("a, c, b");
+		Tags tags4 = new Tags("a, b");
+		Tags tags5 = new Tags("a, a, b, c");
+//		assertTrue(tags1.equals(tags1));
+//		assertTrue(tags1.equals(tags2));
+//		assertTrue(tags1.equals(tags3));
+//		assertFalse(tags1.equals(tags4));
+//		assertTrue(tags1.equals(tags5));
+	}
+
 	public void testAsTag() {		
 		assertEquals(Tags.asTag("flo wer"), "flower");
 		assertEquals(Tags.asTag(" 35j lNM#&In>B << f2"), "35jlnminbf2");
@@ -93,6 +106,6 @@ public class TagsTest extends TestCase {
 		assertTrue(tags2array.length == 2);
 		assertEquals(tags2array[0], "2ahum5ugyah");
 		assertEquals(tags2array[1], "ohmpf");
-	}
-	
+	}	
+
 }
