@@ -50,6 +50,34 @@ public class TagsTest extends TestCase {
 		assertEquals(tags1.asString(true, '+'), "tag1 + tag2");		
 	}
 
+	public void testGetSize() {
+		Tags tags1 = new Tags("tag1, tag2, tag3");
+		assertEquals(3, tags1.getSize());
+
+		Tags tags2 = new Tags("");
+		assertSame(tags2.getSize(), 0);
+	}
+	
+	public void testHasTag() {
+		Tags tags1 = new Tags(" flo wer , Kinokuniya, bingo, bongo");
+		assertTrue(tags1.hasTag("flower"));
+		assertTrue(tags1.hasTag("kinokuniya"));
+		assertFalse(tags1.hasTag("Kinokuniya"));
+		assertTrue(tags1.hasTag("bingo"));
+		assertFalse(tags1.hasTag("bingo, bongo"));
+		assertFalse(tags1.hasTag("notexisting"));
+		assertFalse(tags1.hasTag(""));
+
+		Tags tags2 = new Tags("    ");
+		assertFalse(tags2.hasTag("testemptytags"));
+		assertFalse(tags2.hasTag(""));
+	}
+	
+	public void testHasSetSemantics() {
+		Tags tags1 = new Tags("tag1, tag1");
+		assertEquals(1, tags1.getSize());
+	}
+
 	public void testTagList() {
 		Tags tags1 = new Tags(" flo wer , Kinokuniya, bingo, bongo");
 		String[] tags1array = tags1.asArray();
@@ -66,4 +94,5 @@ public class TagsTest extends TestCase {
 		assertEquals(tags2array[0], "2ahum5ugyah");
 		assertEquals(tags2array[1], "ohmpf");
 	}
+	
 }
