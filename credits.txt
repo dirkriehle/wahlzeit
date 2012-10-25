@@ -11,4 +11,5 @@ Thanks to the ADAP class of WS 2012/13 for contributing to Wahlzeit:
 * elag1985
 * Fusselmaster
 * k-5
+* klomnit
 * ...

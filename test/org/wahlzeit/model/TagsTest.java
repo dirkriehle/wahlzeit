@@ -139,11 +139,18 @@ public class TagsTest extends TestCase {
 		assertFalse(tags2.hasTag(""));
 	}
 
+	public void testHasTag3() {
+		Tags tags1 = new Tags("\"/&%$(&a,\"\\'");
+		assertTrue(tags1.hasTag("a"));
+		assertFalse(tags1.hasTag("\"\\'"));
+		assertFalse(tags1.hasTag(""));
+	}
+	
 	public void testHasSetSemantics() {
 		Tags tags1 = new Tags("tag1, tag1");
 		assertEquals(1, tags1.getSize());
 	}
-
+	
 	public void testTagList() {
 		Tags tags1 = new Tags(" flo wer , Kinokuniya, bingo, bongo");
 		String[] tags1array = tags1.asArray();
