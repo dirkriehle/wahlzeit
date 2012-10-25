@@ -20,7 +20,9 @@
 
 package org.wahlzeit.services;
 
-import java.io.*;
+import java.io.File;
+
+import org.wahlzeit.utils.StringUtil;
 
 /**
  * 
@@ -53,6 +55,13 @@ public class ConfigDir {
 	}
 	
 	/**
+	 * @return the root path as URL fragment
+	 */
+	public String getRootUrl() {
+		return StringUtil.pathAsUrlString(getRootPath());
+	}
+
+	/**
 	 * 
 	 */
 	public String getFullConfigFileName(String shortFileName) {
@@ -66,13 +75,31 @@ public class ConfigDir {
 	
 	/**
 	 * 
+	 * @param shortFileName
+	 * @return the full file path as URL
+	 */
+	public String getFullConfigFileUrl(String shortFileName) {
+		return StringUtil.pathAsUrlString(getFullConfigFileName(shortFileName));
+	}
+
+	/**
+	 *
 	 */
 	public String getDefaultConfigFileName(String shortFileName) {
 		return defaultPath + File.separator + shortFileName;
 	}
-	
+
 	/**
-	 * 
+	 *
+	 * @param shortFileName
+	 * @return the default file path as URL
+	 */
+	public String getDefaultConfigFileUrl(String shortFileName) {
+		return StringUtil.pathAsUrlString(getDefaultConfigFileName(shortFileName));
+	}
+
+	/**
+	 *
 	 */
 	public String getCustomConfigFileName(String shortFileName) {
 		return customPath + File.separator + shortFileName;
@@ -80,6 +107,15 @@ public class ConfigDir {
 	
 	/**
 	 * 
+	 * @param shortFileName
+	 * @return the custom file path as URL
+	 */
+	public String getCustomConfigFileUrl(String shortFileName) {
+		return StringUtil.pathAsUrlString(getCustomConfigFileName(shortFileName));
+	}
+
+	/**
+	 *
 	 */
 	public boolean hasDefaultFile(String shortFileName) {
 		return doesFileExist(defaultPath + File.separator + shortFileName);
