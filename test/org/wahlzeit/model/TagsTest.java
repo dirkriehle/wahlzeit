@@ -58,22 +58,6 @@ public class TagsTest extends TestCase {
 		assertEquals(Tags.asTag(",,,,,,"), "");
 	}
 
-	public void testHasTag() {
-		Tags tags1 = new Tags("tag1, tag2");
-		// true test
-		assertTrue(tags1.hasTag("tag1"));
-		assertTrue(tags1.hasTag("tag2"));
-		
-		// false test
-		assertFalse(tags1.hasTag("23"));
-		assertFalse(tags1.hasTag("42"));
-		
-		// null test
-		Tags tags2 = new Tags(null);
-		assertFalse(tags2.hasTag("asdf"));
-		assertFalse(tags2.hasTag(null));
-	}
-
 	public void testAsString() {
 		Tags tags1 = new Tags("tag1, tag2");
 		assertSame(tags1.getSize(), 2);
@@ -105,12 +89,20 @@ public class TagsTest extends TestCase {
 		assertEquals(tags2.asArray()[2], "c");
 	}
 
-	public void testGetSize() {
+	public void testGetSize1() {
 		Tags tags1 = new Tags("tag1, tag2, tag3");
 		assertEquals(3, tags1.getSize());
 
 		Tags tags2 = new Tags("");
 		assertSame(tags2.getSize(), 0);
+	}
+
+	public void testGetSize2()	{
+		Tags t1 = new Tags("x,y,y,,");
+		assertEquals(2, t1.getSize());
+		
+		Tags t2 = new Tags();
+		assertEquals(0, t2.getSize());
 	}
 
 	/**
@@ -174,6 +166,17 @@ public class TagsTest extends TestCase {
 		assertFalse(tags1.hasTag(""));
 	}
 	
+	public void testHasTag4()	{
+		Tags t = new Tags("tag, long tag, even@longer;tag");
+		
+		assertTrue(t.hasTag("tag"));
+		assertTrue(t.hasTag("longtag"));
+		assertTrue(t.hasTag("evenlongertag"));
+
+		assertFalse(t.hasTag(null));
+		assertFalse(t.hasTag(""));
+	}
+	
 	public void testHasSetSemantics() {
 		Tags tags1 = new Tags("tag1, tag1");
 		assertEquals(1, tags1.getSize());
@@ -208,4 +211,15 @@ public class TagsTest extends TestCase {
 		assertEquals(tags3array.length, 0);
 	}
 
+	
+	public void testGetTagListFromString()	{
+		ArrayList<String> list = Tags.getTagListFromString("x-y--z@!;,b---ni hao", '-');
+		
+		assertTrue(list != null);
+		assertTrue(list.size() == 4);
+		assertTrue(list.contains("x"));
+		assertTrue(list.contains("y"));
+		assertTrue(list.contains("zb"));
+		assertTrue(list.contains("nihao"));
+	}
 }
