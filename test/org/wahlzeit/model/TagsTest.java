@@ -65,7 +65,7 @@ public class TagsTest extends TestCase {
 		assertEquals(tags1.asString(true, '+'), "tag1 + tag2");
 	}
 
-	public void testAsArray() {
+	public void testAsArray1() {
 		Tags tags1 = new Tags("blume, zeug");
 		String[] array1 = tags1.asArray();
 		assertEquals(array1.length, 2);
@@ -75,6 +75,18 @@ public class TagsTest extends TestCase {
 		Tags tags2 = new Tags();
 		String[] array2 = tags2.asArray();
 		assertEquals(array2.length, 0);
+	}
+
+	public void testAsArray2() {
+		Tags tags1 = new Tags("a, b, c, d, e");
+		assertEquals(tags1.asArray().length, 5);
+		assertEquals(tags1.asArray()[0], "a");
+		
+		Tags tags2 = new Tags("a a, &/B,     , c");
+		assertSame(tags2.getSize(), tags2.asArray().length);
+		assertEquals(tags2.asArray().length, 3);
+		assertEquals(tags2.asArray()[1], "b");
+		assertEquals(tags2.asArray()[2], "c");
 	}
 
 	public void testGetSize() {
@@ -149,6 +161,9 @@ public class TagsTest extends TestCase {
 	public void testHasSetSemantics() {
 		Tags tags1 = new Tags("tag1, tag1");
 		assertEquals(1, tags1.getSize());
+
+		Tags tags2 = new Tags("bla, blub, bla, Bla, b$%&l    a");
+		assertEquals("bla, blub", tags2.asString());
 	}
 	
 	public void testTagList() {
@@ -166,6 +181,11 @@ public class TagsTest extends TestCase {
 		assertTrue(tags2array.length == 2);
 		assertEquals(tags2array[0], "2ahum5ugyah");
 		assertEquals(tags2array[1], "ohmpf");
+		
+		//testing some thoughts
+		Tags tags3 = new Tags("  $%&/(,     $%&/()");
+		String[] tags3array = tags3.asArray();
+		assertEquals(tags3array.length, 0);
 	}
 
 }
