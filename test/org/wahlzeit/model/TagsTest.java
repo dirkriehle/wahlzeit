@@ -47,7 +47,7 @@ public class TagsTest extends TestCase {
 		Tags tags1 = new Tags("tag1, tag2");
 		assertSame(tags1.getSize(), 2);
 		assertEquals(tags1.asString(), "tag1, tag2");
-		assertEquals(tags1.asString(true, '+'), "tag1 + tag2");	
+		assertEquals(tags1.asString(true, '+'), "tag1 + tag2");		
 	}
 
 	public void testTagList() {
