@@ -2,6 +2,8 @@ Thanks to the ADAP class WS 2012/13 teaching assistant:
 
 * Hannes Dohrn
 
-Thanks to the ADAP class of WS 2012/13:
+Thanks to the ADAP class of WS 2012/13 for contributing to Wahlzeit:
 
-* amazing4u, ...
+* amazing4u
+* andreas-kaufmann
+* ...
