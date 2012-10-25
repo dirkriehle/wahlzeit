@@ -58,6 +58,22 @@ public class TagsTest extends TestCase {
 		assertEquals(Tags.asTag(",,,,,,"), "");
 	}
 
+	public void testHasTag() {
+		Tags tags1 = new Tags("tag1, tag2");
+		// true test
+		assertTrue(tags1.hasTag("tag1"));
+		assertTrue(tags1.hasTag("tag2"));
+		
+		// false test
+		assertFalse(tags1.hasTag("23"));
+		assertFalse(tags1.hasTag("42"));
+		
+		// null test
+		Tags tags2 = new Tags(null);
+		assertFalse(tags2.hasTag("asdf"));
+		assertFalse(tags2.hasTag(null));
+	}
+
 	public void testAsString() {
 		Tags tags1 = new Tags("tag1, tag2");
 		assertSame(tags1.getSize(), 2);
@@ -164,6 +180,10 @@ public class TagsTest extends TestCase {
 
 		Tags tags2 = new Tags("bla, blub, bla, Bla, b$%&l    a");
 		assertEquals("bla, blub", tags2.asString());
+
+		Tags tags3 = new Tags("bingo, bingo");
+		String[] tags3array = tags3.asArray();
+		assertTrue(tags3array.length == 1);
 	}
 	
 	public void testTagList() {
