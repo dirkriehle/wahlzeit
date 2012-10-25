@@ -74,4 +74,18 @@ public class TagsTest extends TestCase {
 		assertFalse(tag1.hasTag("a, b"));
 		assertFalse(tag1.hasTag(","));
 	}
+	
+	public void testEquals() {
+		Tags tags1 = new Tags("a, b, c");
+		Tags tags2 = new Tags("a, b, c");
+		Tags tags3 = new Tags("a, c, b");
+		Tags tags4 = new Tags("a, b");
+		Tags tags5 = new Tags("a, a, b, c");
+		assertTrue(tags1.equals(tags1));
+		assertTrue(tags1.equals(tags2));
+		assertTrue(tags1.equals(tags3));
+		assertFalse(tags1.equals(tags4));
+		assertTrue(tags1.equals(tags5));
+	}
+
 }
