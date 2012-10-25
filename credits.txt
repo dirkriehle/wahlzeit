@@ -8,3 +8,6 @@ Thanks to the ADAP class of WS 2012/13 for contributing to Wahlzeit:
 * andreas-kaufmann
 * bjoernmeier
 * crocomo
+* elag1985
+* Fusselmaster
+* ...
