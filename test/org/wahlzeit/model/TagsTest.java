@@ -89,20 +89,21 @@ public class TagsTest extends TestCase {
 		assertEquals(tags2.asArray()[2], "c");
 	}
 
-	public void testGetSize1() {
+	public void testGetSize() {
 		Tags tags1 = new Tags("tag1, tag2, tag3");
 		assertEquals(3, tags1.getSize());
 
 		Tags tags2 = new Tags("");
 		assertSame(tags2.getSize(), 0);
-	}
 
-	public void testGetSize2()	{
 		Tags t1 = new Tags("x,y,y,,");
 		assertEquals(2, t1.getSize());
 		
 		Tags t2 = new Tags();
 		assertEquals(0, t2.getSize());
+		
+		Tags empty = Tags.EMPTY_TAGS;
+		assertTrue(empty.getSize() == 0);
 	}
 
 	/**

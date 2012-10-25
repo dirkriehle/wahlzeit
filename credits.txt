@@ -16,4 +16,6 @@ Thanks to the ADAP class of WS 2012/13 for contributing to Wahlzeit:
 * Ni-Nic
 * pwa
 * Siflweik
+* sokra
+* steffenhofmann
 * ...

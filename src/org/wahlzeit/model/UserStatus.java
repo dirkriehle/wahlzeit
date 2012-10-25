@@ -162,7 +162,7 @@ public enum UserStatus implements EnumValue {
 	 * 
 	 */
 	public UserStatus asEnabled() {
-		return getFromInt(value ^ (1 << DISABLED_BIT));
+		return getFromInt(value & (1 << CONFIRMED_BIT));
 	}
 
 }
