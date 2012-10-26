@@ -20,8 +20,6 @@
 
 package org.wahlzeit;
 
-import org.wahlzeit.testsetup.DataBaseSetup;
-
 import junit.framework.*;
 
 /**
@@ -42,6 +40,6 @@ public class AllTests extends TestSuite {
 		suite.addTest(org.wahlzeit.model.AllTests.suite());
 		suite.addTest(org.wahlzeit.utils.AllTests.suite());
 		
-		return new DataBaseSetup(suite);
+		return suite;//TODO: new DataBaseSetup(suite);
 	}
 }
