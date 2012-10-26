@@ -20,6 +20,14 @@
 
 package org.wahlzeit.handlers;
 
+import org.wahlzeit.main.ModelMain;
+import org.wahlzeit.main.Wahlzeit;
+import org.wahlzeit.model.LanguageConfigs;
+import org.wahlzeit.model.UserSession;
+import org.wahlzeit.services.ContextManager;
+import org.wahlzeit.services.Language;
+
+import junit.extensions.TestSetup;
 import junit.framework.*;
 
 /**
@@ -27,16 +35,33 @@ import junit.framework.*;
  * @author dirkriehle
  * 
  */
-public class AllTests extends TestSuite {
+public class HandlerTestSetup extends TestSetup {
 
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(suite());
+	public HandlerTestSetup(Test test) {
+		super(test);
 	}
+	
+	static protected UserSession session;
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite();
-		suite.addTestSuite(TellFriendTest.class);
-		return new HandlerTestSetup(suite);
+	@Override
+	protected void tearDown() throws Exception {
+		session = null;
+	}
+	
+	@Override
+	protected void setUp() throws Exception {
+		ModelMain.configureWebPartTemplateServer();
+		
+		Wahlzeit.configurePartHandlers();
+		Wahlzeit.configureLanguageModels();
+		
+		session = new UserSession("testContext");
+		session.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
+		ContextManager.setThreadLocalContext(session);
+	}
+	
+	public static UserSession getCurrentSession() {
+		return session;
 	}
 
 }
