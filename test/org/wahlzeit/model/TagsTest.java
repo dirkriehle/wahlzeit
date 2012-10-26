@@ -50,6 +50,7 @@ public class TagsTest extends TestCase {
 		assertTrue(tags1.equals(tags3));
 		assertFalse(tags1.equals(tags4));
 		assertTrue(tags1.equals(tags5));
+		assertFalse(tags1.equals(null));
 	}
 
 	public void testAsTag() {
