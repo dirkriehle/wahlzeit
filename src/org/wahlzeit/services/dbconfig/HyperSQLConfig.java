@@ -8,7 +8,7 @@ public class HyperSQLConfig implements DataBaseConfig {
 	protected final String dbName = "wahlzeit";
 	
 	protected final String driver = "org.hsqldb.jdbcDriver";
-	protected final String connection = "jdbc:hsqldb:hsql://localhost:5432/" + dbName;
+	protected final String connection = "jdbc:hsqldb:hsql://localhost/" + dbName;
 	protected Server server;
 	
 	@Override
@@ -23,12 +23,12 @@ public class HyperSQLConfig implements DataBaseConfig {
 
 	@Override
 	public String getUser() {
-		return SysConfig.getDbUserAsString();
+		return "sa";//SysConfig.getDbUserAsString();
 	}
 
 	@Override
 	public String getPassword() {
-		return SysConfig.getDbPasswordAsString();
+		return "";//SysConfig.getDbPasswordAsString();
 	}
 
 	@Override
@@ -42,7 +42,11 @@ public class HyperSQLConfig implements DataBaseConfig {
 			server.setDatabaseName(0, dbName);
 			server.setDatabasePath(0, "file:" + dbName + "db");
 			
+			SysLog.logInfo("Starting hsql server...");
+			
 			server.start();
+			
+			SysLog.logInfo("Hsql server started.");
 		} catch (Exception ex){
 			SysLog.logThrowable(ex);
 		}		
@@ -50,6 +54,8 @@ public class HyperSQLConfig implements DataBaseConfig {
 
 	@Override
 	public void tearDownServer() {
+		SysLog.logInfo("Stopping hsql server.");
+		
 		try	{
 			if (server != null)	{
 				server.stop();

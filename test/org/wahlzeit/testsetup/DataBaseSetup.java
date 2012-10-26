@@ -2,7 +2,6 @@ package org.wahlzeit.testsetup;
 
 import org.wahlzeit.services.DatabaseConnection;
 import org.wahlzeit.services.dbconfig.HyperSQLConfig;
-
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 
