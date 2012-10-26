@@ -22,9 +22,9 @@ package org.wahlzeit.handlers;
 
 import java.util.*;
 
-import org.wahlzeit.main.*;
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
+import org.wahlzeit.testsetup.HandlerTestSetup;
 import org.wahlzeit.webparts.*;
 
 import junit.framework.*;
@@ -35,7 +35,7 @@ import junit.framework.*;
  * @author dirkriehle
  *
  */
-public class TellFriendTest extends TestCase {
+public class TellFriendTest extends TestCase  {
 	
 	/**
 	 * 
@@ -43,7 +43,7 @@ public class TellFriendTest extends TestCase {
 	public static void main(String[] args) {
 		junit.textui.TestRunner.run(TellFriendTest.class);
 	}
-
+	
 	/**
 	 * 
 	 */
@@ -54,29 +54,10 @@ public class TellFriendTest extends TestCase {
 	/**
 	 * 
 	 */
-	protected UserSession session;
-	protected WebFormHandler handler;
-	
-	/**
-	 * 
-	 */
-	public void setUp() {
-		ModelMain.configureWebPartTemplateServer();
-		
-		Wahlzeit.configurePartHandlers();
-		Wahlzeit.configureLanguageModels();
-
-		session = new UserSession("testContext");
-		session.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
-		ContextManager.setThreadLocalContext(session);
-		
-		handler = WebPartHandlerManager.getWebFormHandler(PartUtil.TELL_FRIEND_FORM_NAME);
-	}
-	
-	/**
-	 * 
-	 */
 	public void testTellFriendMakeWebPart() {
+		WebFormHandler handler = HandlerTestSetup.handler;
+		UserSession session = HandlerTestSetup.session;
+		
 		WebPart part = handler.makeWebPart(session);
 		// no failure is good behavior
 		
@@ -96,6 +77,9 @@ public class TellFriendTest extends TestCase {
 	 * 
 	 */
 	public void testTellFriendPost() {
+		WebFormHandler handler = HandlerTestSetup.handler;
+		UserSession session = HandlerTestSetup.session;
+		
 		EmailAddress from = EmailAddress.getFromString("info@wahlzeit.org");
 		EmailAddress to = EmailAddress.getFromString("fan@yahoo.com");
 		EmailAddress bcc = session.cfg().getAuditEmailAddress();
@@ -113,6 +97,5 @@ public class TellFriendTest extends TestCase {
 		
 		EmailServer.setInstance(new MockEmailServer(from, to, bcc, subject, body));
 		handler.handlePost(session, Collections.EMPTY_MAP); // will fail if email is sent		
-	}	
-
+	}
 }

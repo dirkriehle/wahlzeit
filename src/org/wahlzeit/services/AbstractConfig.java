@@ -31,7 +31,7 @@ import java.io.*;
  *
  */
 public abstract class AbstractConfig implements Configuration {
-
+	
 	/**
 	 * 
 	 */

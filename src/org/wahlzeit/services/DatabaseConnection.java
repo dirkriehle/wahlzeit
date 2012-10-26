@@ -23,6 +23,9 @@ package org.wahlzeit.services;
 import java.sql.*;
 import java.util.*;
 
+import org.wahlzeit.services.dbconfig.DataBaseConfig;
+import org.wahlzeit.services.dbconfig.PostgreSQLConfig;
+
 /**
  * A database connection wraps an RDMBS connection object.
  * It pools and reuses existing connections; it caches common SQL statements.
@@ -41,6 +44,20 @@ public class DatabaseConnection {
 	 * 
 	 */
 	protected static int dbcId = 0;
+	
+	protected final static DataBaseConfig DEFAULT_SETUP = new PostgreSQLConfig();
+	
+	protected static DataBaseConfig DB_SETUP = null;
+	
+	protected static boolean setup = false;
+		
+	public static synchronized void initialize(DataBaseConfig dbSetup) throws Exception	{
+		if (DB_SETUP != null)	{
+			throw new Exception("DatabaseConnection is already initialized");
+		}
+		
+		DB_SETUP = dbSetup;
+	}
 	
 	/**
 	 * 
@@ -102,6 +119,12 @@ public class DatabaseConnection {
 		} catch (Throwable t) {
 			SysLog.logThrowable(t);
 		}
+		
+		try {
+			DB_SETUP.tearDownServer();
+		} catch (Throwable t) {
+			SysLog.logThrowable(t);
+		}
 	}
 	
 	/**
@@ -146,26 +169,43 @@ public class DatabaseConnection {
 		return result;
 	}
 		
-	/**
-	 *
-	 */
-	static {
-		try {
-			Class.forName("org.postgresql.Driver");
-		} catch (ClassNotFoundException ex) {
-			SysLog.logThrowable(ex);
+	protected static synchronized void setUp()	{
+		if (!setup)	{
+			SysLog.logInfo("starting server for DatabaseConnection");
+			
+			if (DB_SETUP == null)	{
+				DB_SETUP = DEFAULT_SETUP;
+			}
+			
+			try {
+				Class.forName(DB_SETUP.getDriver());
+			} catch (ClassNotFoundException ex) {
+				SysLog.logThrowable(ex);
+			}
+			
+			try	{
+				DB_SETUP.setUpServer();
+			} catch (Exception ex) {
+				SysLog.logThrowable(ex);
+			}
+			
+			setup = true;
 		}
 	}
 	
 	/**
 	 * 
 	 */
-	public static Connection openRdbmsConnection() throws SQLException {
-		String dbConnection = SysConfig.getDbConnectionAsString();
-		String dbUser = SysConfig.getDbUserAsString();
-		String dbPassword = SysConfig.getDbPasswordAsString();
+	public static synchronized Connection openRdbmsConnection() throws SQLException {
+		setUp();
+		
+		String dbConnection = DB_SETUP.getConnection();
+		String dbUser = DB_SETUP.getUser();
+		String dbPassword = DB_SETUP.getPassword();
+		
    		Connection result = DriverManager.getConnection(dbConnection, dbUser, dbPassword);
    		SysLog.logInfo("opening database connection: " + result.toString());
+   		
    		return result;
 	}
 	
@@ -176,5 +216,14 @@ public class DatabaseConnection {
   		SysLog.logInfo("closing database connection: " + cn.toString());
 		cn.close();
 	}
-
+	
+	public static void shutDown()	{
+		SysLog.logInfo("shutting down DatabaseConnection");
+		
+		try	{
+			DB_SETUP.tearDownServer();
+		} catch (Exception ex)	{
+			SysLog.logThrowable(ex);
+		}
+	}
 }
