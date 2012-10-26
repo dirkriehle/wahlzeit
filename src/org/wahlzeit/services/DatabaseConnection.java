@@ -119,12 +119,6 @@ public class DatabaseConnection {
 		} catch (Throwable t) {
 			SysLog.logThrowable(t);
 		}
-		
-		try {
-			CONFIG.tearDownServer();
-		} catch (Throwable t) {
-			SysLog.logThrowable(t);
-		}
 	}
 	
 	/**
