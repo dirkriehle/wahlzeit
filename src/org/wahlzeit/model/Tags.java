@@ -182,4 +182,29 @@ public class Tags {
 		return result.toString();
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		return isEqual(obj);
+	}
+
+	/**
+	 *
+	 * @param obj the object to compare with
+	 * @return true, if the instance is equal with the obj
+	 */
+	public boolean isEqual(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Tags other = (Tags) obj;
+		if (tags == null) {
+			if (other.tags != null)
+				return false;
+		} else if (!new TreeSet<String>(tags).equals(new TreeSet<String>(other.tags)))
+			return false;
+		return true;
+	}
 }
