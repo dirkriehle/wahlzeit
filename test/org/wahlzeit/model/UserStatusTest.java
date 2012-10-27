@@ -2,7 +2,6 @@ package org.wahlzeit.model;
 
 import junit.framework.*;
 
-<<<<<<< HEAD
 public class UserStatusTest extends TestCase {
 
 	public static void main(String[] args) {
