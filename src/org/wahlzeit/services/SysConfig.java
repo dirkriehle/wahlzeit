@@ -95,9 +95,9 @@ public class SysConfig extends AbstractConfig {
 			doSetValue("SITE_URL", "http://" + host + "/");
 		}
 
-		doSetValue("PHOTOS_URL", doGetValue("SITE_URL") + "data/photos/");
-		doSetValue("STATIC_URL", doGetValue("SITE_URL") + "config/static/");
-	
+		doSetValue("PHOTOS_URL_PATH", "data/photos/");
+		doSetValue("PHOTOS_URL", doGetValue("SITE_URL") + doGetValue("PHOTOS_URL_PATH"));
+
 		// Local filesystem access
 		doSetValue("PHOTOS_DIR", "data" + File.separator + "photos" + File.separator);
 		doSetValue("BACKUP_DIR", "data" + File.separator + "backup" + File.separator);
@@ -157,6 +157,14 @@ public class SysConfig extends AbstractConfig {
 
 	/**
 	 * 
+	 * @return the photos URL path
+	 */
+	public static String getPhotosUrlPathAsString() {
+		return getInstance().getValue("PHOTOS_URL_PATH");
+	}
+
+	/**
+	 *
 	 */
 	public static String getBackupDirAsString() {
 		return getInstance().getValue("BACKUP_DIR");
@@ -195,7 +203,7 @@ public class SysConfig extends AbstractConfig {
 	 */
 	public static String getHeadingImageAsUrlString(Language l) {
 		String sfn = l.asIsoCode() + File.separator + getInstance().getValue("HEADING_IMAGE");
-		String ffn = getStaticDir().getFullConfigFileName(sfn);
+		String ffn = getStaticDir().getFullConfigFileUrl(sfn);
 		return getSiteUrlAsString() + ffn;
 	}
 	
@@ -204,7 +212,7 @@ public class SysConfig extends AbstractConfig {
 	 */
 	public static String getLogoImageAsUrlString(Language l) {
 		String sfn = l.asIsoCode() + File.separator + getInstance().getValue("LOGO_IMAGE");
-		String ffn = getStaticDir().getFullConfigFileName(sfn);
+		String ffn = getStaticDir().getFullConfigFileUrl(sfn);
 		return getSiteUrlAsString() + ffn;
 	}
 	
@@ -213,7 +221,7 @@ public class SysConfig extends AbstractConfig {
 	 */
 	public static String getEmptyImageAsUrlString(Language l) {
 		String sfn = l.asIsoCode() + File.separator + getInstance().getValue("EMPTY_IMAGE");
-		String ffn = getStaticDir().getFullConfigFileName(sfn);
+		String ffn = getStaticDir().getFullConfigFileUrl(sfn);
 		return getSiteUrlAsString() + ffn;
 	}
 
