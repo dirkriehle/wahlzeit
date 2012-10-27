@@ -125,6 +125,33 @@ public class Tags {
 	public String[] asArray() {
 		return (String[]) tags.toArray(new String[0]);
 	}
+	
+	
+	public boolean equals(Object object) {
+		assert(object instanceof Tags);
+		Tags t = (Tags)object;
+		
+		if(t.tags.size() != this.tags.size()) {
+			return false;
+		}
+		
+		for (String string : this.tags) {
+			if (!t.tags.contains(string)) {
+				return false;
+			}
+		}
+		
+		for (String string : t.tags) {
+			if (!this.tags.contains(string)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean isEqual(Tags tags) {
+		return this.equals(tags);
+	}
 
 	/**
 	 * 
