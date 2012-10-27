@@ -51,33 +51,20 @@ public class TellFriendTest extends TestCase {
 		super(name);
 	}
 	
-	/**
-	 * 
-	 */
-	protected UserSession session;
-	protected WebFormHandler handler;
+	static HandlerTestSetup hts;
 	
-	/**
-	 * 
-	 */
-	public void setUp() {
-		ModelMain.configureWebPartTemplateServer();
-		
-		Wahlzeit.configurePartHandlers();
-		Wahlzeit.configureLanguageModels();
-
-		session = new UserSession("testContext");
-		session.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
-		ContextManager.setThreadLocalContext(session);
-		
-		handler = WebPartHandlerManager.getWebFormHandler(PartUtil.TELL_FRIEND_FORM_NAME);
+	public static Test suite(){
+		TestSuite suite = new TestSuite();
+		suite.addTestSuite(TellFriendTest.class);
+		hts = new HandlerTestSetup(suite);
+		return hts;
 	}
 	
 	/**
 	 * 
 	 */
 	public void testTellFriendMakeWebPart() {
-		WebPart part = handler.makeWebPart(session);
+		WebPart part = hts.handler.makeWebPart(hts.session);
 		// no failure is good behavior
 		
 		EmailServer.setNullInstance(); // no emails please
@@ -85,9 +72,9 @@ public class TellFriendTest extends TestCase {
 		Map<String, String> args = new HashMap<String, String>();
 		args.put(TellFriendFormHandler.EMAIL_TO, to.asString());
 		args.put(TellFriendFormHandler.EMAIL_SUBJECT, "Oh well...");
-		handler.handlePost(session, args);
+		hts.handler.handlePost(hts.session, args);
 		
-		part = handler.makeWebPart(session);
+		part = hts.handler.makeWebPart(hts.session);
 		assertEquals(part.getValue(TellFriendFormHandler.EMAIL_TO), to.asString());
 		assertEquals(part.getValue(TellFriendFormHandler.EMAIL_SUBJECT), "Oh well...");
 	}
@@ -98,7 +85,7 @@ public class TellFriendTest extends TestCase {
 	public void testTellFriendPost() {
 		EmailAddress from = EmailAddress.getFromString("info@wahlzeit.org");
 		EmailAddress to = EmailAddress.getFromString("fan@yahoo.com");
-		EmailAddress bcc = session.cfg().getAuditEmailAddress();
+		EmailAddress bcc = hts.session.cfg().getAuditEmailAddress();
 		String subject = "Coolest website ever!";
 		String body = "You've got to check this out!";
 		EmailServer.setInstance(new MockEmailServer(from, to, bcc, subject, body));
@@ -109,10 +96,10 @@ public class TellFriendTest extends TestCase {
 		args.put(TellFriendFormHandler.EMAIL_SUBJECT, subject);
 		args.put(TellFriendFormHandler.EMAIL_BODY, body);
 
-		handler.handlePost(session, args);
+		hts.handler.handlePost(hts.session, args);
 		
 		EmailServer.setInstance(new MockEmailServer(from, to, bcc, subject, body));
-		handler.handlePost(session, Collections.EMPTY_MAP); // will fail if email is sent		
+		hts.handler.handlePost(hts.session, Collections.EMPTY_MAP); // will fail if email is sent		
 	}	
 
 }
