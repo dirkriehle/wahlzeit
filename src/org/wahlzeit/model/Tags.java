@@ -136,8 +136,7 @@ public class Tags {
 	/**
 	 * 
 	 */
-	public static ArrayList<String> getTagListFromString(String tags,
-			char separator) {
+	public static ArrayList<String> getTagListFromString(String tags, char separator) {
 		ArrayList<String> result = new ArrayList<String>(8);
 
 		if (tags != null) {
