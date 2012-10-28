@@ -21,6 +21,13 @@
 package org.wahlzeit.handlers;
 
 import junit.framework.*;
+import junit.extensions.TestSetup;
+
+import org.wahlzeit.main.ModelMain;
+import org.wahlzeit.main.Wahlzeit;
+import org.wahlzeit.model.*;
+import org.wahlzeit.services.ContextManager;
+import org.wahlzeit.services.Language;
 
 /**
  * 
@@ -29,6 +36,9 @@ import junit.framework.*;
  */
 public class AllTests extends TestSuite {
 
+	protected static UserSession session;
+	protected static WebFormHandler handler;
+
 	public static void main(String[] args) {
 		junit.textui.TestRunner.run(suite());
 	}
@@ -36,7 +46,20 @@ public class AllTests extends TestSuite {
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
 		suite.addTestSuite(TellFriendTest.class);
-		return suite;
-	}
+		TestSetup wrapper = new TestSetup(suite) {
+			protected void setUp() {
+				ModelMain.configureWebPartTemplateServer();
+				
+				Wahlzeit.configurePartHandlers();
+				Wahlzeit.configureLanguageModels();
 
+				session = new UserSession("testContext");
+				session.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
+				ContextManager.setThreadLocalContext(session);
+				
+				handler = WebPartHandlerManager.getWebFormHandler(PartUtil.TELL_FRIEND_FORM_NAME);
+			}
+		};
+		return wrapper;
+	}
 }
