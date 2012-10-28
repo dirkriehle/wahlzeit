@@ -28,7 +28,13 @@ import junit.framework.*;
  * 
  */
 public class TagsTest extends TestCase {
-
+	
+	protected Tags oneTag = null;
+	
+	public void setUp(){
+		oneTag = new Tags("tag1");
+	}
+	
 	public static void main(String[] args) {
 		junit.textui.TestRunner.run(TagsTest.class);
 	}
@@ -36,27 +42,27 @@ public class TagsTest extends TestCase {
 	public TagsTest(String name) {
 		super(name);
 	}
-	
+
 	public void testHasTag() {
 		Tags testTag = new Tags("blume , flower ,,,");
-		
+
 		assertTrue(testTag.hasTag("blume"));
 		assertTrue(testTag.hasTag("flower"));
 		assertFalse(testTag.hasTag(","));
 		assertFalse(testTag.hasTag(""));
 	}
-	
-	public void testAsTag() {		
+
+	public void testAsTag() {
 		assertEquals(Tags.asTag("flo wer"), "flower");
 		assertEquals(Tags.asTag(" 35j lNM#&In>B << f2"), "35jlnminbf2");
 		assertEquals(Tags.asTag(",,,,,,"), "");
 	}
-	
+
 	public void testAsString() {
 		Tags tags1 = new Tags("tag1, tag2");
 		assertSame(tags1.getSize(), 2);
 		assertEquals(tags1.asString(), "tag1, tag2");
-		assertEquals(tags1.asString(true, '+'), "tag1 + tag2");		
+		assertEquals(tags1.asString(true, '+'), "tag1 + tag2");
 	}
 
 	public void testTagList() {
@@ -68,7 +74,7 @@ public class TagsTest extends TestCase {
 		assertEquals(tags1array[2], "bingo");
 		assertEquals(tags1array[3], "bongo");
 		assertEquals(tags1.asString(), "flower, kinokuniya, bingo, bongo");
-		
+
 		Tags tags2 = new Tags(" @ 2a hum5ug ; yah!, ohmpf ,,,");
 		String[] tags2array = tags2.asArray();
 		assertEquals(tags2array[0], "2ahum5ugyah");

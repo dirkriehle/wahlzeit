@@ -92,6 +92,14 @@ public class Tags {
 	/**
 	 * 
 	 */
+	public boolean isEqual(Tags tag){
+		return true;
+		
+	}
+	
+	/**
+	 * 
+	 */
 	public String asString() {
 		return asString(false, SEPARATOR_CHAR);
 	}
