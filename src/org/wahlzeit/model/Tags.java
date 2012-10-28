@@ -57,7 +57,7 @@ public class Tags {
 	/**
 	 * 
 	 */
-	protected ArrayList<String> tags = new ArrayList<String>();
+	protected Set<String> tags = new TreeSet<String>();
 
 	/**
 	 * 
@@ -87,6 +87,9 @@ public class Tags {
 	 * 
 	 */
 	public boolean hasTag(String tag) {
+		if (null == tag){
+			return false;
+		}
 		return tags.contains(tag);
 	}
 
@@ -123,21 +126,21 @@ public class Tags {
 	 * 
 	 */
 	public String[] asArray() {
-		return (String[]) tags.toArray(new String[0]);
+		return (String[]) tags.toArray(new String[tags.size()]);
 	}
 
 	/**
 	 * 
 	 */
-	public static ArrayList<String> getTagListFromString(String tags) {
+	public static Set<String> getTagListFromString(String tags) {
 		return getTagListFromString(tags, SEPARATOR_CHAR);
 	}
 
 	/**
 	 * 
 	 */
-	public static ArrayList<String> getTagListFromString(String tags, char separator) {
-		ArrayList<String> result = new ArrayList<String>(8);
+	public static Set<String> getTagListFromString(String tags, char separator) {
+		Set<String> result = new TreeSet<String>();
 
 		if (tags != null) {
 			int i = 0;
@@ -153,8 +156,7 @@ public class Tags {
 
 				if (i != j) {
 					String tag = asTag(tags.substring(i, j));
-					if (!result.contains(tag)
-							&& !StringUtil.isNullOrEmptyString(tag)) {
+					if (!StringUtil.isNullOrEmptyString(tag)) {
 						result.add(tag);
 					}
 				}
@@ -182,4 +184,37 @@ public class Tags {
 		return result.toString();
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((tags == null) ? 0 : tags.hashCode());
+		return result;
+	}
+
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+
+		return isEqual((Tags) obj);
+	}
+
+	public boolean isEqual(Tags other) {
+		if (tags == null) {
+			if (other.tags != null)
+				return false;
+		} else if (!tags.equals(other.tags))
+			return false;
+		return true;
+	}
+
+	
+	
 }
