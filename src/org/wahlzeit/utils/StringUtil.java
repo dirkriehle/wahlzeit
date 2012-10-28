@@ -20,7 +20,9 @@
 
 package org.wahlzeit.utils;
 
+import java.io.File;
 import java.net.*;
+import java.util.regex.*;
 
 /**
  * A set of utility functions for basic string manipulations.
@@ -34,14 +36,14 @@ public class StringUtil {
 	 * 
 	 */
 	public final static boolean isLegalUserName(String s) {
-		return isSafeString(s);
+		return isSafeString(s) && !s.equals("");
 	}
 	
 	/**
 	 * 
 	 */
 	public final static boolean isLegalPassword(String s) {
-		return isSafeString(s);
+		return isSafeString(s) && !s.equals("");
 	}
 	
 	/**
@@ -194,6 +196,30 @@ public class StringUtil {
 		return String.valueOf(seconds) + "." + asThreeDigits(milliSeconds);
 	}
 	
+	/**
+	 * The string, which separates path segments in a URL
+	 */
+	private static final String URL_SEPARATOR = "/";
+
+	/**
+	 * Convert separators in a filesystem path to URL separators.
+	 * It does not escape the URL characters.
+	 * Use java.net.URLEncoder for this.
+	 * 
+	 * @param path
+	 * @return
+	 * 
+	 * @fixme Review for performance
+	 */
+	public final static String pathAsUrlString(String path) {
+		if(!File.separator.equals(URL_SEPARATOR)) {
+			// We are not on a platform where file separator matches the url separator,
+			// we need to convert between them.
+			path = path.replaceAll(Pattern.quote(File.separator), Matcher.quoteReplacement(URL_SEPARATOR));
+		}
+		return path;
+	}
+
 	/**
 	 * 
 	 */
