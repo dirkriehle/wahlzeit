@@ -181,5 +181,24 @@ public class Tags {
 
 		return result.toString();
 	}
+	
+	public boolean equals(Object compare_object) {		
+		if (compare_object.getClass().getName() != getClass().getName() ) return false;
 
+		if (tags.size() != ((Tags) compare_object).tags.size()) return false;
+		
+		for (int i = 0; i < tags.size(); ++i) {
+			if (!(((Tags)compare_object).tags.contains(tags.get(i)))) return false;
+		}
+		return true;
+	}
+	
+	public boolean isEquals(Object compare_object) {
+		return equals(compare_object);
+	}	
+	
+	public int hashCode() {
+		return tags.size() + tags.hashCode();
+	}
+	
 }

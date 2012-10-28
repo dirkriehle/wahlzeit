@@ -45,11 +45,17 @@ public class TagsTest extends TestCase {
 		Tags tags3 = new Tags("a, c, b");
 		Tags tags4 = new Tags("a, b");
 		Tags tags5 = new Tags("a, a, b, c");
-		// assertTrue(tags1.equals(tags1));
-		// assertTrue(tags1.equals(tags2));
-		// assertTrue(tags1.equals(tags3));
-		// assertFalse(tags1.equals(tags4));
-		// assertTrue(tags1.equals(tags5));
+		Tags tags6 = new Tags();
+		Tags tags7 = new Tags();
+		Object obj1 = new Object();
+		assertTrue(tags1.equals(tags1));
+		assertTrue(tags1.equals(tags2));
+		assertTrue(tags1.equals(tags3));
+		assertFalse(tags1.equals(tags4));
+		assertTrue(tags1.equals(tags5));
+		assertFalse(tags1.equals(obj1));
+		assertTrue(tags6.equals(tags7));
+		
 	}
 
 	public void testAsTag() {
