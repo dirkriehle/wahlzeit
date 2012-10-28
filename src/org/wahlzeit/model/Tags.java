@@ -164,6 +164,32 @@ public class Tags {
 		return result;
 	}
 
+	public Boolean isEqual(Object object) {
+		if (object == null)
+			return false;
+
+		if (!(object instanceof Tags))
+			return false;
+		
+		Tags tags = (Tags)object;
+		
+		for(String s: tags.asArray()){
+			if(!(this.hasTag(s)))
+				return false;
+		}
+		
+		for(String s: this.asArray()){
+			if(!(tags.hasTag(s)))
+				return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean equals(Object object){
+		return isEqual(object);
+	}
+
 	/**
 	 * 
 	 */
