@@ -36,6 +36,7 @@ public class TagsTest extends TestCase {
 	protected Tags threeTag = null;
 	protected Tags fourTag = null;
 	protected Tags fiveTag = null;
+	protected Tags sixTag = null; 
 	
 	public static void main(String[] args) {
 		junit.textui.TestRunner.run(TagsTest.class);
@@ -52,12 +53,15 @@ public class TagsTest extends TestCase {
 		threeTag = new Tags("tag1");
 		fourTag = new Tags("tag3, tag4");
 		fiveTag = new Tags("tag4, tag3");
+		sixTag = new Tags("tag3, tag4, tag3"); 
 	}
 
 	public void testIsEqual() {
 		assertFalse(oneTag.equals(twoTag));
 		assertTrue(oneTag.equals(threeTag));
 		assertTrue(fourTag.equals(fiveTag));
+		assertTrue(fourTag.equals(sixTag));
+        assertTrue(fiveTag.equals(sixTag)); 
 	}
 	
 	public void testEquals() {
