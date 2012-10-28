@@ -163,6 +163,28 @@ public class Tags {
 
 		return result;
 	}
+	
+	private boolean isEqual(Tags tag)
+	{
+		if (!(this.tags.toArray().length == tag.tags.toArray().length))
+			return false;
+		
+		for(String t: this.asArray())
+		{
+			if (!(tag.tags.contains(t)))
+				return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean equals(Object tag)
+	{
+		if (tag instanceof Tags)
+			return isEqual((Tags)tag);
+		return false;
+	}
+	
 
 	/**
 	 * 

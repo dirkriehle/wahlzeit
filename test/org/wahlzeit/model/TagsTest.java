@@ -45,11 +45,11 @@ public class TagsTest extends TestCase {
 		Tags tags3 = new Tags("a, c, b");
 		Tags tags4 = new Tags("a, b");
 		Tags tags5 = new Tags("a, a, b, c");
-		// assertTrue(tags1.equals(tags1));
-		// assertTrue(tags1.equals(tags2));
-		// assertTrue(tags1.equals(tags3));
-		// assertFalse(tags1.equals(tags4));
-		// assertTrue(tags1.equals(tags5));
+		 assertTrue(tags1.equals(tags1));
+		 assertTrue(tags1.equals(tags2));
+		 assertTrue(tags1.equals(tags3));
+		 assertFalse(tags1.equals(tags4));
+		 assertTrue(tags1.equals(tags5));
 	}
 
 	public void testAsTag() {
@@ -89,6 +89,20 @@ public class TagsTest extends TestCase {
 		assertEquals(tags2.asArray()[2], "c");
 	}
 
+	public void equalsTest()
+	{
+		Tags tags1 = new Tags("tag1, tag2, tag3");
+		Tags tags2 = new Tags("tag1, tag2, tag3");
+		assertEquals(true, tags1.equals(tags2));
+		assertEquals(true, tags2.equals(tags1));
+		
+		Tags tags3 = new Tags("tag3, tag2, tag1");
+		assertEquals(true, tags3.equals(tags1));
+		assertEquals(true, tags3.equals(tags2));
+		assertEquals(true, tags1.equals(tags3));
+		assertEquals(true, tags2.equals(tags3));
+	}
+	
 	public void testGetSize() {
 		Tags tags1 = new Tags("tag1, tag2, tag3");
 		assertEquals(3, tags1.getSize());
