@@ -20,6 +20,8 @@
 
 package org.wahlzeit.handlers;
 
+import org.wahlzeit.testsetup.HandlerTestSetup;
+
 import junit.framework.*;
 
 /**
@@ -36,7 +38,8 @@ public class AllTests extends TestSuite {
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
 		suite.addTestSuite(TellFriendTest.class);
-		return suite;
+		
+		return new HandlerTestSetup(suite);
 	}
 
 }

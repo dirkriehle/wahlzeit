@@ -22,8 +22,6 @@ package org.wahlzeit.model;
 
 import java.util.*;
 
-import org.wahlzeit.utils.*;
-
 /**
  * A Tags instance represents a set of tags; each tag ist just a string. All
  * tags are maintained lowercase and without whitespace. I.e. "Captain America"
@@ -57,22 +55,20 @@ public class Tags {
 	/**
 	 * 
 	 */
-	protected ArrayList<String> tags = new ArrayList<String>();
+	protected TreeSet<String> tags;
 
 	/**
 	 * 
 	 */
 	public Tags() {
-		// do nothing
-		this.separator = SEPARATOR_CHAR;
+		this("", SEPARATOR_CHAR);
 	}
 
 	/**
 	 * 
 	 */
 	public Tags(String myTags) {
-		this.separator = SEPARATOR_CHAR;
-		this.tags = getTagListFromString(myTags);
+		this(myTags, SEPARATOR_CHAR);
 	}
 
 	/**
@@ -80,14 +76,14 @@ public class Tags {
 	 */
 	public Tags(String myTags, char separator) {
 		this.separator = separator;
-		this.tags = getTagListFromString(myTags, separator);
+		this.tags = parseTags(myTags, separator);
 	}
 
 	/**
 	 * 
 	 */
 	public boolean hasTag(String tag) {
-		return tags.contains(tag);
+		return (tag != null && tags.contains(tag));
 	}
 
 	/**
@@ -126,42 +122,42 @@ public class Tags {
 		return (String[]) tags.toArray(new String[0]);
 	}
 
+	public boolean equals(Object other)	{
+		return (other instanceof Tags && isEqual((Tags) other));
+	}
+	
+	public boolean isEqual(Tags other)	{
+		return (other != null && this.tags.equals(other.tags));
+	}
+	
+	protected static TreeSet<String> parseTags(String tags, char separator)	{
+		TreeSet<String> result = new TreeSet<String>();
+				
+		if (tags != null)	{
+			for (String part : tags.split(String.valueOf(separator))) {
+				String parsed = asTag(part);
+				
+				if (!parsed.isEmpty())	{
+					result.add(parsed);
+				}
+			}
+		}
+		
+		return result;
+	}
+	
 	/**
 	 * 
 	 */
-	public static ArrayList<String> getTagListFromString(String tags) {
-		return getTagListFromString(tags, SEPARATOR_CHAR);
+	public static Collection<String> getTagsFromString(String tags) {
+		return parseTags(tags, SEPARATOR_CHAR);
 	}
 
 	/**
 	 * 
 	 */
-	public static ArrayList<String> getTagListFromString(String tags, char separator) {
-		ArrayList<String> result = new ArrayList<String>(8);
-
-		if (tags != null) {
-			int i = 0;
-			int j = 0;
-			for (; i < tags.length(); i = j) {
-				for (; ((i < tags.length()) && (tags.charAt(i) == separator));) {
-					i++;
-				}
-
-				for (j = i; ((j < tags.length()) && (tags.charAt(j) != separator));) {
-					j++;
-				}
-
-				if (i != j) {
-					String tag = asTag(tags.substring(i, j));
-					if (!result.contains(tag)
-							&& !StringUtil.isNullOrEmptyString(tag)) {
-						result.add(tag);
-					}
-				}
-			}
-		}
-
-		return result;
+	public static Collection<String> getTagsFromString(String tags, char separator) {
+		return parseTags(tags, separator);
 	}
 
 	/**
@@ -181,5 +177,4 @@ public class Tags {
 
 		return result.toString();
 	}
-
 }
