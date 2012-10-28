@@ -167,7 +167,7 @@ public class TagsTest extends TestCase {
 		assertFalse(tags1.hasTag("\"\\'"));
 		assertFalse(tags1.hasTag(""));
 	}
-
+	
 	public void testHasTag4()  {
 		Tags t = new Tags("tag, long tag, even@longer;tag");
 		
@@ -212,10 +212,11 @@ public class TagsTest extends TestCase {
 		String[] tags3array = tags3.asArray();
 		assertEquals(tags3array.length, 0);
 	}
-
-	public void testGetTagListFromString() {
+	
+	
+	public void testGetTagListFromString()  {
 		ArrayList<String> list = Tags.getTagListFromString("x-y--z@!;,b---ni hao", '-');
-
+		
 		assertTrue(list != null);
 		assertTrue(list.size() == 4);
 		assertTrue(list.contains("x"));
