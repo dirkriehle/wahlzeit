@@ -37,6 +37,7 @@ public class AllTests extends TestSuite {
 		TestSuite suite = new TestSuite();
 		suite.addTestSuite(SafeInputTest.class);
 		suite.addTestSuite(VersionTest.class);
+		suite.addTestSuite(StringUtilTest.class);
 		return suite;
 	}
 

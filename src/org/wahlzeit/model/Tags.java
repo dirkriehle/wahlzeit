@@ -25,75 +25,83 @@ import java.util.*;
 import org.wahlzeit.utils.*;
 
 /**
- * A Tags instance represents a set of tags; each tag ist just a string.
- * All tags are maintained lowercase and without whitespace.
- * I.e. "Captain America" turns into "captainamerica"
+ * A Tags instance represents a set of tags; each tag ist just a string. All
+ * tags are maintained lowercase and without whitespace. I.e. "Captain America"
+ * turns into "captainamerica"
  * 
  * @author dirkriehle
- *
+ * 
  */
 public class Tags {
-	
+
 	/**
 	 * 
 	 */
 	public static final char SEPARATOR_CHAR = ',';
-	
+
 	/**
 	 * 
 	 */
 	public static final int MAX_NO_TAGS = 32;
-	
+
 	/**
 	 * 
 	 */
 	public static final Tags EMPTY_TAGS = new Tags();
-	
+
+	/**
+	 * 
+	 */
+	private final char separator;
+
 	/**
 	 * 
 	 */
 	protected ArrayList<String> tags = new ArrayList<String>();
-	
+
 	/**
 	 * 
 	 */
 	public Tags() {
 		// do nothing
+		this.separator = SEPARATOR_CHAR;
 	}
-	
+
 	/**
 	 * 
 	 */
 	public Tags(String myTags) {
-		tags = getTagListFromString(myTags);
+		this.separator = SEPARATOR_CHAR;
+		this.tags = getTagListFromString(myTags);
 	}
-	
+
 	/**
 	 * 
 	 */
 	public Tags(String myTags, char separator) {
-		tags = getTagListFromString(myTags, separator);
+		this.separator = separator;
+		this.tags = getTagListFromString(myTags, separator);
 	}
-	
+
 	/**
 	 * 
 	 */
 	public boolean hasTag(String tag) {
 		return tags.contains(tag);
 	}
-	
+
 	/**
 	 * 
 	 */
 	public int getSize() {
 		return tags.size();
 	}
-	
+
 	/**
 	 * 
 	 */
 	public String asString() {
-		return asString(false, SEPARATOR_CHAR);
+		return asString(false, separator);
 	}
 
 	/**
@@ -104,26 +112,27 @@ public class Tags {
 		String seps = (lead ? " " : "") + sep + " ";
 		String[] myTags = asArray();
 		for (int i = 0; i < myTags.length; i++) {
-			if (i != 0 ) result.append(seps);
+			if (i != 0)
+				result.append(seps);
 			result.append(myTags[i]);
 		}
 		return result.toString();
 	}
-	
+
 	/**
 	 * 
 	 */
 	public String[] asArray() {
 		return (String[]) tags.toArray(new String[0]);
 	}
-	
+
 	/**
 	 * 
 	 */
 	public static ArrayList<String> getTagListFromString(String tags) {
 		return getTagListFromString(tags, SEPARATOR_CHAR);
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -133,27 +142,28 @@ public class Tags {
 		if (tags != null) {
 			int i = 0;
 			int j = 0;
-			for(; i < tags.length(); i = j) {
-				for (; ((i < tags.length()) && (tags.charAt(i) == separator)); ) {
+			for (; i < tags.length(); i = j) {
+				for (; ((i < tags.length()) && (tags.charAt(i) == separator));) {
 					i++;
 				}
-				
-				for (j = i; ((j < tags.length()) && (tags.charAt(j) != separator)); ) {
+
+				for (j = i; ((j < tags.length()) && (tags.charAt(j) != separator));) {
 					j++;
 				}
-				
+
 				if (i != j) {
 					String tag = asTag(tags.substring(i, j));
-					if (!result.contains(tag) && !StringUtil.isNullOrEmptyString(tag)) {
+					if (!result.contains(tag)
+							&& !StringUtil.isNullOrEmptyString(tag)) {
 						result.add(tag);
 					}
 				}
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -168,8 +178,8 @@ public class Tags {
 				result.append(c);
 			}
 		}
-		
+
 		return result.toString();
 	}
-	
+
 }

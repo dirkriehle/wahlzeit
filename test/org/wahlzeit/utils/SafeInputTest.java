@@ -49,10 +49,16 @@ public class SafeInputTest extends TestCase {
 		assertFalse(StringUtil.isLegalUserName("a\\'b"));
 		assertFalse(StringUtil.isLegalUserName("a`b"));
 		assertFalse(StringUtil.isLegalUserName("a\\`b"));
+		
+		assertFalse(StringUtil.isLegalUserName(""));
 	}
 
 	public void testIsLegalPassword() {
-		// same as user name
+		assertTrue(StringUtil.isLegalPassword("abcd"));
+		assertTrue(StringUtil.isLegalPassword("ab cd"));
+		assertTrue(StringUtil.isLegalPassword("._ _. !@#$%^*()"));
+		
+		assertFalse(StringUtil.isLegalPassword(""));
 	}
 
 	public void testIsLegalEmailAddress() {
