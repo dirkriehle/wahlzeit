@@ -24,6 +24,8 @@ import java.util.*;
 
 import org.wahlzeit.utils.*;
 
+import com.sun.xml.internal.fastinfoset.util.StringArray;
+
 /**
  * A Tags instance represents a set of tags; each tag ist just a string. All
  * tags are maintained lowercase and without whitespace. I.e. "Captain America"
@@ -182,4 +184,31 @@ public class Tags {
 		return result.toString();
 	}
 
+	/**
+	 * 
+	 */
+	public boolean equals(Tags tag) {
+		if (tag.getSize() != this.getSize()) {
+			return false;
+		}
+		if (this.getSize() == 0) {
+			return true;
+		}
+		
+		String[] stringArray = tag.asArray();
+		
+		for (String i : stringArray) {
+			if (!this.tags.contains(i)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * 
+	 */
+	public boolean isEqual(Tags tag) {
+		return this.equals(tag);
+	}
 }
