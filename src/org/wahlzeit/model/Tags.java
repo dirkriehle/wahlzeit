@@ -85,16 +85,38 @@ public class Tags {
 	/**
 	 * 
 	 */
-	public int getSize() {
-		return tags.size();
+	public boolean isEqual(Object obj) {
+		if(obj == null) return false;
+		if(this == obj) return true;
+		if(this.getClass() != obj.getClass()) return false;
+		Tags object = (Tags) obj;
+		//TreeSet nimmt die natuerliche Sortierung der Elemente um sicherzustellen
+		//dass isEqual auch bei verschieden sortierten Tags true liefert
+		TreeSet<String> treeset = new TreeSet<String>(tags);
+		if(tags == null) {
+			if(object != null) {
+				return false;
+			}
+		} else if (!treeset.equals(new TreeSet<String>(object.tags))) {
+			return false;
+		}
+		return true;
 	}
 	
 	/**
 	 * 
 	 */
-	public boolean isEqual(Tags tag){
-		return true;
-		
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return isEqual(obj);
+	}
+
+	/**
+	 * 
+	 */
+	public int getSize() {
+		return tags.size();
 	}
 	
 	/**
