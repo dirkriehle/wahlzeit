@@ -56,21 +56,17 @@ public class TellFriendTest extends TestCase {
 	 */
 	protected UserSession session;
 	protected WebFormHandler handler;
-	
-	/**
-	 * 
-	 */
-	public void setUp() {
-		ModelMain.configureWebPartTemplateServer();
-		
-		Wahlzeit.configurePartHandlers();
-		Wahlzeit.configureLanguageModels();
 
-		session = new UserSession("testContext");
-		session.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
-		ContextManager.setThreadLocalContext(session);
-		
-		handler = WebPartHandlerManager.getWebFormHandler(PartUtil.TELL_FRIEND_FORM_NAME);
+	public void setSession(UserSession session) {
+		this.session = session;
+	}
+	
+	public void setHandler(WebFormHandler handler) {
+		this.handler = handler;
+	}
+
+	public void setUp() {
+		HandlerTestSetup.getValues(this);
 	}
 	
 	/**
