@@ -22,24 +22,30 @@ package org.wahlzeit.utils;
 
 import junit.framework.*;
 
-/**
- * 
- * @author dirkriehle
- * 
- */
-public class AllTests extends TestSuite {
+public class HtmlUtilTest extends TestCase {
 
 	public static void main(String[] args) {
-		junit.textui.TestRunner.run(suite());
+		junit.textui.TestRunner.run(HtmlUtilTest.class);
 	}
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite();
-		suite.addTestSuite(SafeInputTest.class);
-		suite.addTestSuite(VersionTest.class);
-		suite.addTestSuite(StringUtilTest.class);
-		suite.addTestSuite(HtmlUtilTest.class);
-		return suite;
+	public HtmlUtilTest(String name) {
+		super(name);
+	}
+
+	public void testasRadioButtonCheck() {
+		assertEquals(HtmlUtil.RADIO_BUTTON_CHECK,
+				HtmlUtil.asRadioButtonCheck(true));
+		assertEquals("", HtmlUtil.asRadioButtonCheck(false));
+	}
+
+	public void testasCheckboxCheck() {
+		assertEquals(HtmlUtil.CHECKBOX_CHECK, HtmlUtil.asCheckboxCheck(true));
+		assertEquals("", HtmlUtil.asCheckboxCheck(false));
+	}
+
+	public void testasSelectSelected() {
+		assertEquals(HtmlUtil.SELECT_SELECTED, HtmlUtil.asSelectSelected(true));
+		assertEquals("", HtmlUtil.asCheckboxCheck(false));
 	}
 
 }
