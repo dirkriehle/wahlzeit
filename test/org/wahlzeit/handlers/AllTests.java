@@ -34,9 +34,9 @@ public class AllTests extends TestSuite {
 	}
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite();
+	    TestSuite suite = new TestSuite();
 		suite.addTestSuite(TellFriendTest.class);
-		return suite;
+		return new HandlerTestSetup(suite);
 	}
 
 }
