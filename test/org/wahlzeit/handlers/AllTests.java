@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
+
  *
  * This file is part of the Wahlzeit photo rating application.
  *
@@ -36,7 +37,7 @@ public class AllTests extends TestSuite {
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
 		suite.addTestSuite(TellFriendTest.class);
-		return suite;
+		return new HandlerTestSetup(suite);
 	}
 
 }

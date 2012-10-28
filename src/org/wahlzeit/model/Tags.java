@@ -25,7 +25,7 @@ import java.util.*;
 import org.wahlzeit.utils.*;
 
 /**
- * A Tags instance represents a set of tags; each tag ist just a string. All
+ * A Tags instance represents a set of tags; each tag is just a string. All
  * tags are maintained lowercase and without whitespace. I.e. "Captain America"
  * turns into "captainamerica"
  * 
@@ -182,4 +182,51 @@ public class Tags {
 		return result.toString();
 	}
 
+	/**
+	 * 
+	 */
+	public boolean equals(Object obj)
+	{
+		if(obj instanceof Tags)
+		{
+			return isEqual((Tags)obj);
+		}
+		return false;
+	}
+	
+	/**
+	 * 
+	 */
+	public boolean isEqual(Tags externalTagObj)
+	{
+		/*
+		 * First make sure both OBJs have the same amount of tags.
+		 * In this way we can identify a lot of not matching OBJs
+		 * without a huge performance effort.
+		 */
+		if(externalTagObj.getSize() != getSize())
+		{
+			return false; /* At this point; it is not possible that both OBJs are equal*/
+		}
+		
+		/*
+		 * Get one of the considered OBJs as String arrays
+		 */
+		String[] tagArray = externalTagObj.asArray();
+		
+		/*
+		 * Iterate over one array and compare entries to the other OBJ.
+		 * Hint: Because we made sure that both are of the same size 
+		 * no value can "get lost".
+		 */
+		for(String actualTag:tagArray)
+		{
+			if(!hasTag(actualTag))
+			{
+				return false; /*Tag is missing in 1 OBJ: It is not possible that both OBJs are equal*/
+			}
+		}
+		
+		return true; /*All possible inequalities have been eliminated*/
+	}
 }

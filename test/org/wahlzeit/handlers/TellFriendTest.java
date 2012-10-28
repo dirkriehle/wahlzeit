@@ -22,7 +22,6 @@ package org.wahlzeit.handlers;
 
 import java.util.*;
 
-import org.wahlzeit.main.*;
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
 import org.wahlzeit.webparts.*;
@@ -61,16 +60,8 @@ public class TellFriendTest extends TestCase {
 	 * 
 	 */
 	public void setUp() {
-		ModelMain.configureWebPartTemplateServer();
-		
-		Wahlzeit.configurePartHandlers();
-		Wahlzeit.configureLanguageModels();
-
-		session = new UserSession("testContext");
-		session.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
-		ContextManager.setThreadLocalContext(session);
-		
-		handler = WebPartHandlerManager.getWebFormHandler(PartUtil.TELL_FRIEND_FORM_NAME);
+		session = HandlerTestSetup.getPreparedSession();
+		handler = HandlerTestSetup.getPreparedHandler();
 	}
 	
 	/**
