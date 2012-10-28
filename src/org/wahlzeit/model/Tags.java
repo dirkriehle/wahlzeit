@@ -82,6 +82,32 @@ public class Tags {
 		this.separator = separator;
 		this.tags = getTagListFromString(myTags, separator);
 	}
+	
+	
+	/**
+	 * 
+	 */
+	public boolean equals(Object obj) {
+		assert(obj instanceof Tags);
+		return isEqual((Tags) obj);
+	}
+	
+	public boolean isEqual(Tags tags) {
+		if(tags.asArray().length != asArray().length) {
+			return false;
+		}
+		for (String tag1 : tags.asArray()) {
+			boolean matchfound = false;
+			for(String tag2 : asArray()) {
+				if(tag1.equals(tag2)) {
+					matchfound = true;
+				}
+			}
+			if(!matchfound) {
+				return false;			}
+		}
+		return true;
+	}
 
 	/**
 	 * 
