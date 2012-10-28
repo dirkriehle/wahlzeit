@@ -80,6 +80,19 @@ public class TagsTest extends TestCase {
 		assertEquals(tags1.asString(), "tag1, tag2");
 		assertEquals(tags1.asString(true, '+'), "tag1 + tag2");
 	}
+	
+	public void testIsEqual() {
+		Tags tags = new Tags("tag1, tag2");
+		Tags tags2 = new Tags("tag2, tag1");
+		Tags tags3 = new Tags("tag2, tag1, tag3");
+		Tags tags4 = new Tags("tag2, tag1, tag3, tag3");
+		Tags test = null;
+		assertTrue(tags.isEqual(tags2));
+		assertTrue(tags3.isEqual(tags4));
+		assertFalse(tags.isEqual(test));
+		assertFalse(tags3.isEqual(tags2));
+		
+	}
 
 	public void testAsArray1() {
 		Tags tags1 = new Tags("blume, zeug");
