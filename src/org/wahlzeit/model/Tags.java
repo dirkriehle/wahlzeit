@@ -136,7 +136,8 @@ public class Tags {
 	/**
 	 * 
 	 */
-	public static ArrayList<String> getTagListFromString(String tags, char separator) {
+	public static ArrayList<String> getTagListFromString(String tags,
+			char separator) {
 		ArrayList<String> result = new ArrayList<String>(8);
 
 		if (tags != null) {
@@ -180,6 +181,31 @@ public class Tags {
 		}
 
 		return result.toString();
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		return (obj instanceof Tags && this.isEqual((Tags)obj));
+	}
+
+	/**
+	 * 
+	 */
+	public boolean isEqual(Tags tags1) {
+		// Tags objects not equal in size can never be equal in values
+		if (this.getSize() != tags1.getSize())
+			return false;
+
+		for (String obj_tag : tags1.asArray()) {
+			if (!this.hasTag(obj_tag)) {
+				return false; // Single value missing means not equal
+			}
+		}
+
+		return true; // No missing values means equal
 	}
 
 }

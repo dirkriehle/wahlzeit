@@ -39,17 +39,17 @@ public class TagsTest extends TestCase {
 		super(name);
 	}
 
-	public void testEquals() {
+	public void testIsEqual() {
 		Tags tags1 = new Tags("a, b, c");
 		Tags tags2 = new Tags("a, b, c");
 		Tags tags3 = new Tags("a, c, b");
 		Tags tags4 = new Tags("a, b");
 		Tags tags5 = new Tags("a, a, b, c");
-		// assertTrue(tags1.equals(tags1));
-		// assertTrue(tags1.equals(tags2));
-		// assertTrue(tags1.equals(tags3));
-		// assertFalse(tags1.equals(tags4));
-		// assertTrue(tags1.equals(tags5));
+		assertTrue(tags1.isEqual(tags1));
+		assertTrue(tags1.isEqual(tags2));
+		assertTrue(tags1.isEqual(tags3));
+		assertFalse(tags1.isEqual(tags4));
+		assertTrue(tags1.isEqual(tags5));
 	}
 
 	public void testAsTag() {
@@ -81,7 +81,7 @@ public class TagsTest extends TestCase {
 		Tags tags1 = new Tags("a, b, c, d, e");
 		assertEquals(tags1.asArray().length, 5);
 		assertEquals(tags1.asArray()[0], "a");
-		
+
 		Tags tags2 = new Tags("a a, &/B,     , c");
 		assertSame(tags2.getSize(), tags2.asArray().length);
 		assertEquals(tags2.asArray().length, 3);
@@ -98,10 +98,10 @@ public class TagsTest extends TestCase {
 
 		Tags t1 = new Tags("x,y,y,,");
 		assertEquals(2, t1.getSize());
-		
+
 		Tags t2 = new Tags();
 		assertEquals(0, t2.getSize());
-		
+
 		Tags empty = Tags.EMPTY_TAGS;
 		assertTrue(empty.getSize() == 0);
 	}
@@ -166,10 +166,10 @@ public class TagsTest extends TestCase {
 		assertFalse(tags1.hasTag("\"\\'"));
 		assertFalse(tags1.hasTag(""));
 	}
-	
-	public void testHasTag4()	{
+
+	public void testHasTag4() {
 		Tags t = new Tags("tag, long tag, even@longer;tag");
-		
+
 		assertTrue(t.hasTag("tag"));
 		assertTrue(t.hasTag("longtag"));
 		assertTrue(t.hasTag("evenlongertag"));
@@ -177,7 +177,7 @@ public class TagsTest extends TestCase {
 		assertFalse(t.hasTag(null));
 		assertFalse(t.hasTag(""));
 	}
-	
+
 	public void testHasSetSemantics() {
 		Tags tags1 = new Tags("tag1, tag1");
 		assertEquals(1, tags1.getSize());
@@ -189,7 +189,7 @@ public class TagsTest extends TestCase {
 		String[] tags3array = tags3.asArray();
 		assertTrue(tags3array.length == 1);
 	}
-	
+
 	public void testTagList() {
 		Tags tags1 = new Tags(" flo wer , Kinokuniya, bingo, bongo");
 		String[] tags1array = tags1.asArray();
@@ -205,17 +205,17 @@ public class TagsTest extends TestCase {
 		assertTrue(tags2array.length == 2);
 		assertEquals(tags2array[0], "2ahum5ugyah");
 		assertEquals(tags2array[1], "ohmpf");
-		
-		//testing some thoughts
+
+		// testing some thoughts
 		Tags tags3 = new Tags("  $%&/(,     $%&/()");
 		String[] tags3array = tags3.asArray();
 		assertEquals(tags3array.length, 0);
 	}
 
-	
-	public void testGetTagListFromString()	{
-		ArrayList<String> list = Tags.getTagListFromString("x-y--z@!;,b---ni hao", '-');
-		
+	public void testGetTagListFromString() {
+		ArrayList<String> list = Tags.getTagListFromString(
+				"x-y--z@!;,b---ni hao", '-');
+
 		assertTrue(list != null);
 		assertTrue(list.size() == 4);
 		assertTrue(list.contains("x"));
@@ -223,4 +223,5 @@ public class TagsTest extends TestCase {
 		assertTrue(list.contains("zb"));
 		assertTrue(list.contains("nihao"));
 	}
+
 }
