@@ -22,7 +22,6 @@ package org.wahlzeit.handlers;
 
 import java.util.*;
 
-import org.wahlzeit.main.*;
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
 import org.wahlzeit.webparts.*;
@@ -36,6 +35,15 @@ import junit.framework.*;
  *
  */
 public class TellFriendTest extends TestCase {
+	
+	protected UserSession session;
+	protected WebFormHandler handler;
+	
+	public void setUp() {		
+		session = HandlerTestSetup.session;
+		handler = HandlerTestSetup.handler;
+	}
+		
 	
 	/**
 	 * 
@@ -51,31 +59,7 @@ public class TellFriendTest extends TestCase {
 		super(name);
 	}
 	
-	/**
-	 * 
-	 */
-	protected UserSession session;
-	protected WebFormHandler handler;
 	
-	/**
-	 * 
-	 */
-	public void setUp() {
-		ModelMain.configureWebPartTemplateServer();
-		
-		Wahlzeit.configurePartHandlers();
-		Wahlzeit.configureLanguageModels();
-
-		session = new UserSession("testContext");
-		session.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
-		ContextManager.setThreadLocalContext(session);
-		
-		handler = WebPartHandlerManager.getWebFormHandler(PartUtil.TELL_FRIEND_FORM_NAME);
-	}
-	
-	/**
-	 * 
-	 */
 	public void testTellFriendMakeWebPart() {
 		WebPart part = handler.makeWebPart(session);
 		// no failure is good behavior
