@@ -35,13 +35,14 @@ import junit.framework.*;
  * @author dirkriehle
  *
  */
-public class TellFriendTest extends TestCase {
+public class TellFriendTest extends HandlerTestCase {
 	
 	/**
 	 * 
 	 */
 	public static void main(String[] args) {
-		junit.textui.TestRunner.run(TellFriendTest.class);
+		Test test = new HandlerTestSetup(new HandlerTestSuite(TellFriendTest.class));
+		junit.textui.TestRunner.run(test);
 	}
 
 	/**
@@ -54,22 +55,7 @@ public class TellFriendTest extends TestCase {
 	/**
 	 * 
 	 */
-	protected UserSession session;
-	protected WebFormHandler handler;
-	
-	/**
-	 * 
-	 */
 	public void setUp() {
-		ModelMain.configureWebPartTemplateServer();
-		
-		Wahlzeit.configurePartHandlers();
-		Wahlzeit.configureLanguageModels();
-
-		session = new UserSession("testContext");
-		session.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
-		ContextManager.setThreadLocalContext(session);
-		
 		handler = WebPartHandlerManager.getWebFormHandler(PartUtil.TELL_FRIEND_FORM_NAME);
 	}
 	
