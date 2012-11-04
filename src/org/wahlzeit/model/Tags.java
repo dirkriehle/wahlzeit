@@ -57,7 +57,7 @@ public class Tags {
 	/**
 	 * 
 	 */
-	protected ArrayList<String> tags = new ArrayList<String>();
+	protected Set<String> tags = new TreeSet<String>();
 
 	/**
 	 * 
@@ -86,7 +86,45 @@ public class Tags {
 	/**
 	 * 
 	 */
+	@Override
+	public int hashCode() {
+		return (tags == null) ? super.hashCode() : tags.hashCode();
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+
+		Tags other = (Tags) obj;
+		return isEqual(other);
+	}
+
+	/**
+	 * 
+	 */
+	public boolean isEqual(Tags other) {
+		if (tags == null) {
+			return other.tags == null;				
+		}
+
+		return tags.equals(other.tags);
+	}
+
+	/**
+	 * 
+	 */
 	public boolean hasTag(String tag) {
+		if (null == tag){
+			return false;
+		}
 		return tags.contains(tag);
 	}
 
@@ -123,21 +161,21 @@ public class Tags {
 	 * 
 	 */
 	public String[] asArray() {
-		return (String[]) tags.toArray(new String[0]);
+		return (String[]) tags.toArray(new String[tags.size()]);
 	}
 
 	/**
 	 * 
 	 */
-	public static ArrayList<String> getTagListFromString(String tags) {
+	public static Set<String> getTagListFromString(String tags) {
 		return getTagListFromString(tags, SEPARATOR_CHAR);
 	}
 
 	/**
 	 * 
 	 */
-	public static ArrayList<String> getTagListFromString(String tags, char separator) {
-		ArrayList<String> result = new ArrayList<String>(8);
+	public static Set<String> getTagListFromString(String tags, char separator) {
+		Set<String> result = new TreeSet<String>();
 
 		if (tags != null) {
 			int i = 0;
@@ -153,8 +191,7 @@ public class Tags {
 
 				if (i != j) {
 					String tag = asTag(tags.substring(i, j));
-					if (!result.contains(tag)
-							&& !StringUtil.isNullOrEmptyString(tag)) {
+					if (!StringUtil.isNullOrEmptyString(tag)) {
 						result.add(tag);
 					}
 				}
@@ -181,5 +218,5 @@ public class Tags {
 
 		return result.toString();
 	}
-
+	
 }
