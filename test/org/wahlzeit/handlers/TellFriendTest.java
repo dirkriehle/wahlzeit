@@ -37,13 +37,14 @@ import junit.framework.*;
  * @author dirkriehle
  *
  */
-public class TellFriendTest extends TestCase {
-	
+public class TellFriendTest extends HandlerTestCase {
+
 	/**
 	 * 
 	 */
 	public static void main(String[] args) {
-		junit.textui.TestRunner.run(new HandlerTestSetup(new TestSuite(TellFriendTest.class)));
+		Test test = new HandlerTestSetup(new HandlerTestSuite(TellFriendTest.class));
+		junit.textui.TestRunner.run(test);
 	}
 
 	/**
@@ -52,36 +53,28 @@ public class TellFriendTest extends TestCase {
 	public TellFriendTest(String name) {
 		super(name);
 	}
-	
-	/**
-	 * 
-	 */
-	protected UserSession session;
-	protected WebFormHandler handler;
-	
+
 	/**
 	 * 
 	 */
 	public void setUp() {
-		session = HandlerTestSetup.getCurrentUserSession();
-		
 		handler = WebPartHandlerManager.getWebFormHandler(PartUtil.TELL_FRIEND_FORM_NAME);
 	}
-	
+
 	/**
 	 * 
 	 */
 	public void testTellFriendMakeWebPart() {
 		WebPart part = handler.makeWebPart(session);
 		// no failure is good behavior
-		
+
 		EmailServer.setNullInstance(); // no emails please
 		EmailAddress to = EmailAddress.getFromString("engel@himmel.de");
 		Map<String, String> args = new HashMap<String, String>();
 		args.put(TellFriendFormHandler.EMAIL_TO, to.asString());
 		args.put(TellFriendFormHandler.EMAIL_SUBJECT, "Oh well...");
 		handler.handlePost(session, args);
-		
+
 		part = handler.makeWebPart(session);
 		assertEquals(part.getValue(TellFriendFormHandler.EMAIL_TO), to.asString());
 		assertEquals(part.getValue(TellFriendFormHandler.EMAIL_SUBJECT), "Oh well...");
@@ -105,7 +98,7 @@ public class TellFriendTest extends TestCase {
 		args.put(TellFriendFormHandler.EMAIL_BODY, body);
 
 		handler.handlePost(session, args);
-		
+
 		EmailServer.setInstance(new MockEmailServer(from, to, bcc, subject, body));
 		handler.handlePost(session, Collections.EMPTY_MAP); // will fail if email is sent		
 	}	

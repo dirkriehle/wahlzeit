@@ -17,30 +17,16 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-
-package org.wahlzeit.model;
+package org.wahlzeit.handlers;
 
 import junit.framework.*;
+import org.wahlzeit.model.*;
 
-/**
- * 
- * @author dirkriehle
- * 
- */
-public class AllTests extends TestSuite {
+public interface HandlerTest extends Test {
 
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(suite());
-	}
-
-	public static Test suite() {
-		TestSuite suite = new TestSuite();
-		suite.addTestSuite(TagsTest.class);
-		suite.addTestSuite(ValueTest.class);
-		/*suite.addTestSuite(PhotoFilterTest.class);
-		suite.addTestSuite(AccessRightsTest.class);
-		suite.addTestSuite(UserStatusTest.class);*/
-		return suite;
-	}
+	/**
+	 * 
+	 */
+	public void setUserSession(UserSession mySession);
 
 }

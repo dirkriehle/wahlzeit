@@ -26,6 +26,7 @@ import org.wahlzeit.model.LanguageConfigs;
 import org.wahlzeit.model.UserSession;
 import org.wahlzeit.services.ContextManager;
 import org.wahlzeit.services.Language;
+import org.wahlzeit.tools.CreateUser;
 
 import junit.extensions.TestSetup;
 import junit.framework.Test;
@@ -33,8 +34,8 @@ import junit.framework.Test;
 
 public class HandlerTestSetup extends TestSetup{
 	
-	public HandlerTestSetup(Test suite) {
-		super(suite);
+	public HandlerTestSetup(Test test) {
+		super(test);
 	}
 	
 	
@@ -47,18 +48,20 @@ public class HandlerTestSetup extends TestSetup{
 		
 	@Override
 	public void setUp() throws Exception {
-		ModelMain.configureWebPartTemplateServer();
+		super.setUp();
 		
-		Wahlzeit.configurePartHandlers();
-		Wahlzeit.configureLanguageModels();
-
-		session = new UserSession("testContext");
-		session.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
+		session = createUserSession();
 		ContextManager.setThreadLocalContext(session);
 		
-	}
+		if(fTest instanceof HandlerTest) {
+			HandlerTest test = (HandlerTest) fTest;
+			
+		}
 	
+	}
+
 	public static UserSession getCurrentUserSession() {
 		return session;
 	}
+
 }
