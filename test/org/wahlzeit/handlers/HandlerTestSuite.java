@@ -20,23 +20,47 @@
 
 package org.wahlzeit.handlers;
 
+import java.util.Enumeration;
+
+import org.wahlzeit.model.UserSession;
+
 import junit.framework.*;
 
-/**
- * 
- * @author dirkriehle
- * 
- */
-public class AllTests extends TestSuite {
-
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(suite());
+public class HandlerTestSuite extends TestSuite implements HandlerTest {
+	
+	/**
+	 * 
+	 */
+	public HandlerTestSuite() {
+		super();
 	}
 
-	public static Test suite() {
-		TestSuite suite = new HandlerTestSuite();
-		suite.addTestSuite(TellFriendTest.class);
-		return new HandlerTestSetup(suite);
+	/**
+	 * 
+	 */
+	public HandlerTestSuite(Class testClass) {
+		super(testClass);
+	}
+
+	/**
+	 * Adds the tests from the given class to the suite
+	 */
+	public void addTestSuite(Class testClass) {
+		addTest(new HandlerTestSuite(testClass));
+	}
+
+	/**
+	 * 
+	 */
+	public void setUserSession(UserSession mySession) {
+		Enumeration myTests = tests();
+		while(myTests.hasMoreElements()) {
+			Test next = (Test) myTests.nextElement();
+			if (next instanceof HandlerTest) {
+				HandlerTest test = (HandlerTest) next;
+				test.setUserSession(mySession);				
+			}
+		}			
 	}
 
 }

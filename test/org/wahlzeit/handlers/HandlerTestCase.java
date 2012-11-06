@@ -20,23 +20,30 @@
 
 package org.wahlzeit.handlers;
 
+import org.wahlzeit.model.*;
+
 import junit.framework.*;
 
-/**
- * 
- * @author dirkriehle
- * 
- */
-public class AllTests extends TestSuite {
-
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(suite());
+public class HandlerTestCase extends TestCase implements HandlerTest {
+	
+	/**
+	 * 
+	 */
+	protected UserSession session;
+	protected WebFormHandler handler;
+	
+	/**
+	 * 
+	 */
+	public HandlerTestCase(String name) {
+		super(name);
 	}
-
-	public static Test suite() {
-		TestSuite suite = new HandlerTestSuite();
-		suite.addTestSuite(TellFriendTest.class);
-		return new HandlerTestSetup(suite);
+	
+	/**
+	 * 
+	 */
+	public void setUserSession(UserSession mySession) {
+		session = mySession;
 	}
 
 }
