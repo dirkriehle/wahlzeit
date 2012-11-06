@@ -138,7 +138,7 @@ public class User extends Client implements Persistent {
 	 * 
 	 */
 	public User(ResultSet rset) throws SQLException {
-		readFrom(rset);
+		initializeFrom(rset);
 	}
 	
 	/**
@@ -206,6 +206,13 @@ public class User extends Client implements Persistent {
 	 * 
 	 */
 	public void readFrom(ResultSet rset) throws SQLException {
+		initializeFrom(rset);
+	}
+		
+	/**
+	 * 
+	 */
+	public void initializeFrom(ResultSet rset) throws SQLException {
 		id = rset.getInt("id");
 		name = rset.getString("name");
 		nameAsTag = rset.getString("name_as_tag");

@@ -65,7 +65,7 @@ public enum AccessRights implements EnumValue {
 	 */
 	public static AccessRights getFromString(String myRights) throws IllegalArgumentException {
 		for (AccessRights rights : AccessRights.values()) {
-			if (valueNames[rights.asInt()].equals(myRights)) {
+			if (valueNames[rights.getRights()].equals(myRights)) {
 				return rights;
 			}
 		}
@@ -84,11 +84,18 @@ public enum AccessRights implements EnumValue {
 	private AccessRights(int myValue) {
 		value = myValue;
 	}
-	
+
 	/**
 	 * 
 	 */
 	public int asInt() {
+		return getRights();
+	}
+	
+	/**
+	 * 
+	 */
+	public int getRights() {
 		return value;
 	}
 
