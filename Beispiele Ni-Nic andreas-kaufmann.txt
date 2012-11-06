@@ -1,0 +1,40 @@
++ Query methods:
+	* Get methods:
+		~ Tags.java -> getSize()
+		~ AccessRights.java -> asInt() -> REFACTORED to getRights()
+		~ AccessRights.java -> getAllValues()
+	* Boolean query methods:
+		~ Tags.java -> hasTag()
+		~ User.java -> isDirty()
+		~ User.java -> hasPassword(String)
+	* Comparison methods:
+		~ AccessRights.java -> hasRights(AccessRights, AccessRights)
+		~ PhotoManager.java -> hasPhoto(PhotoId)
+		~ PhotoId.java -> equals(Object) -> REFACTORED to isEqual(Object)
+	* Conversion methods:
+		~ AccessRights.java -> asString() ? oder Getter
+		~ Tags.java -> asString(boolean, char)
+		~ Tags.java -> getTagListFromString(String, char) -> REFACTORED to toTagListFromString(String, char)
+		~ Tags.java -> asTag(String)
++ Mutation methods:
+	* Set methods:
+		~ User.java -> setLastUserId(int)
+		~ User.java -> setPassword(String) oder Command
+		~ UserSession.java -> setClient(Client)
+	* Command methods:
+		~ PhotoUtil.java -> scaleImage(Image, int, int)
+		~ User.java -> addPhoto(Photo)
+		~ User.java -> removePhoto(Photo)
+	* Initialization methods:
+		~ User.java -> initialize(AccessRights, EmailAddress, String, String, long)
+		~ User.java -> readFrom(ResultSet) -> REFACTORED initializeFrom(ResultSet)
+		~ AbstractModelConfig.java -> initialize(Language, DateFormat, DecimalFormat)
++ Helper methods:
+	*Factory methods:
+		~ PhotoUtil.java -> createPhoto(File, PhotoId)
+		~ PhotoUtil.java -> createImageFiles(File, PhotoId)
+		~ PhotoManager.java -> createObject(ResultSet)
+	* Assertion methods:
+		~ AccessRight.java -> assertIsValidIntValue(int)
+		~ PhotoUtil.java -> assertIsValidImage(Image)
+		~ PhotoUtil.java -> assertHasValidSize(int, int)
