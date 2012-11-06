@@ -213,8 +213,8 @@ public class TagsTest extends TestCase {
 	}
 
 	
-	public void testGetTagListFromString()	{
-		ArrayList<String> list = Tags.getTagListFromString("x-y--z@!;,b---ni hao", '-');
+	public void testToTagListFromString()	{
+		ArrayList<String> list = Tags.toTagListFromString("x-y--z@!;,b---ni hao", '-');
 		
 		assertTrue(list != null);
 		assertTrue(list.size() == 4);

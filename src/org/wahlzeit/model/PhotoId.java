@@ -154,7 +154,7 @@ public class PhotoId {
 	/**
 	 * 
 	 */
-	public boolean equals(Object o) {
+	public boolean isEqual(Object o) {
 		return this == o;
 	}
 	
