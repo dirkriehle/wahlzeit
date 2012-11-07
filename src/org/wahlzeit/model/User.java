@@ -150,6 +150,7 @@ public class User extends Client implements Persistent {
 
 	/**
 	 * 
+	 * @methodtype initialize
 	 */
 	protected void initialize(AccessRights r, EmailAddress ea, String n, String p, long vc) {
 		super.initialize(r, ea);
@@ -204,6 +205,7 @@ public class User extends Client implements Persistent {
 	
 	/**
 	 * 
+	 * @methodtype command
 	 */
 	public void readFrom(ResultSet rset) throws SQLException {
 		id = rset.getInt("id");
@@ -404,6 +406,7 @@ public class User extends Client implements Persistent {
 	
 	/**
 	 * 
+	 * @methodtype set
 	 */
 	public void setStatus(UserStatus newStatus) {
 		status = newStatus;

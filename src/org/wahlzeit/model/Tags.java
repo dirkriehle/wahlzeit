@@ -85,6 +85,7 @@ public class Tags {
 
 	/**
 	 * 
+	 * @methodtype boolean query
 	 */
 	public boolean hasTag(String tag) {
 		return tags.contains(tag);
@@ -92,6 +93,7 @@ public class Tags {
 
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public int getSize() {
 		return tags.size();
@@ -99,6 +101,7 @@ public class Tags {
 
 	/**
 	 * 
+	 * @methodtype conversion
 	 */
 	public String asString() {
 		return asString(false, separator);
