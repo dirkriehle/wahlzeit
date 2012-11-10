@@ -34,6 +34,27 @@ import org.wahlzeit.utils.*;
 public class SysConfig extends AbstractConfig {
 	
 	/**
+	 * Key definitions
+	 */
+	public static final String HTTP_PORT = "HTTP_PORT";
+	public static final String SITE_URL = "SITE_URL";
+	
+	public static final String PHOTOS_URL_PATH = "PHOTOS_URL_PATH";
+	public static final String PHOTOS_URL = "PHOTOS_URL";
+	public static final String PHOTOS_DIR = "PHOTOS_DIR";
+	public static final String BACKUP_DIR = "BACKUP_DIR";
+	
+	public static final String TEMP_DIR = "TEMP_DIR";
+	public static final String HEADING_IMAGE = "HEADING_IMAGE";
+	public static final String LOGO_IMAGE = "LOGO_IMAGE";
+	public static final String EMPTY_IMAGE = "EMPTY_IMAGE";
+	
+	public static final String DB_DRIVER = "DB_DRIVER";
+	public static final String DB_CONNECTION = "DB_CONNECTION";
+	public static final String DB_USER = "DB_USER";
+	public static final String DB_PASSWORD = "DB_PASSWORD";
+	
+	/**
 	 * 
 	 */
 	protected static SysConfig instance = null;
@@ -50,6 +71,8 @@ public class SysConfig extends AbstractConfig {
 	}
 	
 	/**
+	 * Sets the singleton instance of SysConfig.
+	 *
 	 * @methodtype set
 	 * @methodproperty composed, class
 	 */
@@ -96,37 +119,38 @@ public class SysConfig extends AbstractConfig {
 	public SysConfig(String host, String port) {
 		// Web frontend access
 		if (!StringUtil.isNullOrEmptyString(port) && !port.equals("80")) {
-			doSetValue("HTTP_PORT", port);
-			doSetValue("SITE_URL", "http://" + host + ":" + port + "/");
+			doSetValue(SysConfig.HTTP_PORT, port);
+			doSetValue(SysConfig.SITE_URL, "http://" + host + ":" + port + "/");
 		} else {
-			doSetValue("HTTP_PORT", "80");
-			doSetValue("SITE_URL", "http://" + host + "/");
+			doSetValue(SysConfig.HTTP_PORT, "80");
+			doSetValue(SysConfig.SITE_URL, "http://" + host + "/");
 		}
 
-		doSetValue("PHOTOS_URL_PATH", "data/photos/");
-		doSetValue("PHOTOS_URL", doGetValue("SITE_URL") + doGetValue("PHOTOS_URL_PATH"));
+		doSetValue(SysConfig.PHOTOS_URL_PATH, "data/photos/");
+		doSetValue(SysConfig.PHOTOS_URL, doGetValue(SysConfig.SITE_URL) + doGetValue(SysConfig.PHOTOS_URL_PATH));
 
 		// Local filesystem access
-		doSetValue("PHOTOS_DIR", "data" + File.separator + "photos" + File.separator);
-		doSetValue("BACKUP_DIR", "data" + File.separator + "backup" + File.separator);
-		doSetValue("TEMP_DIR", "data" + File.separator + "temp" + File.separator);
+		doSetValue(SysConfig.PHOTOS_DIR, "data" + File.separator + "photos" + File.separator);
+		doSetValue(SysConfig.BACKUP_DIR, "data" + File.separator + "backup" + File.separator);
+		doSetValue(SysConfig.TEMP_DIR, "data" + File.separator + "temp" + File.separator);
 		
 		// Some file names
-		doSetValue("HEADING_IMAGE", "heading.png");
-		doSetValue("LOGO_IMAGE", "wahlzeit.png");
-		doSetValue("EMPTY_IMAGE", "empty.png");
+		doSetValue(SysConfig.HEADING_IMAGE, "heading.png");
+		doSetValue(SysConfig.LOGO_IMAGE, "wahlzeit.png");
+		doSetValue(SysConfig.EMPTY_IMAGE, "empty.png");
 	
 		// Database connection
-		doSetValue("DB_CONNECTION", "jdbc:postgresql://localhost:5432/wahlzeit");
-		doSetValue("DB_USER", "wahlzeit");
-		doSetValue("DB_PASSWORD", "wahlzeit");
+		doSetValue(SysConfig.DB_DRIVER, "org.postgresql.Driver");
+		doSetValue(SysConfig.DB_CONNECTION, "jdbc:postgresql://localhost:5432/wahlzeit");
+		doSetValue(SysConfig.DB_USER, "wahlzeit");
+		doSetValue(SysConfig.DB_PASSWORD, "wahlzeit");
 	}
 		
 	/**
 	 * 
 	 */
 	public static String getSiteUrlAsString() {
-		return getInstance().getValue("SITE_URL");
+		return getInstance().getValue(SysConfig.SITE_URL);
 	}
 
 	/**
@@ -140,14 +164,14 @@ public class SysConfig extends AbstractConfig {
 	 * 
 	 */
 	public static String getPhotosUrlAsString() {
-		return getInstance().getValue("PHOTOS_URL");
+		return getInstance().getValue(SysConfig.PHOTOS_URL);
 	}
 
 	/**
 	 * 
 	 */
 	public static String getHttpPortAsString() {
-		return getInstance().getValue("HTTP_PORT");
+		return getInstance().getValue(SysConfig.HTTP_PORT);
 	}
 	/**
 	 * 
@@ -160,7 +184,7 @@ public class SysConfig extends AbstractConfig {
 	 * 
 	 */
 	public static String getPhotosDirAsString() {
-		return getInstance().getValue("PHOTOS_DIR");
+		return getInstance().getValue(SysConfig.PHOTOS_DIR);
 	}
 
 	/**
@@ -168,21 +192,21 @@ public class SysConfig extends AbstractConfig {
 	 * @return the photos URL path
 	 */
 	public static String getPhotosUrlPathAsString() {
-		return getInstance().getValue("PHOTOS_URL_PATH");
+		return getInstance().getValue(SysConfig.PHOTOS_URL_PATH);
 	}
 
 	/**
 	 *
 	 */
 	public static String getBackupDirAsString() {
-		return getInstance().getValue("BACKUP_DIR");
+		return getInstance().getValue(SysConfig.BACKUP_DIR);
 	}
 
 	/**
 	 * 
 	 */
 	public static String getTempDirAsString() {
-		return getInstance().getValue("TEMP_DIR");
+		return getInstance().getValue(SysConfig.TEMP_DIR);
 	}
 
 	/**
@@ -210,7 +234,7 @@ public class SysConfig extends AbstractConfig {
 	 * 
 	 */
 	public static String getHeadingImageAsUrlString(Language l) {
-		String sfn = l.asIsoCode() + File.separator + getInstance().getValue("HEADING_IMAGE");
+		String sfn = l.asIsoCode() + File.separator + getInstance().getValue(SysConfig.HEADING_IMAGE);
 		String ffn = getStaticDir().getFullConfigFileUrl(sfn);
 		return getSiteUrlAsString() + ffn;
 	}
@@ -219,7 +243,7 @@ public class SysConfig extends AbstractConfig {
 	 * 
 	 */
 	public static String getLogoImageAsUrlString(Language l) {
-		String sfn = l.asIsoCode() + File.separator + getInstance().getValue("LOGO_IMAGE");
+		String sfn = l.asIsoCode() + File.separator + getInstance().getValue(SysConfig.LOGO_IMAGE);
 		String ffn = getStaticDir().getFullConfigFileUrl(sfn);
 		return getSiteUrlAsString() + ffn;
 	}
@@ -228,30 +252,34 @@ public class SysConfig extends AbstractConfig {
 	 * 
 	 */
 	public static String getEmptyImageAsUrlString(Language l) {
-		String sfn = l.asIsoCode() + File.separator + getInstance().getValue("EMPTY_IMAGE");
+		String sfn = l.asIsoCode() + File.separator + getInstance().getValue(SysConfig.EMPTY_IMAGE);
 		String ffn = getStaticDir().getFullConfigFileUrl(sfn);
 		return getSiteUrlAsString() + ffn;
 	}
 
+	public static String getDbDriverAsString()	{
+		return getInstance().getValue(SysConfig.DB_DRIVER);
+	}
+	
 	/**
 	 * 
 	 */
 	public static String getDbConnectionAsString() {
-		return getInstance().getValue("DB_CONNECTION");
+		return getInstance().getValue(SysConfig.DB_CONNECTION);
 	}
 	
 	/**
 	 * 
 	 */
 	public static String getDbUserAsString() {
-		return getInstance().getValue("DB_USER");
+		return getInstance().getValue(SysConfig.DB_USER);
 	}
 	
 	/**
 	 * 
 	 */
 	public static String getDbPasswordAsString() {
-		return getInstance().getValue("DB_PASSWORD");
+		return getInstance().getValue(SysConfig.DB_PASSWORD);
 	}
 
 }
