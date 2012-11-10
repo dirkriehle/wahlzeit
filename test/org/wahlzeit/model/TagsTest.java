@@ -214,7 +214,7 @@ public class TagsTest extends TestCase {
 
 	
 	public void testGetTagListFromString()	{
-		ArrayList<String> list = Tags.getTagListFromString("x-y--z@!;,b---ni hao", '-');
+		ArrayList<String> list = Tags.asTagListFromString("x-y--z@!;,b---ni hao", '-');
 		
 		assertTrue(list != null);
 		assertTrue(list.size() == 4);

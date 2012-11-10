@@ -45,15 +45,25 @@ public class PhotoCaseManager extends ObjectManager {
 
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public static final PhotoCaseManager getInstance() {
 		return instance;
 	}
 	
 	/**
-	 * 
+	 * @methodtype constructor
+	 * @methodproperty composed
 	 */
 	protected PhotoCaseManager() {
+		initialize();
+	}
+	
+	/**
+	 * @methodtype initialization
+	 * @methodproperty regular
+	 */
+	protected void initialize() {
 		Collection<PhotoCase> opc = new LinkedList<PhotoCase>();
 		loadOpenPhotoCases(opc);
 		for (PhotoCase pc : opc) {
@@ -63,6 +73,7 @@ public class PhotoCaseManager extends ObjectManager {
 	
 	/**
 	 * 
+	 * @methodtype factory
 	 */
 	protected PhotoCase createObject(ResultSet rset) throws SQLException {
 		return new PhotoCase(rset);
@@ -70,6 +81,7 @@ public class PhotoCaseManager extends ObjectManager {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public PhotoCase getPhotoCase(int id) {
 		PhotoCase result = openPhotoCases.get(id);
@@ -86,6 +98,7 @@ public class PhotoCaseManager extends ObjectManager {
 	
 	/**
 	 * 
+	 * @methodtype command
 	 */
 	public void addPhotoCase(PhotoCase myCase) {
 		openPhotoCases.put(myCase.getId(), myCase);
@@ -100,6 +113,7 @@ public class PhotoCaseManager extends ObjectManager {
 	
 	/**
 	 * 
+	 * @methodtype command
 	 */
 	public void removePhotoCase(PhotoCase myCase) {
 		openPhotoCases.remove(myCase.getId());
@@ -112,6 +126,7 @@ public class PhotoCaseManager extends ObjectManager {
 	
 	/**
 	 * 
+	 * @methodtype command
 	 */
 	public void loadOpenPhotoCases(Collection<PhotoCase> result) {
 		try {
@@ -125,6 +140,7 @@ public class PhotoCaseManager extends ObjectManager {
 	
 	/**
 	 * 
+	 * @methodtype command
 	 */
 	public void savePhotoCases() {
 		try {
@@ -136,6 +152,7 @@ public class PhotoCaseManager extends ObjectManager {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public PhotoCase[] getOpenPhotoCasesByAscendingAge() {
 		PhotoCase[] resultArray = openPhotoCases.values().toArray(new PhotoCase[0]);
@@ -144,7 +161,7 @@ public class PhotoCaseManager extends ObjectManager {
 	}
 	
 	/**
-	 * 
+	 * @methodtype get
 	 */
 	public static Comparator<PhotoCase> getPhotoCasesByAscendingAgeComparator() {
 		return new Comparator<PhotoCase>() {

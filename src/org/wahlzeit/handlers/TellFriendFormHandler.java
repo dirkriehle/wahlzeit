@@ -58,7 +58,7 @@ public class TellFriendFormHandler extends AbstractWebFormHandler {
 	}
 
 	/**
-	 * 
+	 * @methodtype command
 	 */
 	protected void doMakeWebPart(UserSession ctx, WebPart part) {
 		Map args = ctx.getSavedArgs();

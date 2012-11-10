@@ -56,6 +56,7 @@ public class PhotoFilterTest extends TestCase {
 		pf.setTags(new Tags("test"));
 		assertEquals("test", pf.getTags().asString());
 
+		// @FIXME
 		// pf.displayablePhotoIds.add(new PhotoId(3));
 		// assertTrue(pf.displayablePhotoIds.size() == 1);
 

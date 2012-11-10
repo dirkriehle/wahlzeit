@@ -50,14 +50,22 @@ public class SysConfig extends AbstractConfig {
 	}
 	
 	/**
-	 * Method to set the singleton instance of SysConfig.
+	 * @methodtype set
+	 * @methodproperty composed, class
 	 */
 	public static synchronized void setInstance(SysConfig sysConfig) {
+			assertIsUninitialized();
+			instance = sysConfig;
+	}
+	
+	/**
+	 * @methodtype assertion
+	 * @methodproperty primitive, class
+	 */
+	public static synchronized void assertIsUninitialized() {
 		if (instance != null) {
 			throw new IllegalStateException("attempt to initalize SysConfig again");
 		}
-		
-		instance = sysConfig;
 	}
 	
 	/**

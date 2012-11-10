@@ -37,21 +37,21 @@ public abstract class Case extends DataObject {
 	protected static int lastCaseId = 0;
 	
 	/**
-	 * 
+	 * @methodtype get
 	 */
-	public static int getLastCaseId() {
+	public static synchronized int getLastCaseId() {
 		return lastCaseId;
 	}
 	
 	/**
-	 * 
+	 * @methodtype set
 	 */
 	public static synchronized void setLastCaseId(int newId) {
 		lastCaseId = newId;
 	}
 	
 	/**
-	 * 
+	 * @methodtype idiom
 	 */
 	public static synchronized int getNextCaseId() {
 		return ++lastCaseId;

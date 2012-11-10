@@ -114,6 +114,7 @@ public class UserManager extends ObjectManager {
 	
 	/**
 	 * 
+	 * @methodtype factory
 	 */
 	protected User createObject(ResultSet rset) throws SQLException {
 		User result = null;
@@ -306,6 +307,7 @@ public class UserManager extends ObjectManager {
 	
 	/**
 	 * 
+	 * @methodtype assertion
 	 */
 	protected void assertIsNewUser(User user) {
 		if (hasUserByTag(user.getNameAsTag())) {

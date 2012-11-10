@@ -191,6 +191,6 @@ public interface ModelConfig extends Configuration {
 	public String asDateString(long millis);
 	public String asPhotoSummary(String un);
 	public String asPhotoCaption(String un, URL url);
-	public String getPraise(double praise);
+	public String asPraiseString(double praise);
 
 }

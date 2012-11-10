@@ -56,7 +56,7 @@ public abstract class AbstractWebFormHandler extends AbstractWebPartHandler impl
 	protected abstract void doMakeWebPart(UserSession ctx, WebPart part);
 
 	/**
-	 * 
+	 * @methodtype boolean-query
 	 */
 	protected boolean isWellFormedPost(UserSession ctx, Map args) {
 		return true;

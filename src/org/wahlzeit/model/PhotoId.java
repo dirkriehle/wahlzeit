@@ -155,11 +155,25 @@ public class PhotoId {
 	 * 
 	 */
 	public boolean equals(Object o) {
-		return this == o;
+		// @FIXME
+		
+		if (!(o instanceof PhotoId)) {
+			return false;
+		}
+		
+		PhotoId pid = (PhotoId) o;
+		return isEqual(pid);
 	}
 	
 	/**
 	 * 
+	 */
+	public boolean isEqual(PhotoId other) {
+		return other.intValue == intValue;
+	}
+	
+	/**
+	 * @methodtype get
 	 */
 	public int hashCode() {
 		return intValue;

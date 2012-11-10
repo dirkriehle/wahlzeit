@@ -87,6 +87,7 @@ public enum AccessRights implements EnumValue {
 	
 	/**
 	 * 
+	 * @methodtype conversion
 	 */
 	public int asInt() {
 		return value;
@@ -94,6 +95,7 @@ public enum AccessRights implements EnumValue {
 
 	/**
 	 * 
+	 * @methodtype conversion
 	 */
 	public String asString() {
 		return valueNames[value];
@@ -101,6 +103,7 @@ public enum AccessRights implements EnumValue {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public AccessRights[] getAllValues() {
 		return allValues;
@@ -108,13 +111,14 @@ public enum AccessRights implements EnumValue {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public String getTypeName() {
 		return "AccessRights";
 	}
 	
 	/**
-	 * 
+	 * @methodtype comparison
 	 */
 	public static boolean hasRights(AccessRights a, AccessRights b) {
 		return a.value >= b.value;
@@ -122,6 +126,7 @@ public enum AccessRights implements EnumValue {
 	
 	/**
 	 * 
+	 * @methodtype assertion
 	 */
 	private static void assertIsValidIntValue(int myValue) {
 		if ((myValue < 0) || (myValue > 4)) {

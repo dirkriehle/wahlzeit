@@ -78,7 +78,7 @@ public class EmailAddress {
 	}
 	
 	/**
-	 * 
+	 * @methodtype boolean-query
 	 */
 	public boolean isEqual(EmailAddress emailAddress) {
 		return this == emailAddress;

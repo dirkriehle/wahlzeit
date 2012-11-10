@@ -72,7 +72,7 @@ public class Tags {
 	 */
 	public Tags(String myTags) {
 		this.separator = SEPARATOR_CHAR;
-		this.tags = getTagListFromString(myTags);
+		this.tags = asTagListFromString(myTags);
 	}
 
 	/**
@@ -80,11 +80,12 @@ public class Tags {
 	 */
 	public Tags(String myTags, char separator) {
 		this.separator = separator;
-		this.tags = getTagListFromString(myTags, separator);
+		this.tags = asTagListFromString(myTags, separator);
 	}
 
 	/**
 	 * 
+	 * @methodtype boolean-query
 	 */
 	public boolean hasTag(String tag) {
 		return tags.contains(tag);
@@ -92,6 +93,7 @@ public class Tags {
 
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public int getSize() {
 		return tags.size();
@@ -99,6 +101,7 @@ public class Tags {
 
 	/**
 	 * 
+	 * @methodtype conversion
 	 */
 	public String asString() {
 		return asString(false, separator);
@@ -127,16 +130,18 @@ public class Tags {
 	}
 
 	/**
-	 * 
+	 * @methodtype conversion
+	 * @methodproperties convenience, class
 	 */
-	public static ArrayList<String> getTagListFromString(String tags) {
-		return getTagListFromString(tags, SEPARATOR_CHAR);
+	public static ArrayList<String> asTagListFromString(String tags) {
+		return asTagListFromString(tags, SEPARATOR_CHAR);
 	}
 
 	/**
-	 * 
+	 * @methodtype conversion
+	 * @methodproperties class
 	 */
-	public static ArrayList<String> getTagListFromString(String tags, char separator) {
+	public static ArrayList<String> asTagListFromString(String tags, char separator) {
 		ArrayList<String> result = new ArrayList<String>(8);
 
 		if (tags != null) {
