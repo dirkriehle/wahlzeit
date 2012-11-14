@@ -97,7 +97,7 @@ public class UserSession extends Session {
 	}
 	
 	/**
-	 * 
+	 * @methodtype set
 	 */
 	public void setClient(Client newClient) {
 		client = newClient;

@@ -46,12 +46,18 @@ public enum FlagReason implements EnumValue {
 	 * 
 	 */
 	public static FlagReason getFromInt(int myValue) throws IllegalArgumentException {
-		if ((myValue >= 0) && (myValue <= 3)) {
-			return allValues[myValue];
-		}
-		
-		throw new IllegalArgumentException("invalid FlagReason int: " + myValue);
+		assertIsValidFlagReasonAsInt(myValue);
+		return allValues[myValue];
 	}
+	
+	/**
+	 * 
+	 */
+	private static void assertIsValidFlagReasonAsInt(int myValue) {
+		if ((myValue < 0) || (myValue > 3)) {
+			throw new IllegalArgumentException("invalid FlagReason int: " + myValue);
+		}
+	}	
 	
 	/**
 	 * 
@@ -87,6 +93,7 @@ public enum FlagReason implements EnumValue {
 	
 	/**
 	 * 
+	 * @methodtype conversion
 	 */
 	public int asInt() {
 		return value;
@@ -94,6 +101,7 @@ public enum FlagReason implements EnumValue {
 	
 	/**
 	 *
+	 * @methodtype conversion
 	 */
 	public String asString() {
 		return valueNames[value];
@@ -101,6 +109,7 @@ public enum FlagReason implements EnumValue {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public FlagReason[] getAllValues() {
 		return allValues;
@@ -108,6 +117,7 @@ public enum FlagReason implements EnumValue {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public String getTypeName() {
 		return "FlagReason";

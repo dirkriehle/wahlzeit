@@ -688,7 +688,7 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
 	/**
 	 * 
 	 */
-	public String getPraise(double praise) {
+	public String asPraiseString(double praise) {
 		return praiseFormatter.format(praise);
 	}
 	

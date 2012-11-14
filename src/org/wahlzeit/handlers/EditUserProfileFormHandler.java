@@ -42,7 +42,7 @@ public class EditUserProfileFormHandler extends AbstractWebFormHandler {
 	}
 	
 	/**
-	 * 
+	 * @methodtype command
 	 */
 	protected void doMakeWebPart(UserSession ctx, WebPart part) {
 		Map<String, Object> args = ctx.getSavedArgs();

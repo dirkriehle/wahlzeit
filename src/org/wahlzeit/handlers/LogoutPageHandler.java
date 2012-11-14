@@ -57,7 +57,7 @@ public class LogoutPageHandler extends AbstractWebPageHandler {
 	}
 	
 	/**
-	 * 
+	 * @methodtype command
 	 */
 	protected void makeWebPageBody(UserSession ctx, WebPart page) {
 		page.addString("noteHeading", ctx.cfg().getThankYou());

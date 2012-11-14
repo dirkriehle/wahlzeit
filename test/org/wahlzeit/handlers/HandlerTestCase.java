@@ -18,30 +18,32 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.model;
+package org.wahlzeit.handlers;
+
+import org.wahlzeit.model.*;
 
 import junit.framework.*;
 
-/**
- * 
- * @author dirkriehle
- * 
- */
-public class AllTests extends TestSuite {
-
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(suite());
+public class HandlerTestCase extends TestCase implements HandlerTest {
+	
+	/**
+	 * 
+	 */
+	protected UserSession session;
+	protected WebFormHandler handler;
+	
+	/**
+	 * 
+	 */
+	public HandlerTestCase(String name) {
+		super(name);
 	}
-
-	public static Test suite() {
-		TestSuite suite = new TestSuite();
-		suite.addTestSuite(TagsTest.class);
-		suite.addTestSuite(ValueTest.class);
-		suite.addTestSuite(GenderTest.class);
-		suite.addTestSuite(PhotoFilterTest.class);
-		suite.addTestSuite(AccessRightsTest.class);
-		suite.addTestSuite(UserStatusTest.class);
-		return suite;
+	
+	/**
+	 * 
+	 */
+	public void setUserSession(UserSession mySession) {
+		session = mySession;
 	}
 
 }

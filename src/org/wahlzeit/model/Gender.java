@@ -44,14 +44,20 @@ public enum Gender implements EnumValue {
 	};
 	
 	/**
-	 * 
+	 * @methodtype conversion
 	 */
 	public static Gender getFromInt(int myValue) throws IllegalArgumentException {
-		if ((myValue >= 0) && (myValue <= 3)) {
-			return allValues[myValue];
-		}
+		assertIsValidGenderAsInt(myValue);
+		return allValues[myValue];
+	}
 
-		throw new IllegalArgumentException("invalid Gender int: " + myValue);
+	/**
+	 * 
+	 */
+	protected static void assertIsValidGenderAsInt(int myValue) throws IllegalArgumentException {
+		if ((myValue < 0) || (myValue > 3)) {
+			throw new IllegalArgumentException("invalid Gender int: " + myValue);
+		}
 	}
 	
 	/**
@@ -62,7 +68,7 @@ public enum Gender implements EnumValue {
 	};
 	
 	/**
-	 * 
+	 * @methodtype conversion
 	 */
 	public static Gender getFromString(String myGender) throws IllegalArgumentException {
 		for (Gender gender : Gender.values()) {

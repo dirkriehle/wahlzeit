@@ -53,13 +53,19 @@ public enum PhotoSize implements EnumValue {
 	 * 
 	 */
 	public static PhotoSize getFromInt(int myValue) throws IllegalArgumentException {
-		if ((myValue >= 0) && (myValue <= 5)) {
-			return allValues[myValue];
-		}
-		
-		throw new IllegalArgumentException("invalid PhotoSize int: " + myValue);
+		assertIsValidPhotoSizeAsInt(myValue);
+		return allValues[myValue];
 	}
 	
+	/**
+	 * 
+	 */
+	public static void assertIsValidPhotoSizeAsInt(int myValue) throws IllegalArgumentException {
+		if ((myValue < 0) || (myValue > 5)) {
+			throw new IllegalArgumentException("invalid PhotoSize int: " + myValue);
+		}
+	}
+
 	/**
 	 * 
 	 */
@@ -142,7 +148,7 @@ public enum PhotoSize implements EnumValue {
 	}
 
 	/**
-	 * 
+	 * @methodtype boolean-query
 	 */
 	public boolean isEqual(PhotoSize size) {
 		return size == this;

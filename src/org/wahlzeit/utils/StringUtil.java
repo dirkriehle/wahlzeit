@@ -116,7 +116,7 @@ public class StringUtil {
 	}
 	
 	/**
-	 * 
+	 * @methodtype boolean-query
 	 */
 	protected final static boolean isSafeIncluding(String s, String l) {
 		for (int i = 0; i < s.length(); i++) {

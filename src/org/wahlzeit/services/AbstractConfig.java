@@ -75,7 +75,7 @@ public abstract class AbstractConfig implements Configuration {
 	}
 
 	/**
-	 * 
+	 * @methodtype assertion
 	 */
 	protected final void assertHasKey(String key) throws IllegalArgumentException {
 		if (!store.containsKey(key)) {

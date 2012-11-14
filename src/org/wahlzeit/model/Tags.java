@@ -57,7 +57,7 @@ public class Tags {
 	/**
 	 * 
 	 */
-	protected ArrayList<String> tags = new ArrayList<String>();
+	protected Set<String> tags = new TreeSet<String>();
 
 	/**
 	 * 
@@ -72,7 +72,7 @@ public class Tags {
 	 */
 	public Tags(String myTags) {
 		this.separator = SEPARATOR_CHAR;
-		this.tags = getTagListFromString(myTags);
+		this.tags = asTagSetFromString(myTags);
 	}
 
 	/**
@@ -80,18 +80,52 @@ public class Tags {
 	 */
 	public Tags(String myTags, char separator) {
 		this.separator = separator;
-		this.tags = getTagListFromString(myTags, separator);
+		this.tags = asTagSetFromString(myTags, separator);
+	}
+
+	/**
+	 * 
+	 * @methodtype boolean-query
+	 */
+	@Override
+	public int hashCode() {
+		return (tags == null) ? super.hashCode() : tags.hashCode();
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (!(obj instanceof Tags)) return false;
+
+		Tags other = (Tags) obj;
+		return isEqual(other);
+	}
+
+	/**
+	 * 
+	 */
+	public boolean isEqual(Tags other) {
+		if (tags == null) {
+			return other.tags == null;				
+		}
+
+		return tags.equals(other.tags);
 	}
 
 	/**
 	 * 
 	 */
 	public boolean hasTag(String tag) {
-		return tags.contains(tag);
+		return (null != tag) && tags.contains(tag);
 	}
 
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public int getSize() {
 		return tags.size();
@@ -99,6 +133,7 @@ public class Tags {
 
 	/**
 	 * 
+	 * @methodtype conversion
 	 */
 	public String asString() {
 		return asString(false, separator);
@@ -123,21 +158,23 @@ public class Tags {
 	 * 
 	 */
 	public String[] asArray() {
-		return (String[]) tags.toArray(new String[0]);
+		return (String[]) tags.toArray(new String[tags.size()]);
 	}
 
 	/**
-	 * 
+	 * @methodtype conversion
+	 * @methodproperties convenience, class
 	 */
-	public static ArrayList<String> getTagListFromString(String tags) {
-		return getTagListFromString(tags, SEPARATOR_CHAR);
+	public static Set<String> asTagSetFromString(String tags) {
+		return asTagSetFromString(tags, SEPARATOR_CHAR);
 	}
 
 	/**
-	 * 
+	 * @methodtype conversion
+	 * @methodproperties class
 	 */
-	public static ArrayList<String> getTagListFromString(String tags, char separator) {
-		ArrayList<String> result = new ArrayList<String>(8);
+	public static Set<String> asTagSetFromString(String tags, char separator) {
+		Set<String> result = new TreeSet<String>();
 
 		if (tags != null) {
 			int i = 0;
@@ -153,8 +190,7 @@ public class Tags {
 
 				if (i != j) {
 					String tag = asTag(tags.substring(i, j));
-					if (!result.contains(tag)
-							&& !StringUtil.isNullOrEmptyString(tag)) {
+					if (!StringUtil.isNullOrEmptyString(tag)) {
 						result.add(tag);
 					}
 				}

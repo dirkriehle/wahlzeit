@@ -80,7 +80,7 @@ public enum Language implements EnumValue {
 	};
 	
 	/**
-	 * 
+	 * @methodtype conversion
 	 */
 	public static Language getFromString(String myLanguage) throws IllegalArgumentException {
 		for (Language language: Language.values()) {

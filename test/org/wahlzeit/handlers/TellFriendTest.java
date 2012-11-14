@@ -35,14 +35,14 @@ import junit.framework.*;
  * @author dirkriehle
  *
  */
-public class TellFriendTest extends TestCase {
-
+public class TellFriendTest extends HandlerTestCase {
+	
 	/**
 	 * 
 	 */
 	public static void main(String[] args) {
-		junit.textui.TestRunner.run(new HandlerTestSetup(new TestSuite(
-				TellFriendTest.class)));
+		Test test = new HandlerTestSetup(new HandlerTestSuite(TellFriendTest.class));
+		junit.textui.TestRunner.run(test);
 	}
 
 	/**
@@ -55,16 +55,8 @@ public class TellFriendTest extends TestCase {
 	/**
 	 * 
 	 */
-	protected UserSession session;
-	protected WebFormHandler handler;
-
-	/**
-	 * 
-	 */
 	public void setUp() {
-		// setup the references from the TestSetup decorator
-		session = HandlerTestSetup.getUserSession();
-		handler = HandlerTestSetup.getWebFromHandler();
+		handler = WebPartHandlerManager.getWebFormHandler(PartUtil.TELL_FRIEND_FORM_NAME);
 	}
 
 	/**

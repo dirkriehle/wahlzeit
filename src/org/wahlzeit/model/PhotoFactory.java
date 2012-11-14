@@ -75,7 +75,7 @@ public class PhotoFactory {
 	}
 
 	/**
-	 * 
+	 * @methodtype factory
 	 */
 	public Photo createPhoto() {
 		return new Photo();
