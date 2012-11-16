@@ -35,7 +35,7 @@ public abstract class AbstractConfig implements Configuration {
 	/**
 	 * 
 	 */
-	protected Map<String, String> store = new HashMap<String, String>();
+	protected Map<String, Object> store = new HashMap<String, Object>();
 	
 	/**
 	 * 
@@ -47,7 +47,7 @@ public abstract class AbstractConfig implements Configuration {
 	/**
 	 * 
 	 */
-	public String getValue(String key) throws IllegalArgumentException {
+	public Object getValue(String key) throws IllegalArgumentException {
 		assertHasKey(key);
 		return doGetValue(key);
 	}
@@ -55,14 +55,29 @@ public abstract class AbstractConfig implements Configuration {
 	/**
 	 * 
 	 */
-	protected final String doGetValue(String key) {
+	public String getValueAsString(String key) throws IllegalArgumentException {
+		assertHasKey(key);
+		return doGetValueAsString(key);
+	}
+	
+	/**
+	 * 
+	 */
+	protected final Object doGetValue(String key) {
 		return store.get(key);
 	}
 	
 	/**
 	 * 
 	 */
-	public void setValue(String key, String value) throws IllegalArgumentException {
+	protected final String doGetValueAsString(String key) {
+		return (String) store.get(key);
+	}
+	
+	/**
+	 * 
+	 */
+	public void setValue(String key, Object value) throws IllegalArgumentException {
 		assertHasKey(key);
 		doSetValue(key, value);
 	}
@@ -70,7 +85,7 @@ public abstract class AbstractConfig implements Configuration {
 	/**
 	 * 
 	 */
-	protected final void doSetValue(String key, String value) {
+	protected final void doSetValue(String key, Object value) {
 		store.put(key, value);
 	}
 

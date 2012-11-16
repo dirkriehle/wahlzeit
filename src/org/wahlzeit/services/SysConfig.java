@@ -39,6 +39,10 @@ public class SysConfig extends AbstractConfig {
 	public static final String HTTP_PORT = "HTTP_PORT";
 	public static final String SITE_URL = "SITE_URL";
 	
+	public static final String SCRIPTS_DIR = "SCRIPTS_URL";
+	public static final String STATIC_DIR = "STATIC_DIR";
+	public static final String TEMPLATES_DIR = "TEMPLATES_DIR";
+
 	public static final String PHOTOS_URL_PATH = "PHOTOS_URL_PATH";
 	public static final String PHOTOS_URL = "PHOTOS_URL";
 	public static final String PHOTOS_DIR = "PHOTOS_DIR";
@@ -92,13 +96,6 @@ public class SysConfig extends AbstractConfig {
 	/**
 	 * 
 	 */
-	protected ConfigDir scriptsDir = new ConfigDir("config" + File.separator + "scripts");
-	protected ConfigDir staticDir = new ConfigDir("config" + File.separator + "static");
-	protected ConfigDir templatesDir = new ConfigDir("config" + File.separator + "templates");
-	
-	/**
-	 * 
-	 */
 	public SysConfig(String host) {
 		this(host, "80");
 	}
@@ -116,8 +113,12 @@ public class SysConfig extends AbstractConfig {
 			doSetValue(SysConfig.SITE_URL, "http://" + host + "/");
 		}
 
+		doSetValue(SysConfig.SCRIPTS_DIR, new ConfigDir("config" + File.separator + "scripts"));
+		doSetValue(SysConfig.STATIC_DIR, new ConfigDir("config" + File.separator + "static"));
+		doSetValue(SysConfig.TEMPLATES_DIR, new ConfigDir("config" + File.separator + "templates"));
+		
 		doSetValue(SysConfig.PHOTOS_URL_PATH, "data/photos/");
-		doSetValue(SysConfig.PHOTOS_URL, doGetValue(SysConfig.SITE_URL) + doGetValue(SysConfig.PHOTOS_URL_PATH));
+		doSetValue(SysConfig.PHOTOS_URL, doGetValueAsString(SysConfig.SITE_URL) + doGetValueAsString(SysConfig.PHOTOS_URL_PATH));
 
 		// Local filesystem access
 		doSetValue(SysConfig.PHOTOS_DIR, "data" + File.separator + "photos" + File.separator);
@@ -140,7 +141,7 @@ public class SysConfig extends AbstractConfig {
 	 * 
 	 */
 	public static String getSiteUrlAsString() {
-		return getInstance().getValue(SysConfig.SITE_URL);
+		return getInstance().getValueAsString(SysConfig.SITE_URL);
 	}
 
 	/**
@@ -154,14 +155,14 @@ public class SysConfig extends AbstractConfig {
 	 * 
 	 */
 	public static String getPhotosUrlAsString() {
-		return getInstance().getValue(SysConfig.PHOTOS_URL);
+		return getInstance().getValueAsString(SysConfig.PHOTOS_URL);
 	}
 
 	/**
 	 * 
 	 */
 	public static String getHttpPortAsString() {
-		return getInstance().getValue(SysConfig.HTTP_PORT);
+		return getInstance().getValueAsString(SysConfig.HTTP_PORT);
 	}
 	/**
 	 * 
@@ -174,7 +175,7 @@ public class SysConfig extends AbstractConfig {
 	 * 
 	 */
 	public static String getPhotosDirAsString() {
-		return getInstance().getValue(SysConfig.PHOTOS_DIR);
+		return getInstance().getValueAsString(SysConfig.PHOTOS_DIR);
 	}
 
 	/**
@@ -182,49 +183,49 @@ public class SysConfig extends AbstractConfig {
 	 * @return the photos URL path
 	 */
 	public static String getPhotosUrlPathAsString() {
-		return getInstance().getValue(SysConfig.PHOTOS_URL_PATH);
+		return getInstance().getValueAsString(SysConfig.PHOTOS_URL_PATH);
 	}
 
 	/**
 	 *
 	 */
 	public static String getBackupDirAsString() {
-		return getInstance().getValue(SysConfig.BACKUP_DIR);
+		return getInstance().getValueAsString(SysConfig.BACKUP_DIR);
 	}
 
 	/**
 	 * 
 	 */
 	public static String getTempDirAsString() {
-		return getInstance().getValue(SysConfig.TEMP_DIR);
-	}
-
-	/**
-	 * 
-	 */
-	public static ConfigDir getStaticDir() {
-		return getInstance().staticDir;
+		return getInstance().getValueAsString(SysConfig.TEMP_DIR);
 	}
 
 	/**
 	 * 
 	 */
 	public static ConfigDir getScriptsDir() {
-		return getInstance().scriptsDir;
+		return (ConfigDir) getInstance().getValue(SysConfig.SCRIPTS_DIR);
+	}
+
+	/**
+	 * 
+	 */
+	public static ConfigDir getStaticDir() {
+		return (ConfigDir) getInstance().getValue(SysConfig.STATIC_DIR);
 	}
 
 	/**
 	 * 
 	 */
 	public static ConfigDir getTemplatesDir() {
-		return getInstance().templatesDir;
+		return (ConfigDir) getInstance().getValue(SysConfig.TEMPLATES_DIR);
 	}
 
 	/**
 	 * 
 	 */
 	public static String getHeadingImageAsUrlString(Language l) {
-		String sfn = l.asIsoCode() + File.separator + getInstance().getValue(SysConfig.HEADING_IMAGE);
+		String sfn = l.asIsoCode() + File.separator + getInstance().getValueAsString(SysConfig.HEADING_IMAGE);
 		String ffn = getStaticDir().getFullConfigFileUrl(sfn);
 		return getSiteUrlAsString() + ffn;
 	}
@@ -233,7 +234,7 @@ public class SysConfig extends AbstractConfig {
 	 * 
 	 */
 	public static String getLogoImageAsUrlString(Language l) {
-		String sfn = l.asIsoCode() + File.separator + getInstance().getValue(SysConfig.LOGO_IMAGE);
+		String sfn = l.asIsoCode() + File.separator + getInstance().getValueAsString(SysConfig.LOGO_IMAGE);
 		String ffn = getStaticDir().getFullConfigFileUrl(sfn);
 		return getSiteUrlAsString() + ffn;
 	}
@@ -242,34 +243,37 @@ public class SysConfig extends AbstractConfig {
 	 * 
 	 */
 	public static String getEmptyImageAsUrlString(Language l) {
-		String sfn = l.asIsoCode() + File.separator + getInstance().getValue(SysConfig.EMPTY_IMAGE);
+		String sfn = l.asIsoCode() + File.separator + getInstance().getValueAsString(SysConfig.EMPTY_IMAGE);
 		String ffn = getStaticDir().getFullConfigFileUrl(sfn);
 		return getSiteUrlAsString() + ffn;
 	}
 
+	/**
+	 * 
+	 */
 	public static String getDbDriverAsString()	{
-		return getInstance().getValue(SysConfig.DB_DRIVER);
+		return getInstance().getValueAsString(SysConfig.DB_DRIVER);
 	}
 	
 	/**
 	 * 
 	 */
 	public static String getDbConnectionAsString() {
-		return getInstance().getValue(SysConfig.DB_CONNECTION);
+		return getInstance().getValueAsString(SysConfig.DB_CONNECTION);
 	}
 	
 	/**
 	 * 
 	 */
 	public static String getDbUserAsString() {
-		return getInstance().getValue(SysConfig.DB_USER);
+		return getInstance().getValueAsString(SysConfig.DB_USER);
 	}
 	
 	/**
 	 * 
 	 */
 	public static String getDbPasswordAsString() {
-		return getInstance().getValue(SysConfig.DB_PASSWORD);
+		return getInstance().getValueAsString(SysConfig.DB_PASSWORD);
 	}
 
 }

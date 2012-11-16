@@ -147,34 +147,38 @@ public class DatabaseConnection {
 	}
 		
 	/**
-	 *
-	 */
-	static {
-		try {
-			Class.forName("org.postgresql.Driver");
-		} catch (ClassNotFoundException ex) {
-			SysLog.logThrowable(ex);
-		}
-	}
-	
-	/**
 	 * 
 	 */
-	public static Connection openRdbmsConnection() throws SQLException {
+	protected Connection openRdbmsConnection() throws SQLException {
+		ensureDatabaseDriver(SysConfig.getDbDriverAsString());
+		
 		String dbConnection = SysConfig.getDbConnectionAsString();
 		String dbUser = SysConfig.getDbUserAsString();
 		String dbPassword = SysConfig.getDbPasswordAsString();
-   		Connection result = DriverManager.getConnection(dbConnection, dbUser, dbPassword);
+ 
+		Connection result = DriverManager.getConnection(dbConnection, dbUser, dbPassword);
    		SysLog.logInfo("opening database connection: " + result.toString());
+ 
    		return result;
 	}
 	
 	/**
 	 * 
 	 */
-	public static void closeConnection(Connection cn) throws SQLException {
+	protected void closeConnection(Connection cn) throws SQLException {
   		SysLog.logInfo("closing database connection: " + cn.toString());
 		cn.close();
 	}
 
+	/**
+	 *
+	 */
+	protected void ensureDatabaseDriver(String driverName) {
+		try {
+			Class.forName(driverName);
+		} catch (ClassNotFoundException ex) {
+			SysLog.logThrowable(ex);
+		}
+	}
+	
 }

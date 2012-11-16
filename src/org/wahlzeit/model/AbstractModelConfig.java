@@ -70,17 +70,17 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
 			ioex.printStackTrace(); //@FIXME
 		}
 		
-		String menuDash = "&nbsp;" + doGetValue("MenuDash") + "&nbsp;";
+		String menuDash = "&nbsp;" + doGetValueAsString("MenuDash") + "&nbsp;";
 
-		String footerCommunityPart = doGetValue("FooterCommunityPart");
-		String footerAboutPart = doGetValue("FooterAboutPart");
-		String footerLanguagePart = doGetValue("FooterLanguagePart");
-		String footerPhotoSizePart0 = doGetValue("FooterPhotoSizePart0");
-		String footerPhotoSizePart1 = doGetValue("FooterPhotoSizePart1");
-		String footerPhotoSizePart2 = doGetValue("FooterPhotoSizePart2");
-		String footerPhotoSizePart3 = doGetValue("FooterPhotoSizePart3");
-		String footerPhotoSizePart4 = doGetValue("FooterPhotoSizePart4");
-		String footerDebugPart = SysLog.isInDevelopmentMode() ? menuDash + doGetValue("FooterDebugPart") : "";
+		String footerCommunityPart = doGetValueAsString("FooterCommunityPart");
+		String footerAboutPart = doGetValueAsString("FooterAboutPart");
+		String footerLanguagePart = doGetValueAsString("FooterLanguagePart");
+		String footerPhotoSizePart0 = doGetValueAsString("FooterPhotoSizePart0");
+		String footerPhotoSizePart1 = doGetValueAsString("FooterPhotoSizePart1");
+		String footerPhotoSizePart2 = doGetValueAsString("FooterPhotoSizePart2");
+		String footerPhotoSizePart3 = doGetValueAsString("FooterPhotoSizePart3");
+		String footerPhotoSizePart4 = doGetValueAsString("FooterPhotoSizePart4");
+		String footerDebugPart = SysLog.isInDevelopmentMode() ? menuDash + doGetValueAsString("FooterDebugPart") : "";
 		
 		doSetValue("PageFooter0", footerCommunityPart + menuDash + footerAboutPart + menuDash + footerLanguagePart + menuDash + footerPhotoSizePart0 + footerDebugPart);
 		doSetValue("PageFooter1", footerCommunityPart + menuDash + footerAboutPart + menuDash + footerLanguagePart + menuDash + footerPhotoSizePart1 + footerDebugPart);
@@ -88,19 +88,19 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
 		doSetValue("PageFooter3", footerCommunityPart + menuDash + footerAboutPart + menuDash + footerLanguagePart + menuDash + footerPhotoSizePart3 + footerDebugPart);
 		doSetValue("PageFooter4", footerCommunityPart + menuDash + footerAboutPart + menuDash + footerLanguagePart + menuDash + footerPhotoSizePart4 + footerDebugPart);
 
-		String baseMenu = doGetValue("BaseMenuPart");
+		String baseMenu = doGetValueAsString("BaseMenuPart");
 		// there is no separate base menu
 		
-		String guestMenu = baseMenu + menuDash + doGetValue("GuestMenuPart");
+		String guestMenu = baseMenu + menuDash + doGetValueAsString("GuestMenuPart");
 		doSetValue("GuestMenu", guestMenu);
 		
-		String userMenu = guestMenu + menuDash + doGetValue("UserMenuPart");
+		String userMenu = guestMenu + menuDash + doGetValueAsString("UserMenuPart");
 		doSetValue("UserMenu", userMenu);
 
-		String moderatorMenu = userMenu + menuDash + doGetValue("ModeratorMenuPart");
+		String moderatorMenu = userMenu + menuDash + doGetValueAsString("ModeratorMenuPart");
 		doSetValue("ModeratorMenu", moderatorMenu);
 
-		String administratorMenu = moderatorMenu + menuDash + doGetValue("AdministratorMenuPart");
+		String administratorMenu = moderatorMenu + menuDash + doGetValueAsString("AdministratorMenuPart");
 		doSetValue("AdministratorMenu", administratorMenu);
 	}
 
@@ -122,560 +122,560 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
 	 * 
 	 */
 	public String getLanguageCode() {
-		return doGetValue("LanguageCode");
+		return doGetValueAsString("LanguageCode");
 	}
 	
 	/**
 	 * 
 	 */
 	public EmailAddress getModeratorEmailAddress() {
-		return EmailAddress.getFromString(doGetValue("ModeratorEmailAddress"));
+		return EmailAddress.getFromString(doGetValueAsString("ModeratorEmailAddress"));
 	}
 	
 	/**
 	 * 
 	 */
 	public EmailAddress getAdministratorEmailAddress() {
-		return EmailAddress.getFromString(doGetValue("AdministratorEmailAddress"));
+		return EmailAddress.getFromString(doGetValueAsString("AdministratorEmailAddress"));
 	}
 
 	/**
 	 * 
 	 */
 	public EmailAddress getAuditEmailAddress() {
-		return EmailAddress.getFromString(doGetValue("AuditEmailAddress"));
+		return EmailAddress.getFromString(doGetValueAsString("AuditEmailAddress"));
 	}
 
 	/**
 	 * 
 	 */
 	public String getPageTitle() {
-		return doGetValue("PageTitle");
+		return doGetValueAsString("PageTitle");
 	}
 	
 	/**
 	 * 
 	 */
 	public String getPageHeading() {
-		return doGetValue("PageHeading"); 
+		return doGetValueAsString("PageHeading"); 
 	}
 	
 	/**
 	 * 
 	 */
 	public String getPageFooter(PhotoSize ss) {
-		return doGetValue("PageFooter" + (ss.asInt() - 1));
+		return doGetValueAsString("PageFooter" + (ss.asInt() - 1));
 	}
 	
 	/**
 	 * 
 	 */
 	public String getPageMission() {
-		return doGetValue("PageMission");
+		return doGetValueAsString("PageMission");
 	}
 
 	/**
 	 * 
 	 */
 	public String getGuestMenu() {
-		return doGetValue("GuestMenu"); 		
+		return doGetValueAsString("GuestMenu"); 		
 	}
 
 	/**
 	 * 
 	 */
 	public String getUserMenu(){
-		return doGetValue("UserMenu"); 		
+		return doGetValueAsString("UserMenu"); 		
 	}
 
 	/**
 	 * 
 	 */
 	public String getModeratorMenu() {
-		return doGetValue("ModeratorMenu"); 		
+		return doGetValueAsString("ModeratorMenu"); 		
 	}
 
 	/**
 	 * 
 	 */
 	public String getAdministratorMenu() {
-		return doGetValue("AdministratorMenu"); 			
+		return doGetValueAsString("AdministratorMenu"); 			
 	}
 
 	/**
 	 * 
 	 */
 	public String getCommunityMenu() {
-		return doGetValue("CommunityMenu"); 			
+		return doGetValueAsString("CommunityMenu"); 			
 	}
 
 	/**
 	 * 
 	 */
 	public String getIllegalArgumentError() {
-		return doGetValue("IllegalArgumentError"); 
+		return doGetValueAsString("IllegalArgumentError"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getIllegalAccessError() {
-		return doGetValue("IllegalAccessError"); 
+		return doGetValueAsString("IllegalAccessError"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getInternalProcessingError() {
-		return doGetValue("InternalProcessingError"); 
+		return doGetValueAsString("InternalProcessingError"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getFieldIsMissing() {
-		return doGetValue("FieldIsMissing"); 
+		return doGetValueAsString("FieldIsMissing"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getInputIsInvalid() {
-		return doGetValue("InputIsInvalid"); 
+		return doGetValueAsString("InputIsInvalid"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getInputIsTooLong() {
-		return doGetValue("InputIsTooLong"); 
+		return doGetValueAsString("InputIsTooLong"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getEmailAddressIsInvalid() {
-		return doGetValue("EmailAddressIsInvalid"); 
+		return doGetValueAsString("EmailAddressIsInvalid"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getEmailAddressIsMissing() {
-		return doGetValue("EmailAddressIsMissing"); 
+		return doGetValueAsString("EmailAddressIsMissing"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getUrlIsInvalid() {
-		return doGetValue("UrlIsInvalid"); 
+		return doGetValueAsString("UrlIsInvalid"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getKeepGoing() { 
-		return doGetValue("KeepGoing"); 
+		return doGetValueAsString("KeepGoing"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getContinueWithShowPhoto() { 
-		return doGetValue("ContinueWithShowPhoto"); 
+		return doGetValueAsString("ContinueWithShowPhoto"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getContinueWithShowUserHome() { 
-		return doGetValue("ContinueWithShowUserHome");
+		return doGetValueAsString("ContinueWithShowUserHome");
 	}
 
 	/**
 	 * 
 	 */
 	public String getContinueWithTellFriends() {
-		return doGetValue("ContinueWithTellFriends"); 
+		return doGetValueAsString("ContinueWithTellFriends"); 
 	}
 	
 	/**
 	 * 
 	 */
 	public String getThankYou() {
-		return doGetValue("ThankYou");
+		return doGetValueAsString("ThankYou");
 	}
 
 	/**
 	 * 
 	 */
 	public String getInformation() {
-		return doGetValue("Information");
+		return doGetValueAsString("Information");
 	}
 
 	/**
 	 * 
 	 */
 	public String getAnonUserName() {
-		return doGetValue("AnonUserName"); 
+		return doGetValueAsString("AnonUserName"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getResetSession() {
-		return doGetValue("ResetSession"); 
+		return doGetValueAsString("ResetSession"); 
 	}
 	
 	/**
 	 * 
 	 */
 	public String getEmailWasSent() {
-		return doGetValue("EmailWasSent"); 
+		return doGetValueAsString("EmailWasSent"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getModeratorWasInformed() {
-		return doGetValue("ModeratorWasInformed"); 
+		return doGetValueAsString("ModeratorWasInformed"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getOptionsWereSet() {
-		return doGetValue("OptionsWereSet"); 
+		return doGetValueAsString("OptionsWereSet"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getNeedToSignupFirst() {
-		return doGetValue("NeedToSignupFirst"); 
+		return doGetValueAsString("NeedToSignupFirst"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getUserAlreadyExists() {
-		return doGetValue("UserAlreadyExists"); 
+		return doGetValueAsString("UserAlreadyExists"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getPasswordsDontMatch() {
-		return doGetValue("PasswordsDontMatch"); 
+		return doGetValueAsString("PasswordsDontMatch"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getDidntCheckTerms() {
-		return doGetValue("DidntCheckTerms"); 
+		return doGetValueAsString("DidntCheckTerms"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getConfirmationEmailWasSent() {
-		return doGetValue("ConfirmationEmailWasSent"); 
+		return doGetValueAsString("ConfirmationEmailWasSent"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getNeedToLoginFirst() {
-		return doGetValue("NeedToLoginFirst"); 
+		return doGetValueAsString("NeedToLoginFirst"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getConfirmAccountSucceeded() {
-		return doGetValue("ConfirmAccountSucceeded"); 
+		return doGetValueAsString("ConfirmAccountSucceeded"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getConfirmAccountFailed() {
-		return doGetValue("ConfirmAccountFailed"); 
+		return doGetValueAsString("ConfirmAccountFailed"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getLoginIsIncorrect() {
-		return doGetValue("LoginIsIncorrect"); 
+		return doGetValueAsString("LoginIsIncorrect"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getUserIsDisabled() {
-		return doGetValue("UserIsDisabled"); 
+		return doGetValueAsString("UserIsDisabled"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getUnknownEmailAddress() {
-		return doGetValue("EmailAddressIsUnknown"); 
+		return doGetValueAsString("EmailAddressIsUnknown"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getUserNameWasEmailed() {
-		return doGetValue("UserNameWasEmailed"); 
+		return doGetValueAsString("UserNameWasEmailed"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getSendUserNameEmailSubject() {
-		return doGetValue("EmailUserNameSubject"); 
+		return doGetValueAsString("EmailUserNameSubject"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getUserNameIsUnknown() {
-		return doGetValue("UserNameIsUnknown"); 
+		return doGetValueAsString("UserNameIsUnknown"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getPasswordWasEmailed() {
-		return doGetValue("PasswordWasEmailed"); 
+		return doGetValueAsString("PasswordWasEmailed"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getSendPasswordEmailSubject() {
-		return doGetValue("EmailPasswordSubject"); 
+		return doGetValueAsString("EmailPasswordSubject"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getNewLanguageSet() {
-		return doGetValue("NewLanguageSet"); 
+		return doGetValueAsString("NewLanguageSet"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getNoteMaximumPhotoSize() {
-		return doGetValue("NoteMaximumPhotoSize"); 
+		return doGetValueAsString("NoteMaximumPhotoSize"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getNoPhotoUploaded() {
-		return doGetValue("NoPhotoUploaded"); 
+		return doGetValueAsString("NoPhotoUploaded"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getNoCharacterName() {
-		return doGetValue("NoCharacterName"); 
+		return doGetValueAsString("NoCharacterName"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getNoSeriesName() {
-		return doGetValue("NoSeriesName"); 
+		return doGetValueAsString("NoSeriesName"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getNoTags() {
-		return doGetValue("NoTags"); 
+		return doGetValueAsString("NoTags"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getProfileUpdateSucceeded() {
-		return doGetValue("ProfileUpdateSucceeded"); 
+		return doGetValueAsString("ProfileUpdateSucceeded"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getPasswordChangeSucceeded() {
-		return doGetValue("PasswordChangeSucceeded"); 
+		return doGetValueAsString("PasswordChangeSucceeded"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getPhotoUpdateSucceeded() {
-		return doGetValue("PhotoUpdateSucceeded"); 
+		return doGetValueAsString("PhotoUpdateSucceeded"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getPhotoUploadFailed() { 
-		return doGetValue("PhotoUploadFailed"); 
+		return doGetValueAsString("PhotoUploadFailed"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getPhotoUploadSucceeded() { 
-		return doGetValue("PhotoUploadSucceeded"); 
+		return doGetValueAsString("PhotoUploadSucceeded"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getLogoutSucceeded() { 
-		return doGetValue("LogoutSucceeded"); 
+		return doGetValueAsString("LogoutSucceeded"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getNoFlaggedPhotoCases() {
-		return doGetValue("NoFlaggedPhotoCases"); 
+		return doGetValueAsString("NoFlaggedPhotoCases"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getPhotoIsUnknown() {
-		return doGetValue("UnknownPhoto"); 
+		return doGetValueAsString("UnknownPhoto"); 
 	}
 	
 	/**
 	 * 
 	 */
 	public String getGeneralEmailRegards() {
-		return doGetValue("GeneralEmailRegards");
+		return doGetValueAsString("GeneralEmailRegards");
 	}
 
 	/**
 	 * 
 	 */
 	public String getGeneralEmailFooter() {
-		return doGetValue("GeneralEmailFooter");
+		return doGetValueAsString("GeneralEmailFooter");
 	}
 
 	/**
 	 * 
 	 */
 	public String getTellFriendEmailSubject() {
-		return doGetValue("TellFriendEmailSubject");
+		return doGetValueAsString("TellFriendEmailSubject");
 	}
 
 	/**
 	 * 
 	 */
 	public String getTellFriendEmailWebsite() {
-		return doGetValue("TellFriendEmailSite");
+		return doGetValueAsString("TellFriendEmailSite");
 	}
 
 	/**
 	 * 
 	 */
 	public String getTellFriendEmailPhoto() {
-		return doGetValue("TellFriendEmailPhoto"); 
+		return doGetValueAsString("TellFriendEmailPhoto"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getSendEmailSubjectPrefix() {
-		return doGetValue("SendEmailSubjectPrefix"); 
+		return doGetValueAsString("SendEmailSubjectPrefix"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String getSendEmailBodyPrefix() {
-		return doGetValue("SendEmailBodyPrefix"); 
+		return doGetValueAsString("SendEmailBodyPrefix"); 
 	}
 	
 	/**
 	 * 
 	 */
 	public String getSendEmailBodyPostfix() {
-		return doGetValue("SendEmailBodyPostfix"); 
+		return doGetValueAsString("SendEmailBodyPostfix"); 
 	}
 	
 	/**
 	 * 
 	 */
 	public String getWelcomeEmailSubject() {
-		return doGetValue("WelcomeEmailSubject");
+		return doGetValueAsString("WelcomeEmailSubject");
 	}
 	
 	/**
 	 * 
 	 */
 	public String getWelcomeEmailBody() {
-		return doGetValue("WelcomeEmailBody");
+		return doGetValueAsString("WelcomeEmailBody");
 	}
 	
 	/**
 	 * 
 	 */
 	public String getWelcomeEmailUserName() {
-		return doGetValue("WelcomeEmailUserName");
+		return doGetValueAsString("WelcomeEmailUserName");
 	}
 	
 	/**
 	 * 
 	 */
 	public String getConfirmAccountEmailSubject() {
-		return doGetValue("ConfirmAccountEmailSubject");
+		return doGetValueAsString("ConfirmAccountEmailSubject");
 	}
 
 	/**
 	 * 
 	 */
 	public String getConfirmAccountEmailBody() {
-		return doGetValue("ConfirmAccountEmailBody");
+		return doGetValueAsString("ConfirmAccountEmailBody");
 	}
 
 	/**
 	 * 
 	 */
 	public String getNotifyAboutPraiseEmailSubject() {
-		return doGetValue("NotifyAboutPraiseEmailSubject");
+		return doGetValueAsString("NotifyAboutPraiseEmailSubject");
 	}
 
 	/**
 	 * 
 	 */
 	public String getNotifyAboutPraiseEmailBody() {
-		return doGetValue("NotifyAboutPraiseEmailBody");
+		return doGetValueAsString("NotifyAboutPraiseEmailBody");
 	}
 
 	/**
 	 * 
 	 */
 	public String getNotifyAboutPraiseEmailPostScriptum() {
-		return doGetValue("NotifyAboutPraiseEmailPostScriptum"); 
+		return doGetValueAsString("NotifyAboutPraiseEmailPostScriptum"); 
 	}
 
 	/**
 	 * 
 	 */
 	public String asValueString(EnumValue ev) {
-		return doGetValue(ev.getTypeName() + "#" + ev.asInt());
+		return doGetValueAsString(ev.getTypeName() + "#" + ev.asInt());
 	}
 	
 	/**
