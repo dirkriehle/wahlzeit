@@ -94,8 +94,7 @@ public abstract class Client {
 	/**
 	 * 
 	 */
-	public boolean hasModeratorRights
-	() {
+	public boolean hasModeratorRights() {
 		return hasRights(AccessRights.MODERATOR);
 	}
 	

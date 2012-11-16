@@ -20,16 +20,16 @@
 
 package org.wahlzeit.handlers;
 
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.wahlzeit.model.*;
-import org.wahlzeit.services.*;
-import org.wahlzeit.webparts.*;
+import org.wahlzeit.services.EmailAddress;
+import org.wahlzeit.services.EmailServer;
+import org.wahlzeit.webparts.WebPart;
 
-import junit.framework.*;
+import junit.framework.Test;
+
 
 /**
  * Acceptance tests for the TellFriend feature.

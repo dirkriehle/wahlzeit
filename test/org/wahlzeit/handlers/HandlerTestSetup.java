@@ -55,7 +55,7 @@ public class HandlerTestSetup extends TestSetup{
 		
 		if(fTest instanceof HandlerTest) {
 			HandlerTest test = (HandlerTest) fTest;
-			
+			test.setUserSession(session);
 		}
 	
 	}
@@ -63,5 +63,19 @@ public class HandlerTestSetup extends TestSetup{
 	public static UserSession getCurrentUserSession() {
 		return session;
 	}
-
+	
+	protected UserSession createUserSession() {
+		UserSession result = null;
+		
+		ModelMain.configureWebPartTemplateServer();
+		
+		Wahlzeit.configurePartHandlers();
+		Wahlzeit.configureLanguageModels();
+		
+		result = new UserSession("testContext");
+		result.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
+		
+		return result;
+		
+	}
 }

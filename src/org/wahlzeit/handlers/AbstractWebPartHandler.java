@@ -53,7 +53,9 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	}
 	
 	/**
-	 * 
+	 * Returns Webpart with Usersession
+	 * @methodtype factory
+	 * @methodproperties convenience
 	 */
 	protected final WebPart createWebPart(UserSession ctx) {
 		return createWebPart(ctx, tmplName);
