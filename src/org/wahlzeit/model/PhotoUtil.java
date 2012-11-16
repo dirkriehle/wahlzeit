@@ -102,7 +102,7 @@ public class PhotoUtil {
 	}
 	
 	/**
-	 * 
+	 * @methodtype assertion 
 	 */
 	protected static void assertIsValidImage(Image image) {
 		if (image == null) {

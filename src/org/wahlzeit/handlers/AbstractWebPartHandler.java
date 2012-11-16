@@ -62,7 +62,7 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	}
 	
 	/**
-	 * 
+	 * @methodtype factory
 	 */
 	protected final WebPart createWebPart(UserSession ctx, String name) {
 		WebPartTemplateServer wpts = WebPartTemplateServer.getInstance();

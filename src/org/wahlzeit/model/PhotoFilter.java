@@ -72,8 +72,8 @@ public class PhotoFilter {
 	 * 
 	 */
 	public void clear() {
-		userName = "";
-		tags = Tags.EMPTY_TAGS;
+        setUserName("");
+        setTags(Tags.EMPTY_TAGS);
 		displayablePhotoIds.clear();
 		processedPhotoIds.clear();
 	}

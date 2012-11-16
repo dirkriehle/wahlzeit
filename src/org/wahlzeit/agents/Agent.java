@@ -57,7 +57,7 @@ public abstract class Agent implements Runnable {
 	}
 	
 	/**
-	 * 
+	 *@methodtype initialization
 	 */
 	protected void initialize(String myName, long myPeriod) {
 		name = myName;
@@ -65,14 +65,14 @@ public abstract class Agent implements Runnable {
 	}
 	
 	/**
-	 * 
+	 * @methodtype get
 	 */
 	public String getName() {
 		return name;
 	}
 	
 	/**
-	 * 
+	 * @methodtype command
 	 */
 	public void run() {
 		synchronized(Agent.class) {

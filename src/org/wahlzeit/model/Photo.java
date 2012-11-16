@@ -117,6 +117,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype constructor
 	 */
 	public Photo(PhotoId myId) {
 		id = myId;
@@ -126,6 +127,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype constructor
 	 */
 	public Photo(ResultSet rset) throws SQLException {
 		readFrom(rset);
@@ -133,6 +135,7 @@ public class Photo extends DataObject {
 
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public String getIdAsString() {
 		return String.valueOf(id.asInt());
@@ -195,6 +198,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public PhotoId getId() {
 		return id;
@@ -202,6 +206,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public int getOwnerId() {
 		return ownerId;
@@ -209,6 +214,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype set
 	 */
 	public void setOwnerId(int newId) {
 		ownerId = newId;
@@ -217,6 +223,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public String getOwnerName() {
 		return ownerName;
@@ -224,6 +231,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype set
 	 */
 	public void setOwnerName(String newName) {
 		ownerName = newName;
@@ -232,6 +240,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public String getSummary(ModelConfig cfg) {
 		return cfg.asPhotoSummary(ownerName);
@@ -239,6 +248,7 @@ public class Photo extends DataObject {
 
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public String getCaption(ModelConfig cfg) {
 		return cfg.asPhotoCaption(ownerName, ownerHomePage);
@@ -246,6 +256,7 @@ public class Photo extends DataObject {
 
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public boolean getOwnerNotifyAboutPraise() {
 		return ownerNotifyAboutPraise;
@@ -253,6 +264,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype set
 	 */
 	public void setOwnerNotifyAboutPraise(boolean newNotifyAboutPraise) {
 		ownerNotifyAboutPraise = newNotifyAboutPraise;
@@ -261,6 +273,7 @@ public class Photo extends DataObject {
 
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public EmailAddress getOwnerEmailAddress() {
 		return ownerEmailAddress;
@@ -268,6 +281,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype set
 	 */
 	public void setOwnerEmailAddress(EmailAddress newEmailAddress) {
 		ownerEmailAddress = newEmailAddress;
@@ -291,6 +305,7 @@ public class Photo extends DataObject {
 
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public URL getOwnerHomePage() {
 		return ownerHomePage;
@@ -298,6 +313,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype set
 	 */
 	public void setOwnerHomePage(URL newHomePage) {
 		ownerHomePage = newHomePage;
@@ -306,6 +322,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype boolean-query
 	 */
 	public boolean hasSameOwner(Photo photo) {
 		return photo.getOwnerEmailAddress().equals(ownerEmailAddress);
@@ -313,6 +330,7 @@ public class Photo extends DataObject {
 
 	/**
 	 * 
+	 * @methodtype boolean-query
 	 */
 	public boolean isWiderThanHigher() {
 		return (height * MAX_PHOTO_WIDTH) < (width * MAX_PHOTO_HEIGHT);
@@ -320,6 +338,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public int getWidth() {
 		return width;
@@ -327,6 +346,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public int getHeight() {
 		return height;
@@ -334,6 +354,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public int getThumbWidth() {
 		return isWiderThanHigher() ? MAX_THUMB_PHOTO_WIDTH : (width * MAX_THUMB_PHOTO_HEIGHT / height);
@@ -341,6 +362,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public int getThumbHeight() {
 		return isWiderThanHigher() ? (height * MAX_THUMB_PHOTO_WIDTH / width) : MAX_THUMB_PHOTO_HEIGHT;
@@ -348,6 +370,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype set
 	 */
 	public void setWidthAndHeight(int newWidth, int newHeight) {
 		width = newWidth;
@@ -359,7 +382,9 @@ public class Photo extends DataObject {
 	}
 	
 	/**
+	 * Can this photo satisfy provided photo size?
 	 * 
+	 * @methodtype boolean-query
 	 */
 	public boolean hasPhotoSize(PhotoSize size) {
 		return maxPhotoSize.asInt() >= size.asInt();
@@ -367,6 +392,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public PhotoSize getMaxPhotoSize() {
 		return maxPhotoSize;
@@ -374,6 +400,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public double getPraise() {
 		return (double) praiseSum / noVotes;
@@ -381,9 +408,10 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public String getPraiseAsString(ModelConfig cfg) {
-		return cfg.getPraise(getPraise());
+		return cfg.asPraiseString(getPraise());
 	}
 	
 	/**
@@ -397,6 +425,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype boolean-query
 	 */
 	public boolean isVisible() {
 		return status.isDisplayable();
@@ -404,6 +433,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public PhotoStatus getStatus() {
 		return status;
@@ -411,6 +441,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype set
 	 */
 	public void setStatus(PhotoStatus newStatus) {
 		status = newStatus;
@@ -419,6 +450,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype boolean-query
 	 */
 	public boolean hasTag(String tag) {
 		return tags.hasTag(tag);
@@ -426,6 +458,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public Tags getTags() {
 		return tags;
@@ -433,6 +466,7 @@ public class Photo extends DataObject {
 
 	/**
 	 * 
+	 * @methodtype set
 	 */
 	public void setTags(Tags newTags) {
 		tags = newTags;
@@ -441,6 +475,7 @@ public class Photo extends DataObject {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public long getCreationTime() {
 		return creationTime;

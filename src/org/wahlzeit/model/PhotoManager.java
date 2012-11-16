@@ -93,7 +93,8 @@ public class PhotoManager extends ObjectManager {
 	}
 	
 	/**
-	 * 
+	 * @methodtype boolean-query
+	 * @methodproperties primitive
 	 */
 	protected boolean doHasPhoto(PhotoId id) {
 		return photoCache.containsKey(id);
@@ -124,7 +125,8 @@ public class PhotoManager extends ObjectManager {
 	}
 		
 	/**
-	 * 
+	 * @methodtype get
+	 * @methodproperties primitive
 	 */
 	protected Photo doGetPhotoFromId(PhotoId id) {
 		return photoCache.get(id);
@@ -154,7 +156,8 @@ public class PhotoManager extends ObjectManager {
 	}
 	
 	/**
-	 * 
+	 * @methodtype command
+	 * @methodproperties primitive
 	 */
 	protected void doAddPhoto(Photo myPhoto) {
 		photoCache.put(myPhoto.getId(), myPhoto);
@@ -343,7 +346,7 @@ public class PhotoManager extends ObjectManager {
 	}
 	
 	/**
-	 * 
+	 * @methodtype assertion
 	 */
 	protected void assertIsNewPhoto(PhotoId id) {
 		if (hasPhoto(id)) {

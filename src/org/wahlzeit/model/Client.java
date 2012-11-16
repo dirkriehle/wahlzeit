@@ -49,7 +49,7 @@ public abstract class Client {
 	}
 	
 	/**
-	 * 
+	 * @methodtype initialization
 	 */
 	protected void initialize(AccessRights myRights, EmailAddress myEmailAddress) {
 		rights = myRights;
@@ -57,14 +57,14 @@ public abstract class Client {
 	}
 
 	/**
-	 * 
+	 * @methodtype get
 	 */
 	public AccessRights getRights() {
 		return rights;
 	}
 	
 	/**
-	 * 
+	 * @methodtype set
 	 */
 	public void setRights(AccessRights newRights) {
 		rights = newRights;
@@ -72,6 +72,7 @@ public abstract class Client {
 	
 	/**
 	 * 
+	 * @methodtype boolean-query
 	 */
 	public boolean hasRights(AccessRights otherRights) {
 		return AccessRights.hasRights(rights, otherRights);
@@ -79,6 +80,7 @@ public abstract class Client {
 	
 	/**
 	 * 
+	 * @methodtype boolean-query
 	 */
 	public boolean hasGuestRights() {
 		return hasRights(AccessRights.GUEST);
@@ -93,6 +95,7 @@ public abstract class Client {
 	
 	/**
 	 * 
+	 * @methodtype boolean-query
 	 */
 	public boolean hasModeratorRights() {
 		return hasRights(AccessRights.MODERATOR);
@@ -100,6 +103,7 @@ public abstract class Client {
 	
 	/**
 	 * 
+	 * @methodtype boolean-query
 	 */
 	public boolean hasAdministratorRights() {
 		return hasRights(AccessRights.ADMINISTRATOR);
@@ -107,6 +111,7 @@ public abstract class Client {
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public EmailAddress getEmailAddress() {
 		return emailAddress;
@@ -114,6 +119,7 @@ public abstract class Client {
 	
 	/**
 	 * 
+	 * @methodtype set
 	 */
 	public void setEmailAddress(EmailAddress newEmailAddress) {
 		emailAddress = newEmailAddress;

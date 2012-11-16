@@ -53,14 +53,20 @@ public enum UserStatus implements EnumValue {
 	};
 	
 	/**
-	 * 
+	 * @methodtype conversion
 	 */
 	public static UserStatus getFromInt(int myValue) throws IllegalArgumentException {
-		if ((myValue >= 0) && (myValue <= 3)) {
-			return allValues[myValue];
+		assertIsValidUserStatusAsInt(myValue);
+		return allValues[myValue];
+	}
+	
+	/**
+	 * @methodtype conversion
+	 */
+	protected static void assertIsValidUserStatusAsInt(int myValue) throws IllegalArgumentException {
+		if ((myValue < 0) || (myValue > 3)) {
+			throw new IllegalArgumentException("invalid UserStatus int: " + myValue);
 		}
-		
-		throw new IllegalArgumentException("invalid UserStatus int: " + myValue);		
 	}
 	
 	/**

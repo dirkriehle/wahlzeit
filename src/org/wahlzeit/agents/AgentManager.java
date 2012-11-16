@@ -37,7 +37,7 @@ public class AgentManager {
 	protected static AgentManager instance = null;
 	
 	/**
-	 * 
+	 * @methodtype initialization
 	 */
 	protected static void initInstance() {
 		getInstance().addAgent(new NotifyAboutPraiseAgent());
@@ -86,7 +86,7 @@ public class AgentManager {
 	}
 	
 	/**
-	 * 
+	 * @methodtype get
 	 */
 	public AgentThread getThread(String name) {
 		return threads.get(name);	

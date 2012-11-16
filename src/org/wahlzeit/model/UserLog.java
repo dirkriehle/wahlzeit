@@ -74,7 +74,7 @@ public class UserLog extends Log {
 	}
 	
 	/**
-	 * 
+	 * @methodtype factory
 	 */
 	public static StringBuffer createActionEntry(String action) {
 		StringBuffer sb = createUserLogEntry();

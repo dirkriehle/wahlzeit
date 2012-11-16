@@ -55,7 +55,7 @@ public class WebPartTemplate {
 	}
 	
 	/**
-	 * 
+	 * @methodtype initialization
 	 */
 	public void initialize(String source) {
 		List<String> keyList = new LinkedList<String>();

@@ -89,7 +89,7 @@ public abstract class AbstractWebPageHandler extends AbstractWebPartHandler impl
 	}
 	
 	/**
-	 * 
+	 * @methodtype boolean-query
 	 */
 	protected boolean isToShowAds(UserSession ctx) {
 		return false;

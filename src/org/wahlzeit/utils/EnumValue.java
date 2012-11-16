@@ -30,21 +30,25 @@ public interface EnumValue {
 	
 	/**
 	 * 
+	 * @methodtype conversion
 	 */
 	public int asInt();
 	
 	/**
 	 * 
+	 * @methodtype conversion
 	 */
 	public String asString();
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public EnumValue[] getAllValues(); 
 	
 	/**
 	 * 
+	 * @methodtype get
 	 */
 	public String getTypeName();
 	

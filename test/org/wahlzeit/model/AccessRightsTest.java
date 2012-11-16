@@ -24,7 +24,7 @@ import junit.framework.TestCase;
 public class AccessRightsTest extends TestCase {
 
 	public static void main(String[] args) {
-		junit.textui.TestRunner.run(TagsTest.class);
+		junit.textui.TestRunner.run(AccessRightsTest.class);
 	}
 
 	protected void setUp() throws Exception {
@@ -57,10 +57,8 @@ public class AccessRightsTest extends TestCase {
 		assertSame(AccessRights.NONE, AccessRights.getFromString("none"));
 		assertSame(AccessRights.GUEST, AccessRights.getFromString("guest"));
 		assertSame(AccessRights.USER, AccessRights.getFromString("user"));
-		assertSame(AccessRights.MODERATOR,
-				AccessRights.getFromString("moderator"));
-		assertSame(AccessRights.ADMINISTRATOR,
-				AccessRights.getFromString("administrator"));
+		assertSame(AccessRights.MODERATOR, AccessRights.getFromString("moderator"));
+		assertSame(AccessRights.ADMINISTRATOR, AccessRights.getFromString("administrator"));
 
 		try {
 			AccessRights.getFromString(null);
@@ -111,24 +109,16 @@ public class AccessRightsTest extends TestCase {
 	}
 
 	public void testHasRights() {
-		assertTrue(AccessRights.hasRights(AccessRights.ADMINISTRATOR,
-				AccessRights.MODERATOR));
-		assertTrue(AccessRights.hasRights(AccessRights.MODERATOR,
-				AccessRights.USER));
-		assertTrue(AccessRights
-				.hasRights(AccessRights.USER, AccessRights.GUEST));
-		assertTrue(AccessRights
-				.hasRights(AccessRights.GUEST, AccessRights.NONE));
+		assertTrue(AccessRights.hasRights(AccessRights.ADMINISTRATOR, AccessRights.MODERATOR));
+		assertTrue(AccessRights.hasRights(AccessRights.MODERATOR, AccessRights.USER));
+		assertTrue(AccessRights.hasRights(AccessRights.USER, AccessRights.GUEST));
+		assertTrue(AccessRights.hasRights(AccessRights.GUEST, AccessRights.NONE));
 		assertTrue(AccessRights.hasRights(AccessRights.NONE, AccessRights.NONE));
 		// hasRights() implements a transitive relation -> all cases covered
-		assertFalse(AccessRights.hasRights(AccessRights.NONE,
-				AccessRights.GUEST));
-		assertFalse(AccessRights.hasRights(AccessRights.GUEST,
-				AccessRights.USER));
-		assertFalse(AccessRights.hasRights(AccessRights.USER,
-				AccessRights.MODERATOR));
-		assertFalse(AccessRights.hasRights(AccessRights.MODERATOR,
-				AccessRights.ADMINISTRATOR));
+		assertFalse(AccessRights.hasRights(AccessRights.NONE, AccessRights.GUEST));
+		assertFalse(AccessRights.hasRights(AccessRights.GUEST, AccessRights.USER));
+		assertFalse(AccessRights.hasRights(AccessRights.USER, AccessRights.MODERATOR));
+		assertFalse(AccessRights.hasRights(AccessRights.MODERATOR, AccessRights.ADMINISTRATOR));
 	}
 
 }
