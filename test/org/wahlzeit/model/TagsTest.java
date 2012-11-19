@@ -53,6 +53,14 @@ public class TagsTest extends TestCase {
 		assertFalse(tags1.equals(null));
 		assertFalse(tags1.equals(new Object()));
 	}
+	
+	public void testIsEqual(){
+		Tags tags1 = new Tags("a, b, c");
+		Tags tags2 = new Tags("a, b, c");
+		assertTrue(tags1.isEqual(tags1));
+		assertFalse(tags1.isEqual(tags2));	
+	}
+	
 
 	public void testAsTag() {
 		assertEquals(Tags.asTag("flo wer"), "flower");

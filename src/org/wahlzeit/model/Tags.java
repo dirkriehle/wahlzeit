@@ -218,4 +218,31 @@ public class Tags {
 		return result.toString();
 	}
 
+	/**
+	 * compares the values of the objects
+	 */
+	public boolean equals(Tags t) {
+		ArrayList<String> a0 = t.tags;
+		ArrayList<String> a1 = this.tags;
+
+		if (a0.size() != a1.size())
+			return false;
+
+		Collections.sort(a0);
+		Collections.sort(a1);
+
+		for (int i = 0; i < a0.size(); i++) {
+			if (!a0.get(i).equals(a1.get(i)))
+				return false;
+		}
+		return true;
+	}
+
+	/**
+	 * compares the references of the objects
+	 */
+	public boolean isEqual(Object obj) {
+		return this == obj;
+	}
+	
 }
