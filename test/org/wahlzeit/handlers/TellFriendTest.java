@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.wahlzeit.services.AbstractEmailServer;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.EmailServer;
 import org.wahlzeit.webparts.WebPart;
@@ -68,7 +69,7 @@ public class TellFriendTest extends HandlerTestCase {
 		WebPart part = handler.makeWebPart(session);
 		// no failure is good behavior
 
-		EmailServer.setNullInstance(); // no emails please
+		AbstractEmailServer.setNullInstance(); // no emails please
 		EmailAddress to = EmailAddress.getFromString("engel@himmel.de");
 		Map<String, String> args = new HashMap<String, String>();
 		args.put(TellFriendFormHandler.EMAIL_TO, to.asString());
@@ -89,7 +90,7 @@ public class TellFriendTest extends HandlerTestCase {
 		EmailAddress bcc = session.cfg().getAuditEmailAddress();
 		String subject = "Coolest website ever!";
 		String body = "You've got to check this out!";
-		EmailServer.setInstance(new MockEmailServer(from, to, bcc, subject, body));
+		AbstractEmailServer.setInstance(new MockEmailServer(from, to, bcc, subject, body));
 
 		Map<String, String> args = new HashMap<String, String>();
 		args.put(TellFriendFormHandler.EMAIL_FROM, from.asString());
@@ -99,7 +100,7 @@ public class TellFriendTest extends HandlerTestCase {
 
 		handler.handlePost(session, args);
 
-		EmailServer.setInstance(new MockEmailServer(from, to, bcc, subject, body));
+		AbstractEmailServer.setInstance(new MockEmailServer(from, to, bcc, subject, body));
 		handler.handlePost(session, Collections.EMPTY_MAP); // will fail if email is sent		
 	}	
 

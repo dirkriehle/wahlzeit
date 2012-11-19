@@ -28,7 +28,7 @@ import javax.mail.*;
  * @author dirkriehle
  *
  */
-public class NullEmailServer extends EmailServer {
+public class NullEmailServer implements EmailServer {
 	
 	/**
 	 * 
@@ -42,6 +42,20 @@ public class NullEmailServer extends EmailServer {
 	 */
 	protected void doSendEmail(Message msg) {
 		SysLog.logInfo("pretending to send email...");
+	}
+
+	@Override
+	public void sendEmail(EmailAddress from, EmailAddress to, String subject,
+			String body) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sendEmail(EmailAddress from, EmailAddress to, EmailAddress bcc,
+			String subject, String body) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
