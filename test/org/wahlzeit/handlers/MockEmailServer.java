@@ -30,7 +30,7 @@ import org.wahlzeit.services.*;
  * @author dirkriehle
  *
  */
-public class MockEmailServer extends EmailServer {
+public class MockEmailServer extends AbstractEmailServer {
 
 	/**
 	 * 

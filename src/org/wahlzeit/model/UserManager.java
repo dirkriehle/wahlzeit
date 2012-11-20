@@ -211,7 +211,7 @@ public class UserManager extends ObjectManager {
 	 * 
 	 */
 	public void emailWelcomeMessage(UserSession ctx, User user) {
-		EmailServer emailServer = EmailServer.getInstance();
+		EmailServer emailServer = AbstractEmailServer.getInstance();
 
 		EmailAddress from = ctx.cfg().getAdministratorEmailAddress();
 		EmailAddress to = user.getEmailAddress();
@@ -231,7 +231,7 @@ public class UserManager extends ObjectManager {
 	 * 
 	 */
 	public void emailConfirmationRequest(UserSession ctx, User user) {
-		EmailServer emailServer = EmailServer.getInstance();
+		EmailServer emailServer = AbstractEmailServer.getInstance();
 
 		EmailAddress from = ctx.cfg().getAdministratorEmailAddress();
 		EmailAddress to = user.getEmailAddress();
