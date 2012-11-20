@@ -118,6 +118,7 @@ public class Tags {
 
 	/**
 	 * 
+	 * @methodtype boolean query
 	 */
 	public boolean hasTag(String tag) {
 		return (null != tag) && tags.contains(tag);

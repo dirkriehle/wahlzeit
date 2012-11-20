@@ -20,31 +20,14 @@
 
 package org.wahlzeit.services;
 
+
 /**
- * The NullEmailServer only pretends to send email.
+ * The EmailServer service lets clients send emails.
  * 
  * @author dirkriehle
  *
  */
-public class NullEmailServer implements EmailServer {
+public class DefaultEmailServer extends AbstractEmailServer  {
 	
-	/**
-	 * 
-	 */
-	protected void doSendEmail() {
-		SysLog.logInfo("pretending to send email...");
-	}
-
-	@Override
-	public void sendEmail(EmailAddress from, EmailAddress to, String subject,
-			String body) {
-		doSendEmail();				
-	}
-
-	@Override
-	public void sendEmail(EmailAddress from, EmailAddress to, EmailAddress bcc,
-			String subject, String body) {
-		doSendEmail();
-	}
 	
 }
