@@ -20,6 +20,10 @@
 
 package org.wahlzeit.handlers;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 import junit.framework.*;
 import org.wahlzeit.services.*;
 
@@ -30,7 +34,7 @@ import org.wahlzeit.services.*;
  * @author dirkriehle
  *
  */
-public class MockEmailServer extends EmailServer {
+public class MockEmailServer extends AbstractEmailServer {
 
 	/**
 	 * 
@@ -40,11 +44,12 @@ public class MockEmailServer extends EmailServer {
 	protected EmailAddress bccEA;
 	protected String emailSubject;
 	protected String emailBody;
-	
+
 	/**
 	 * 
 	 */
-	public MockEmailServer(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body) {
+	public MockEmailServer(EmailAddress from, EmailAddress to,
+			EmailAddress bcc, String subject, String body) {
 		super();
 
 		fromEA = from;
@@ -53,14 +58,35 @@ public class MockEmailServer extends EmailServer {
 		emailSubject = subject;
 		emailBody = body;
 	}
-	
+
 	/**
 	 * 
 	 */
-	public synchronized void sendEmail(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body) {
-		if (!fromEA.equals(from) || !toEA.equals(to) || !bccEA.equals(bcc) || !emailSubject.equals(subject) || !emailBody.equals(body)) {
+	public synchronized void sendEmail(EmailAddress from, EmailAddress to,
+			EmailAddress bcc, String subject, String body) {
+		if (!fromEA.equals(from) || !toEA.equals(to) || !bccEA.equals(bcc)
+				|| !emailSubject.equals(subject) || !emailBody.equals(body)) {
 			Assert.fail("unexpected parameters passed to MockEmailServer.sendEmail");
 		}
 	}
-	
+
+	/**
+	 * 
+	 * @methodtype factory
+	 * @methodproperties composed
+	 */
+	protected Message createMessage(EmailAddress from, EmailAddress to,
+			EmailAddress bcc, String subject, String body)
+			throws MessagingException, AddressException {
+		return null;
+	}
+
+	/**
+	 * 
+	 * @methodproperties primitive, hook
+	 */
+	protected void doSendEmail(Message msg) throws Exception {
+		SysLog.logInfo("pretending to send email...");
+	}
+
 }
