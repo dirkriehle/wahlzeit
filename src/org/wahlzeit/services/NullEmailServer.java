@@ -26,22 +26,38 @@ import javax.mail.*;
  * The NullEmailServer only pretends to send email.
  * 
  * @author dirkriehle
- *
+ * 
  */
-public class NullEmailServer extends EmailServer {
-	
+public class NullEmailServer implements EmailServer {
+
 	/**
 	 * 
 	 */
 	protected NullEmailServer() {
 		super();
 	}
-	
+
+	/**
+	 * 
+	 */
+	public void sendEmail(EmailAddress from, EmailAddress to, String subject,
+			String body) {
+		doSendEmail(null);
+	}
+
+	/**
+	 * 
+	 */
+	public void sendEmail(EmailAddress from, EmailAddress to, EmailAddress bcc,
+			String subject, String body) {
+		doSendEmail(null);
+	}
+
 	/**
 	 * 
 	 */
 	protected void doSendEmail(Message msg) {
 		SysLog.logInfo("pretending to send email...");
 	}
-	
+
 }
