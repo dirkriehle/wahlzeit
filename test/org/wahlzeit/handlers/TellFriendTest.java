@@ -20,14 +20,17 @@
 
 package org.wahlzeit.handlers;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.wahlzeit.main.*;
-import org.wahlzeit.model.*;
-import org.wahlzeit.services.*;
-import org.wahlzeit.webparts.*;
+import org.wahlzeit.services.AbstractEmailServer;
+import org.wahlzeit.services.EmailAddress;
+import org.wahlzeit.services.EmailServer;
+import org.wahlzeit.webparts.WebPart;
 
-import junit.framework.*;
+import junit.framework.Test;
+
 
 /**
  * Acceptance tests for the TellFriend feature.
@@ -36,7 +39,7 @@ import junit.framework.*;
  *
  */
 public class TellFriendTest extends HandlerTestCase {
-	
+
 	/**
 	 * 
 	 */
@@ -51,28 +54,28 @@ public class TellFriendTest extends HandlerTestCase {
 	public TellFriendTest(String name) {
 		super(name);
 	}
-	
+
 	/**
 	 * 
 	 */
 	public void setUp() {
 		handler = WebPartHandlerManager.getWebFormHandler(PartUtil.TELL_FRIEND_FORM_NAME);
 	}
-	
+
 	/**
 	 * 
 	 */
 	public void testTellFriendMakeWebPart() {
 		WebPart part = handler.makeWebPart(session);
 		// no failure is good behavior
-		
-		EmailServer.setNullInstance(); // no emails please
+
+		AbstractEmailServer.setNullInstance(); // no emails please
 		EmailAddress to = EmailAddress.getFromString("engel@himmel.de");
 		Map<String, String> args = new HashMap<String, String>();
 		args.put(TellFriendFormHandler.EMAIL_TO, to.asString());
 		args.put(TellFriendFormHandler.EMAIL_SUBJECT, "Oh well...");
 		handler.handlePost(session, args);
-		
+
 		part = handler.makeWebPart(session);
 		assertEquals(part.getValue(TellFriendFormHandler.EMAIL_TO), to.asString());
 		assertEquals(part.getValue(TellFriendFormHandler.EMAIL_SUBJECT), "Oh well...");
@@ -87,7 +90,7 @@ public class TellFriendTest extends HandlerTestCase {
 		EmailAddress bcc = session.cfg().getAuditEmailAddress();
 		String subject = "Coolest website ever!";
 		String body = "You've got to check this out!";
-		EmailServer.setInstance(new MockEmailServer(from, to, bcc, subject, body));
+		AbstractEmailServer.setInstance(new MockEmailServer(from, to, bcc, subject, body));
 
 		Map<String, String> args = new HashMap<String, String>();
 		args.put(TellFriendFormHandler.EMAIL_FROM, from.asString());
@@ -96,8 +99,8 @@ public class TellFriendTest extends HandlerTestCase {
 		args.put(TellFriendFormHandler.EMAIL_BODY, body);
 
 		handler.handlePost(session, args);
-		
-		EmailServer.setInstance(new MockEmailServer(from, to, bcc, subject, body));
+
+		AbstractEmailServer.setInstance(new MockEmailServer(from, to, bcc, subject, body));
 		handler.handlePost(session, Collections.EMPTY_MAP); // will fail if email is sent		
 	}	
 

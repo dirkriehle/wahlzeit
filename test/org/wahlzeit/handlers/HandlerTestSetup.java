@@ -20,47 +20,50 @@
 
 package org.wahlzeit.handlers;
 
-import java.util.*;
+import org.wahlzeit.main.ModelMain;
+import org.wahlzeit.main.Wahlzeit;
+import org.wahlzeit.model.LanguageConfigs;
+import org.wahlzeit.model.UserSession;
+import org.wahlzeit.services.ContextManager;
+import org.wahlzeit.services.Language;
+import org.wahlzeit.tools.CreateUser;
 
-import org.wahlzeit.main.*;
-import org.wahlzeit.model.*;
-import org.wahlzeit.services.*;
+import junit.extensions.TestSetup;
+import junit.framework.Test;
 
-import junit.framework.*;
-import junit.extensions.*;
 
-public class HandlerTestSetup extends TestSetup {
+public class HandlerTestSetup extends TestSetup{
 	
-	/**
-	 * 
-	 */
-	public UserSession session;	
-	
-	/**
-	 * 
-	 */	
 	public HandlerTestSetup(Test test) {
 		super(test);
 	}
 	
-	/**
-	 * 
-	 */	
-	protected void setUp() throws Exception {
+	
+	static protected UserSession session;
+	
+	@Override
+	protected void tearDown() throws Exception{
+		session = null;
+	}
+		
+	@Override
+	public void setUp() throws Exception {
 		super.setUp();
 		
 		session = createUserSession();
 		ContextManager.setThreadLocalContext(session);
 		
-		if (fTest instanceof HandlerTest) {
+		if(fTest instanceof HandlerTest) {
 			HandlerTest test = (HandlerTest) fTest;
 			test.setUserSession(session);
 		}
+	
+	}
+
+	public static UserSession getCurrentUserSession() {
+		return session;
 	}
 	
-	/**
-	 * 
-	 */
 	protected UserSession createUserSession() {
 		UserSession result = null;
 		
@@ -68,11 +71,11 @@ public class HandlerTestSetup extends TestSetup {
 		
 		Wahlzeit.configurePartHandlers();
 		Wahlzeit.configureLanguageModels();
-
+		
 		result = new UserSession("testContext");
 		result.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
-
+		
 		return result;
+		
 	}
-	
 }

@@ -27,6 +27,7 @@ import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.UserLog;
 import org.wahlzeit.model.UserSession;
+import org.wahlzeit.services.AbstractEmailServer;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.EmailServer;
 import org.wahlzeit.services.SysConfig;
@@ -111,7 +112,7 @@ public class TellFriendFormHandler extends AbstractWebFormHandler {
 		EmailAddress from = EmailAddress.getFromString(yourEmailAddress);
 		EmailAddress to = EmailAddress.getFromString(friendsEmailAddress);
 
-		EmailServer emailServer = EmailServer.getInstance();
+		EmailServer emailServer = AbstractEmailServer.getInstance();
 		emailServer.sendEmail(from, to, ctx.cfg().getAuditEmailAddress(), emailSubject, emailBody);
 
 		ctx.setEmailAddress(from);

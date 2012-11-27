@@ -20,6 +20,11 @@
 
 package org.wahlzeit.handlers;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.internet.AddressException;
+
 import junit.framework.*;
 import org.wahlzeit.services.*;
 
@@ -30,7 +35,7 @@ import org.wahlzeit.services.*;
  * @author dirkriehle
  *
  */
-public class MockEmailServer extends EmailServer {
+public class MockEmailServer extends AbstractEmailServer implements EmailServer {
 
 	/**
 	 * 
@@ -61,6 +66,35 @@ public class MockEmailServer extends EmailServer {
 		if (!fromEA.equals(from) || !toEA.equals(to) || !bccEA.equals(bcc) || !emailSubject.equals(subject) || !emailBody.equals(body)) {
 			Assert.fail("unexpected parameters passed to MockEmailServer.sendEmail");
 		}
+	}
+	/*
+	 * (non-Javadoc)
+	 * @see org.wahlzeit.services.AbstractEmailServer#createMessage(org.wahlzeit.services.EmailAddress, org.wahlzeit.services.EmailAddress, org.wahlzeit.services.EmailAddress, java.lang.String, java.lang.String)
+	 */
+	@Override
+	protected Message createMessage(EmailAddress from, EmailAddress to,
+			EmailAddress bcc, String subject, String body)
+			throws MessagingException, AddressException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	/*
+	 * (non-Javadoc)
+	 * @see org.wahlzeit.services.AbstractEmailServer#createMultipart(java.lang.String)
+	 */
+	@Override
+	protected Multipart createMultipart(String body) throws MessagingException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	/*
+	 * (non-Javadoc)
+	 * @see org.wahlzeit.services.AbstractEmailServer#doSendEmail(javax.mail.Message)
+	 */
+	@Override
+	protected void doSendEmail(Message msg) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
