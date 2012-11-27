@@ -67,7 +67,10 @@ public class MockEmailServer extends AbstractEmailServer implements EmailServer 
 			Assert.fail("unexpected parameters passed to MockEmailServer.sendEmail");
 		}
 	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see org.wahlzeit.services.AbstractEmailServer#createMessage(org.wahlzeit.services.EmailAddress, org.wahlzeit.services.EmailAddress, org.wahlzeit.services.EmailAddress, java.lang.String, java.lang.String)
+	 */
 	@Override
 	protected Message createMessage(EmailAddress from, EmailAddress to,
 			EmailAddress bcc, String subject, String body)
@@ -75,11 +78,23 @@ public class MockEmailServer extends AbstractEmailServer implements EmailServer 
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see org.wahlzeit.services.AbstractEmailServer#createMultipart(java.lang.String)
+	 */
 	@Override
 	protected Multipart createMultipart(String body) throws MessagingException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	/*
+	 * (non-Javadoc)
+	 * @see org.wahlzeit.services.AbstractEmailServer#doSendEmail(javax.mail.Message)
+	 */
+	@Override
+	protected void doSendEmail(Message msg) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
