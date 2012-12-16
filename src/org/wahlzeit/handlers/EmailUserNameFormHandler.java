@@ -22,17 +22,11 @@ package org.wahlzeit.handlers;
 
 import java.util.*;
 
-import org.wahlzeit.model.AccessRights;
-import org.wahlzeit.model.User;
-import org.wahlzeit.model.UserLog;
-import org.wahlzeit.model.UserManager;
-import org.wahlzeit.model.UserSession;
+import org.wahlzeit.model.*;
+import org.wahlzeit.services.email.*;
 import org.wahlzeit.services.EmailAddress;
-import org.wahlzeit.services.EmailServer;
 import org.wahlzeit.utils.StringUtil;
 import org.wahlzeit.webparts.WebPart;
-
-
 
 /**
  * 
@@ -65,7 +59,7 @@ public class EmailUserNameFormHandler extends AbstractWebFormHandler {
 		if (StringUtil.isNullOrEmptyString(emailAddress)) {
 			ctx.setMessage(ctx.cfg().getFieldIsMissing());
 			return PartUtil.EMAIL_PASSWORD_PAGE_NAME;
-		} else if (!StringUtil.isValidEmailAddress(emailAddress)) {
+		} else if (!StringUtil.isStrictValidEmailAddress(emailAddress)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
 			return PartUtil.EMAIL_PASSWORD_PAGE_NAME;
 		}
@@ -77,10 +71,11 @@ public class EmailUserNameFormHandler extends AbstractWebFormHandler {
 			return PartUtil.EMAIL_PASSWORD_PAGE_NAME;
 		}
 
-		EmailServer emailServer = EmailServer.getInstance();
+		EmailService emailService = EmailServiceManager.getDefaultService();
+		
 		EmailAddress from = ctx.cfg().getModeratorEmailAddress();
 		EmailAddress to = user.getEmailAddress();
-		emailServer.sendEmail(from, to, ctx.cfg().getAuditEmailAddress(), ctx.cfg().getSendUserNameEmailSubject(), user.getName());
+		emailService.sendEmailIgnoreException(from, to, ctx.cfg().getAuditEmailAddress(), ctx.cfg().getSendUserNameEmailSubject(), user.getName());
 
 		UserLog.logPerformedAction("EmailUserName");
 

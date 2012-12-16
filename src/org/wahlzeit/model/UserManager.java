@@ -24,7 +24,7 @@ import java.util.*;
 import java.sql.*;
 
 import org.wahlzeit.services.*;
-
+import org.wahlzeit.services.email.*;
 
 /**
  * The UserManager provides access to and manages Users (including Moderators and Administrators).
@@ -211,8 +211,6 @@ public class UserManager extends ObjectManager {
 	 * 
 	 */
 	public void emailWelcomeMessage(UserSession ctx, User user) {
-		EmailServer emailServer = EmailServer.getInstance();
-
 		EmailAddress from = ctx.cfg().getAdministratorEmailAddress();
 		EmailAddress to = user.getEmailAddress();
 
@@ -224,15 +222,14 @@ public class UserManager extends ObjectManager {
 		emailBody += ctx.cfg().getGeneralEmailRegards() + "\n\n----\n";
 		emailBody += ctx.cfg().getGeneralEmailFooter() + "\n\n";
 
-		emailServer.sendEmail(from, to, ctx.cfg().getAuditEmailAddress(), emailSubject, emailBody);
+		EmailService emailService = EmailServiceManager.getDefaultService();
+		emailService.sendEmailIgnoreException(from, to, ctx.cfg().getAuditEmailAddress(), emailSubject, emailBody);
 	}
 	
 	/**
 	 * 
 	 */
 	public void emailConfirmationRequest(UserSession ctx, User user) {
-		EmailServer emailServer = EmailServer.getInstance();
-
 		EmailAddress from = ctx.cfg().getAdministratorEmailAddress();
 		EmailAddress to = user.getEmailAddress();
 
@@ -242,7 +239,8 @@ public class UserManager extends ObjectManager {
 		emailBody += ctx.cfg().getGeneralEmailRegards() + "\n\n----\n";
 		emailBody += ctx.cfg().getGeneralEmailFooter() + "\n\n";
 
-		emailServer.sendEmail(from, to, ctx.cfg().getAuditEmailAddress(), emailSubject, emailBody);
+		EmailService emailService = EmailServiceManager.getDefaultService();
+		emailService.sendEmailIgnoreException(from, to, ctx.cfg().getAuditEmailAddress(), emailSubject, emailBody);
 	}
 	
 	/**

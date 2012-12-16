@@ -39,7 +39,7 @@ public abstract class Client {
 	/**
 	 * 
 	 */
-	protected EmailAddress emailAddress = EmailAddress.NONE;
+	protected EmailAddress emailAddress = EmailAddress.EMPTY;
 	
 	/**
 	 * 

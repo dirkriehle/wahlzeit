@@ -75,7 +75,7 @@ public class Photo extends DataObject {
 	 * 
 	 */
 	protected boolean ownerNotifyAboutPraise = false;
-	protected EmailAddress ownerEmailAddress = EmailAddress.NONE;
+	protected EmailAddress ownerEmailAddress = EmailAddress.EMPTY;
 	protected Language ownerLanguage = Language.ENGLISH;
 	protected URL ownerHomePage;
 	

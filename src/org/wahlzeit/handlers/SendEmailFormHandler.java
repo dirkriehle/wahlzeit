@@ -22,17 +22,10 @@ package org.wahlzeit.handlers;
 
 import java.util.*;
 
-import org.wahlzeit.model.AccessRights;
-import org.wahlzeit.model.Photo;
-import org.wahlzeit.model.PhotoManager;
-import org.wahlzeit.model.User;
-import org.wahlzeit.model.UserLog;
-import org.wahlzeit.model.UserManager;
-import org.wahlzeit.model.UserSession;
-import org.wahlzeit.services.EmailServer;
+import org.wahlzeit.model.*;
+import org.wahlzeit.services.*;
+import org.wahlzeit.services.email.*;
 import org.wahlzeit.webparts.WebPart;
-
-
 
 /**
  * 
@@ -122,10 +115,11 @@ public class SendEmailFormHandler extends AbstractWebFormHandler {
 		User toUser = userManager.getUserByName(photo.getOwnerName());
 		User fromUser = (User) ctx.getClient();
 
-		EmailServer emailServer = EmailServer.getInstance();
 		emailSubject = ctx.cfg().getSendEmailSubjectPrefix() + emailSubject;
 		emailBody = ctx.cfg().getSendEmailBodyPrefix() + emailBody + ctx.cfg().getSendEmailBodyPostfix();
-		emailServer.sendEmail(fromUser.getEmailAddress(), toUser.getEmailAddress(), ctx.cfg().getAuditEmailAddress(), emailSubject, emailBody);
+
+		EmailService emailService = EmailServiceManager.getDefaultService();
+		emailService.sendEmailIgnoreException(fromUser.getEmailAddress(), toUser.getEmailAddress(), ctx.cfg().getAuditEmailAddress(), emailSubject, emailBody);
 
 		UserLog.logPerformedAction("SendEmail");
 		

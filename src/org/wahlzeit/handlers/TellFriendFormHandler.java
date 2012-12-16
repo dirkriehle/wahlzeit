@@ -22,18 +22,11 @@ package org.wahlzeit.handlers;
 
 import java.util.*;
 
-import org.wahlzeit.model.AccessRights;
-import org.wahlzeit.model.Photo;
-import org.wahlzeit.model.PhotoManager;
-import org.wahlzeit.model.UserLog;
-import org.wahlzeit.model.UserSession;
-import org.wahlzeit.services.EmailAddress;
-import org.wahlzeit.services.EmailServer;
-import org.wahlzeit.services.SysConfig;
+import org.wahlzeit.model.*;
+import org.wahlzeit.services.*;
+import org.wahlzeit.services.email.*;
 import org.wahlzeit.utils.StringUtil;
 import org.wahlzeit.webparts.WebPart;
-
-
 
 /**
  * 
@@ -94,13 +87,13 @@ public class TellFriendFormHandler extends AbstractWebFormHandler {
 		if (StringUtil.isNullOrEmptyString(yourEmailAddress)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsMissing());
 			return PartUtil.TELL_FRIEND_PAGE_NAME;
-		} else if (!StringUtil.isValidEmailAddress(yourEmailAddress)) {
+		} else if (!StringUtil.isStrictValidEmailAddress(yourEmailAddress)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
 			return PartUtil.TELL_FRIEND_PAGE_NAME;
 		} else if (StringUtil.isNullOrEmptyString(friendsEmailAddress)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsMissing());
 			return PartUtil.TELL_FRIEND_PAGE_NAME;
-		} else if (!StringUtil.isValidEmailAddress(friendsEmailAddress)) {
+		} else if (!StringUtil.isStrictValidEmailAddress(friendsEmailAddress)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
 			return PartUtil.TELL_FRIEND_PAGE_NAME;
 		} if ((emailSubject.length() > 128) || (emailBody.length() > 1024)) {
@@ -111,8 +104,8 @@ public class TellFriendFormHandler extends AbstractWebFormHandler {
 		EmailAddress from = EmailAddress.getFromString(yourEmailAddress);
 		EmailAddress to = EmailAddress.getFromString(friendsEmailAddress);
 
-		EmailServer emailServer = EmailServer.getInstance();
-		emailServer.sendEmail(from, to, ctx.cfg().getAuditEmailAddress(), emailSubject, emailBody);
+		EmailService emailService = EmailServiceManager.getDefaultService();
+		emailService.sendEmailIgnoreException(from, to, ctx.cfg().getAuditEmailAddress(), emailSubject, emailBody);
 
 		ctx.setEmailAddress(from);
 

@@ -24,6 +24,7 @@ import java.util.*;
 
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
+import org.wahlzeit.services.email.*;
 import org.wahlzeit.utils.*;
 import org.wahlzeit.webparts.*;
 
@@ -76,7 +77,7 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
 		if (StringUtil.isNullOrEmptyString(flagger)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsMissing());
 			return PartUtil.FLAG_PHOTO_PAGE_NAME;
-		} else if (!StringUtil.isValidEmailAddress(flagger)) {
+		} else if (!StringUtil.isStrictValidEmailAddress(flagger)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
 			return PartUtil.FLAG_PHOTO_PAGE_NAME;
 		} else if (explanation.length() > 1024) {
@@ -96,8 +97,9 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
 		PhotoCaseManager pcm = PhotoCaseManager.getInstance();
 		pcm.addPhotoCase(photoCase);
 		
+		EmailService emailService = EmailServiceManager.getDefaultService();
+
 		EmailAddress from = EmailAddress.getFromString(flagger);
-		EmailServer emailServer = EmailServer.getInstance();
 		EmailAddress to = ctx.cfg().getModeratorEmailAddress();
 
 		String emailSubject = "Photo: " + id + " of user: " + photo.getOwnerName() + " got flagged";
@@ -105,7 +107,7 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
 		emailBody += "Reason: " + reason + "\n\n";
 		emailBody += "Explanation: " + explanation + "\n\n";
 		
-		emailServer.sendEmail(from, to, ctx.cfg().getAuditEmailAddress(), emailSubject, emailBody);
+		emailService.sendEmailIgnoreException(from, to, ctx.cfg().getAuditEmailAddress(), emailSubject, emailBody);
 		
 		ctx.setEmailAddress(from);
 

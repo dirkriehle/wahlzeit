@@ -62,22 +62,22 @@ public class SafeInputTest extends TestCase {
 	}
 
 	public void testIsLegalEmailAddress() {
-		assertTrue(StringUtil.isValidEmailAddress("admin@wahlzeit.org"));
-		assertTrue(StringUtil.isValidEmailAddress("a@b2.com"));
-		assertTrue(StringUtil.isValidEmailAddress("a@b2.de"));
+		assertTrue(StringUtil.isStrictValidEmailAddress("admin@wahlzeit.org"));
+		assertTrue(StringUtil.isStrictValidEmailAddress("a@b2.com"));
+		assertTrue(StringUtil.isStrictValidEmailAddress("a@b2.de"));
 
-		assertFalse(StringUtil.isValidEmailAddress("a b@b2.com"));
-		assertFalse(StringUtil.isValidEmailAddress("@."));
-		assertFalse(StringUtil.isValidEmailAddress("a@be.c"));		
-		assertFalse(StringUtil.isValidEmailAddress("a@.com"));		
-		assertFalse(StringUtil.isValidEmailAddress("a@domain.c"));
+		assertFalse(StringUtil.isStrictValidEmailAddress("a b@b2.com"));
+		assertFalse(StringUtil.isStrictValidEmailAddress("@."));
+		assertFalse(StringUtil.isStrictValidEmailAddress("a@be.c"));		
+		assertFalse(StringUtil.isStrictValidEmailAddress("a@.com"));		
+		assertFalse(StringUtil.isStrictValidEmailAddress("a@domain.c"));
 
-		assertFalse(StringUtil.isValidEmailAddress("a<!>@b2.com"));
-		assertFalse(StringUtil.isValidEmailAddress("a`@b2.com"));
-		assertFalse(StringUtil.isValidEmailAddress("a\'@b2.com"));
-		assertFalse(StringUtil.isValidEmailAddress("a\\@b2.com"));
-		assertFalse(StringUtil.isValidEmailAddress("a\\'@b2.com"));
-		assertFalse(StringUtil.isValidEmailAddress("a\\\\@b2.com"));
+		assertFalse(StringUtil.isStrictValidEmailAddress("a<!>@b2.com"));
+		assertFalse(StringUtil.isStrictValidEmailAddress("a`@b2.com"));
+		assertFalse(StringUtil.isStrictValidEmailAddress("a\'@b2.com"));
+		assertFalse(StringUtil.isStrictValidEmailAddress("a\\@b2.com"));
+		assertFalse(StringUtil.isStrictValidEmailAddress("a\\'@b2.com"));
+		assertFalse(StringUtil.isStrictValidEmailAddress("a\\\\@b2.com"));
 	}
 
 	public void testIsLegalCharacterName() {

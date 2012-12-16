@@ -34,7 +34,7 @@ public class Guest extends Client {
 	 * 
 	 */
 	public Guest() {
-		initialize(AccessRights.GUEST, EmailAddress.NONE);
+		initialize(AccessRights.GUEST, EmailAddress.EMPTY);
 	}
 
 }
