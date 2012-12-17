@@ -23,7 +23,7 @@ package org.wahlzeit.services;
 import java.util.*;
 import javax.mail.internet.*;
 
-import org.wahlzeit.utils.*;;
+import org.wahlzeit.utils.*;
 
 /**
  * An email address provides a simple email address representation.
