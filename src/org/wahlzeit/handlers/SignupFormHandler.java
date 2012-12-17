@@ -98,7 +98,7 @@ public class SignupFormHandler extends AbstractWebFormHandler {
 		} else if (StringUtil.isNullOrEmptyString(emailAddress)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsMissing());
 			return PartUtil.SIGNUP_PAGE_NAME;
-		} else if (!StringUtil.isStrictValidEmailAddress(emailAddress)) {
+		} else if (!StringUtil.isValidStrictEmailAddress(emailAddress)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if ((terms == null) || !terms.equals("on")) {

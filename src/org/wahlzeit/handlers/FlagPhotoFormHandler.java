@@ -24,7 +24,7 @@ import java.util.*;
 
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
-import org.wahlzeit.services.email.*;
+import org.wahlzeit.services.mailing.*;
 import org.wahlzeit.utils.*;
 import org.wahlzeit.webparts.*;
 
@@ -77,7 +77,7 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
 		if (StringUtil.isNullOrEmptyString(flagger)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsMissing());
 			return PartUtil.FLAG_PHOTO_PAGE_NAME;
-		} else if (!StringUtil.isStrictValidEmailAddress(flagger)) {
+		} else if (!StringUtil.isValidStrictEmailAddress(flagger)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
 			return PartUtil.FLAG_PHOTO_PAGE_NAME;
 		} else if (explanation.length() > 1024) {

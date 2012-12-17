@@ -23,7 +23,7 @@ package org.wahlzeit.handlers;
 import java.util.*;
 
 import org.wahlzeit.model.*;
-import org.wahlzeit.services.email.*;
+import org.wahlzeit.services.mailing.*;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.utils.StringUtil;
 import org.wahlzeit.webparts.WebPart;
@@ -59,7 +59,7 @@ public class EmailUserNameFormHandler extends AbstractWebFormHandler {
 		if (StringUtil.isNullOrEmptyString(emailAddress)) {
 			ctx.setMessage(ctx.cfg().getFieldIsMissing());
 			return PartUtil.EMAIL_PASSWORD_PAGE_NAME;
-		} else if (!StringUtil.isStrictValidEmailAddress(emailAddress)) {
+		} else if (!StringUtil.isValidStrictEmailAddress(emailAddress)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
 			return PartUtil.EMAIL_PASSWORD_PAGE_NAME;
 		}

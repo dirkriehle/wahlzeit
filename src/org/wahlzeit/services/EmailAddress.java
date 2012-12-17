@@ -74,7 +74,7 @@ public class EmailAddress {
 	 * 
 	 */
 	protected static void assertIsRelaxedValidString(String address) throws IllegalArgumentException {
-		if (StringUtil.isNullOrEmptyString(address) || !StringUtil.isRelaxedValidEmailAddress(address)) {
+		if (StringUtil.isNullOrEmptyString(address) || !StringUtil.isValidLocalEmailAddress(address)) {
 			throw new IllegalArgumentException(address + " is not a relaxed valid email address");
 		}
 	}
@@ -125,6 +125,14 @@ public class EmailAddress {
 	 */
 	public boolean isEmpty() {
 		return this == EMPTY;
+	}
+	
+	/**
+	 * 
+	 */
+
+	public boolean isValid() {
+		return !isEmpty();
 	}
 
 }

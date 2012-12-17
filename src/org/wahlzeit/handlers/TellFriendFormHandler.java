@@ -24,7 +24,7 @@ import java.util.*;
 
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
-import org.wahlzeit.services.email.*;
+import org.wahlzeit.services.mailing.*;
 import org.wahlzeit.utils.StringUtil;
 import org.wahlzeit.webparts.WebPart;
 
@@ -87,13 +87,13 @@ public class TellFriendFormHandler extends AbstractWebFormHandler {
 		if (StringUtil.isNullOrEmptyString(yourEmailAddress)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsMissing());
 			return PartUtil.TELL_FRIEND_PAGE_NAME;
-		} else if (!StringUtil.isStrictValidEmailAddress(yourEmailAddress)) {
+		} else if (!StringUtil.isValidStrictEmailAddress(yourEmailAddress)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
 			return PartUtil.TELL_FRIEND_PAGE_NAME;
 		} else if (StringUtil.isNullOrEmptyString(friendsEmailAddress)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsMissing());
 			return PartUtil.TELL_FRIEND_PAGE_NAME;
-		} else if (!StringUtil.isStrictValidEmailAddress(friendsEmailAddress)) {
+		} else if (!StringUtil.isValidStrictEmailAddress(friendsEmailAddress)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
 			return PartUtil.TELL_FRIEND_PAGE_NAME;
 		} if ((emailSubject.length() > 128) || (emailBody.length() > 1024)) {

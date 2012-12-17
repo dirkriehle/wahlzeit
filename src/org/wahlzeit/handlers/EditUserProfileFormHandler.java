@@ -72,7 +72,7 @@ public class EditUserProfileFormHandler extends AbstractWebFormHandler {
 		String gender = ctx.getAndSaveAsString(args, User.GENDER);
 		String language = ctx.getAndSaveAsString(args, User.LANGUAGE);
 		
-		if (!StringUtil.isStrictValidEmailAddress(emailAddress)) {
+		if (!StringUtil.isValidStrictEmailAddress(emailAddress)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
 			return PartUtil.EDIT_USER_PROFILE_PAGE_NAME;
 		} else if (!StringUtil.isValidURL(homePage)) {

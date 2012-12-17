@@ -61,23 +61,23 @@ public class SafeInputTest extends TestCase {
 		assertFalse(StringUtil.isLegalPassword(""));
 	}
 
-	public void testIsLegalEmailAddress() {
-		assertTrue(StringUtil.isStrictValidEmailAddress("admin@wahlzeit.org"));
-		assertTrue(StringUtil.isStrictValidEmailAddress("a@b2.com"));
-		assertTrue(StringUtil.isStrictValidEmailAddress("a@b2.de"));
+	public void testIsValidStrictEmailAddress() {
+		assertTrue(StringUtil.isValidStrictEmailAddress("admin@wahlzeit.org"));
+		assertTrue(StringUtil.isValidStrictEmailAddress("a@b2.com"));
+		assertTrue(StringUtil.isValidStrictEmailAddress("a@b2.de"));
 
-		assertFalse(StringUtil.isStrictValidEmailAddress("a b@b2.com"));
-		assertFalse(StringUtil.isStrictValidEmailAddress("@."));
-		assertFalse(StringUtil.isStrictValidEmailAddress("a@be.c"));		
-		assertFalse(StringUtil.isStrictValidEmailAddress("a@.com"));		
-		assertFalse(StringUtil.isStrictValidEmailAddress("a@domain.c"));
+		assertFalse(StringUtil.isValidStrictEmailAddress("a b@b2.com"));
+		assertFalse(StringUtil.isValidStrictEmailAddress("@."));
+		assertFalse(StringUtil.isValidStrictEmailAddress("a@be.c"));		
+		assertFalse(StringUtil.isValidStrictEmailAddress("a@.com"));		
+		assertFalse(StringUtil.isValidStrictEmailAddress("a@domain.c"));
 
-		assertFalse(StringUtil.isStrictValidEmailAddress("a<!>@b2.com"));
-		assertFalse(StringUtil.isStrictValidEmailAddress("a`@b2.com"));
-		assertFalse(StringUtil.isStrictValidEmailAddress("a\'@b2.com"));
-		assertFalse(StringUtil.isStrictValidEmailAddress("a\\@b2.com"));
-		assertFalse(StringUtil.isStrictValidEmailAddress("a\\'@b2.com"));
-		assertFalse(StringUtil.isStrictValidEmailAddress("a\\\\@b2.com"));
+		assertFalse(StringUtil.isValidStrictEmailAddress("a<!>@b2.com"));
+		assertFalse(StringUtil.isValidStrictEmailAddress("a`@b2.com"));
+		assertFalse(StringUtil.isValidStrictEmailAddress("a\'@b2.com"));
+		assertFalse(StringUtil.isValidStrictEmailAddress("a\\@b2.com"));
+		assertFalse(StringUtil.isValidStrictEmailAddress("a\\'@b2.com"));
+		assertFalse(StringUtil.isValidStrictEmailAddress("a\\\\@b2.com"));
 	}
 
 	public void testIsLegalCharacterName() {

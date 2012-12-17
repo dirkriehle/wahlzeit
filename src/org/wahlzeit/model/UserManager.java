@@ -24,7 +24,7 @@ import java.util.*;
 import java.sql.*;
 
 import org.wahlzeit.services.*;
-import org.wahlzeit.services.email.*;
+import org.wahlzeit.services.mailing.*;
 
 /**
  * The UserManager provides access to and manages Users (including Moderators and Administrators).

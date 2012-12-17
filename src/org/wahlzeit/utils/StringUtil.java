@@ -49,7 +49,7 @@ public class StringUtil {
 	/**
 	 * 
 	 */
-	public final static boolean isStrictValidEmailAddress(String s) {
+	public final static boolean isValidStrictEmailAddress(String s) {
 		int a = s.indexOf('@');
 		int d = s.lastIndexOf('.');
 		return isSafeIncluding(s, "_-+@.") && (a > 0) && (a < (d - 2)) && (d < (s.length() - 2));
@@ -58,9 +58,10 @@ public class StringUtil {
 	/**
 	 * 
 	 */
-	public final static boolean isRelaxedValidEmailAddress(String s) {
+	public final static boolean isValidLocalEmailAddress(String s) {
 		int a = s.indexOf('@');
-		return isSafeIncluding(s, "_-+@.") && (a > 0);
+		int d = s.lastIndexOf('@');
+		return isSafeIncluding(s, "_-+@.") && (a > 0) && (a == d);
 	}
 	
 	/**

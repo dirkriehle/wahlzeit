@@ -83,7 +83,7 @@ public class AdminUserProfileFormHandler extends AbstractWebFormHandler {
 		String homePage = ctx.getAndSaveAsString(args, User.HOME_PAGE);
 		String notifyAboutPraise = ctx.getAndSaveAsString(args, User.NOTIFY_ABOUT_PRAISE);
 		
-		if (!StringUtil.isStrictValidEmailAddress(emailAddress)) {
+		if (!StringUtil.isValidStrictEmailAddress(emailAddress)) {
 			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
 			return PartUtil.SHOW_ADMIN_PAGE_NAME;
 		} else if (!StringUtil.isValidURL(homePage)) {

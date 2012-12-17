@@ -25,7 +25,7 @@ import java.util.Set;
 
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
-import org.wahlzeit.services.email.*;
+import org.wahlzeit.services.mailing.*;
 
 
 /**
