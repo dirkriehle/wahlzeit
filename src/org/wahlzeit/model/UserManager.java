@@ -60,6 +60,7 @@ public class UserManager extends ObjectManager {
 	 * 
 	 */
 	public boolean hasUserByName(String name) {
+		assertIsNonNullArgument(name, "user-by-name");
 		return hasUserByTag(Tags.asTag(name));
 	}
 	
@@ -67,6 +68,7 @@ public class UserManager extends ObjectManager {
 	 * 
 	 */
 	public boolean hasUserByTag(String tag) {
+		assertIsNonNullArgument(tag, "user-by-tag");
 		return getUserByTag(tag) != null;
 	}
 	
@@ -88,6 +90,8 @@ public class UserManager extends ObjectManager {
 	 * 
 	 */
 	public User getUserByTag(String tag) {
+		assertIsNonNullArgument(tag, "user-by-tag");
+
 		User result = doGetUserByTag(tag);
 
 		if (result == null) {
@@ -140,7 +144,8 @@ public class UserManager extends ObjectManager {
 	 * 
 	 */
 	public void addUser(User user) {
-		assertIsNewUser(user);
+		assertIsNonNullArgument(user);
+		assertIsUnknownUserAsPrecondition(user);
 
 		try {
 			int id = user.getId();
@@ -162,20 +167,23 @@ public class UserManager extends ObjectManager {
 	/**
 	 * 
 	 */
-	public void removeUser(User user) {
-		doRemoveUser(user);
+	public void deleteUser(User user) {
+		assertIsNonNullArgument(user);
+		doDeleteUser(user);
 
 		try {
 			deleteObject(user, getReadingStatement("DELETE FROM users WHERE id = ?"));
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
-		}		
+		}
+		
+		assertIsUnknownUserAsInvariant(user);
 	}
 	
 	/**
 	 * 
 	 */
-	protected void doRemoveUser(User user) {
+	protected void doDeleteUser(User user) {
 		users.remove(user.getNameAsTag());
 	}
 	
@@ -257,7 +265,7 @@ public class UserManager extends ObjectManager {
 	/**
 	 * 
 	 */
-	public void dropUser(User user) {
+	public void removeUser(User user) {
 		saveUser(user);
 		users.remove(user.getNameAsTag());
 	}
@@ -307,9 +315,19 @@ public class UserManager extends ObjectManager {
 	 * 
 	 * @methodtype assertion
 	 */
-	protected void assertIsNewUser(User user) {
+	protected void assertIsUnknownUserAsPrecondition(User user) {
 		if (hasUserByTag(user.getNameAsTag())) {
-			throw new IllegalStateException("User already exists!");
+			throw new IllegalArgumentException(user.getName() + "already exists");
+		}
+	}
+	
+	/**
+	 * 
+	 * @methodtype assertion
+	 */
+	protected void assertIsUnknownUserAsInvariant(User user) {
+		if (hasUserByTag(user.getNameAsTag())) {
+			throw new IllegalStateException(user.getName() + "already exists");
 		}
 	}
 	

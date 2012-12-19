@@ -179,4 +179,20 @@ public abstract class ObjectManager {
 		stmt.executeUpdate();
 	}
 
+	/**
+	 * 
+	 */
+	protected void assertIsNonNullArgument(Object arg) {
+		assertIsNonNullArgument(arg, "anonymous");
+	}
+	
+	/**
+	 * 
+	 */
+	protected void assertIsNonNullArgument(Object arg, String label) {
+		if (arg == null) {
+			throw new IllegalArgumentException(label + " should not be null");
+		}
+	}
+
 }
