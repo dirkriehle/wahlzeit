@@ -145,7 +145,7 @@ public class UserManager extends ObjectManager {
 	 */
 	public void addUser(User user) {
 		assertIsNonNullArgument(user);
-		assertIsUnknownUserAsPrecondition(user);
+		assertIsUnknownUserAsIllegalArgument(user);
 
 		try {
 			int id = user.getId();
@@ -177,7 +177,7 @@ public class UserManager extends ObjectManager {
 			SysLog.logThrowable(sex);
 		}
 		
-		assertIsUnknownUserAsInvariant(user);
+		assertIsUnknownUserAsIllegalState(user);
 	}
 	
 	/**
@@ -315,9 +315,9 @@ public class UserManager extends ObjectManager {
 	 * 
 	 * @methodtype assertion
 	 */
-	protected void assertIsUnknownUserAsPrecondition(User user) {
+	protected void assertIsUnknownUserAsIllegalArgument(User user) {
 		if (hasUserByTag(user.getNameAsTag())) {
-			throw new IllegalArgumentException(user.getName() + "already exists");
+			throw new IllegalArgumentException(user.getName() + "is already known");
 		}
 	}
 	
@@ -325,9 +325,9 @@ public class UserManager extends ObjectManager {
 	 * 
 	 * @methodtype assertion
 	 */
-	protected void assertIsUnknownUserAsInvariant(User user) {
+	protected void assertIsUnknownUserAsIllegalState(User user) {
 		if (hasUserByTag(user.getNameAsTag())) {
-			throw new IllegalStateException(user.getName() + "already exists");
+			throw new IllegalStateException(user.getName() + "should not be known");
 		}
 	}
 	
