@@ -20,28 +20,46 @@
 
 package org.wahlzeit.model;
 
+/**
+ * Simple value object for case ids.
+ *
+ */
 public class CaseId {
 	
+	/**
+	 * 
+	 */
 	public static final CaseId NULL_ID = new CaseId(0);
 	
+	/**
+	 * 
+	 */
 	private final int id;
 	
+	/**
+	 * 
+	 */
 	public CaseId(int id) {
 		this.id = id;
 	}
 	
+	/**
+	 * 
+	 */
 	public int asInt() {
 		return id;
 	}
 	
-	public CaseId next() {
-		return new CaseId(id+1);
-	}
-	
-	public CaseId prev() {
-		return new CaseId(id-1);
+	/**
+	 * 
+	 */
+	public CaseId getNextId() {
+		return new CaseId(id + 1);
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -50,6 +68,9 @@ public class CaseId {
 		return result;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -64,6 +85,9 @@ public class CaseId {
 		return true;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public String toString() {
 		return String.valueOf(id);

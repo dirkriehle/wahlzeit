@@ -54,7 +54,7 @@ public abstract class Case extends DataObject {
 	 * @methodtype idiom
 	 */
 	public static synchronized CaseId getNextCaseId() {
-		return lastCaseId = lastCaseId.next();
+		return lastCaseId = lastCaseId.getNextId();
 	}
 
 }
