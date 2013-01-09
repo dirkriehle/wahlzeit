@@ -75,7 +75,7 @@ public abstract class ModelMain extends AbstractMain {
 			PhotoId.setValue(lastPhotoId);
 			SysLog.logInfo("loaded global variable lastPhotoId: " + lastPhotoId);
 			int lastCaseId = result.getInt("last_case_id");
-			Case.setLastCaseId(lastCaseId);
+			Case.setLastCaseId(new CaseId(lastCaseId));
 			SysLog.logInfo("loaded global variable lastCaseId: " + lastCaseId);
 			int lastSessionId = result.getInt("last_session_id");
 			AbstractServlet.setLastSessionId(lastSessionId);		
@@ -106,7 +106,7 @@ public abstract class ModelMain extends AbstractMain {
 			int lastPhotoId = PhotoId.getValue();
 			rset.updateInt("last_photo_id", lastPhotoId);
 			SysLog.logInfo("saved global variable lastPhotoId: " + lastPhotoId);
-			int lastCaseId = Case.getLastCaseId();
+			int lastCaseId = Case.getLastCaseId().asInt();
 			rset.updateInt("last_case_id", lastCaseId);
 			SysLog.logInfo("saved global variable lastCaseId: " + lastCaseId);
 			int lastSessionId = AbstractServlet.getLastSessionId();

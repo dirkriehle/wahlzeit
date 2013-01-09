@@ -35,6 +35,8 @@ public enum FlagReason implements EnumValue {
 	 */
 	MISMATCH(0), OFFENSIVE(1), COPYRIGHT(2), OTHER(3);
 	
+	protected static final int MAX_VALUE = 3;
+	
 	/**
 	 * 
 	 */
@@ -47,6 +49,7 @@ public enum FlagReason implements EnumValue {
 	 */
 	public static FlagReason getFromInt(int myValue) throws IllegalArgumentException {
 		assertIsValidFlagReasonAsInt(myValue);
+
 		return allValues[myValue];
 	}
 	
@@ -54,10 +57,31 @@ public enum FlagReason implements EnumValue {
 	 * 
 	 */
 	private static void assertIsValidFlagReasonAsInt(int myValue) {
-		if ((myValue < 0) || (myValue > 3)) {
+		if ((myValue < 0) || (myValue > MAX_VALUE)) {
 			throw new IllegalArgumentException("invalid FlagReason int: " + myValue);
 		}
 	}	
+	
+	private static void assertIsValidReasonAsString(String reason)	{
+		boolean found = false;
+		
+		for (String name : valueNames) {
+			if (name.equals(reason))	{
+				found = true;
+				break;
+			}
+		}
+		
+		if (!found)	{
+			throw new IllegalArgumentException("'" + reason + "' is not a valid reason!");
+		}
+	}
+	
+	private static void assertIsValidReason(FlagReason reason)	{
+		if (reason == null)	{
+			throw new IllegalArgumentException("invalid reason");
+		}
+	}
 	
 	/**
 	 * 
@@ -70,13 +94,20 @@ public enum FlagReason implements EnumValue {
 	 * 
 	 */
 	public static FlagReason getFromString(String reason) throws IllegalArgumentException {
+		assertIsValidReasonAsString(reason);
+		
+		FlagReason result = null;
+		
 		for (FlagReason fr : FlagReason.values()) {
 			if (valueNames[fr.asInt()].equals(reason)) {
-				return fr;
+				result = fr;
+				break;
 			}
 		}
 		
-		throw new IllegalArgumentException("invalid FlagReason string: " + reason);
+		assertIsValidReason(result);
+		
+		return result;
 	}
 	
 	/**
@@ -88,7 +119,11 @@ public enum FlagReason implements EnumValue {
 	 * 
 	 */
 	private FlagReason(int myValue) {
+		assertIsValidFlagReasonAsInt(myValue);
+		
 		value = myValue;
+		
+		assertIsValidFlagReasonAsInt(value);
 	}
 	
 	/**
@@ -96,6 +131,8 @@ public enum FlagReason implements EnumValue {
 	 * @methodtype conversion
 	 */
 	public int asInt() {
+		assertIsValidFlagReasonAsInt(value);
+		
 		return value;
 	}
 	
@@ -104,7 +141,11 @@ public enum FlagReason implements EnumValue {
 	 * @methodtype conversion
 	 */
 	public String asString() {
-		return valueNames[value];
+		String name = valueNames[value];
+		
+		assertIsValidReasonAsString(name);
+		
+		return name;
 	}
 	
 	/**
@@ -121,6 +162,5 @@ public enum FlagReason implements EnumValue {
 	 */
 	public String getTypeName() {
 		return "FlagReason";
-	}
-		
+	}		
 }

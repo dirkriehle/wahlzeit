@@ -20,41 +20,53 @@
 
 package org.wahlzeit.model;
 
-import org.wahlzeit.services.*;
-
-/**
- * A case is a user complaint, most notably about an inappropriate photo.
- * Subclasses capture the specifics of different types of cases; here only an id is provided.
- * 
- * @author dirkriehle
- *
- */
-public abstract class Case extends DataObject {
+public class CaseId {
 	
-	/**
-	 * 0 is never returned, first value is 1
-	 */
-	protected static CaseId lastCaseId = CaseId.NULL_ID;
+	public static final CaseId NULL_ID = new CaseId(0);
 	
-	/**
-	 * @methodtype get
-	 */
-	public static synchronized CaseId getLastCaseId() {
-		return lastCaseId;
+	private final int id;
+	
+	public CaseId(int id) {
+		this.id = id;
 	}
 	
-	/**
-	 * @methodtype set
-	 */
-	public static synchronized void setLastCaseId(CaseId newId) {
-		lastCaseId = newId;
+	public int asInt() {
+		return id;
 	}
 	
-	/**
-	 * @methodtype idiom
-	 */
-	public static synchronized CaseId getNextCaseId() {
-		return lastCaseId = lastCaseId.next();
+	public CaseId next() {
+		return new CaseId(id+1);
+	}
+	
+	public CaseId prev() {
+		return new CaseId(id-1);
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CaseId other = (CaseId) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return String.valueOf(id);
+	}
+	
 }

@@ -36,7 +36,7 @@ public class PhotoCaseManager extends ObjectManager {
 	/**
 	 * 
 	 */
-	protected Map<Integer, PhotoCase> openPhotoCases = new HashMap<Integer, PhotoCase>();
+	protected Map<CaseId, PhotoCase> openPhotoCases = new HashMap<CaseId, PhotoCase>();
 
 	/**
 	 * 
@@ -103,7 +103,7 @@ public class PhotoCaseManager extends ObjectManager {
 	public void addPhotoCase(PhotoCase myCase) {
 		openPhotoCases.put(myCase.getId(), myCase);
 		try {
-			createObject(myCase, getReadingStatement("INSERT INTO cases(id) VALUES(?)"), myCase.getId());
+			createObject(myCase, getReadingStatement("INSERT INTO cases(id) VALUES(?)"), myCase.getId().asInt());
 			updateObject(myCase, getUpdatingStatement("SELECT * FROM cases WHERE id = ?"));
 			//@FIXME Main.saveGlobals();
 		} catch (SQLException sex) {
