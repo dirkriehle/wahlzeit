@@ -47,7 +47,7 @@ public class UserSession extends Session {
 	 */
 	protected ModelConfig configuration = LanguageConfigs.get(Language.ENGLISH);
 
-	protected Client client = new Guest();
+	protected Client client = Client.createClient(Guest.class);
 	protected PhotoSize photoSize = PhotoSize.MEDIUM;
 	protected long confirmationCode = -1; // -1 means not set
 	protected PhotoFilter photoFilter = PhotoFactory.getInstance().createPhotoFilter();
