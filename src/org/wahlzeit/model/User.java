@@ -132,6 +132,7 @@ public class User extends ClientRole implements Persistent {
 	 */
 	protected User(ClientCore core) {
 		super(core);
+		core.setRights(AccessRights.USER);
 	}
 
 	/**

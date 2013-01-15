@@ -20,9 +20,7 @@
 
 package org.wahlzeit.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 
 import org.wahlzeit.services.*;
 
@@ -60,6 +58,14 @@ public class ClientCore extends Client{
 	protected void initialize(AccessRights myRights, EmailAddress myEmailAddress) {
 		rights = myRights;
 		setEmailAddress(myEmailAddress);
+	}
+	
+	/**
+	 * @methodtype initialization
+	 */
+	protected void initialize(AccessRights myRights, String myEmailAddress) {
+		rights = myRights;
+		setEmailAddress(EmailAddress.getFromString(myEmailAddress));
 	}
 
 	/**
@@ -143,7 +149,7 @@ public class ClientCore extends Client{
 	protected HashMap<Class<? extends ClientRole>, ClientRole> roles = new HashMap<Class<? extends ClientRole>, ClientRole>();
 	
 	/**
-	 * 
+	 * returns false if the role does not exist
 	 */
 	@Override
 	public boolean removeRole(Class<? extends ClientRole> r) {
@@ -164,7 +170,7 @@ public class ClientCore extends Client{
 	}
 
 	/**
-	 * 
+	 * returns false if the role already exists
 	 */
 	@Override
 	public boolean addRole(Class<? extends ClientRole> r) {

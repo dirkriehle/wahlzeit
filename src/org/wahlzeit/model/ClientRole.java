@@ -52,6 +52,14 @@ public abstract class ClientRole extends Client{
 	 * 
 	 */
 	@Override
+	protected void initialize(AccessRights myRights, String myEmailAddress){
+		core.initialize(myRights, myEmailAddress);
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
 	public AccessRights getRights(){
 		return core.getRights();
 	}

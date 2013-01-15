@@ -44,6 +44,11 @@ public abstract class Client {
 	protected abstract void initialize(AccessRights myRights, EmailAddress myEmailAddress);
 	
 	/**
+	 * @methodtype initialization
+	 */
+	protected abstract void initialize(AccessRights myRights, String myEmailAddress);
+	
+	/**
 	 * @methodtype get
 	 */
 	public abstract AccessRights getRights();
