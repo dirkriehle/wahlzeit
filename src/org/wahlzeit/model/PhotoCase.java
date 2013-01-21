@@ -22,6 +22,7 @@ package org.wahlzeit.model;
 
 import java.sql.*;
 
+import org.wahlzeit.services.PersistentWriter;
 
 /**
  * A photo case is a case where someone flagged a photo as inappropriate.
@@ -47,12 +48,23 @@ public class PhotoCase extends Case {
 	protected CaseId id = CaseId.NULL_ID; // case id
 	protected int applicationId = 0; // application id (unused on Java level)
 	protected Photo photo = null; // photo id -> photo
+	
+	@SqlAnnotation(value="direct")
 	protected String flagger = "unknown";
+	
 	protected FlagReason reason = FlagReason.OTHER;
-	protected String explanation = "none";	
-	protected long createdOn = System.currentTimeMillis();
+	
+	@SqlAnnotation(value="direct")
+	protected String explanation = "none";
+	
+	@SqlAnnotation(value="direct")
+	protected long creationTime = System.currentTimeMillis();
+	
+	@SqlAnnotation(value="direct")
 	protected boolean wasDecided = false;
-	protected long decidedOn = 0;
+	
+	@SqlAnnotation(value="direct")
+	protected long decisionTime = 0;
 	
 	/**
 	 * 
@@ -82,32 +94,34 @@ public class PhotoCase extends Case {
 	 * 
 	 */
 	public void readFrom(ResultSet rset) throws SQLException {
+		//wasDecided = rset.getBoolean("was_decided");
+		//decisionTime = rset.getLong("decision_time");
+		//creationTime = rset.getLong("creation_time");
+		//explanation = rset.getString("explanation");
+		//flagger = rset.getString("flagger");
+		PersistentWriter.readResultSet(this, rset);
+		
+		// non-generic attributes:
 		id = new CaseId(rset.getInt("id"));
 		photo = PhotoManager.getPhoto(PhotoId.getId(rset.getInt("photo")));
-		createdOn = rset.getLong("creation_time");
-		
-		flagger = rset.getString("flagger");
 		reason = FlagReason.getFromInt(rset.getInt("reason"));
-		explanation = rset.getString("explanation");
-		
-		wasDecided = rset.getBoolean("was_decided");
-		decidedOn = rset.getLong("decision_time");
 	}
 	
 	/**
 	 * 
 	 */
 	public void writeOn(ResultSet rset) throws SQLException {
+		//rset.updateBoolean("was_decided", wasDecided);
+		//rset.updateLong("decision_time", decisionTime);
+		//rset.updateLong("creation_time", creationTime);
+		//rset.updateString("explanation", explanation);
+		//rset.updateString("flagger", flagger);
+		PersistentWriter.writeResultSet(this, rset);
+		
+		// non-generic attributes:
 		rset.updateInt("id", id.asInt());
 		rset.updateInt("photo", (photo == null) ? 0 : photo.getId().asInt());
-		rset.updateLong("creation_time", createdOn);
-		
-		rset.updateString("flagger", flagger);
-		rset.updateInt("reason", reason.asInt());
-		rset.updateString("explanation", explanation);
-		
-		rset.updateBoolean("was_decided", wasDecided);
-		rset.updateLong("decision_time", decidedOn);		
+		rset.updateInt("reason", reason.asInt());				
 	}
 	
 	/**
@@ -135,7 +149,7 @@ public class PhotoCase extends Case {
 	 * 
 	 */
 	public long getCreationTime() {
-		return createdOn;
+		return creationTime;
 	}
 
 	/**
@@ -195,7 +209,7 @@ public class PhotoCase extends Case {
 	 */
 	public void setDecided() {
 		wasDecided = true;
-		decidedOn = System.currentTimeMillis();
+		decisionTime = System.currentTimeMillis();
 		incWriteCount();
 	}
 	
@@ -203,7 +217,7 @@ public class PhotoCase extends Case {
 	 * 
 	 */
 	public long getDecisionTime() {
-		return decidedOn;
+		return decisionTime;
 	}
 
 	/**

@@ -68,22 +68,32 @@ public class Photo extends DataObject {
 	/**
 	 * 
 	 */
+	@SqlAnnotation(value="direct")
 	protected int ownerId = 0;
+	@SqlAnnotation(value="direct")
 	protected String ownerName;
 
 	/**
 	 * 
 	 */
+	@SqlAnnotation(value="direct")
 	protected boolean ownerNotifyAboutPraise = false;
-	protected EmailAddress ownerEmailAddress = EmailAddress.EMPTY;
+	
+	@SqlAnnotation(value="direct")
+	protected String ownerEmailAddress = null;
+	
 	protected Language ownerLanguage = Language.ENGLISH;
 	protected URL ownerHomePage;
 	
 	/**
 	 * 
 	 */
+	@SqlAnnotation(value="direct")
 	protected int width;
+	
+	@SqlAnnotation(value="direct")
 	protected int height;
+	
 	protected PhotoSize maxPhotoSize = PhotoSize.MEDIUM; // derived
 	
 	/**
@@ -99,12 +109,15 @@ public class Photo extends DataObject {
 	/**
 	 * 
 	 */
+	@SqlAnnotation(value="direct")
 	protected int praiseSum = 10;
+	@SqlAnnotation(value="direct")
 	protected int noVotes = 1;
 	
 	/**
 	 * 
 	 */
+	@SqlAnnotation(value="direct")
 	protected long creationTime = System.currentTimeMillis();
 	
 	/**
@@ -145,48 +158,49 @@ public class Photo extends DataObject {
 	 * 
 	 */
 	public void readFrom(ResultSet rset) throws SQLException {
-		id = PhotoId.getId(rset.getInt("id"));
-
-		ownerId = rset.getInt("owner_id");
-		ownerName = rset.getString("owner_name");
+		//width = rset.getInt("width");
+		//height = rset.getInt("height");
+		//ownerId = rset.getInt("owner_id");
+		//ownerName = rset.getString("owner_name");
+		//praiseSum = rset.getInt("praise_sum");
+		//noVotes = rset.getInt("no_votes");
+		//creationTime = rset.getLong("creation_time");
+		//ownerNotifyAboutPraise = rset.getBoolean("owner_notify_about_praise");
+		//ownerEmailAddress = rset.getString("owner_email_address");
+		PersistentWriter.readResultSet(this, rset);
 		
-		ownerNotifyAboutPraise = rset.getBoolean("owner_notify_about_praise");
-		ownerEmailAddress = EmailAddress.getFromString(rset.getString("owner_email_address"));
+		maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
+		
+		// non-generic attributes:
+		id = PhotoId.getId(rset.getInt("id"));
 		ownerLanguage = Language.getFromInt(rset.getInt("owner_language"));
 		ownerHomePage = StringUtil.asUrl(rset.getString("owner_home_page"));
 
-		width = rset.getInt("width");
-		height = rset.getInt("height");
-
 		tags = new Tags(rset.getString("tags"));
-
 		status = PhotoStatus.getFromInt(rset.getInt("status"));
-		praiseSum = rset.getInt("praise_sum");
-		noVotes = rset.getInt("no_votes");
-
-		creationTime = rset.getLong("creation_time");
-
-		maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
 	}
 	
 	/**
 	 * 
 	 */
 	public void writeOn(ResultSet rset) throws SQLException {
+		//rset.updateInt("width", width);
+		//rset.updateInt("height", height);
+		//rset.updateInt("owner_id", ownerId);
+		//rset.updateString("owner_name", ownerName);
+		//rset.updateInt("praise_sum", praiseSum);
+		//rset.updateInt("no_votes", noVotes);
+		//rset.updateLong("creation_time", creationTime);
+		//rset.updateBoolean("owner_notify_about_praise", ownerNotifyAboutPraise);
+		//rset.updateString("owner_email_address", ownerEmailAddress);
+		PersistentWriter.writeResultSet(this, rset);
+		
+		// non-generic attributes:
 		rset.updateInt("id", id.asInt());
-		rset.updateInt("owner_id", ownerId);
-		rset.updateString("owner_name", ownerName);
-		rset.updateBoolean("owner_notify_about_praise", ownerNotifyAboutPraise);
-		rset.updateString("owner_email_address", ownerEmailAddress.asString());
 		rset.updateInt("owner_language", ownerLanguage.asInt());
 		rset.updateString("owner_home_page", ownerHomePage.toString());
-		rset.updateInt("width", width);
-		rset.updateInt("height", height);
 		rset.updateString("tags", tags.asString());
 		rset.updateInt("status", status.asInt());
-		rset.updateInt("praise_sum", praiseSum);
-		rset.updateInt("no_votes", noVotes);
-		rset.updateLong("creation_time", creationTime);		
 	}
 
 	/**
@@ -276,7 +290,11 @@ public class Photo extends DataObject {
 	 * @methodtype get
 	 */
 	public EmailAddress getOwnerEmailAddress() {
-		return ownerEmailAddress;
+		if(ownerEmailAddress == null){
+			return EmailAddress.EMPTY;
+		}else{
+			return EmailAddress.getFromString(ownerEmailAddress);
+		}
 	}
 	
 	/**
@@ -284,7 +302,7 @@ public class Photo extends DataObject {
 	 * @methodtype set
 	 */
 	public void setOwnerEmailAddress(EmailAddress newEmailAddress) {
-		ownerEmailAddress = newEmailAddress;
+		ownerEmailAddress = newEmailAddress.asString();
 		incWriteCount();
 	}
 

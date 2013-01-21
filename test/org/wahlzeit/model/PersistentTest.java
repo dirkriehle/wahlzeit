@@ -20,34 +20,33 @@
 
 package org.wahlzeit.model;
 
-import junit.framework.*;
+import java.util.Map;
+
+import org.wahlzeit.services.EmailAddress;
+import org.wahlzeit.utils.StringUtil;
+
+import junit.framework.TestCase;
 
 /**
  * 
- * @author dirkriehle
+ * @author pwa
  * 
  */
-public class AllTests extends TestSuite {
+public class PersistentTest extends TestCase {
 
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(suite());
+	public static void main(final String[] args) {
+		junit.textui.TestRunner.run(PersistentTest.class);
 	}
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite();
-		suite.addTestSuite(TagsTest.class);
-		suite.addTestSuite(ValueTest.class);
-		suite.addTestSuite(GenderTest.class);
-		suite.addTestSuite(PhotoFilterTest.class);
-		suite.addTestSuite(AccessRightsTest.class);
-		suite.addTestSuite(UserStatusTest.class);
-		suite.addTestSuite(FlagReasonTest.class);
-		suite.addTestSuite(ClientRoleTest.class);
-		suite.addTestSuite(PhotoManagerTest.class);
-		suite.addTestSuite(PhotoCaseManagerTest.class);
-		suite.addTestSuite(UserManagerTest.class);		
-		suite.addTestSuite(PersistentTest.class);
-		return suite;
+	public PersistentTest(final String name) {
+		super(name);
 	}
-
+	
+	public void testSetGetAttribute() {
+		User u = Client.createClient(User.class);
+		assertTrue(u.setAttributeValue("id", 23));
+		int i = (Integer)u.getAttributeValue("id");
+		assertTrue(i == 23);
+	}
+	
 }

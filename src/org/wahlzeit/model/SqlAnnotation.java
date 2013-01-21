@@ -20,34 +20,20 @@
 
 package org.wahlzeit.model;
 
-import junit.framework.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
+ * the SqlAnnotation can have the values
+ * "direct" or "indirect"
  * 
- * @author dirkriehle
+ * @author pwa
  * 
  */
-public class AllTests extends TestSuite {
-
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(suite());
-	}
-
-	public static Test suite() {
-		TestSuite suite = new TestSuite();
-		suite.addTestSuite(TagsTest.class);
-		suite.addTestSuite(ValueTest.class);
-		suite.addTestSuite(GenderTest.class);
-		suite.addTestSuite(PhotoFilterTest.class);
-		suite.addTestSuite(AccessRightsTest.class);
-		suite.addTestSuite(UserStatusTest.class);
-		suite.addTestSuite(FlagReasonTest.class);
-		suite.addTestSuite(ClientRoleTest.class);
-		suite.addTestSuite(PhotoManagerTest.class);
-		suite.addTestSuite(PhotoCaseManagerTest.class);
-		suite.addTestSuite(UserManagerTest.class);		
-		suite.addTestSuite(PersistentTest.class);
-		return suite;
-	}
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface SqlAnnotation{
+		public String value();
 }

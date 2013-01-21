@@ -50,6 +50,77 @@ public class StringUtilTest extends TestCase {
 
 		assertEquals("/", StringUtil.pathAsUrlString(File.separator));
 	}
+	
+	public void testValidCamelCase(){
+		assertTrue(StringUtil.isValidCamelCase("thisIsCamelCase"));
+		assertTrue(StringUtil.isValidCamelCase("this"));
+		assertTrue(StringUtil.isValidCamelCase("thisI"));
+		assertTrue(StringUtil.isValidCamelCase("thisIsAnotherValidCamelCaseString"));
+		
+		assertFalse(StringUtil.isValidCamelCase("s"));
+		assertFalse(StringUtil.isValidCamelCase("IssNotValid"));
+		assertFalse(StringUtil.isValidCamelCase("IssNotValid"));
+		assertFalse(StringUtil.isValidCamelCase("issNotValid23"));
+		assertFalse(StringUtil.isValidCamelCase("iss_not_valid"));
+	}
+	
+	public void testValidSqlCaption(){
+		assertTrue(StringUtil.isValidSqlCaption("this"));
+		assertTrue(StringUtil.isValidSqlCaption("this_is_valid"));
+		assertTrue(StringUtil.isValidSqlCaption("thisis_another_valid_string"));
+		assertTrue(StringUtil.isValidSqlCaption("tt"));
+
+		assertFalse(StringUtil.isValidSqlCaption("s"));
+		assertFalse(StringUtil.isValidSqlCaption("sP"));
+		assertFalse(StringUtil.isValidSqlCaption("P"));
+		assertFalse(StringUtil.isValidSqlCaption("PP"));
+		assertFalse(StringUtil.isValidSqlCaption("issNotValid"));
+		assertFalse(StringUtil.isValidSqlCaption("IssNotValid"));
+		assertFalse(StringUtil.isValidSqlCaption("issNotValid23"));
+		assertFalse(StringUtil.isValidSqlCaption("iss__not_valid"));
+		assertFalse(StringUtil.isValidSqlCaption("_not_valid"));
+		assertFalse(StringUtil.isValidSqlCaption("_not_valid_"));
+		assertFalse(StringUtil.isValidSqlCaption("not__valid_"));
+	}
+	
+	public void testSqlCaptionToCamelCase(){
+		assertTrue(StringUtil.camelCaseToSqlCaption("testString").equals("test_string"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("otherTestString").equals("other_test_string"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("other").equals("other"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("otherABC").equals(""));
+		assertTrue(StringUtil.camelCaseToSqlCaption("other23").equals(""));
+		
+		
+	}
+	
+	public void testSqlCaptionToCamelCase2(){
+		// PhotoCase:
+		assertTrue(StringUtil.camelCaseToSqlCaption("wasDecided").equals("was_decided"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("decisionTime").equals("decision_time"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("creationTime").equals("creation_time"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("explanation").equals("explanation"));
+		
+		// Photo:
+		assertTrue(StringUtil.camelCaseToSqlCaption("width").equals("width"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("height").equals("height"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("ownerId").equals("owner_id"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("ownerName").equals("owner_name"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("praiseSum").equals("praise_sum"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("noVotes").equals("no_votes"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("creationTime").equals("creation_time"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("ownerNotifyAboutPraise").equals("owner_notify_about_praise"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("ownerEmailAddress").equals("owner_email_address"));
+		
+		// User:
+		assertTrue(StringUtil.camelCaseToSqlCaption("id").equals("id"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("name").equals("name"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("nameAsTag").equals("name_as_tag"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("password").equals("password"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("notifyAboutPraise").equals("notify_about_praise"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("confirmationCode").equals("confirmation_code"));
+		assertTrue(StringUtil.camelCaseToSqlCaption("creationTime").equals("creation_time"));
+	}
+	
 
 }
 
