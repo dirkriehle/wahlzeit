@@ -87,7 +87,8 @@ public class PhotoCaseManager extends ObjectManager {
 		PhotoCase result = openPhotoCases.get(id);
 		if (result == null) {
 			try {
-				result = (PhotoCase) readObject(getReadingStatement("SELECT * FROM cases WHERE id = ?"), id);
+				PreparedStatement stmt = getReadingStatement("SELECT * FROM cases WHERE id = ?");
+				result = (PhotoCase) readObject(stmt, id);
 			} catch (SQLException sex) {
 				SysLog.logThrowable(sex);
 			}
@@ -103,8 +104,10 @@ public class PhotoCaseManager extends ObjectManager {
 	public void addPhotoCase(PhotoCase myCase) {
 		openPhotoCases.put(myCase.getId(), myCase);
 		try {
-			createObject(myCase, getReadingStatement("INSERT INTO cases(id) VALUES(?)"), myCase.getId().asInt());
-			updateObject(myCase, getUpdatingStatement("SELECT * FROM cases WHERE id = ?"));
+			PreparedStatement stmt1 = getReadingStatement("INSERT INTO cases(id) VALUES(?)");
+			createObject(myCase, stmt1, myCase.getId().asInt());
+			PreparedStatement stmt2 = getUpdatingStatement("SELECT * FROM cases WHERE id = ?");
+			updateObject(myCase, stmt2);
 			//@FIXME Main.saveGlobals();
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
@@ -118,7 +121,8 @@ public class PhotoCaseManager extends ObjectManager {
 	public void removePhotoCase(PhotoCase myCase) {
 		openPhotoCases.remove(myCase.getId());
 		try {
-			updateObject(myCase, getUpdatingStatement("SELECT * FROM cases WHERE id = ?"));
+			PreparedStatement stmt = getUpdatingStatement("SELECT * FROM cases WHERE id = ?");
+			updateObject(myCase, stmt);
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
 		}
@@ -130,7 +134,8 @@ public class PhotoCaseManager extends ObjectManager {
 	 */
 	public void loadOpenPhotoCases(Collection<PhotoCase> result) {
 		try {
-			readObjects(result, getReadingStatement("SELECT * FROM cases WHERE was_decided = FALSE"));
+			PreparedStatement stmt = getReadingStatement("SELECT * FROM cases WHERE was_decided = FALSE");
+			readObjects(result, stmt);
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
 		}
@@ -144,7 +149,8 @@ public class PhotoCaseManager extends ObjectManager {
 	 */
 	public void savePhotoCases() {
 		try {
-			updateObjects(openPhotoCases.values(), getUpdatingStatement("SELECT * FROM cases WHERE id = ?"));
+			PreparedStatement stmt = getUpdatingStatement("SELECT * FROM cases WHERE id = ?");
+			updateObjects(openPhotoCases.values(), stmt);
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
 		}

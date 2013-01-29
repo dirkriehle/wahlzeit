@@ -96,7 +96,8 @@ public class UserManager extends ObjectManager {
 
 		if (result == null) {
 			try {
-				result = (User) readObject(getReadingStatement("SELECT * FROM users WHERE name_as_tag = ?"), tag);
+				PreparedStatement stmt = getReadingStatement("SELECT * FROM users WHERE name_as_tag = ?");
+				result = (User) readObject(stmt, tag);
 			} catch (SQLException sex) {
 				SysLog.logThrowable(sex);
 			}
@@ -149,7 +150,8 @@ public class UserManager extends ObjectManager {
 
 		try {
 			int id = user.getId();
-			createObject(user, getReadingStatement("INSERT INTO users(id) VALUES(?)"), id);
+			PreparedStatement stmt = getReadingStatement("INSERT INTO users(id) VALUES(?)");
+			createObject(user, stmt, id);
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
 		}
@@ -172,7 +174,8 @@ public class UserManager extends ObjectManager {
 		doDeleteUser(user);
 
 		try {
-			deleteObject(user, getReadingStatement("DELETE FROM users WHERE id = ?"));
+			PreparedStatement stmt = getReadingStatement("DELETE FROM users WHERE id = ?");
+			deleteObject(user, stmt);
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
 		}
@@ -192,7 +195,8 @@ public class UserManager extends ObjectManager {
 	 */
 	public void loadUsers(Collection<User> result) {
 		try {
-			readObjects(result, getReadingStatement("SELECT * FROM users"));
+			PreparedStatement stmt = getReadingStatement("SELECT * FROM users");
+			readObjects(result, stmt);
 			for (Iterator<User> i = result.iterator(); i.hasNext(); ) {
 				User user = i.next();
 				if (!doHasUserByTag(user.getNameAsTag())) {
@@ -256,7 +260,8 @@ public class UserManager extends ObjectManager {
 	 */
 	public void saveUser(User user) {
 		try {
-			updateObject(user, getUpdatingStatement("SELECT * FROM users WHERE id = ?"));
+			PreparedStatement stmt = getUpdatingStatement("SELECT * FROM users WHERE id = ?");
+			updateObject(user, stmt);
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
 		}
@@ -275,7 +280,8 @@ public class UserManager extends ObjectManager {
 	 */
 	public void saveUsers() {
 		try {
-			updateObjects(users.values(), getUpdatingStatement("SELECT * FROM users WHERE id = ?"));
+			PreparedStatement stmt = getUpdatingStatement("SELECT * FROM users WHERE id = ?");
+			updateObjects(users.values(), stmt);
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
 		}
@@ -294,7 +300,8 @@ public class UserManager extends ObjectManager {
 	public User getUserByEmailAddress(EmailAddress emailAddress) {
 		User result = null;
 		try {
-			result = (User) readObject(getReadingStatement("SELECT * FROM users WHERE email_address = ?"), emailAddress.asString());
+			PreparedStatement stmt = getReadingStatement("SELECT * FROM users WHERE email_address = ?");
+			result = (User) readObject(stmt, emailAddress.asString());
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
 		}
