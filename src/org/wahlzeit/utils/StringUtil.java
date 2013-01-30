@@ -251,4 +251,34 @@ public class StringUtil {
 		}
 	}
 	
+	/**
+	 * 
+	 */
+	public final static boolean isValidCamelCase(String s){
+		String camelCasePattern = "([a-z]+([A-Z][a-z]*)?){2,}";
+		return s.matches(camelCasePattern);
+	}
+	
+	/**
+	 * 
+	 */
+	public final static boolean isValidSqlCaption(String s){
+		String sqlCaptionPattern = "[a-z]{2,}([_][a-z]+)*";
+		return s.matches(sqlCaptionPattern);
+	}
+	
+	/**
+	 * returns "" if the argument is not a valid camel case string
+	 */
+	public final static String camelCaseToSqlCaption(String s){
+		if(!isValidCamelCase(s)) return "";
+
+		return s.replaceAll(String.format("%s|%s|%s",
+				"(?<=[A-Z])(?=[A-Z][a-z])",
+				"(?<=[^A-Z])(?=[A-Z])",
+				"(?<=[A-Za-z])(?=[^A-Za-z])"),
+				"_"
+				).toLowerCase();
+	}
+	
 }

@@ -21,8 +21,10 @@
 package org.wahlzeit.model;
 
 import java.util.*;
+import java.util.concurrent.locks.*;
 import java.sql.*;
 
+import org.wahlzeit.model.ControllerException.ControllerErrorCode;
 import org.wahlzeit.services.*;
 import org.wahlzeit.services.mailing.*;
 
@@ -126,13 +128,13 @@ public class UserManager extends ObjectManager {
 
 		AccessRights rights = AccessRights.getFromInt(rset.getInt("rights"));
 		if (rights == AccessRights.USER) {
-			result = new User();
+			result = Client.createClient(User.class);
 			result.readFrom(rset);
 		} else if (rights == AccessRights.MODERATOR) {
-			result = new Moderator();
+			result = Client.createClient(Moderator.class);
 			result.readFrom(rset);
 		} else if (rights == AccessRights.ADMINISTRATOR) {
-			result = new Administrator();
+			result = Client.createClient(Moderator.class);
 			result.readFrom(rset);
 		} else {
 			SysLog.logInfo("received NONE rights value");
@@ -140,25 +142,107 @@ public class UserManager extends ObjectManager {
 
 		return result;
 	}
+
 	
 	/**
-	 * 
+	 * problem: two users can pass the "users-exists-checks" and enter this function parallel => critical section
+	 * solution: executing query creating users must be atomic
 	 */
-	public void addUser(User user) {
-		assertIsNonNullArgument(user);
-		assertIsUnknownUserAsIllegalArgument(user);
+	Lock userAddMutex = new ReentrantLock();
+	
+	/**
+	 * controller/business function (tier 1)
+	 */
+	public void addUser(User user) throws ControllerException{
+		try{
+			assertIsNonNullArgument(user);
+			assertIsUnknownUserAsIllegalArgument(user);
+		}catch(IllegalArgumentException iaex){
+			throw new ControllerException(ControllerErrorCode.USER_ALREADY_EXISTS);
+		}
 
 		try {
 			int id = user.getId();
-			PreparedStatement stmt = getReadingStatement("INSERT INTO users(id) VALUES(?)");
-			createObject(user, stmt, id);
-		} catch (SQLException sex) {
-			SysLog.logThrowable(sex);
+			PreparedStatement stmt = null;
+			try{
+			stmt = getReadingStatement("INSERT INTO users(id) VALUES(?)");
+			}catch(SQLException s){
+				SysLog.logThrowable(s);
+				throw new ControllerException(ControllerErrorCode.UNDEFINED);
+			}
+			
+			userAddMutex.lock();
+			
+			if (hasUserByName(user.getName())) {
+				// fault detected: race-condition!
+				userAddMutex.unlock();
+				throw new ControllerException(ControllerErrorCode.USER_ALREADY_EXISTS);
+			}
+			
+			createUserObject(user, stmt, id);
+			userAddMutex.unlock();
+			
+		} catch (ReadWriteException rwex) {
+			// fault detected!
+			// error handling not possible here!
+			// failure:
+			throw new ControllerException(ControllerErrorCode.UNDEFINED);
+			
 		}
 		
-		doAddUser(user);		
+		doAddUser(user);
 	}
 	
+	
+	/**
+	 * data access function (tier 0)
+	 */
+	protected void createUserObject(Persistent obj, PreparedStatement stmt, int value) throws ReadWriteException {
+		try {
+			stmt.setInt(1, value);
+		} catch (SQLException e) {
+			// fault detected!
+			// error handling not possible here!
+			// failure:
+			SysLog.logThrowable(e);
+			throw new ReadWriteException(SQLErrorCodes.invalid_statement);
+		}
+		
+		try{
+			stmt.executeUpdate();
+			SysLog.logQuery(stmt);
+		}catch (SQLException e){
+			// fault detected!
+			// error handling mechanism: 
+			if(!handleExceptionCreatingUserObject(e, stmt)){
+				// failure:
+				SysLog.logThrowable(e);
+				throw new ReadWriteException(SQLErrorCodes.undefined);
+			}
+		}
+	}
+	
+	/**
+	 * returns true if the {@link SQLException} could be handeled
+	 */
+	private boolean handleExceptionCreatingUserObject(SQLException e, PreparedStatement stmt) {
+		if(e.getErrorCode() == SQLErrorCodes.connection_exception.getCode()
+				|| e.getErrorCode() == SQLErrorCodes.connection_failure.getCode()){
+			// try it again:
+			try{
+				stmt.executeUpdate();
+			}catch (SQLException se){
+				return false;
+			}
+			return true;
+		}else{
+			// cannot handle other error codes:
+			return false;
+		}
+	}
+
+
+
 	/**
 	 * 
 	 */

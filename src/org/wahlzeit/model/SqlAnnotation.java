@@ -20,22 +20,20 @@
 
 package org.wahlzeit.model;
 
-import org.wahlzeit.services.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * A Moderator is a system user with moderator privileges.
+ * the SqlAnnotation can have the values
+ * "direct" or "indirect"
  * 
- * @author dirkriehle
- *
+ * @author pwa
+ * 
  */
-public class Moderator extends User {
-
-	/**
-	 * 
-	 */
-	protected Moderator(ClientCore core){
-		super(core);
-		core.setRights(AccessRights.MODERATOR);
-	}
-	
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface SqlAnnotation{
+		public String value();
 }

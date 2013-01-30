@@ -20,8 +20,6 @@
 
 package org.wahlzeit.model;
 
-import org.wahlzeit.services.EmailAddress;
-
 
 /**
  * An Administrator is a moderator with administration privileges.
@@ -29,27 +27,13 @@ import org.wahlzeit.services.EmailAddress;
  * @author dirkriehle
  *
  */
-public class Administrator extends Moderator {
+public class Administrator extends Moderator{
 
 	/**
 	 * 
 	 */
-	public Administrator(String myName, String myPassword, String myEmailAddress, long vc) {
-		this(myName, myPassword, EmailAddress.getFromString(myEmailAddress), vc);
+	protected Administrator(ClientCore core) {
+		super(core);
+		core.setRights(AccessRights.ADMINISTRATOR);
 	}
-	
-	/**
-	 * 
-	 */
-	public Administrator(String myName, String myPassword, EmailAddress myEmailAddress, long vc) {
-		initialize(AccessRights.ADMINISTRATOR, myEmailAddress, myName, myPassword, vc);
-	}
-	
-	/**
-	 * 
-	 */
-	protected Administrator() {
-		// do nothing
-	}
-		
 }

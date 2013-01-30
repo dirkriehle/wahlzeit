@@ -42,6 +42,11 @@ public class AllTests extends TestSuite {
 		suite.addTestSuite(AccessRightsTest.class);
 		suite.addTestSuite(UserStatusTest.class);
 		suite.addTestSuite(FlagReasonTest.class);
+		suite.addTestSuite(ClientRoleTest.class);
+		suite.addTestSuite(PhotoManagerTest.class);
+		suite.addTestSuite(PhotoCaseManagerTest.class);
+		suite.addTestSuite(UserManagerTest.class);		
+		suite.addTestSuite(PersistentTest.class);
 		return suite;
 	}
 

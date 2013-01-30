@@ -18,24 +18,38 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.model;
-
-import org.wahlzeit.services.*;
+package org.wahlzeit.services;
 
 /**
- * A Moderator is a system user with moderator privileges.
- * 
- * @author dirkriehle
+ * error codes from the sql standard:
+ * http://www.postgresql.org/docs/current/static/errcodes-appendix.html
  *
  */
-public class Moderator extends User {
-
+public enum SQLErrorCodes {
+	
 	/**
 	 * 
 	 */
-	protected Moderator(ClientCore core){
-		super(core);
-		core.setRights(AccessRights.MODERATOR);
+	/// TODO add the missing error codes
+	undefined(-1), invalid_statement(1000), connection_exception(8000), connection_does_not_exist(8003), connection_failure(8006);
+	
+	/**
+	 * 
+	 */
+	private int value;
+	
+	/**
+	 * 
+	 */
+	private SQLErrorCodes(int value) {
+		this.value = value;
+	}
+	
+	/**
+	 * 
+	 */
+	public int getCode() {
+		return value;
 	}
 	
 }

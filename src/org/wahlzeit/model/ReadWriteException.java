@@ -20,22 +20,38 @@
 
 package org.wahlzeit.model;
 
-import org.wahlzeit.services.*;
+import org.wahlzeit.services.SQLErrorCodes;
 
 /**
- * A Moderator is a system user with moderator privileges.
- * 
- * @author dirkriehle
- *
+ * Tier 0 Exception (data tier/data access tier):
+ * represents an exception on the layer communicating directly 
+ * with the database 
  */
-public class Moderator extends User {
+public class ReadWriteException extends Exception {
 
 	/**
 	 * 
 	 */
-	protected Moderator(ClientCore core){
-		super(core);
-		core.setRights(AccessRights.MODERATOR);
+	private SQLErrorCodes errorCode = null;
+	
+	/**
+	 * 
+	 */
+	public ReadWriteException(SQLErrorCodes err){
+		super();
+		this.errorCode = err;
 	}
+	
+	/**
+	 * 
+	 */
+	public SQLErrorCodes getErrorCode(){
+		return errorCode;
+	}
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 796018674019464408L;
 	
 }

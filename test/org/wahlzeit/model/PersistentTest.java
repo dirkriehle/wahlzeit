@@ -20,22 +20,33 @@
 
 package org.wahlzeit.model;
 
-import org.wahlzeit.services.*;
+import java.util.Map;
+
+import org.wahlzeit.services.EmailAddress;
+import org.wahlzeit.utils.StringUtil;
+
+import junit.framework.TestCase;
 
 /**
- * A Moderator is a system user with moderator privileges.
  * 
- * @author dirkriehle
- *
+ * @author pwa
+ * 
  */
-public class Moderator extends User {
+public class PersistentTest extends TestCase {
 
-	/**
-	 * 
-	 */
-	protected Moderator(ClientCore core){
-		super(core);
-		core.setRights(AccessRights.MODERATOR);
+	public static void main(final String[] args) {
+		junit.textui.TestRunner.run(PersistentTest.class);
+	}
+
+	public PersistentTest(final String name) {
+		super(name);
+	}
+	
+	public void testSetGetAttribute() {
+		User u = Client.createClient(User.class);
+		assertTrue(u.setAttributeValue("id", 23));
+		int i = (Integer)u.getAttributeValue("id");
+		assertTrue(i == 23);
 	}
 	
 }

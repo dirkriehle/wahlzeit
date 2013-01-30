@@ -20,6 +20,8 @@
 
 package org.wahlzeit.services;
 
+import java.lang.reflect.Field;
+
 /**
  * A simple abstract implementation of Persistent with write count and dirty bit.
  * Also defines (but does not use) the field "ID" for subclass use.
@@ -66,5 +68,54 @@ public abstract class DataObject implements Persistent {
 	public final void touch() {
 		incWriteCount();
 	}
+			
+	/**
+	 * 
+	 */
+	public boolean setAttributeValue(String attributeName, Object value) {
+		Field f = null;
+		try {
+			f = this.getClass().getDeclaredField(attributeName);
+			f.setAccessible(true); // required if field is not normally accessible
+		} catch (SecurityException e1) {
+			SysLog.logError(e1.getMessage());
+			return false;
+		} catch (NoSuchFieldException e1) {
+			SysLog.logError(e1.getMessage());
+			return false;
+		}
 
+		try {
+			f.set(this, value);
+		} catch (Exception e) {
+			SysLog.logError(e.getMessage());
+			return false;
+		}
+
+		return true;
+	}
+	
+	/**
+	 * 
+	 */
+	public Object getAttributeValue(String attributeName){
+		Field f = null;
+		Object res = null;
+		try {
+			f = this.getClass().getDeclaredField(attributeName);
+			f.setAccessible(true);
+		} catch (Exception e) {
+			SysLog.logError(e.getMessage());
+			return null;
+		}
+		
+		try {
+			res = f.get(this);
+		} catch (Exception e) {
+			SysLog.logError(e.getMessage());
+			return null;
+		}		
+		return res;
+	}
+	
 }

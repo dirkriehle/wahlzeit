@@ -21,11 +21,13 @@
 package org.wahlzeit.model;
 
 import java.util.*;
+import java.lang.reflect.Field;
 import java.net.*;
 import java.sql.*;
 
 import org.wahlzeit.services.*;
 import org.wahlzeit.utils.*;
+import org.wahlzeit.model.SqlAnnotation;
 
 /**
  * A User is a client that is logged-in, that is, has registered with the system.
@@ -36,7 +38,7 @@ import org.wahlzeit.utils.*;
  * @author dirkriehle
  *
  */
-public class User extends Client implements Persistent {
+public class User extends ClientRole implements Persistent {
 	
 	/**
 	 * 
@@ -94,58 +96,94 @@ public class User extends Client implements Persistent {
 	/**
 	 * 
 	 */
+	@SqlAnnotation(value="direct")
 	protected int id;
+	
+	/**
+	 * 
+	 */
+	@SqlAnnotation(value="direct")
 	protected String name;
+	
+	/**
+	 * 
+	 */
+	@SqlAnnotation(value="direct")
 	protected String nameAsTag;
+	
+	/**
+	 * 
+	 */
+	@SqlAnnotation(value="direct")
 	protected String password;
 	
 	/**
-	 * 
+	 * "rights" needs special treatment
 	 */
-	protected Language language = Language.ENGLISH;
-	protected boolean notifyAboutPraise = true;
-	protected URL homePage = StringUtil.asUrl(SysConfig.getSiteUrlAsString());
-	protected Gender gender = Gender.UNDEFINED;
-	protected UserStatus status = UserStatus.CREATED;
-	protected long confirmationCode = 0; // 0 means doesn't need confirmation
-
+	
 	/**
-	 * 
+	 * needs special treatment
 	 */
-	protected Photo userPhoto = null;
-	protected Set<Photo> photos = new HashSet<Photo>();
+	@SqlAnnotation(value="indirect")
+	protected Language language = Language.ENGLISH;
 	
 	/**
 	 * 
 	 */
+	@SqlAnnotation(value="direct")
+	protected boolean notifyAboutPraise = true;
+	
+	/**
+	 * needs special treatment
+	 */
+	@SqlAnnotation(value="indirect")
+	protected URL homePage = StringUtil.asUrl(SysConfig.getSiteUrlAsString());
+	
+	/**
+	 * needs special treatment
+	 */
+	@SqlAnnotation(value="indirect")
+	protected Gender gender = Gender.UNDEFINED;
+	
+	/**
+	 * needs special treatment
+	 */
+	@SqlAnnotation(value="indirect")
+	protected UserStatus status = UserStatus.CREATED;
+	
+	/**
+	 * 
+	 */
+	@SqlAnnotation(value="direct")
+	protected long confirmationCode = 0; // 0 means doesn't need confirmation
+
+	/**
+	 * needs special treatment
+	 */
+	@SqlAnnotation(value="indirect")
+	protected Photo userPhoto = null;
+	
+	protected Set<Photo> photos = new HashSet<Photo>();
+	
+	/**
+	 *
+	 */
+	@SqlAnnotation(value="direct")
 	protected long creationTime = System.currentTimeMillis();
 	
 	/**
 	 * 
 	 */
-	public User(String myName, String myPassword, String myEmailAddress, long vc) {
-		this(myName, myPassword, EmailAddress.getFromString(myEmailAddress), vc);
+	public void initialize(String myName, String myPassword, String myEmailAddress, long vc){
+		initialize(AccessRights.USER, EmailAddress.getFromString(myEmailAddress), myName, myPassword, vc);
 	}
-	
+		
 	/**
 	 * 
 	 */
-	public User(String myName, String myPassword, EmailAddress myEmailAddress, long vc) {
-		initialize(AccessRights.USER, myEmailAddress, myName, myPassword, vc);
-	}
-	
-	/**
-	 * 
-	 */
-	public User(ResultSet rset) throws SQLException {
-		readFrom(rset);
-	}
-	
-	/**
-	 * 
-	 */
-	protected User() {
-		// do nothing
+	protected User(ClientCore core) {
+		super(core);
+		core.setRights(AccessRights.USER);
 	}
 
 	/**
@@ -207,41 +245,53 @@ public class User extends Client implements Persistent {
 	 * @methodtype command
 	 */
 	public void readFrom(ResultSet rset) throws SQLException {
-		id = rset.getInt("id");
-		name = rset.getString("name");
-		nameAsTag = rset.getString("name_as_tag");
-		emailAddress = EmailAddress.getFromString(rset.getString("email_address"));
-		password = rset.getString("password");
-		rights = AccessRights.getFromInt(rset.getInt("rights"));
-		language = Language.getFromInt(rset.getInt("language"));
-		notifyAboutPraise = rset.getBoolean("notify_about_praise");
+		//id = rset.getInt("id");
+		//name = rset.getString("name");
+		//nameAsTag = rset.getString("name_as_tag");
+		//password = rset.getString("password");
+		//notifyAboutPraise = rset.getBoolean("notify_about_praise");
+		//confirmationCode = rset.getLong("confirmation_code");
+		//creationTime = rset.getLong("creation_time");
+		PersistentWriter.readResultSet(this, rset);
+		
+		// unable to handle the following attributes in a *generic way*:
 		homePage = StringUtil.asUrlOrDefault(rset.getString("home_page"), getDefaultHomePage());
 		gender = Gender.getFromInt(rset.getInt("gender"));
 		status = UserStatus.getFromInt(rset.getInt("status"));
-		confirmationCode = rset.getLong("confirmation_code");
+		language = Language.getFromInt(rset.getInt("language"));
+		
+		AccessRights rights = AccessRights.getFromInt(rset.getInt("rights"));
+		setRights(rights);
+		EmailAddress emailAddress = EmailAddress.getFromString(rset.getString("email_address"));
+		setEmailAddress(emailAddress);		
+		
 		photos = PhotoManager.getInstance().findPhotosByOwner(name);
 		userPhoto = PhotoManager.getPhoto(PhotoId.getId(rset.getInt("photo")));
-		creationTime = rset.getLong("creation_time");
 	}
 	
 	/**
 	 * 
 	 */
 	public void writeOn(ResultSet rset) throws SQLException {
-		rset.updateInt("id", id);
-		rset.updateString("name", name);
-		rset.updateString("name_as_tag", nameAsTag);
-		rset.updateString("email_address", (emailAddress == null) ? "" : emailAddress.asString());
-		rset.updateString("password", password);
-		rset.updateInt("rights", rights.asInt());
-		rset.updateInt("language", language.asInt());
-		rset.updateBoolean("notify_about_praise", notifyAboutPraise);
+		//rset.updateInt("id", id);
+		//rset.updateString("name", name);
+		//rset.updateString("name_as_tag", nameAsTag);
+		//rset.updateString("password", password);
+		//rset.updateBoolean("notify_about_praise", notifyAboutPraise);
+		//rset.updateLong("confirmation_code", confirmationCode);
+		//rset.updateLong("creation_time", creationTime);
+		PersistentWriter.writeResultSet(this, rset);
+		
+		// non-generic attributes:
 		rset.updateString("home_page", homePage.toString());
 		rset.updateInt("gender", gender.asInt());
 		rset.updateInt("status", status.asInt());
-		rset.updateLong("confirmation_code", confirmationCode);
+		rset.updateInt("language", language.asInt());
+		
+		rset.updateInt("rights", getRights().asInt());
+		rset.updateString("email_address", (getEmailAddress() == null) ? "" : getEmailAddress().asString());
+		
 		rset.updateInt("photo", (userPhoto == null) ? 0 : userPhoto.getId().asInt());
-		rset.updateLong("creation_time", creationTime);
 	}
 
 	/**
@@ -260,7 +310,7 @@ public class User extends Client implements Persistent {
 		
 		for (Iterator<Photo> i = photos.iterator(); i.hasNext(); ) {
 			Photo photo = i.next();
-			photo.setOwnerEmailAddress(emailAddress);
+			photo.setOwnerEmailAddress(getEmailAddress());
 		}
 	}
 	
@@ -466,7 +516,7 @@ public class User extends Client implements Persistent {
 		newPhoto.setOwnerId(id);
 		newPhoto.setOwnerName(name);
 		newPhoto.setOwnerNotifyAboutPraise(notifyAboutPraise);
-		newPhoto.setOwnerEmailAddress(emailAddress);
+		newPhoto.setOwnerEmailAddress(getEmailAddress());
 		newPhoto.setOwnerLanguage(language);
 		newPhoto.setOwnerHomePage(homePage);
 	}
@@ -521,6 +571,58 @@ public class User extends Client implements Persistent {
 				}
 			}
 		};
+	}
+
+	
+	
+	/**
+	 * 
+	 */
+	public boolean setAttributeValue(String attributeName, Object value) {
+		Field f = null;
+		try {
+			// f = this.getClass().getField(attributeName);
+			f = this.getClass().getDeclaredField(attributeName);
+			f.setAccessible(true); // required if field is not normally accessible
+		} catch (SecurityException e1) {
+			SysLog.logError(e1.getMessage());
+			return false;
+		} catch (NoSuchFieldException e1) {
+			SysLog.logError(e1.getMessage());
+			return false;
+		}
+
+		try {
+			f.set(this, value);
+		} catch (Exception e) {
+			SysLog.logError(e.getMessage());
+			return false;
+		}
+
+		return true;
+	}
+	
+	/**
+	 * 
+	 */
+	public Object getAttributeValue(String attributeName){
+		Field f = null;
+		Object res = null;
+		try {
+			f = this.getClass().getDeclaredField(attributeName);
+			f.setAccessible(true);
+		} catch (Exception e) {
+			SysLog.logError(e.getMessage());
+			return null;
+		}
+		
+		try {
+			res = f.get(this);
+		} catch (Exception e) {
+			SysLog.logError(e.getMessage());
+			return null;
+		}		
+		return res;
 	}
 	
 }

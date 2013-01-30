@@ -23,6 +23,9 @@ package org.wahlzeit.handlers;
 import java.util.*;
 
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.Client;
+import org.wahlzeit.model.ControllerException;
+import org.wahlzeit.model.ControllerException.ControllerErrorCode;
 import org.wahlzeit.model.User;
 import org.wahlzeit.model.UserLog;
 import org.wahlzeit.model.UserManager;
@@ -107,8 +110,22 @@ public class SignupFormHandler extends AbstractWebFormHandler {
 		}
 
 		long confirmationCode = userManager.createConfirmationCode();
-		User user = new User(userName, password, emailAddress, confirmationCode);
-		userManager.addUser(user);
+		User user = Client.createClient(User.class);
+		
+		user.initialize(userName, password, emailAddress, confirmationCode);
+		
+		try{
+			userManager.addUser(user);
+		}catch(ControllerException cex){
+			// error handling on application/view tier:
+			if(cex.getErrorCode() == ControllerErrorCode.USER_ALREADY_EXISTS){
+				ctx.setMessage(ctx.cfg().getUserAlreadyExists());
+				return PartUtil.SIGNUP_PAGE_NAME;
+			}else{
+				ctx.setMessage(ctx.cfg().getInternalProcessingError());
+				return PartUtil.SIGNUP_PAGE_NAME;
+			}
+		}
 		
 		userManager.emailWelcomeMessage(ctx, user);
 		ctx.setClient(user);

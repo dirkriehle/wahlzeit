@@ -20,22 +20,44 @@
 
 package org.wahlzeit.model;
 
-import org.wahlzeit.services.*;
-
 /**
- * A Moderator is a system user with moderator privileges.
- * 
- * @author dirkriehle
- *
+ * Tier 1 Exception (controller/business tier):
+ * represents an exception on the layer communicating 
+ * with the data tier (tier 0)
  */
-public class Moderator extends User {
+public class ControllerException extends Exception {
+
+	/**
+	 * represents the error codes
+	 *
+	 */
+	public enum ControllerErrorCode{
+		USER_ALREADY_EXISTS, UNDEFINED;
+	}
+	
+	/**
+	 * 
+	 */
+	private ControllerErrorCode errorCode = null;
+	
+	/**
+	 * 
+	 */
+	public ControllerException(ControllerErrorCode err){
+		super();
+		this.errorCode = err;
+	}
+	
+	/**
+	 * 
+	 */
+	public ControllerErrorCode getErrorCode(){
+		return errorCode;
+	}
 
 	/**
 	 * 
 	 */
-	protected Moderator(ClientCore core){
-		super(core);
-		core.setRights(AccessRights.MODERATOR);
-	}
+	private static final long serialVersionUID = 734211012319202408L;
 	
 }
