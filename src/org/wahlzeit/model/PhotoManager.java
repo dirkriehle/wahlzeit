@@ -342,11 +342,27 @@ public class PhotoManager extends ObjectManager {
 	}
 		
 	/**
+	 * @throws IOException 
 	 * 
 	 */
-	public Photo createPhoto(File file) throws Exception {
+	public Photo createPhoto(File file) throws IOException, IllegalArgumentException {
 		PhotoId id = PhotoId.getNextId();
-		Photo result = PhotoUtil.createPhoto(file, id);
+		Photo result;
+		try {
+			result = PhotoUtil.createPhoto(file, id);
+		} catch (IllegalArgumentException e) {
+			if (file == null) {
+				throw new IllegalArgumentException("file is null");
+			}
+			else {
+				id = PhotoId.getNextId();
+				try {
+					result = PhotoUtil.createPhoto(file, id);
+				} catch (IllegalArgumentException e1) {
+					throw new IllegalArgumentException("id is null");
+				}
+			}
+		}
 		addPhoto(result);
 		return result;
 	}

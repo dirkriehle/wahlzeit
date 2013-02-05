@@ -39,7 +39,7 @@ public class PhotoUtil {
 	/**
 	 * 
 	 */
-	public static Photo createPhoto(File source, PhotoId id) throws Exception {
+	public static Photo createPhoto(File source, PhotoId id) throws IOException,IllegalArgumentException {
 		Photo result = PhotoFactory.getInstance().createPhoto(id);
 		
 		Image sourceImage = createImageFiles(source, id);
@@ -52,10 +52,38 @@ public class PhotoUtil {
 	}
 	
 	/**
+	 * @throws IOException 
 	 * 
 	 */
-	public static Image createImageFiles(File source, PhotoId id) throws Exception {
-		Image sourceImage = ImageIO.read(source);
+	public static Image createImageFiles(File source, PhotoId id) throws IOException,IllegalArgumentException {
+		Image sourceImage = null;
+		try {
+			sourceImage = ImageIO.read(source);
+		} catch (IOException e) {
+			if (source.exists()) {
+				if (source.canRead()) {
+					try {
+						sourceImage = ImageIO.read(source);
+					} catch (IOException e1) {
+						throw new IOException(source + " exists is readable but has not been working twice"); 
+					}
+				}
+				else {
+					throw new IOException(source + " exists, but can't be read");
+				}
+			}
+			else {
+				throw new IOException(source + " does not exist");
+			}
+		}
+		catch (IllegalArgumentException e) {
+			if (source == null) {
+				throw new IllegalArgumentException("File is null");
+			}
+			else {
+				throw new IllegalArgumentException("PhotoId is null");
+			}
+		}
 		assertIsValidImage(sourceImage);
 
 		int sourceWidth = sourceImage.getWidth(null);
@@ -72,9 +100,10 @@ public class PhotoUtil {
 	}
 	
 	/**
+	 * @throws IOException 
 	 * 
 	 */
-	protected static void createImageFile(Image source, PhotoId id, PhotoSize size) throws Exception {	
+	protected static void createImageFile(Image source, PhotoId id, PhotoSize size) throws IOException,IllegalArgumentException {	
 		int sourceWidth = source.getWidth(null);
 		int sourceHeight = source.getHeight(null);
 		
@@ -83,7 +112,37 @@ public class PhotoUtil {
 
 		BufferedImage targetImage = scaleImage(source, targetWidth, targetHeight);
 		File target = new File(SysConfig.getPhotosDirAsString() + id.asString() + size.asInt() + ".jpg");
-		ImageIO.write(targetImage, "jpg", target);
+		try {
+			ImageIO.write(targetImage, "jpg", target);
+		} catch (IOException e) {
+			if (target.exists()) {
+				if (target.canWrite()) {
+					try {
+						ImageIO.write(targetImage, "jpg", target);
+					} catch (IOException e1) {
+						throw new IOException(source + " exists is writeable but is not working twice"); 
+					}
+				}
+				else {
+					throw new IOException(source + " exists, but can't be written");
+				}
+			}
+			else {
+				try {
+					ImageIO.write(targetImage, "jpg", target);
+				} catch (IOException e1) {
+					throw new IOException(source + " does not exist but can't be written");
+				}
+			}
+		}
+		catch (IllegalArgumentException e) {
+			if (targetImage == null) {
+				throw new IllegalArgumentException("targetImage is null");
+			}
+			else {
+				throw new IllegalArgumentException("target is null");
+			}
+		}
 
 		SysLog.logInfo("created image file for id: " + id.asString() + " of size: " + size.asString());
 	}

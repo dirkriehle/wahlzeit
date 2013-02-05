@@ -22,6 +22,7 @@ package org.wahlzeit.handlers;
 
 import java.util.*;
 import java.io.*;
+
 import org.mortbay.util.IO;
 
 import org.wahlzeit.model.*;
@@ -54,6 +55,8 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 	}
 	
 	/**
+	 * @throws IOException 
+	 * @throws IllegalArgumentException 
 	 * 
 	 */
 	protected String doHandlePost(UserSession ctx, Map args) {
@@ -64,31 +67,46 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 			return PartUtil.UPLOAD_PHOTO_PAGE_NAME;
 		}
 
+		PhotoManager pm = PhotoManager.getInstance();
+		String sourceFileName = ctx.getAsString(args, "fileName");
+		File file = new File(sourceFileName);
+		Photo photo = null;
 		try {
-			PhotoManager pm = PhotoManager.getInstance();
-			String sourceFileName = ctx.getAsString(args, "fileName");
-			File file = new File(sourceFileName);
-			Photo photo = pm.createPhoto(file);
-
-			String targetFileName = SysConfig.getBackupDirAsString() + photo.getId().asString();
-			createBackup(sourceFileName, targetFileName);
-		
-			User user = (User) ctx.getClient();
-			user.addPhoto(photo); 
-			
-			photo.setTags(new Tags(tags));
-
-			pm.savePhoto(photo);
-
-			StringBuffer sb = UserLog.createActionEntry("UploadPhoto");
-			UserLog.addCreatedObject(sb, "Photo", photo.getId().asString());
-			UserLog.log(sb);
-			
-			ctx.setTwoLineMessage(ctx.cfg().getPhotoUploadSucceeded(), ctx.cfg().getKeepGoing());
-		} catch (Exception ex) {
-			SysLog.logThrowable(ex);
+			photo = pm.createPhoto(file);
+		} catch (IllegalArgumentException e) {
+			if (e.getMessage().compareTo("file is null") == 0) {
+				file = new File(sourceFileName);
+				if (file != null) {
+					try {
+						photo = pm.createPhoto(file);
+					} catch (IllegalArgumentException | IOException e1) {
+						SysLog.logThrowable(e);
+						ctx.setMessage(ctx.cfg().getPhotoUploadFailed());
+					}
+				}
+			}
+		} catch (IOException e) {
+			SysLog.logThrowable(e);
 			ctx.setMessage(ctx.cfg().getPhotoUploadFailed());
 		}
+
+		String targetFileName = SysConfig.getBackupDirAsString()
+				+ photo.getId().asString();
+		createBackup(sourceFileName, targetFileName);
+
+		User user = (User) ctx.getClient();
+		user.addPhoto(photo);
+
+		photo.setTags(new Tags(tags));
+
+		pm.savePhoto(photo);
+
+		StringBuffer sb = UserLog.createActionEntry("UploadPhoto");
+		UserLog.addCreatedObject(sb, "Photo", photo.getId().asString());
+		UserLog.log(sb);
+
+		ctx.setTwoLineMessage(ctx.cfg().getPhotoUploadSucceeded(), ctx.cfg()
+				.getKeepGoing());
 		
 		return PartUtil.UPLOAD_PHOTO_PAGE_NAME;
 	}
