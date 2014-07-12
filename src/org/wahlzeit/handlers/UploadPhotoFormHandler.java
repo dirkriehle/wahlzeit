@@ -22,7 +22,6 @@ package org.wahlzeit.handlers;
 
 import java.util.*;
 import java.io.*;
-import org.mortbay.util.IO;
 
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
@@ -102,7 +101,7 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 			InputStream inputStream = new FileInputStream(sourceFile);
 			File targetFile = new File(targetName);
 			OutputStream outputStream = new FileOutputStream(targetFile);
-			IO.copy(inputStream, outputStream);
+			// @FIXME IO.copy(inputStream, outputStream);
 		} catch (Exception ex) {
 			SysLog.logInfo("could not create backup file of photo");
 			SysLog.logThrowable(ex);			

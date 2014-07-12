@@ -41,9 +41,9 @@ public abstract class ModelMain extends AbstractMain {
 	protected void startUp() throws Exception {
 		super.startUp();
 
-		configureWebPartTemplateServer();
-
 		loadGlobals();
+
+		PhotoFactory.initialize();
 	}
 	
 	/**
@@ -129,14 +129,6 @@ public abstract class ModelMain extends AbstractMain {
 		UserManager.getInstance().saveUsers();
 
 		saveGlobals();
-	}
-
-	/**
-	 * 
-	 */
-	public static void configureWebPartTemplateServer() {
-		ConfigDir templatesDir = SysConfig.getTemplatesDir();
-		WebPartTemplateServer.getInstance().setTemplatesDir(templatesDir);
 	}
 	
 }

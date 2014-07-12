@@ -66,8 +66,8 @@ public class HandlerTestSetup extends TestSetup {
 		
 		ModelMain.configureWebPartTemplateServer();
 		
-		Wahlzeit.configurePartHandlers();
-		Wahlzeit.configureLanguageModels();
+		WahlzeitMain.configurePartHandlers();
+		WahlzeitMain.configureLanguageModels();
 
 		result = new UserSession("testContext");
 		result.setConfiguration(LanguageConfigs.get(Language.ENGLISH));

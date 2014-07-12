@@ -26,7 +26,6 @@ import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import org.mortbay.servlet.*;
 import org.wahlzeit.handlers.WebFormHandler;
 import org.wahlzeit.handlers.WebPageHandler;
 import org.wahlzeit.handlers.WebPartHandlerManager;
@@ -125,8 +124,7 @@ public class MainServlet extends AbstractServlet {
 	protected Map getRequestArgs(HttpServletRequest request) throws IOException {
         String contentType = request.getContentType();
         if ((contentType != null) && contentType.startsWith("multipart/form-data")) {
-        	MultiPartRequest multiPartRequest = new MultiPartRequest(request);
-			return getRequestArgs(multiPartRequest);
+			return getMultiPartRequestArgs(request);
 		} else {
 			return request.getParameterMap();
 		}
@@ -135,31 +133,32 @@ public class MainServlet extends AbstractServlet {
 	/**
 	 * 
 	 */
-	protected Map getRequestArgs(MultiPartRequest request) throws IOException {
+	protected Map getMultiPartRequestArgs(HttpServletRequest request) throws IOException {
 		Map<String, String> result = new HashMap<String, String>();
 
-		String[] keys = request.getPartNames();
-		for (int i = 0; i < keys.length; i++) {
-			String key = keys[i];
-			String value = null;
-			if (key.equals("fileName")) {
-				InputStream in = request.getInputStream(key);
-				String tempName = SysConfig.getTempDirAsString() + Thread.currentThread().getId();
-				FileOutputStream out = new FileOutputStream(new File(tempName));
-				int uploaded = 0;
-				for (int avail = in.available(); (avail > 0) && (uploaded < 1000000); avail = in.available()) {
-					byte[] buffer = new byte[avail];
-					in.read(buffer, 0, avail);
-					out.write(buffer);
-					uploaded += avail;
-				}
-				out.close();
-				value = tempName;
-			} else {
-				value = request.getString(key);
-			}
-			result.put(key, value);
-		}
+		// @FIXME
+//		Enumeration names = request.getHeaderNames();
+//		while (names.hasMoreElements()) {
+//			String name = (String) names.nextElement();
+//			String value = null;
+//			if (key.equals("fileName")) {
+//				InputStream in = request.getInputStream(key);
+//				String tempName = SysConfig.getTempDirAsString() + Thread.currentThread().getId();
+//				FileOutputStream out = new FileOutputStream(new File(tempName));
+//				int uploaded = 0;
+//				for (int avail = in.available(); (avail > 0) && (uploaded < 1000000); avail = in.available()) {
+//					byte[] buffer = new byte[avail];
+//					in.read(buffer, 0, avail);
+//					out.write(buffer);
+//					uploaded += avail;
+//				}
+//				out.close();
+//				value = tempName;
+//			} else {
+//				value = request.getString(key);
+//			}
+//			result.put(key, value);
+//		}
 		
 		return result;
 	}

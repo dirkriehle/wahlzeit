@@ -27,14 +27,14 @@ import org.wahlzeit.services.*;
  * @author dirkriehle
  *
  */
-public class Wahlzeit extends ServerMain {
+public class WahlzeitMain extends ServerMain {
 
 	/**
 	 * 
 	 */
-	public static void main(String[] argv) {
-		instance = new Wahlzeit();
-		instance.run(argv);
+	public void init() {
+		instance = new WahlzeitMain();
+		instance.run(new String[0]);
 	}
 
 	/**

@@ -20,6 +20,8 @@
 
 package org.wahlzeit.main;
 
+import javax.servlet.http.*;
+
 import org.wahlzeit.services.*;
 
 /**
@@ -37,20 +39,19 @@ public abstract class AbstractMain {
 	/**
 	 * 
 	 */
-	protected static boolean isToStopFlag = false;
+	protected boolean isToStop = false;
 
 	/**
 	 * 
 	 */
-	protected static boolean isInProductionFlag = false;
+	protected boolean isInProduction = false;
 	
 	/**
 	 * 
 	 */
 	public static void requestStop() {
 		synchronized(instance) {
-			isToStopFlag = true;
-			instance.notify();
+			instance.isToStop = true;
 		}
 	}
 	
@@ -58,14 +59,14 @@ public abstract class AbstractMain {
 	 * 
 	 */
 	public static boolean isShuttingDown() {
-		return isToStopFlag;
+		return instance.isToStop;
 	}
 		
 	/**
 	 * 
 	 */
 	public static boolean isInProduction() {
-		return isInProductionFlag;
+		return instance.isInProduction;
 	}
 	
 	/**
@@ -92,21 +93,14 @@ public abstract class AbstractMain {
 	 * 
 	 */
 	protected void handleArgv(String[] argv) {
-		for (int i = 0; i < argv.length; i++) {
-			String arg = argv[i];
-			if (arg.equals("-P") || arg.equals("--production")) {
-				AbstractMain.isInProductionFlag = true;
-			} else if (arg.equals("-D") || arg.equals("--development")) {
-				AbstractMain.isInProductionFlag = false;
-			}
-		}		
+		// do nothing
 	}
 
 	/**
 	 * 
 	 */
 	protected void startUp() throws Exception {
-		SysLog.initialize(isInProductionFlag);
+		SysLog.initialize(isInProduction);
 		SysConfig.setInstance(createSysConfig());
 		
 		Session ctx = new SysSession("system");
@@ -135,6 +129,7 @@ public abstract class AbstractMain {
 	 * 
 	 */
 	protected SysConfig createDevSysConfig() {
+		//@FIXME
 		return new SysConfig("localhost", "8585");
 	}
 	

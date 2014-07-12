@@ -21,10 +21,7 @@
 package org.wahlzeit.main;
 
 import java.io.*;
-
-import org.mortbay.http.*;
-import org.mortbay.http.handler.*;
-import org.mortbay.jetty.servlet.*;
+import javax.servlet.*;
 
 import org.wahlzeit.agents.AgentManager;
 import org.wahlzeit.handlers.*;
@@ -42,171 +39,24 @@ public abstract class ServerMain extends ModelMain {
 	/**
 	 * 
 	 */
-	protected static boolean isToStop = false;
-	
-	/**
-	 * 
-	 */
-	public static void requestStop() {
-		SysLog.logInfo("setting stop signal for http server");
-		synchronized(instance) {
-			isToStop = true;
-			instance.notify();
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	public static boolean isShuttingDown() {
-		return isToStop;
-	}
-	
-	/**
-	 * 
-	 */
-	protected HttpServer httpServer = null;
-	
-	/**
-	 * 
-	 */
 	protected void startUp() throws Exception {
 		super.startUp();
-
-		httpServer = createHttpServer();
-		configureHttpServer(httpServer);
 		
 		configurePartHandlers();
 		configureLanguageModels();
 		
-		PhotoFactory.initialize();
-			
 		AgentManager am = AgentManager.getInstance();
 		am.startAllThreads();
-
-		startHttpServer(httpServer);
 	}
 	
-	/**
-	 * 
-	 */
-	protected void execute() throws Exception {
-		wait(); // really, any condition is fine
-	}
-
 	/**
 	 * 
 	 */
 	protected void shutDown() throws Exception {
 		AgentManager am = AgentManager.getInstance();
 		am.stopAllThreads();
-		
-		if (httpServer != null) {
-			stopHttpServer(httpServer);
-		}
-		
+				
 		super.shutDown();
-	}
-	
-	/**
-	 * 
-	 */
-	protected HttpServer createHttpServer() throws IOException {
-		HttpServer server = new HttpServer();
-
-		SocketListener listener = new SocketListener();
-		listener.setPort(SysConfig.getHttpPortAsInt());
-		server.addListener(listener);
-
-		return server;
-	}
-	
-	/**
-	 * 
-	 */
-	protected void configureHttpServer(HttpServer server) {
-
-		// Favicon hack
-		
-		HttpContext faviconContext = new HttpContext();
-		faviconContext.setContextPath("/favicon.ico");
-		server.addContext(faviconContext);
-
-		ResourceHandler faviconHandler = new ResourceHandler();
-		faviconContext.setResourceBase(SysConfig.getStaticDir().getRootPath());
-		faviconContext.addHandler(faviconHandler);
-
-		faviconContext.addHandler(new NotFoundHandler());
-
-		// robots.txt hack
-		
-		HttpContext robotsContext = new HttpContext();
-		robotsContext.setContextPath("/robots.txt");
-		server.addContext(robotsContext);
-
-		ResourceHandler robotsHandler = new ResourceHandler();
-		robotsContext.setResourceBase(SysConfig.getStaticDir().getRootPath());
-		robotsContext.addHandler(robotsHandler);
-
-		robotsContext.addHandler(new NotFoundHandler());
-		
-		// Dynamic content
-		
-		HttpContext servletContext = new HttpContext();
-		servletContext.setContextPath("/");
-		server.addContext(servletContext);
-		
-		ServletHandler servlets = new ServletHandler();
-		servletContext.addHandler(servlets);
-		servlets.addServlet("/*","org.wahlzeit.main.MainServlet");
-
-		servletContext.addHandler(new NotFoundHandler());
-
-		// Photos content
-		
-		HttpContext photosContext = new HttpContext();
-		photosContext.setContextPath(SysConfig.getPhotosUrlPathAsString());
-		server.addContext(photosContext);
-
-		ResourceHandler photosHandler = new ResourceHandler();
-		photosContext.setResourceBase(SysConfig.getPhotosDirAsString());
-		photosContext.addHandler(photosHandler);
-
-		photosContext.addHandler(new NotFoundHandler());
-
-		// Static content
-		
-		HttpContext staticContext = new HttpContext();
-		staticContext.setContextPath(SysConfig.getStaticDir().getRootUrl());
-		server.addContext(staticContext);
-
-		ResourceHandler staticHandler = new ResourceHandler();
-		staticContext.setResourceBase(SysConfig.getStaticDir().getRootPath());
-		staticContext.addHandler(staticHandler);
-
-		// Not Found
-		staticContext.addHandler(new NotFoundHandler());
-	}
-
-	/**
-	 * 
-	 */
-	public void startHttpServer(HttpServer httpServer) throws Exception {
-		httpServer.start();
-		SysLog.logInfo("http server was started");
-	}
-	
-	/**
-	 * 
-	 */
-	public void stopHttpServer(HttpServer httpServer) {
-		try {
-			httpServer.stop(true);
-		} catch (InterruptedException ie) {
-			SysLog.logThrowable(ie);
-		}
-		
-		SysLog.logInfo("http server was stopped");
 	}
 	
 	/**

@@ -43,7 +43,7 @@ public abstract class AbstractServlet extends HttpServlet {
 	 * 
 	 */
 	protected static int lastSessionId = 0; // system and agent are named differently
-	private static final long serialVersionUID = 42L; // any one does; class never serialized
+	private static final long serialVersionUID = 42L; // any does; class never serialized
 	
 	/**
 	 * 
@@ -73,7 +73,7 @@ public abstract class AbstractServlet extends HttpServlet {
 		UserSession ctx = ensureWebContext(request);	
 		ContextManager.setThreadLocalContext(ctx);
 		
-		if (Wahlzeit.isShuttingDown() || (ctx == null)) {
+		if (WahlzeitMain.isShuttingDown() || (ctx == null)) {
 			displayNullPage(request, response);
 		} else {
 			myGet(request, response);
@@ -97,7 +97,7 @@ public abstract class AbstractServlet extends HttpServlet {
 		UserSession ctx = ensureWebContext(request);	
 		ContextManager.setThreadLocalContext(ctx);
 		
-		if (Wahlzeit.isShuttingDown() || (ctx == null)) {
+		if (WahlzeitMain.isShuttingDown() || (ctx == null)) {
 			displayNullPage(request, response);
 		} else {
 			myPost(request, response);

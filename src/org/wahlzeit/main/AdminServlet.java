@@ -49,7 +49,7 @@ public class AdminServlet extends AbstractServlet {
 		String link = request.getRequestURI();
 		UserLog.logValue("requested", link);
 		if (isLocalHost(request)) {
-			Wahlzeit.requestStop();
+			WahlzeitMain.requestStop();
 			displayNullPage(request, response);
 		} else if (link.length() == "/admin".length()){
 			SysLog.logValue("redirect", PartUtil.DEFAULT_PAGE_NAME);

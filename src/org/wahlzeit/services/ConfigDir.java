@@ -42,9 +42,9 @@ public class ConfigDir {
 	 * 
 	 */
 	public ConfigDir(String dirName) {
-		rootPath = dirName;
-		defaultPath = dirName + File.separator + "default";
-		customPath = dirName + File.separator + "custom";
+		rootPath = "Documents/Workspace/wahlzeit/web/" + dirName;
+		defaultPath = rootPath + File.separator + "default";
+		customPath = rootPath + File.separator + "custom";
 	}
 	
 	/**
