@@ -20,6 +20,8 @@
 
 package org.wahlzeit.main;
 
+import javax.servlet.*;
+
 import org.wahlzeit.services.*;
 
 /**
@@ -27,14 +29,17 @@ import org.wahlzeit.services.*;
  * @author dirkriehle
  *
  */
-public class WahlzeitMain extends ServerMain {
+public class WahlzeitMain extends ServerMain implements ServletContextListener {
 
 	/**
 	 * 
 	 */
-	public void init() {
-		instance = new WahlzeitMain();
-		instance.run(new String[0]);
+	public void contextInitialized(ServletContextEvent sce) {
+		try {
+			startUp();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	/**
@@ -42,6 +47,17 @@ public class WahlzeitMain extends ServerMain {
 	 */
 	protected SysConfig createProdSysConfig() {
 		return new SysConfig("flowers.wahlzeit.com");
+	}
+	
+	/**
+	 * 
+	 */
+	public void contextDestroyed(ServletContextEvent sce) {
+		try {
+			shutDown();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 }
