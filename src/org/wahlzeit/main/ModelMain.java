@@ -24,6 +24,7 @@ import java.sql.*;
 
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
+import org.wahlzeit.servlets.AbstractServlet;
 import org.wahlzeit.webparts.*;
 
 /**
@@ -34,13 +35,6 @@ import org.wahlzeit.webparts.*;
  *
  */
 public abstract class ModelMain extends AbstractMain {
-	
-	/**
-	 * 
-	 */
-	public static ModelMain getInstance() {
-		return (ModelMain) instance;
-	}
 	
 	/**
 	 * 

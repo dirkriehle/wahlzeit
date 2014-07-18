@@ -26,24 +26,24 @@ import java.io.*;
 import org.wahlzeit.services.*;
 
 /**
- * The WebPartTmplServer creates WebPartTmpls upon request by reading them from disk.
+ * The WebPartTemplateService creates WebPartTemplates upon request by reading them from disk.
  * It requires configuration with a template directory and uses the following naming convention:
  * tmplDir/language/part-type/part-name.html
  * 
  * @author dirkriehle
  *
  */
-public class WebPartTemplateServer {
+public class WebPartTemplateService {
 
 	/**
 	 * 
 	 */
-	protected static final WebPartTemplateServer instance = new WebPartTemplateServer();
+	protected static final WebPartTemplateService instance = new WebPartTemplateService();
 
 	/**
 	 * Convenience method...
 	 */
-	public static WebPartTemplateServer getInstance() {
+	public static WebPartTemplateService getInstance() {
 		return instance;
 	}
 
@@ -60,7 +60,7 @@ public class WebPartTemplateServer {
 	/**
 	 *
 	 */
-	protected WebPartTemplateServer() {
+	protected WebPartTemplateService() {
 		// do nothing	
 	}
 	

@@ -18,73 +18,41 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.main;
+package org.wahlzeit.apps;
 
-import javax.servlet.http.*;
+import javax.servlet.*;
 
+import org.wahlzeit.main.ServerMain;
 import org.wahlzeit.services.*;
 
 /**
+ * A simple ServletContextListener to startup and shutdown the Flowers application.
  * 
  * @author dirkriehle
  *
  */
-public abstract class AbstractMain {
+public class FlowersApp implements ServletContextListener {
 	
 	/**
 	 * 
 	 */
-	protected SysSession mainSession = null;
-	
-	/**
-	 * 
-	 */
-	protected AbstractMain() {
-		// do nothing
-	}
-	
-	/**
-	 * 
-	 */
-	protected void handleArgv(String[] argv) {
-		// do nothing
+	public void contextInitialized(ServletContextEvent sce) {
+		try {
+			ServerMain.getInstance().startUp(true);
+		} catch (Exception ex) {
+			SysLog.logThrowable(ex);
+		}
 	}
 
 	/**
 	 * 
 	 */
-	protected void startUp() throws Exception {
-		SysConfig.setInstance(createSysConfig());
-		
-		mainSession = new SysSession("system");
-		SessionManager.setThreadLocalSession(mainSession);
+	public void contextDestroyed(ServletContextEvent sce) {
+		try {
+			ServerMain.getInstance().shutDown();
+		} catch (Exception ex) {
+			SysLog.logThrowable(ex);
+		}
 	}
-	
-	/**
-	 * 
-	 */
-	protected SysConfig createSysConfig() {
-		return createDevSysConfig();
-	}
-	/**
-	 * 
-	 */
-	protected SysConfig createProdSysConfig() {
-		return new SysConfig("wahlzeit.org"); 
-	}
-	
-	/**
-	 * 
-	 */
-	protected SysConfig createDevSysConfig() {
-		return new SysConfig("localhost", "8080");
-	}
-	
-	/**
-	 * 
-	 */
-	protected void shutDown() throws Exception {
-		SysConfig.dropInstance();
-	}
-	
+
 }

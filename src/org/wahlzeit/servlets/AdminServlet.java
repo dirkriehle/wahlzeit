@@ -18,19 +18,25 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.main;
+package org.wahlzeit.servlets;
 
 import java.io.*;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import org.wahlzeit.handlers.PartUtil;
+import org.wahlzeit.main.ServerMain;
+import org.wahlzeit.model.UserLog;
+import org.wahlzeit.services.SysLog;
+
+
 /**
  * 
  * @author dirkriehle
  *
  */
-public class NullServlet extends AbstractServlet {
+public class AdminServlet extends AbstractServlet {
 
 	/**
 	 * 
@@ -40,15 +46,19 @@ public class NullServlet extends AbstractServlet {
 	/**
 	 * 
 	 */
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		displayNullPage(request, response);
-	}
-	
-	/**
-	 * 
-	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		displayNullPage(request, response);
+	public void myGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String link = request.getRequestURI();
+		UserLog.logValue("requested", link);
+		if (isLocalHost(request)) {
+			ServerMain.getInstance().requestStop();
+			displayNullPage(request, response);
+		} else if (link.length() == "/admin".length()){
+			SysLog.logValue("redirect", PartUtil.DEFAULT_PAGE_NAME);
+			redirectRequest(response, PartUtil.DEFAULT_PAGE_NAME);
+		} else {
+			SysLog.logValue("redirect", "../" + PartUtil.DEFAULT_PAGE_NAME);
+			redirectRequest(response, "../" + PartUtil.DEFAULT_PAGE_NAME);
+		}
 	}
 
 }

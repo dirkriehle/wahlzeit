@@ -32,37 +32,6 @@ import java.sql.*;
 public class SysLog extends Log {
 	
 	/**
-	 * More stuff
-	 */
-	protected static boolean isInProductionFlag = false;
-	
-	/**
-	 * 
-	 */
-	public static void initialize(boolean myIsInProduction) {
-		isInProductionFlag = myIsInProduction;
-		if (isInProductionMode()) {
-			logInfo("set to production mode");
-		} else {
-			logInfo("set to development mode");
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	public static boolean isInProductionMode() {
-		return isInProductionFlag;
-	}
-	
-	/**
-	 * 
-	 */
-	public static boolean isInDevelopmentMode() {
-		return !isInProductionMode();
-	}
-	
-	/**
 	 * 
 	 */
 	public static StringBuffer createSysLogEntry() {

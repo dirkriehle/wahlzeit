@@ -18,7 +18,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.main;
+package org.wahlzeit.servlets;
 
 import java.io.*;
 import java.util.*;

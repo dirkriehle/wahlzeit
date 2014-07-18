@@ -64,13 +64,9 @@ public class HandlerTestSetup extends TestSetup {
 	protected UserSession createUserSession() {
 		UserSession result = null;
 		
-		ServerMain serverMain = (ServerMain) ModelMain.getInstance();
-		
-		// FIXME set templates dir to template-server from SysConfig.getTemplatesDir
-		// ModelMain.configureWebPartTemplateServer();
-		
-
-		serverMain.configurePartHandlers();
+		ServerMain serverMain = ServerMain.getInstance();
+		serverMain.configureWebPartTemplateService();
+		serverMain.configureWebPartHandlers();
 		serverMain.configureLanguageModels();
 
 		result = new UserSession("testContext");

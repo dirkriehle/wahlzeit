@@ -22,42 +22,43 @@ package org.wahlzeit.main;
 
 import java.io.*;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-
-import org.wahlzeit.handlers.PartUtil;
-import org.wahlzeit.model.UserLog;
-import org.wahlzeit.services.SysLog;
-
+import org.wahlzeit.model.*;
+import org.wahlzeit.services.*;
 
 /**
+ * A Main class that runs a Wahlzeit web server.
  * 
  * @author dirkriehle
  *
  */
-public class AdminServlet extends AbstractServlet {
-
+public abstract class ScriptMain extends ModelMain {
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 42L; // any one does; class never serialized
-
-	/**
-	 * 
-	 */
-	public void myGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String link = request.getRequestURI();
-		UserLog.logValue("requested", link);
-		if (isLocalHost(request)) {
-			WahlzeitMain.requestStop();
-			displayNullPage(request, response);
-		} else if (link.length() == "/admin".length()){
-			SysLog.logValue("redirect", PartUtil.DEFAULT_PAGE_NAME);
-			redirectRequest(response, PartUtil.DEFAULT_PAGE_NAME);
-		} else {
-			SysLog.logValue("redirect", "../" + PartUtil.DEFAULT_PAGE_NAME);
-			redirectRequest(response, "../" + PartUtil.DEFAULT_PAGE_NAME);
+	public void run(String[] argv) {
+		handleArgv(argv);
+		
+		try {
+			startUp();
+			execute();
+		} catch(Exception ex) {
+			SysLog.logThrowable(ex);
 		}
+
+		try {
+			shutDown();
+		} catch (Exception ex) {
+			SysLog.logThrowable(ex);
+		}
+	} 
+
+	/**
+	 * 
+	 */
+	protected void execute() throws Exception {
+		// do nothing
 	}
 
+		
 }

@@ -18,7 +18,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.main;
+package org.wahlzeit.servlets;
 
 import java.io.*;
 import java.util.*;
@@ -27,6 +27,7 @@ import java.net.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import org.wahlzeit.main.ServerMain;
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
 import org.wahlzeit.utils.*;
@@ -73,7 +74,7 @@ public abstract class AbstractServlet extends HttpServlet {
 		UserSession ctx = ensureWebContext(request);	
 		SessionManager.setThreadLocalSession(ctx);
 		
-		if (WahlzeitMain.isShuttingDown() || (ctx == null)) {
+		if (ServerMain.getInstance().isShuttingDown() || (ctx == null)) {
 			displayNullPage(request, response);
 		} else {
 			myGet(request, response);
@@ -97,7 +98,7 @@ public abstract class AbstractServlet extends HttpServlet {
 		UserSession ctx = ensureWebContext(request);	
 		SessionManager.setThreadLocalSession(ctx);
 		
-		if (WahlzeitMain.isShuttingDown() || (ctx == null)) {
+		if (ServerMain.getInstance().isShuttingDown() || (ctx == null)) {
 			displayNullPage(request, response);
 		} else {
 			myPost(request, response);

@@ -18,46 +18,38 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.main;
+package org.wahlzeit.servlets;
+
+import java.io.*;
 
 import javax.servlet.*;
+import javax.servlet.http.*;
 
-import org.wahlzeit.services.*;
 
 /**
  * 
  * @author dirkriehle
  *
  */
-public class WahlzeitMain extends ServerMain implements ServletContextListener {
+public class NullServlet extends AbstractServlet {
 
 	/**
 	 * 
 	 */
-	public void contextInitialized(ServletContextEvent sce) {
-		try {
-			startUp();
-		} catch (Exception ex) {
-			SysLog.logThrowable(ex);
-		}
-	}
+	private static final long serialVersionUID = 42L; // any one does; class never serialized
 
 	/**
 	 * 
 	 */
-	protected SysConfig createProdSysConfig() {
-		return new SysConfig("flowers.wahlzeit.com");
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		displayNullPage(request, response);
 	}
 	
 	/**
 	 * 
 	 */
-	public void contextDestroyed(ServletContextEvent sce) {
-		try {
-			shutDown();
-		} catch (Exception ex) {
-			SysLog.logThrowable(ex);
-		}
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		displayNullPage(request, response);
 	}
 
 }

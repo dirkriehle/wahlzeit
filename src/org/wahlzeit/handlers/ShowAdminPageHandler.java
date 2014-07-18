@@ -149,7 +149,7 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
 		SysLog.logInfo("shutting down");
 		
 		try {
-			WahlzeitMain.requestStop();
+			ServerMain.getInstance().requestStop();
 		} catch (Exception ex) {
 			SysLog.logThrowable(ex);
 		}
@@ -165,7 +165,7 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
 		SysLog.logInfo("saving objects");
 
 		try {
-			ModelMain.getInstance().saveAll();
+			ServerMain.getInstance().saveAll();
 		} catch (Exception ex) {
 			SysLog.logThrowable(ex);
 		}

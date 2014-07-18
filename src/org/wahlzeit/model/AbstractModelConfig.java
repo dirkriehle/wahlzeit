@@ -23,6 +23,7 @@ package org.wahlzeit.model;
 import java.io.*;
 import java.text.*;
 
+import org.wahlzeit.main.*;
 import org.wahlzeit.services.*;
 import org.wahlzeit.utils.*;
 
@@ -80,7 +81,9 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
 		String footerPhotoSizePart2 = doGetValue("FooterPhotoSizePart2");
 		String footerPhotoSizePart3 = doGetValue("FooterPhotoSizePart3");
 		String footerPhotoSizePart4 = doGetValue("FooterPhotoSizePart4");
-		String footerDebugPart = SysLog.isInDevelopmentMode() ? menuDash + doGetValue("FooterDebugPart") : "";
+		
+		boolean isInProduction = ServerMain.getInstance().isInProduction();
+		String footerDebugPart = !isInProduction ? menuDash + doGetValue("FooterDebugPart") : "";
 		
 		doSetValue("PageFooter0", footerCommunityPart + menuDash + footerAboutPart + menuDash + footerLanguagePart + menuDash + footerPhotoSizePart0 + footerDebugPart);
 		doSetValue("PageFooter1", footerCommunityPart + menuDash + footerAboutPart + menuDash + footerLanguagePart + menuDash + footerPhotoSizePart1 + footerDebugPart);

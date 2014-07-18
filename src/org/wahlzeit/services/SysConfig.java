@@ -65,7 +65,7 @@ public class SysConfig extends AbstractConfig {
 	public static SysConfig getInstance() {
 		if (instance == null) {
 			SysLog.logInfo("setting generic SysConfig");
-			setInstance(new SysConfig("localhost", "8585"));
+			setInstance(new SysConfig("localhost", "8080"));
 		}
 		return instance;
 	}

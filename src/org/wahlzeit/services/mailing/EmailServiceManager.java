@@ -20,6 +20,7 @@
  
 package org.wahlzeit.services.mailing;
 
+import org.wahlzeit.main.ServerMain;
 import org.wahlzeit.services.SysLog;
 
 /**
@@ -72,7 +73,8 @@ public class EmailServiceManager {
 	 * 
 	 */
 	protected void initDefaultService() {
-		if (SysLog.isInProductionMode()) {
+		boolean isInProduction = ServerMain.getInstance().isInProduction();
+		if (isInProduction) {
 			defaultService = new SmtpEmailService();
 		} else {
 			defaultService = new LoggingEmailService(new MockEmailService());

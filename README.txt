@@ -54,7 +54,7 @@ PART III: RUNNING WAHLZEIT
 
 	java -cp .:bin:lib/* org.wahlzeit.main.Wahlzeit
 	
-	Direct your browser to http://localhost:8585
+	Direct your browser to http://localhost:8080
 	
 	Login using admin/admin as the user/password combination.
 	

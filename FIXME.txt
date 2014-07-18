@@ -1,0 +1,6 @@
+STUFF TO-DO
+
+1. Move logging to log4j
+2. Clean-up system initialization
+3. Move UI to Wicket or GWT
+4. Move persistence to Hibernate

@@ -26,6 +26,7 @@ import javax.servlet.*;
 import org.wahlzeit.agents.AgentManager;
 import org.wahlzeit.handlers.*;
 import org.wahlzeit.model.*;
+import org.wahlzeit.webparts.*;
 import org.wahlzeit.services.*;
 
 /**
@@ -34,15 +35,63 @@ import org.wahlzeit.services.*;
  * @author dirkriehle
  *
  */
-public abstract class ServerMain extends ModelMain {
+public class ServerMain extends ModelMain {
 	
 	/**
 	 * 
 	 */
-	protected void startUp() throws Exception {
+	protected static ServerMain instance = new ServerMain();
+
+	/**
+	 * 
+	 */
+	protected boolean isToStop = false;
+
+	/**
+	 * 
+	 */
+	protected boolean isInProduction = false;
+	
+	/**
+	 * 
+	 */
+	public static ServerMain getInstance() {
+		return instance;
+	}
+	
+	/**
+	 * 
+	 */
+	public void requestStop() {
+		synchronized(instance) {
+			instance.isToStop = true;
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	public boolean isShuttingDown() {
+		return instance.isToStop;
+	}
+		
+	/**
+	 * 
+	 */
+	public boolean isInProduction() {
+		return instance.isInProduction;
+	}
+	
+	/**
+	 * 
+	 */
+	public void startUp(boolean inProduction) throws Exception {
+		isInProduction = inProduction;
+		
 		super.startUp();
 		
-		configurePartHandlers();
+		configureWebPartTemplateService();
+		configureWebPartHandlers();
 		configureLanguageModels();
 
 // FIXME		
@@ -53,7 +102,7 @@ public abstract class ServerMain extends ModelMain {
 	/**
 	 * 
 	 */
-	protected void shutDown() throws Exception {
+	public void shutDown() throws Exception {
 //		AgentManager am = AgentManager.getInstance();
 //		am.stopAllThreads();
 				
@@ -63,7 +112,15 @@ public abstract class ServerMain extends ModelMain {
 	/**
 	 * 
 	 */
-	public void configurePartHandlers() {
+	public void configureWebPartTemplateService() {
+		ConfigDir templatesDir = SysConfig.getTemplatesDir();
+		WebPartTemplateService.getInstance().setTemplatesDir(templatesDir);
+	}
+	
+	/**
+	 * 
+	 */
+	public void configureWebPartHandlers() {
 		WebPartHandler temp = null;
 		WebPartHandlerManager manager = WebPartHandlerManager.getInstance();
 		
