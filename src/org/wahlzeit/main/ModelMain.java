@@ -38,6 +38,13 @@ public abstract class ModelMain extends AbstractMain {
 	/**
 	 * 
 	 */
+	public static ModelMain getInstance() {
+		return (ModelMain) instance;
+	}
+	
+	/**
+	 * 
+	 */
 	protected void startUp() throws Exception {
 		super.startUp();
 
@@ -58,8 +65,8 @@ public abstract class ModelMain extends AbstractMain {
 	/**
 	 * 
 	 */
-	public static void loadGlobals() throws SQLException {
-		DatabaseConnection dbc = ContextManager.getDatabaseConnection();
+	public void loadGlobals() throws SQLException {
+		DatabaseConnection dbc = mainSession.getDatabaseConnection();
 		Connection conn = dbc.getRdbmsConnection();
 
 		String query = "SELECT * FROM globals";
@@ -90,8 +97,8 @@ public abstract class ModelMain extends AbstractMain {
 	/**
 	 *
 	 */
-	public static synchronized void saveGlobals() throws SQLException {
-		DatabaseConnection dbc = ContextManager.getDatabaseConnection();
+	public synchronized void saveGlobals() throws SQLException {
+		DatabaseConnection dbc = SessionManager.getDatabaseConnection();
 		Connection conn = dbc.getRdbmsConnection();
 
 		String query = "SELECT * FROM globals";
@@ -123,7 +130,7 @@ public abstract class ModelMain extends AbstractMain {
 	/**
 	 * 
 	 */
-	public static void saveAll() throws SQLException {
+	public void saveAll() throws SQLException {
 		PhotoCaseManager.getInstance().savePhotoCases();
 		PhotoManager.getInstance().savePhotos();			
 		UserManager.getInstance().saveUsers();

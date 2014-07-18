@@ -38,7 +38,7 @@ public class WahlzeitMain extends ServerMain implements ServletContextListener {
 		try {
 			startUp();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			SysLog.logThrowable(ex);
 		}
 	}
 
@@ -56,7 +56,7 @@ public class WahlzeitMain extends ServerMain implements ServletContextListener {
 		try {
 			shutDown();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			SysLog.logThrowable(ex);
 		}
 	}
 

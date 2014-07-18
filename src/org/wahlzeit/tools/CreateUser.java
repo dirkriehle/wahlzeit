@@ -31,14 +31,13 @@ import org.wahlzeit.model.*;
  * @author dirkriehle
  *
  */
-public class CreateUser extends ModelMain {
+public class CreateUser extends ScriptMain {
 	
 	/**
 	 * 
 	 */
 	public static void main(String[] argv) {
-		instance = new CreateUser();
-		instance.run(argv);
+		new CreateUser().run(argv);
 	}
 	
 	/**

@@ -128,6 +128,11 @@ public class SysLog extends Log {
 	 * 
 	 */
 	public static final void logThrowable(Throwable t) {
+		Throwable cause = t.getCause();
+		if (cause != null) {
+			logThrowable(cause);
+		}
+		
 		StringBuffer sb = createSysLogEntry();
 		addLogType(sb, "exception");
 		addThrowable(sb, t);

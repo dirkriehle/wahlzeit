@@ -63,9 +63,13 @@ public class DatabaseConnection {
 	 */
 	public static synchronized void dropInstance(DatabaseConnection dbc) {
 		if (dbc != null) {
-			pool.add(dbc);
+			if (dbc.isOpen()) {
+				pool.add(dbc);				
+			} else {
+				SysLog.logError("tried to return closed database connection to pool; ignoring it");
+			}
 		} else {
-			SysLog.logError("returned null to database to pool");
+			SysLog.logError("tried to return null to database connection pool; ignoring it");
 		}
 	}
 	
@@ -98,6 +102,7 @@ public class DatabaseConnection {
 	 */
 	protected void finalize() {
 		try {
+			pool.remove(this); // FIXME shouldn't be necessary
 			closeConnection(rdbmsConnection);
 		} catch (Throwable t) {
 			SysLog.logThrowable(t);
@@ -109,6 +114,21 @@ public class DatabaseConnection {
 	 */
 	public String getName() {
 		return name;
+	}
+	
+	/**
+	 * 
+	 */
+	public boolean isOpen() {
+		boolean result = false;
+		
+		try {
+			result = (rdbmsConnection != null) && rdbmsConnection.isClosed();
+		} catch (SQLException ex) {
+			SysLog.logThrowable(ex);
+		}
+		
+		return result;
 	}
 	
     /**

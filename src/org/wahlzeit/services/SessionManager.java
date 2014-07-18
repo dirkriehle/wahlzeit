@@ -21,45 +21,45 @@
 package org.wahlzeit.services;
 
 /**
- * A manager for Context objects (user (web) sessions, agent threads, etc.)
- * Clients can look up the context by thread.
+ * A manager for Session objects (user (web) sessions, agent threads, etc.)
+ * Clients can look up the session by thread.
  * 
  * @author dirkriehle
  *
  */
-public class ContextManager {
+public class SessionManager {
 	
 	/**
 	 * 
 	 */
-	protected static ThreadLocal<Session> contexts = new ThreadLocal<Session>();
+	protected static ThreadLocal<Session> sessions = new ThreadLocal<Session>();
 	
 	/**
 	 * 
 	 */
-	public static Session getThreadLocalContext() {
-		return contexts.get();
+	public static Session getThreadLocalSession() {
+		return sessions.get();
 	}
 	
 	/**
 	 * 
 	 */
-	public static void setThreadLocalContext(Session ctx) {
-		contexts.set(ctx);
+	public static void setThreadLocalSession(Session ctx) {
+		sessions.set(ctx);
 	}
 	
 	/**
 	 * 
 	 */
-	public static void dropThreadLocalContext() {
-		setThreadLocalContext(null);
+	public static void dropThreadLocalSession() {
+		setThreadLocalSession(null);
 	}
 
 	/**
 	 * 
 	 */
 	public static DatabaseConnection getDatabaseConnection() {
-		return contexts.get().getDatabaseConnection();
+		return getThreadLocalSession().getDatabaseConnection();
 	}
 	
 }

@@ -115,7 +115,7 @@ public class Log {
 	 * 
 	 */
 	public static final void addContext(StringBuffer sb) {
-		Session ctx = ContextManager.getThreadLocalContext();
+		Session ctx = SessionManager.getThreadLocalSession();
 
 		String id = (ctx != null) ? ctx.getName() : "noctx";
 		addField(sb, "context", id);

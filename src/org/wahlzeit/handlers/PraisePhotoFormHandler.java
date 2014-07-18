@@ -84,11 +84,12 @@ public class PraisePhotoFormHandler extends AbstractWebFormHandler {
 				photo.addToPraise(value);
 				ctx.addPraisedPhoto(photo);
 				wasPraised = true;
-				if (photo.getOwnerNotifyAboutPraise()) {
-					Agent agent = AgentManager.getInstance().getAgent(NotifyAboutPraiseAgent.NAME);
-					NotifyAboutPraiseAgent notify = (NotifyAboutPraiseAgent) agent; 
-					notify.addForNotify(photo);
-				}
+// FIXME
+//				if (photo.getOwnerNotifyAboutPraise()) {
+//					Agent agent = AgentManager.getInstance().getAgent(NotifyAboutPraiseAgent.NAME);
+//					NotifyAboutPraiseAgent notify = (NotifyAboutPraiseAgent) agent; 
+//					notify.addForNotify(photo);
+//				}
 			}
 		}
 		

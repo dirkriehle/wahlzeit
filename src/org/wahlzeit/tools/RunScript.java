@@ -29,14 +29,13 @@ import org.wahlzeit.main.*;
  * @author dirkriehle
  *
  */
-public class RunScript extends AbstractMain {
+public class RunScript extends ScriptMain {
 	
 	/**
 	 * 
 	 */
 	public static void main(String[] argv) {
-		instance = new RunScript();
-		instance.run(argv);
+		new RunScript().run(argv);
 	}
 	
 	/**
@@ -69,7 +68,7 @@ public class RunScript extends AbstractMain {
 	 * 
 	 */
 	protected void execute() throws Exception {
-		DatabaseConnection dbc = ContextManager.getDatabaseConnection();
+		DatabaseConnection dbc = SessionManager.getDatabaseConnection();
 		Connection conn = dbc.getRdbmsConnection();
 		
 		ConfigDir scriptsDir = SysConfig.getScriptsDir();

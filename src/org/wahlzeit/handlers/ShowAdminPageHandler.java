@@ -165,7 +165,7 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
 		SysLog.logInfo("saving objects");
 
 		try {
-			WahlzeitMain.saveAll();
+			ModelMain.getInstance().saveAll();
 		} catch (Exception ex) {
 			SysLog.logThrowable(ex);
 		}

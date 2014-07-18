@@ -39,13 +39,18 @@ public abstract class AbstractMain {
 	/**
 	 * 
 	 */
+	protected SysSession mainSession = null;
+	
+	/**
+	 * 
+	 */
 	protected boolean isToStop = false;
 
 	/**
 	 * 
 	 */
 	protected boolean isInProduction = false;
-	
+
 	/**
 	 * 
 	 */
@@ -72,23 +77,10 @@ public abstract class AbstractMain {
 	/**
 	 * 
 	 */
-	public synchronized void run(String[] argv) {
-		handleArgv(argv);
-		
-		try {
-			startUp();
-			execute();
-		} catch(Exception ex) {
-			SysLog.logThrowable(ex);
-		}
-
-		try {
-			shutDown();
-		} catch (Exception ex) {
-			SysLog.logThrowable(ex);
-		}
-	} 
-
+	protected AbstractMain() {
+		instance = this;
+	}
+	
 	/**
 	 * 
 	 */
@@ -103,8 +95,8 @@ public abstract class AbstractMain {
 		SysLog.initialize(isInProduction);
 		SysConfig.setInstance(createSysConfig());
 		
-		Session ctx = new SysSession("system");
-		ContextManager.setThreadLocalContext(ctx);
+		mainSession = new SysSession("system");
+		SessionManager.setThreadLocalSession(mainSession);
 	}
 	
 	/**
@@ -133,13 +125,6 @@ public abstract class AbstractMain {
 		return new SysConfig("localhost", "8585");
 	}
 	
-	/**
-	 * 
-	 */
-	protected void execute() throws Exception {
-		// do nothing
-	}
-
 	/**
 	 * 
 	 */

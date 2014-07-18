@@ -22,7 +22,7 @@ package org.wahlzeit.services;
 
 
 /**
- * A Context object maintains a DatabaseConnection and helps track processing time.
+ * A Session object maintains a DatabaseConnection and helps track processing time.
  * Typically, there is one for each working thread, be it a system thread or a web session.
  * 
  * @author dirkriehle

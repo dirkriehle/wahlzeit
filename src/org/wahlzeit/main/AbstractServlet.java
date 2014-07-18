@@ -71,7 +71,7 @@ public abstract class AbstractServlet extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UserSession ctx = ensureWebContext(request);	
-		ContextManager.setThreadLocalContext(ctx);
+		SessionManager.setThreadLocalSession(ctx);
 		
 		if (WahlzeitMain.isShuttingDown() || (ctx == null)) {
 			displayNullPage(request, response);
@@ -80,7 +80,7 @@ public abstract class AbstractServlet extends HttpServlet {
 			ctx.dropDatabaseConnection();
 		}
 
-		ContextManager.dropThreadLocalContext();
+		SessionManager.dropThreadLocalSession();
 	}
 	
 	/**
@@ -95,7 +95,7 @@ public abstract class AbstractServlet extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UserSession ctx = ensureWebContext(request);	
-		ContextManager.setThreadLocalContext(ctx);
+		SessionManager.setThreadLocalSession(ctx);
 		
 		if (WahlzeitMain.isShuttingDown() || (ctx == null)) {
 			displayNullPage(request, response);
@@ -104,7 +104,7 @@ public abstract class AbstractServlet extends HttpServlet {
 			ctx.dropDatabaseConnection();
 		}
 
-		ContextManager.dropThreadLocalContext();
+		SessionManager.dropThreadLocalSession();
 	}
 	
 	/**

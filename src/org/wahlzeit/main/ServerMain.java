@@ -44,17 +44,18 @@ public abstract class ServerMain extends ModelMain {
 		
 		configurePartHandlers();
 		configureLanguageModels();
-		
-		AgentManager am = AgentManager.getInstance();
-		am.startAllThreads();
+
+// FIXME		
+//		AgentManager am = AgentManager.getInstance();
+//		am.startAllThreads();
 	}
 	
 	/**
 	 * 
 	 */
 	protected void shutDown() throws Exception {
-		AgentManager am = AgentManager.getInstance();
-		am.stopAllThreads();
+//		AgentManager am = AgentManager.getInstance();
+//		am.stopAllThreads();
 				
 		super.shutDown();
 	}
@@ -62,7 +63,7 @@ public abstract class ServerMain extends ModelMain {
 	/**
 	 * 
 	 */
-	public static void configurePartHandlers() {
+	public void configurePartHandlers() {
 		WebPartHandler temp = null;
 		WebPartHandlerManager manager = WebPartHandlerManager.getInstance();
 		
@@ -159,7 +160,7 @@ public abstract class ServerMain extends ModelMain {
 	/**
 	 * 
 	 */
-	public static void configureLanguageModels() {
+	public void configureLanguageModels() {
 		LanguageConfigs.put(Language.ENGLISH, new EnglishModelConfig());
 		LanguageConfigs.put(Language.GERMAN, new GermanModelConfig());
 	}

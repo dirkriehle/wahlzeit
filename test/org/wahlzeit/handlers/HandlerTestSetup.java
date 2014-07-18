@@ -50,7 +50,7 @@ public class HandlerTestSetup extends TestSetup {
 		super.setUp();
 		
 		session = createUserSession();
-		ContextManager.setThreadLocalContext(session);
+		SessionManager.setThreadLocalSession(session);
 		
 		if (fTest instanceof HandlerTest) {
 			HandlerTest test = (HandlerTest) fTest;
@@ -64,11 +64,14 @@ public class HandlerTestSetup extends TestSetup {
 	protected UserSession createUserSession() {
 		UserSession result = null;
 		
+		ServerMain serverMain = (ServerMain) ModelMain.getInstance();
+		
 		// FIXME set templates dir to template-server from SysConfig.getTemplatesDir
 		// ModelMain.configureWebPartTemplateServer();
 		
-		WahlzeitMain.configurePartHandlers();
-		WahlzeitMain.configureLanguageModels();
+
+		serverMain.configurePartHandlers();
+		serverMain.configureLanguageModels();
 
 		result = new UserSession("testContext");
 		result.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
