@@ -37,6 +37,8 @@ public class FlowersApp implements ServletContextListener {
 	 * 
 	 */
 	public void contextInitialized(ServletContextEvent sce) {
+		ServletContext context = sce.getServletContext();
+		System.out.println(context);
 		try {
 			ServerMain.getInstance().startUp(true);
 		} catch (Exception ex) {
