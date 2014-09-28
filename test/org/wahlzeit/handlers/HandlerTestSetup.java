@@ -64,7 +64,7 @@ public class HandlerTestSetup extends TestSetup {
 	protected UserSession createUserSession() {
 		UserSession result = null;
 		
-		ServerMain serverMain = ServerMain.getInstance();
+		ServiceMain serverMain = ServiceMain.getInstance();
 		serverMain.configureWebPartTemplateService();
 		serverMain.configureWebPartHandlers();
 		serverMain.configureLanguageModels();

@@ -151,7 +151,7 @@ public class PhotoManager extends ObjectManager {
 		try {
 			PreparedStatement stmt = getReadingStatement("INSERT INTO photos(id) VALUES(?)");
 			createObject(photo, stmt, id.asInt());
-			ServerMain.getInstance().saveGlobals();
+			ServiceMain.getInstance().saveGlobals();
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
 		}

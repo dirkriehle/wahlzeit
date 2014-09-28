@@ -26,7 +26,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 import org.wahlzeit.handlers.PartUtil;
-import org.wahlzeit.main.ServerMain;
+import org.wahlzeit.main.ServiceMain;
 import org.wahlzeit.model.UserLog;
 import org.wahlzeit.services.SysLog;
 
@@ -50,7 +50,7 @@ public class AdminServlet extends AbstractServlet {
 		String link = request.getRequestURI();
 		UserLog.logValue("requested", link);
 		if (isLocalHost(request)) {
-			ServerMain.getInstance().requestStop();
+			ServiceMain.getInstance().requestStop();
 			displayNullPage(request, response);
 		} else if (link.length() == "/admin".length()){
 			SysLog.logValue("redirect", PartUtil.DEFAULT_PAGE_NAME);

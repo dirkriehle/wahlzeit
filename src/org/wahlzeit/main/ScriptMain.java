@@ -59,6 +59,5 @@ public abstract class ScriptMain extends ModelMain {
 	protected void execute() throws Exception {
 		// do nothing
 	}
-
 		
 }

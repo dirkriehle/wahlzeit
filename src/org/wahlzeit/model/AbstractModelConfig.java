@@ -82,7 +82,7 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
 		String footerPhotoSizePart3 = doGetValue("FooterPhotoSizePart3");
 		String footerPhotoSizePart4 = doGetValue("FooterPhotoSizePart4");
 		
-		boolean isInProduction = ServerMain.getInstance().isInProduction();
+		boolean isInProduction = ServiceMain.getInstance().isInProduction();
 		String footerDebugPart = !isInProduction ? menuDash + doGetValue("FooterDebugPart") : "";
 		
 		doSetValue("PageFooter0", footerCommunityPart + menuDash + footerAboutPart + menuDash + footerLanguagePart + menuDash + footerPhotoSizePart0 + footerDebugPart);

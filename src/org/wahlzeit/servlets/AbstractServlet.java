@@ -27,7 +27,7 @@ import java.net.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import org.wahlzeit.main.ServerMain;
+import org.wahlzeit.main.ServiceMain;
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
 import org.wahlzeit.utils.*;
@@ -74,7 +74,7 @@ public abstract class AbstractServlet extends HttpServlet {
 		UserSession ctx = ensureWebContext(request);	
 		SessionManager.setThreadLocalSession(ctx);
 		
-		if (ServerMain.getInstance().isShuttingDown() || (ctx == null)) {
+		if (ServiceMain.getInstance().isShuttingDown() || (ctx == null)) {
 			displayNullPage(request, response);
 		} else {
 			myGet(request, response);
@@ -98,7 +98,7 @@ public abstract class AbstractServlet extends HttpServlet {
 		UserSession ctx = ensureWebContext(request);	
 		SessionManager.setThreadLocalSession(ctx);
 		
-		if (ServerMain.getInstance().isShuttingDown() || (ctx == null)) {
+		if (ServiceMain.getInstance().isShuttingDown() || (ctx == null)) {
 			displayNullPage(request, response);
 		} else {
 			myPost(request, response);

@@ -22,7 +22,7 @@ package org.wahlzeit.apps;
 
 import javax.servlet.*;
 
-import org.wahlzeit.main.ServerMain;
+import org.wahlzeit.main.ServiceMain;
 import org.wahlzeit.services.*;
 
 /**
@@ -31,16 +31,14 @@ import org.wahlzeit.services.*;
  * @author dirkriehle
  *
  */
-public class FlowersApp implements ServletContextListener {
+public class GenericApp implements ServletContextListener {
 	
 	/**
 	 * 
 	 */
 	public void contextInitialized(ServletContextEvent sce) {
-		ServletContext context = sce.getServletContext();
-		System.out.println(context);
 		try {
-			ServerMain.getInstance().startUp(true);
+			ServiceMain.getInstance().startUp(true);
 		} catch (Exception ex) {
 			SysLog.logThrowable(ex);
 		}
@@ -51,7 +49,7 @@ public class FlowersApp implements ServletContextListener {
 	 */
 	public void contextDestroyed(ServletContextEvent sce) {
 		try {
-			ServerMain.getInstance().shutDown();
+			ServiceMain.getInstance().shutDown();
 		} catch (Exception ex) {
 			SysLog.logThrowable(ex);
 		}

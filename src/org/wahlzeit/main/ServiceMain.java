@@ -35,12 +35,12 @@ import org.wahlzeit.services.*;
  * @author dirkriehle
  *
  */
-public class ServerMain extends ModelMain {
+public class ServiceMain extends ModelMain {
 	
 	/**
 	 * 
 	 */
-	protected static ServerMain instance = new ServerMain();
+	protected static ServiceMain instance = new ServiceMain();
 
 	/**
 	 * 
@@ -55,7 +55,7 @@ public class ServerMain extends ModelMain {
 	/**
 	 * 
 	 */
-	public static ServerMain getInstance() {
+	public static ServiceMain getInstance() {
 		return instance;
 	}
 	
