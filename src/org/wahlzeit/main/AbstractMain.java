@@ -53,8 +53,8 @@ public abstract class AbstractMain {
 	/**
 	 * 
 	 */
-	protected void startUp() throws Exception {
-		SysConfig.setInstance(createSysConfig());
+	protected void startUp(String rootDir) throws Exception {
+		SysConfig.setInstance(createSysConfig(rootDir));
 		
 		mainSession = new SysSession("system");
 		SessionManager.setThreadLocalSession(mainSession);
@@ -63,21 +63,21 @@ public abstract class AbstractMain {
 	/**
 	 * 
 	 */
-	protected SysConfig createSysConfig() {
-		return createDevSysConfig();
+	protected SysConfig createSysConfig(String rootDir) {
+		return createDevSysConfig(rootDir);
 	}
 	/**
 	 * 
 	 */
-	protected SysConfig createProdSysConfig() {
-		return new SysConfig("wahlzeit.org"); 
+	protected SysConfig createProdSysConfig(String rootDir) {
+		return new SysConfig(rootDir); 
 	}
 	
 	/**
 	 * 
 	 */
-	protected SysConfig createDevSysConfig() {
-		return new SysConfig("localhost", "8080");
+	protected SysConfig createDevSysConfig(String rootDir) {
+		return new SysConfig(rootDir);
 	}
 	
 	/**

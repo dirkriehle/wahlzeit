@@ -59,14 +59,21 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
 		praiseFormatter = myPraiseFormatter;
 		
 		try {
-			String basicFileName = FileUtil.getTmplFileName(language, "ModelConfig.properties");
-			loadProperties(basicFileName);
-
-			String customFileName = FileUtil.getTmplFileName(language, "CustomModelConfig.properties");
-			File customFile = new File(customFileName);
-			if (customFile.exists()) {
-				loadProperties(customFile);
+			ConfigDir templatesDir = SysConfig.getTemplatesDir();
+			
+			String shortDefaultFileName = myLanguage.asIsoCode() + File.separator + "ModelConfig.properties";
+			if(templatesDir.hasDefaultFile(shortDefaultFileName)) {
+				String absoluteDefaultFileName = templatesDir.getAbsoluteDefaultConfigFileName(shortDefaultFileName);
+				loadProperties(absoluteDefaultFileName);
 			}
+			
+			String shortCustomFileName = myLanguage.asIsoCode() + File.separator + "CustomModelConfig.properties";
+			if(templatesDir.hasCustomFile(shortCustomFileName)) {
+				String absoluteCustomFileName = templatesDir.getAbsoluteCustomConfigFileName(shortCustomFileName);
+				loadProperties(absoluteCustomFileName);
+			}
+			
+
 		} catch (IOException ioex) {
 			ioex.printStackTrace(); //@FIXME
 		}

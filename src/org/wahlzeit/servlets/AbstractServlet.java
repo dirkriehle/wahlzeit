@@ -71,14 +71,14 @@ public abstract class AbstractServlet extends HttpServlet {
 	 * 
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		UserSession ctx = ensureWebContext(request);	
-		SessionManager.setThreadLocalSession(ctx);
+		UserSession us = ensureWebContext(request);	
+		SessionManager.setThreadLocalSession(us);
 		
-		if (ServiceMain.getInstance().isShuttingDown() || (ctx == null)) {
+		if (ServiceMain.getInstance().isShuttingDown() || (us == null)) {
 			displayNullPage(request, response);
 		} else {
 			myGet(request, response);
-			ctx.dropDatabaseConnection();
+			us.dropDatabaseConnection();
 		}
 
 		SessionManager.dropThreadLocalSession();
@@ -95,14 +95,14 @@ public abstract class AbstractServlet extends HttpServlet {
 	 * 
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		UserSession ctx = ensureWebContext(request);	
-		SessionManager.setThreadLocalSession(ctx);
+		UserSession us = ensureWebContext(request);	
+		SessionManager.setThreadLocalSession(us);
 		
-		if (ServiceMain.getInstance().isShuttingDown() || (ctx == null)) {
+		if (ServiceMain.getInstance().isShuttingDown() || (us == null)) {
 			displayNullPage(request, response);
 		} else {
 			myPost(request, response);
-			ctx.dropDatabaseConnection();
+			us.dropDatabaseConnection();
 		}
 
 		SessionManager.dropThreadLocalSession();
@@ -201,11 +201,11 @@ public abstract class AbstractServlet extends HttpServlet {
 	/**
 	 * 
 	 */
-	protected String getRequestArgsAsString(UserSession ctx, Map args) {
+	protected String getRequestArgsAsString(UserSession us, Map args) {
 		StringBuffer result = new StringBuffer(96);
 		for (Iterator i = args.keySet().iterator(); i.hasNext(); ) {
 			String key = i.next().toString();
-			String value = ctx.getAsString(args, key);
+			String value = us.getAsString(args, key);
 			result.append(key + "=" + value);
 			if (i.hasNext()) {
 				 result.append("; ");

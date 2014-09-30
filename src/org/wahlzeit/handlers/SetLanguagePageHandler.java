@@ -49,7 +49,7 @@ public class SetLanguagePageHandler extends AbstractWebPageHandler {
 	/**
 	 * 
 	 */
-	protected String doHandleGet(UserSession ctx, String link, Map args) {
+	protected String doHandleGet(UserSession us, String link, Map args) {
 		ModelConfig result = LanguageConfigs.get(Language.ENGLISH);
 		
 		if (link.equals(PartUtil.SET_GERMAN_LANGUAGE_PAGE_NAME)) {
@@ -60,7 +60,7 @@ public class SetLanguagePageHandler extends AbstractWebPageHandler {
 			result = LanguageConfigs.get(Language.JAPANESE);
 		}
 		
-		ctx.setConfiguration(result);
+		us.setConfiguration(result);
 		
 		return link;
 	}
@@ -68,10 +68,10 @@ public class SetLanguagePageHandler extends AbstractWebPageHandler {
 	/**
 	 * 
 	 */
-	protected void makeWebPageBody(UserSession ctx, WebPart page) {
-		page.addString("noteHeading", ctx.cfg().getInformation());
-		String msg1 = ctx.cfg().getNewLanguageSet();
-		String msg2 = ctx.cfg().getContinueWithShowPhoto();
+	protected void makeWebPageBody(UserSession us, WebPart page) {
+		page.addString("noteHeading", us.cfg().getInformation());
+		String msg1 = us.cfg().getNewLanguageSet();
+		String msg2 = us.cfg().getContinueWithShowPhoto();
 		page.addString("note", HtmlUtil.asPara(msg1) + HtmlUtil.asPara(msg2));
 	}
 

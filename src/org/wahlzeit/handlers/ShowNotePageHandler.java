@@ -46,19 +46,19 @@ public class ShowNotePageHandler extends AbstractWebPageHandler {
 	/**
 	 * 
 	 */
-	protected boolean isWellFormedGet(UserSession ctx, String link, Map args) {
-		return hasSavedMessage(ctx);
+	protected boolean isWellFormedGet(UserSession us, String link, Map args) {
+		return hasSavedMessage(us);
 	}
 	
 	/**
 	 * 
 	 */
-	protected void makeWebPageBody(UserSession ctx, WebPart page) {
-		String heading = ctx.getHeading();
-		heading = StringUtil.isNullOrEmptyString(heading) ? ctx.cfg().getThankYou() : heading;
+	protected void makeWebPageBody(UserSession us, WebPart page) {
+		String heading = us.getHeading();
+		heading = StringUtil.isNullOrEmptyString(heading) ? us.cfg().getThankYou() : heading;
 		page.addString("noteHeading", heading);
 		
-		page.addString("note", ctx.getMessage());
+		page.addString("note", us.getMessage());
 	}
 
 }

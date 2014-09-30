@@ -43,18 +43,18 @@ public class ResetSessionPageHandler extends AbstractWebPageHandler {
 	/**
 	 * 
 	 */
-	protected String doHandleGet(UserSession ctx, String link, Map args) {
-		ctx.clear();
+	protected String doHandleGet(UserSession us, String link, Map args) {
+		us.clear();
 		return link;
 	}
 	
 	/**
 	 * 
 	 */
-	protected void makeWebPageBody(UserSession ctx, WebPart page) {
-		page.addString("noteHeading", ctx.cfg().getThankYou());
-		String msg1 = ctx.cfg().getResetSession();
-		String msg2 = ctx.cfg().getContinueWithShowPhoto();
+	protected void makeWebPageBody(UserSession us, WebPart page) {
+		page.addString("noteHeading", us.cfg().getThankYou());
+		String msg1 = us.cfg().getResetSession();
+		String msg2 = us.cfg().getContinueWithShowPhoto();
 		page.addString("note", HtmlUtil.asPara(msg1) + HtmlUtil.asPara(msg2));
 	}
 

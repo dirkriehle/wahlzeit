@@ -35,26 +35,25 @@ public abstract class AbstractWebPageHandler extends AbstractWebPartHandler impl
 	/**
 	 * 
 	 */
-	public WebPart makeWebPart(UserSession ctx) {
-		return makeWebPage(ctx);
+	public WebPart makeWebPart(UserSession us) {
+		return makeWebPage(us);
 	}
 	
 	/**
 	 * 
 	 */
-	public WebPart makeWebPage(UserSession ctx) {
-		WebPart result = createWebPart(ctx);
+	public WebPart makeWebPage(UserSession us) {
+		WebPart result = createWebPart(us);
 		
-		String siteUrl = SysConfig.getSiteUrlAsString();
 		ConfigDir staticDir = SysConfig.getStaticDir();
-		String stylesheetUrl = siteUrl + staticDir.getFullConfigFileName("wahlzeit.css");
+		String stylesheetUrl = staticDir.getRelativeConfigFileName("wahlzeit.css");
 		result.addString("stylesheet", stylesheetUrl);
-		String javascriptUrl = siteUrl + staticDir.getFullConfigFileName("wahlzeit.js");
+		String javascriptUrl = staticDir.getRelativeConfigFileName("wahlzeit.js");
 		result.addString("javascript", javascriptUrl);
 
-		makeWebPageFrame(ctx, result);
-		makeWebPageMenu(ctx, result);		
-		makeWebPageBody(ctx, result);
+		makeWebPageFrame(us, result);
+		makeWebPageMenu(us, result);		
+		makeWebPageBody(us, result);
 		
 		return result;
 	}
@@ -62,54 +61,47 @@ public abstract class AbstractWebPageHandler extends AbstractWebPartHandler impl
 	/**
 	 * 
 	 */
-	protected void makeWebPageFrame(UserSession ctx, WebPart page) {
-		page.addString("title", ctx.cfg().getPageTitle());
+	protected void makeWebPageFrame(UserSession us, WebPart page) {
+		page.addString("title", us.cfg().getPageTitle());
 		
-		makeWebPageHeading(ctx, page);
+		makeWebPageHeading(us, page);
 		
-		page.addString("footer", ctx.cfg().getPageFooter(ctx.getPhotoSize()));
-		page.addString("mission", ctx.cfg().getPageMission());
+		page.addString("footer", us.cfg().getPageFooter(us.getPhotoSize()));
+		page.addString("mission", us.cfg().getPageMission());
 	}
 	
 	/**
 	 * 
 	 */
-	protected void makeWebPageHeading(UserSession ctx, WebPart page) {
-		Language langValue = ctx.cfg().getLanguage();
-		if (isToShowAds(ctx)) {
-			WebPart heading = createWebPart(ctx, PartUtil.BANNER_INFO_FILE);
-			String imgTag = HtmlUtil.asImg(SysConfig.getLogoImageAsUrlString(langValue));
-			heading.addString("logo", HtmlUtil.asHref(SysConfig.getSiteUrlAsString(), imgTag));
-			page.addWritable("heading", heading);
-		} else {
-			String heading = HtmlUtil.asImg(SysConfig.getHeadingImageAsUrlString(langValue));
-			heading = HtmlUtil.asHref(SysConfig.getSiteUrlAsString(), heading);
-			page.addString("heading", heading);
-		}
+	protected void makeWebPageHeading(UserSession us, WebPart page) {
+		Language langValue = us.cfg().getLanguage();
+		String heading = HtmlUtil.asImg(getHeadingImageAsRelativePathString(langValue));
+		heading = HtmlUtil.asHref(getSiteUrlAsString(), heading);
+		page.addString("heading", heading);
 	}
 	
 	/**
 	 * @methodtype boolean-query
 	 */
-	protected boolean isToShowAds(UserSession ctx) {
+	protected boolean isToShowAds(UserSession us) {
 		return false;
 	}
 	
 	/**
 	 * 
 	 */
-	protected void makeWebPageMenu(UserSession ctx, WebPart page) {
-		Client client = ctx.getClient();
+	protected void makeWebPageMenu(UserSession us, WebPart page) {
+		Client client = us.getClient();
 		String menu = "";
 		
 		if (client.hasAdministratorRights()) {
-			menu = ctx.cfg().getAdministratorMenu();
+			menu = us.cfg().getAdministratorMenu();
 		} else if (client.hasModeratorRights()) {
-			menu = ctx.cfg().getModeratorMenu();
+			menu = us.cfg().getModeratorMenu();
 		} else if (client.hasUserRights()) {
-			menu = ctx.cfg().getUserMenu();
+			menu = us.cfg().getUserMenu();
 		} else {
-			menu = ctx.cfg().getGuestMenu();
+			menu = us.cfg().getGuestMenu();
 		}
 		
 		page.addString("menu", menu.toString());
@@ -118,7 +110,7 @@ public abstract class AbstractWebPageHandler extends AbstractWebPartHandler impl
 	/**
 	 * 
 	 */
-	protected void makeWebPageBody(UserSession ctx, WebPart page) {
+	protected void makeWebPageBody(UserSession us, WebPart page) {
 		// do nothing by default
 	}
 	

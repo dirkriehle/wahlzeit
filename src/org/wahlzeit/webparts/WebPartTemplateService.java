@@ -102,7 +102,7 @@ public class WebPartTemplateService {
 	 */
 	protected void loadTemplate(String shortName) throws IOException {
 		WebPartTemplate template = new WebPartTemplate(shortName);
-		String fileName = getTemplatesDir().getFullConfigFileName(shortName + ".html");
+		String fileName = getTemplatesDir().getAbsoluteConfigFileName(shortName + ".html");
 		File file = new File(fileName);
 		SysLog.logValueWithInfo("file name", fileName, "opened HTML template file");
 

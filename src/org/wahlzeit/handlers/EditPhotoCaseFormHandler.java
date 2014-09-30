@@ -53,43 +53,43 @@ public class EditPhotoCaseFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		PhotoCase photoCase = ctx.getPhotoCase();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		PhotoCase photoCase = us.getPhotoCase();
 		Photo photo = photoCase.getPhoto();
 
-		part.addString(Photo.THUMB, getPhotoThumb(ctx, photo));
+		part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 
 		String id = String.valueOf(photoCase.getId());
 		part.addString(PhotoCase.ID, id);
 		
-		String description = getPhotoSummary(ctx, photo);
+		String description = getPhotoSummary(us, photo);
 		part.maskAndAddString(Photo.DESCRIPTION, description);
 
 		String tags = photo.getTags().asString();
-		tags = !StringUtil.isNullOrEmptyString(tags) ? tags : ctx.cfg().getNoTags();
+		tags = !StringUtil.isNullOrEmptyString(tags) ? tags : us.cfg().getNoTags();
 		part.maskAndAddString(Photo.TAGS, tags);
 		
 		String photoId = photo.getId().asString();
-		part.addString(Photo.LINK, HtmlUtil.asHref(SysConfig.getLinkAsUrlString(photoId)));
+		part.addString(Photo.LINK, HtmlUtil.asHref(getResourceAsRelativeHtmlPathString(photoId)));
 
 		part.addString(PhotoCase.FLAGGER, photoCase.getFlagger());
-		part.addString(PhotoCase.REASON, ctx.cfg().asValueString(photoCase.getReason()));
+		part.addString(PhotoCase.REASON, us.cfg().asValueString(photoCase.getReason()));
 		part.addString(PhotoCase.EXPLANATION, photoCase.getExplanation());		
 	}
 
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
-		String id = ctx.getAndSaveAsString(args, PhotoCase.ID);
+	protected String doHandlePost(UserSession us, Map args) {
+		String id = us.getAndSaveAsString(args, PhotoCase.ID);
 		PhotoCaseManager pcm = PhotoCaseManager.getInstance();
 		
 		PhotoCase photoCase = pcm.getPhotoCase(Integer.parseInt(id));
 		Photo photo = photoCase.getPhoto();
 		PhotoStatus status = photo.getStatus();
-		if (ctx.isFormType(args, "unflag")) {
+		if (us.isFormType(args, "unflag")) {
 			status = status.asFlagged(false);
-		} else if (ctx.isFormType(args, "moderate")) {
+		} else if (us.isFormType(args, "moderate")) {
 			status = status.asModerated(true);
 		} else { // something wrong?
 			return PartUtil.SHOW_PHOTO_CASES_PAGE_NAME;

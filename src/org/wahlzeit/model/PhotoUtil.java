@@ -82,7 +82,7 @@ public class PhotoUtil {
 		int targetHeight = size.calcAdjustedHeight(sourceWidth, sourceHeight);
 
 		BufferedImage targetImage = scaleImage(source, targetWidth, targetHeight);
-		File target = new File(SysConfig.getPhotosDirAsString() + id.asString() + size.asInt() + ".jpg");
+		File target = new File(SysConfig.getPhotosDir().asString() + id.asString() + size.asInt() + ".jpg");
 		ImageIO.write(targetImage, "jpg", target);
 
 		SysLog.logInfo("created image file for id: " + id.asString() + " of size: " + size.asString());

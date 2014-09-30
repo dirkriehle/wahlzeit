@@ -20,6 +20,8 @@
 
 package org.wahlzeit.apps;
 
+import java.io.File;
+
 import javax.servlet.*;
 
 import org.wahlzeit.main.ServiceMain;
@@ -38,7 +40,11 @@ public class GenericApp implements ServletContextListener {
 	 */
 	public void contextInitialized(ServletContextEvent sce) {
 		try {
-			ServiceMain.getInstance().startUp(true);
+			ServletContext sc = sce.getServletContext();
+			File df = new File(sc.getRealPath("dummy.txt"));
+			String rp = df.getParent();
+			
+			ServiceMain.getInstance().startUp(false, rp);
 		} catch (Exception ex) {
 			SysLog.logThrowable(ex);
 		}

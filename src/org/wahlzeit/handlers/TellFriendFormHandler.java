@@ -53,24 +53,24 @@ public class TellFriendFormHandler extends AbstractWebFormHandler {
 	/**
 	 * @methodtype command
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		Map args = ctx.getSavedArgs();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map args = us.getSavedArgs();
 		part.addStringFromArgs(args, UserSession.MESSAGE);
 
-		part.maskAndAddStringFromArgsWithDefault(args, EMAIL_FROM, ctx.getEmailAddressAsString());
+		part.maskAndAddStringFromArgsWithDefault(args, EMAIL_FROM, us.getEmailAddressAsString());
 		part.maskAndAddStringFromArgs(args, EMAIL_TO);
-		part.maskAndAddStringFromArgsWithDefault(args, EMAIL_SUBJECT, ctx.cfg().getTellFriendEmailSubject());
+		part.maskAndAddStringFromArgsWithDefault(args, EMAIL_SUBJECT, us.cfg().getTellFriendEmailSubject());
 		
-		String emailText = ctx.cfg().getTellFriendEmailWebsite() + "\n\n" + SysConfig.getSiteUrlAsString() + "\n\n";
+		String emailText = us.cfg().getTellFriendEmailWebsite() + "\n\n" + getSiteUrlAsString() + "\n\n";
 
-		String id = ctx.getAsString(args, Photo.ID);
+		String id = us.getAsString(args, Photo.ID);
 		if (!StringUtil.isNullOrEmptyString(id) && PhotoManager.hasPhoto(id)) {
-			emailText += (ctx.cfg().getTellFriendEmailPhoto() + "\n\n" + SysConfig.getSiteUrlAsString() + id + ".html" + "\n\n");
+			emailText += (us.cfg().getTellFriendEmailPhoto() + "\n\n" + getSiteUrlAsString() + id + ".html" + "\n\n");
 		}
 		
 		part.addString(Photo.ID, id);
 		Photo photo = PhotoManager.getPhoto(id);
-		part.addString(Photo.THUMB, getPhotoThumb(ctx, photo));
+		part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 
 		part.maskAndAddStringFromArgsWithDefault(args, EMAIL_BODY, emailText);
 	}
@@ -78,26 +78,26 @@ public class TellFriendFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
-		String yourEmailAddress = ctx.getAndSaveAsString(args, EMAIL_FROM);
-		String friendsEmailAddress = ctx.getAndSaveAsString(args, EMAIL_TO);
-		String emailSubject = ctx.getAndSaveAsString(args, EMAIL_SUBJECT);
-		String emailBody = ctx.getAndSaveAsString(args, EMAIL_BODY);
+	protected String doHandlePost(UserSession us, Map args) {
+		String yourEmailAddress = us.getAndSaveAsString(args, EMAIL_FROM);
+		String friendsEmailAddress = us.getAndSaveAsString(args, EMAIL_TO);
+		String emailSubject = us.getAndSaveAsString(args, EMAIL_SUBJECT);
+		String emailBody = us.getAndSaveAsString(args, EMAIL_BODY);
 		
 		if (StringUtil.isNullOrEmptyString(yourEmailAddress)) {
-			ctx.setMessage(ctx.cfg().getEmailAddressIsMissing());
+			us.setMessage(us.cfg().getEmailAddressIsMissing());
 			return PartUtil.TELL_FRIEND_PAGE_NAME;
 		} else if (!StringUtil.isValidStrictEmailAddress(yourEmailAddress)) {
-			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
+			us.setMessage(us.cfg().getEmailAddressIsInvalid());
 			return PartUtil.TELL_FRIEND_PAGE_NAME;
 		} else if (StringUtil.isNullOrEmptyString(friendsEmailAddress)) {
-			ctx.setMessage(ctx.cfg().getEmailAddressIsMissing());
+			us.setMessage(us.cfg().getEmailAddressIsMissing());
 			return PartUtil.TELL_FRIEND_PAGE_NAME;
 		} else if (!StringUtil.isValidStrictEmailAddress(friendsEmailAddress)) {
-			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
+			us.setMessage(us.cfg().getEmailAddressIsInvalid());
 			return PartUtil.TELL_FRIEND_PAGE_NAME;
 		} if ((emailSubject.length() > 128) || (emailBody.length() > 1024)) {
-			ctx.setMessage(ctx.cfg().getInputIsTooLong());
+			us.setMessage(us.cfg().getInputIsTooLong());
 			return PartUtil.TELL_FRIEND_PAGE_NAME;			
 		}
 
@@ -105,13 +105,13 @@ public class TellFriendFormHandler extends AbstractWebFormHandler {
 		EmailAddress to = EmailAddress.getFromString(friendsEmailAddress);
 
 		EmailService emailService = EmailServiceManager.getDefaultService();
-		emailService.sendEmailIgnoreException(from, to, ctx.cfg().getAuditEmailAddress(), emailSubject, emailBody);
+		emailService.sendEmailIgnoreException(from, to, us.cfg().getAuditEmailAddress(), emailSubject, emailBody);
 
-		ctx.setEmailAddress(from);
+		us.setEmailAddress(from);
 
 		UserLog.logPerformedAction("TellFriend");
 
-		ctx.setTwoLineMessage(ctx.cfg().getEmailWasSent() + friendsEmailAddress + "! ", ctx.cfg().getKeepGoing());
+		us.setTwoLineMessage(us.cfg().getEmailWasSent() + friendsEmailAddress + "! ", us.cfg().getKeepGoing());
 		
 		return PartUtil.TELL_FRIEND_PAGE_NAME;
 	}

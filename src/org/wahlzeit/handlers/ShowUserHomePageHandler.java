@@ -41,11 +41,11 @@ public class ShowUserHomePageHandler extends AbstractWebPageHandler {
 	/**
 	 * 
 	 */
-	protected void makeWebPageBody(UserSession ctx, WebPart page) {
-		Writable part = makeUserProfileForm(ctx);
+	protected void makeWebPageBody(UserSession us, WebPart page) {
+		Writable part = makeUserProfileForm(us);
 		page.addWritable("profile", part);
 		
-		User user = (User) ctx.getClient();
+		User user = (User) us.getClient();
 		Photo[] photos = user.getPhotos();
 		boolean wasEmpty = true;
 		if (photos.length != 0) {
@@ -53,7 +53,7 @@ public class ShowUserHomePageHandler extends AbstractWebPageHandler {
 			for (int i = 0; i < photos.length; i++) {
 				Photo photo = photos[i];
 				if (!photo.getStatus().isDeleted()) {
-					part = makeUserPhotoForm(ctx, photos[i]);
+					part = makeUserPhotoForm(us, photos[i]);
 					list.append(part);
 					wasEmpty = false;
 				}
@@ -62,26 +62,26 @@ public class ShowUserHomePageHandler extends AbstractWebPageHandler {
 		}
 		
 		if (wasEmpty){
-			page.addString("photos", HtmlUtil.asPara(ctx.cfg().getNoPhotoUploaded()));
+			page.addString("photos", HtmlUtil.asPara(us.cfg().getNoPhotoUploaded()));
 		}	
 	}
 	
 	/**
 	 * 
 	 */
-	protected Writable makeUserProfileForm(UserSession ctx) {
+	protected Writable makeUserProfileForm(UserSession us) {
 		WebFormHandler handler = getFormHandler(PartUtil.SHOW_USER_PROFILE_FORM_NAME);
-		return handler.makeWebPart(ctx);
+		return handler.makeWebPart(us);
 	}
 	
 	
 	/**
 	 * 
 	 */
-	protected Writable makeUserPhotoForm(UserSession ctx, Photo photo) {
-		ctx.setPhoto(photo);
+	protected Writable makeUserPhotoForm(UserSession us, Photo photo) {
+		us.setPhoto(photo);
 		WebFormHandler handler = getFormHandler(PartUtil.SHOW_USER_PHOTO_FORM_NAME);
-		return handler.makeWebPart(ctx);
+		return handler.makeWebPart(us);
 	}
 	
 }

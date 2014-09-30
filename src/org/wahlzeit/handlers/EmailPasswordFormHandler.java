@@ -45,8 +45,8 @@ public class EmailPasswordFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		Map<String, Object> savedArgs = ctx.getSavedArgs();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map<String, Object> savedArgs = us.getSavedArgs();
 		part.addStringFromArgs(savedArgs, UserSession.MESSAGE);
 		part.maskAndAddStringFromArgs(savedArgs, User.NAME);
 	}
@@ -54,29 +54,29 @@ public class EmailPasswordFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
+	protected String doHandlePost(UserSession us, Map args) {
 		UserManager userManager = UserManager.getInstance();	
 
-		String userName = ctx.getAndSaveAsString(args, User.NAME);
+		String userName = us.getAndSaveAsString(args, User.NAME);
 		if (StringUtil.isNullOrEmptyString(userName)) {
-			ctx.setMessage(ctx.cfg().getFieldIsMissing());
+			us.setMessage(us.cfg().getFieldIsMissing());
 			return PartUtil.EMAIL_PASSWORD_PAGE_NAME;
 		} else if (!userManager.hasUserByName(userName)) {
-			ctx.setMessage(ctx.cfg().getUserNameIsUnknown());
+			us.setMessage(us.cfg().getUserNameIsUnknown());
 			return PartUtil.EMAIL_PASSWORD_PAGE_NAME;
 		}
 		
 		User user = userManager.getUserByName(userName);
 		
-		EmailAddress from = ctx.cfg().getModeratorEmailAddress();
+		EmailAddress from = us.cfg().getModeratorEmailAddress();
 		EmailAddress to = user.getEmailAddress();
 
 		EmailService emailService = EmailServiceManager.getDefaultService();
-		emailService.sendEmailIgnoreException(from, to, ctx.cfg().getAuditEmailAddress(), ctx.cfg().getSendPasswordEmailSubject(), user.getPassword());
+		emailService.sendEmailIgnoreException(from, to, us.cfg().getAuditEmailAddress(), us.cfg().getSendPasswordEmailSubject(), user.getPassword());
 
 		UserLog.logPerformedAction("EmailPassword");
 		
-		ctx.setTwoLineMessage(ctx.cfg().getPasswordWasEmailed(), ctx.cfg().getContinueWithShowPhoto());
+		us.setTwoLineMessage(us.cfg().getPasswordWasEmailed(), us.cfg().getContinueWithShowPhoto());
 
 		return PartUtil.SHOW_NOTE_PAGE_NAME;
 	}

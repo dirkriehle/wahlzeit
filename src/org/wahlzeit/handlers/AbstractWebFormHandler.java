@@ -44,51 +44,51 @@ public abstract class AbstractWebFormHandler extends AbstractWebPartHandler impl
 	/**
 	 * 
 	 */
-	public WebPart makeWebPart(UserSession ctx) {
-		WebPart result = createWebPart(ctx);
-		doMakeWebPart(ctx, result);
+	public WebPart makeWebPart(UserSession us) {
+		WebPart result = createWebPart(us);
+		doMakeWebPart(us, result);
 		return result;
 	}
 	
 	/**
 	 * 
 	 */
-	protected abstract void doMakeWebPart(UserSession ctx, WebPart part);
+	protected abstract void doMakeWebPart(UserSession us, WebPart part);
 
 	/**
 	 * @methodtype boolean-query
 	 */
-	protected boolean isWellFormedPost(UserSession ctx, Map args) {
+	protected boolean isWellFormedPost(UserSession us, Map args) {
 		return true;
 	}
 
 	/**
 	 * 
 	 */
-	public final String handlePost(UserSession ctx, Map args) {
-		if (!hasAccessRights(ctx, args)) {
-			SysLog.logInfo("insufficient rights for POST from: " + ctx.getEmailAddressAsString());
-			return getIllegalAccessErrorPage(ctx);
+	public final String handlePost(UserSession us, Map args) {
+		if (!hasAccessRights(us, args)) {
+			SysLog.logInfo("insufficient rights for POST from: " + us.getEmailAddressAsString());
+			return getIllegalAccessErrorPage(us);
 		}
 		
-		if (!isWellFormedPost(ctx, args)) {
-			SysLog.logInfo("received ill-formed POST from: " + ctx.getEmailAddressAsString());
-			return getIllegalArgumentErrorPage(ctx);
+		if (!isWellFormedPost(us, args)) {
+			SysLog.logInfo("received ill-formed POST from: " + us.getEmailAddressAsString());
+			return getIllegalArgumentErrorPage(us);
 		}
 		
 		try {
 			// may throw Exception
-			return doHandlePost(ctx, args);
+			return doHandlePost(us, args);
 		} catch (Throwable t) {
 			SysLog.logThrowable(t);
-			return getInternalProcessingErrorPage(ctx);
+			return getInternalProcessingErrorPage(us);
 		}
 	}
 	
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
+	protected String doHandlePost(UserSession us, Map args) {
 		return PartUtil.DEFAULT_PAGE_NAME;
 	}
 	

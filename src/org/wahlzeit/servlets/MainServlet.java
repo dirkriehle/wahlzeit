@@ -55,7 +55,7 @@ public class MainServlet extends AbstractServlet {
 	 */
 	public void myGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		long startTime = System.currentTimeMillis();
-		UserSession ctx = ensureWebContext(request);
+		UserSession us = ensureWebContext(request);
 		
 		String link = request.getRequestURI();
 		int linkStart = link.lastIndexOf("/") + 1;
@@ -71,20 +71,20 @@ public class MainServlet extends AbstractServlet {
 		String newLink = PartUtil.DEFAULT_PAGE_NAME;
 		if (handler != null) {
 			Map args = getRequestArgs(request);
-			SysLog.logInfo("GET arguments: " + getRequestArgsAsString(ctx, args));
-			newLink = handler.handleGet(ctx, link, args);
+			SysLog.logInfo("GET arguments: " + getRequestArgsAsString(us, args));
+			newLink = handler.handleGet(us, link, args);
 		}
 
 		if (newLink.equals(link)) { // no redirect necessary
-			WebPart result = handler.makeWebPart(ctx);
-			ctx.addProcessingTime(System.currentTimeMillis() - startTime);
-			configureResponse(ctx, response, result);
-			ctx.clearSavedArgs(); // saved args go from post to next get
-			ctx.resetProcessingTime();
+			WebPart result = handler.makeWebPart(us);
+			us.addProcessingTime(System.currentTimeMillis() - startTime);
+			configureResponse(us, response, result);
+			us.clearSavedArgs(); // saved args go from post to next get
+			us.resetProcessingTime();
 		} else {
 			SysLog.logValue("redirect", newLink);
 			redirectRequest(response, newLink);
-			ctx.addProcessingTime(System.currentTimeMillis() - startTime);
+			us.addProcessingTime(System.currentTimeMillis() - startTime);
 		}
 	}
 	
@@ -93,7 +93,7 @@ public class MainServlet extends AbstractServlet {
 	 */
 	public void myPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		long startTime = System.currentTimeMillis();
-		UserSession ctx = ensureWebContext(request);
+		UserSession us = ensureWebContext(request);
 		
 		String link = request.getRequestURI();
 		int linkStart = link.lastIndexOf("/") + 1;
@@ -106,16 +106,16 @@ public class MainServlet extends AbstractServlet {
 		UserLog.logValue("postedto", link);
 			
 		Map args = getRequestArgs(request);
-		SysLog.logInfo("POST arguments: " + getRequestArgsAsString(ctx, args));
+		SysLog.logInfo("POST arguments: " + getRequestArgsAsString(us, args));
 		
 		WebFormHandler formHandler = WebPartHandlerManager.getWebFormHandler(link);
 		link = PartUtil.DEFAULT_PAGE_NAME;
 		if (formHandler != null) {
-			link = formHandler.handlePost(ctx, args);
+			link = formHandler.handlePost(us, args);
 		}
 
 		redirectRequest(response, link);
-		ctx.addProcessingTime(System.currentTimeMillis() - startTime);
+		us.addProcessingTime(System.currentTimeMillis() - startTime);
 	}
 
 	/**

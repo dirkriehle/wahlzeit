@@ -33,14 +33,6 @@ public class FileUtil {
 	/**
 	 * 
 	 */
-	public static String getTmplFileName(Language lang, String fileName) {
-		String sfn = lang.asIsoCode() + File.separator + fileName;
-		return SysConfig.getTemplatesDir().getFullConfigFileName(sfn);
-	}
-	
-	/**
-	 * 
-	 */
 	public static String safelyReadFileAsString(String fileName) throws IOException {
 		String result = "";
 		

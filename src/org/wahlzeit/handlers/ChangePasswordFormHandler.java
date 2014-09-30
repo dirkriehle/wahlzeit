@@ -48,11 +48,11 @@ public class ChangePasswordFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		Map<String, Object> args = ctx.getSavedArgs();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map<String, Object> args = us.getSavedArgs();
 		part.addStringFromArgs(args, UserSession.MESSAGE);
 
-		User user = (User) ctx.getClient();
+		User user = (User) us.getClient();
 		part.addStringFromArgsWithDefault(args, User.PASSWORD, user.getPassword());
 		part.addStringFromArgsWithDefault(args, User.PASSWORD_AGAIN, user.getPassword());
 	}
@@ -60,27 +60,27 @@ public class ChangePasswordFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
-		String password = ctx.getAndSaveAsString(args, User.PASSWORD);
-		String passwordAgain = ctx.getAndSaveAsString(args, User.PASSWORD_AGAIN);
+	protected String doHandlePost(UserSession us, Map args) {
+		String password = us.getAndSaveAsString(args, User.PASSWORD);
+		String passwordAgain = us.getAndSaveAsString(args, User.PASSWORD_AGAIN);
 		
 		if (StringUtil.isNullOrEmptyString(password)) {
-			ctx.setMessage(ctx.cfg().getFieldIsMissing());
+			us.setMessage(us.cfg().getFieldIsMissing());
 			return PartUtil.CHANGE_PASSWORD_PAGE_NAME;
 		} else if (!password.equals(passwordAgain)) {
-			ctx.setMessage(ctx.cfg().getPasswordsDontMatch());
+			us.setMessage(us.cfg().getPasswordsDontMatch());
 			return PartUtil.CHANGE_PASSWORD_PAGE_NAME;
 		} else if (!StringUtil.isLegalPassword(password)) {
-			ctx.setMessage(ctx.cfg().getInputIsInvalid());
+			us.setMessage(us.cfg().getInputIsInvalid());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		}
 
-		User user = (User) ctx.getClient();
+		User user = (User) us.getClient();
 		user.setPassword(password);
 		
 		UserLog.logPerformedAction("ChangePassword");
 		
-		ctx.setTwoLineMessage(ctx.cfg().getPasswordChangeSucceeded(), ctx.cfg().getContinueWithShowUserHome());
+		us.setTwoLineMessage(us.cfg().getPasswordChangeSucceeded(), us.cfg().getContinueWithShowUserHome());
 
 		return PartUtil.SHOW_NOTE_PAGE_NAME;
 	}

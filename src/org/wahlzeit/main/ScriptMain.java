@@ -40,7 +40,7 @@ public abstract class ScriptMain extends ModelMain {
 		handleArgv(argv);
 		
 		try {
-			startUp();
+			startUp(""); //@FIXME
 			execute();
 		} catch(Exception ex) {
 			SysLog.logThrowable(ex);

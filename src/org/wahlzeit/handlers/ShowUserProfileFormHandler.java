@@ -48,27 +48,27 @@ public class ShowUserProfileFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		User user = (User) ctx.getClient();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		User user = (User) us.getClient();
 
 		Photo photo = user.getUserPhoto();
-		part.addString(Photo.THUMB, getPhotoThumb(ctx, photo));
+		part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 		
 		part.maskAndAddString(User.NAME, user.getName());
-		part.addString(User.STATUS, ctx.cfg().asValueString(user.getStatus()));
+		part.addString(User.STATUS, us.cfg().asValueString(user.getStatus()));
 		part.maskAndAddString(User.EMAIL_ADDRESS, user.getEmailAddress().asString());
-		part.addString(User.MEMBER_SINCE, ctx.cfg().asDateString(user.getCreationTime()));
-		part.addString(User.NOTIFY_ABOUT_PRAISE, ctx.cfg().asYesOrNoString(user.getNotifyAboutPraise()));
+		part.addString(User.MEMBER_SINCE, us.cfg().asDateString(user.getCreationTime()));
+		part.addString(User.NOTIFY_ABOUT_PRAISE, us.cfg().asYesOrNoString(user.getNotifyAboutPraise()));
 		part.addString(User.HOME_PAGE, HtmlUtil.asHref(user.getHomePage().toString()));
 		part.addString(User.NO_PHOTOS, String.valueOf(user.getNoPhotos()));
-		part.addString(User.GENDER, ctx.cfg().asValueString(user.getGender()));
-		part.addString(User.LANGUAGE, ctx.cfg().asValueString(user.getLanguage()));
+		part.addString(User.GENDER, us.cfg().asValueString(user.getGender()));
+		part.addString(User.LANGUAGE, us.cfg().asValueString(user.getLanguage()));
 	}
 
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
+	protected String doHandlePost(UserSession us, Map args) {
 		return PartUtil.EDIT_USER_PROFILE_PAGE_NAME;
 	}
 	

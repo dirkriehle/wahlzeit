@@ -45,8 +45,8 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		Map<String, Object> args = ctx.getSavedArgs();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map<String, Object> args = us.getSavedArgs();
 		part.addStringFromArgs(args, UserSession.MESSAGE);
 
 		part.maskAndAddStringFromArgs(args, Photo.TAGS);
@@ -55,24 +55,24 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
-		String tags = ctx.getAndSaveAsString(args, Photo.TAGS);
+	protected String doHandlePost(UserSession us, Map args) {
+		String tags = us.getAndSaveAsString(args, Photo.TAGS);
 
 		if (!StringUtil.isLegalTagsString(tags)) {
-			ctx.setMessage(ctx.cfg().getInputIsInvalid());
+			us.setMessage(us.cfg().getInputIsInvalid());
 			return PartUtil.UPLOAD_PHOTO_PAGE_NAME;
 		}
 
 		try {
 			PhotoManager pm = PhotoManager.getInstance();
-			String sourceFileName = ctx.getAsString(args, "fileName");
+			String sourceFileName = us.getAsString(args, "fileName");
 			File file = new File(sourceFileName);
 			Photo photo = pm.createPhoto(file);
 
-			String targetFileName = SysConfig.getBackupDirAsString() + photo.getId().asString();
+			String targetFileName = SysConfig.getBackupDir().asString() + photo.getId().asString();
 			createBackup(sourceFileName, targetFileName);
 		
-			User user = (User) ctx.getClient();
+			User user = (User) us.getClient();
 			user.addPhoto(photo); 
 			
 			photo.setTags(new Tags(tags));
@@ -83,10 +83,10 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 			UserLog.addCreatedObject(sb, "Photo", photo.getId().asString());
 			UserLog.log(sb);
 			
-			ctx.setTwoLineMessage(ctx.cfg().getPhotoUploadSucceeded(), ctx.cfg().getKeepGoing());
+			us.setTwoLineMessage(us.cfg().getPhotoUploadSucceeded(), us.cfg().getKeepGoing());
 		} catch (Exception ex) {
 			SysLog.logThrowable(ex);
-			ctx.setMessage(ctx.cfg().getPhotoUploadFailed());
+			us.setMessage(us.cfg().getPhotoUploadFailed());
 		}
 		
 		return PartUtil.UPLOAD_PHOTO_PAGE_NAME;

@@ -42,7 +42,7 @@ public class NullFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
+	protected void doMakeWebPart(UserSession us, WebPart part) {
 		// do nothing
 	}
 	

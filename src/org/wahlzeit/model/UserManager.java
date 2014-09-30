@@ -25,6 +25,7 @@ import java.sql.*;
 
 import org.wahlzeit.services.*;
 import org.wahlzeit.services.mailing.*;
+import org.wahlzeit.utils.SiteUtil;
 
 /**
  * The UserManager provides access to and manages Users (including Moderators and Administrators).
@@ -222,37 +223,37 @@ public class UserManager extends ObjectManager {
 	/**
 	 * 
 	 */
-	public void emailWelcomeMessage(UserSession ctx, User user) {
-		EmailAddress from = ctx.cfg().getAdministratorEmailAddress();
+	public void emailWelcomeMessage(UserSession us, User user) {
+		EmailAddress from = us.cfg().getAdministratorEmailAddress();
 		EmailAddress to = user.getEmailAddress();
 
-		String emailSubject = ctx.cfg().getWelcomeEmailSubject();
-		String emailBody = ctx.cfg().getWelcomeEmailBody() + "\n\n";
-		emailBody += ctx.cfg().getWelcomeEmailUserName() + user.getName() + "\n\n"; 
-		emailBody += ctx.cfg().getConfirmAccountEmailBody() + "\n\n";
-		emailBody += SysConfig.getSiteUrlAsString() + "confirm?code=" + user.getConfirmationCode() + "\n\n";
-		emailBody += ctx.cfg().getGeneralEmailRegards() + "\n\n----\n";
-		emailBody += ctx.cfg().getGeneralEmailFooter() + "\n\n";
+		String emailSubject = us.cfg().getWelcomeEmailSubject();
+		String emailBody = us.cfg().getWelcomeEmailBody() + "\n\n";
+		emailBody += us.cfg().getWelcomeEmailUserName() + user.getName() + "\n\n"; 
+		emailBody += us.cfg().getConfirmAccountEmailBody() + "\n\n";
+		emailBody += SiteUtil.getDefaultSiteUrlAsString() + "confirm?code=" + user.getConfirmationCode() + "\n\n"; //@FIXME
+		emailBody += us.cfg().getGeneralEmailRegards() + "\n\n----\n";
+		emailBody += us.cfg().getGeneralEmailFooter() + "\n\n";
 
 		EmailService emailService = EmailServiceManager.getDefaultService();
-		emailService.sendEmailIgnoreException(from, to, ctx.cfg().getAuditEmailAddress(), emailSubject, emailBody);
+		emailService.sendEmailIgnoreException(from, to, us.cfg().getAuditEmailAddress(), emailSubject, emailBody);
 	}
 	
 	/**
 	 * 
 	 */
-	public void emailConfirmationRequest(UserSession ctx, User user) {
-		EmailAddress from = ctx.cfg().getAdministratorEmailAddress();
+	public void emailConfirmationRequest(UserSession us, User user) {
+		EmailAddress from = us.cfg().getAdministratorEmailAddress();
 		EmailAddress to = user.getEmailAddress();
 
-		String emailSubject = ctx.cfg().getConfirmAccountEmailSubject();
-		String emailBody = ctx.cfg().getConfirmAccountEmailBody() + "\n\n";
-		emailBody += SysConfig.getSiteUrlAsString() + "confirm?code=" + user.getConfirmationCode() + "\n\n";
-		emailBody += ctx.cfg().getGeneralEmailRegards() + "\n\n----\n";
-		emailBody += ctx.cfg().getGeneralEmailFooter() + "\n\n";
+		String emailSubject = us.cfg().getConfirmAccountEmailSubject();
+		String emailBody = us.cfg().getConfirmAccountEmailBody() + "\n\n";
+		emailBody += SiteUtil.getDefaultSiteUrlAsString() + "confirm?code=" + user.getConfirmationCode() + "\n\n"; //@FIXME
+		emailBody += us.cfg().getGeneralEmailRegards() + "\n\n----\n";
+		emailBody += us.cfg().getGeneralEmailFooter() + "\n\n";
 
 		EmailService emailService = EmailServiceManager.getDefaultService();
-		emailService.sendEmailIgnoreException(from, to, ctx.cfg().getAuditEmailAddress(), emailSubject, emailBody);
+		emailService.sendEmailIgnoreException(from, to, us.cfg().getAuditEmailAddress(), emailSubject, emailBody);
 	}
 	
 	/**

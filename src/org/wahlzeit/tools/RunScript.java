@@ -72,11 +72,11 @@ public class RunScript extends ScriptMain {
 		Connection conn = dbc.getRdbmsConnection();
 		
 		ConfigDir scriptsDir = SysConfig.getScriptsDir();
-		String defaultScriptFileName = scriptsDir.getDefaultConfigFileName(scriptFileName);
+		String defaultScriptFileName = scriptsDir.getAbsoluteDefaultConfigFileName(scriptFileName);
 		runScript(conn, defaultScriptFileName);
 			
 		if(scriptsDir.hasCustomFile("CreateTables.sql")) {
-			String customConfigFileName = scriptsDir.getCustomConfigFileName(scriptFileName);
+			String customConfigFileName = scriptsDir.getAbsoluteCustomConfigFileName(scriptFileName);
 			runScript(conn, customConfigFileName);
 		}
 	}

@@ -44,12 +44,12 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
 	/**
 	 * 
 	 */
-	protected String doHandleGet(UserSession ctx, String link, Map args) {
+	protected String doHandleGet(UserSession us, String link, Map args) {
 		Photo photo = null;
 		
-		String arg = ctx.getAsString(args, "prior");
+		String arg = us.getAsString(args, "prior");
 		if (!StringUtil.isNullOrEmptyString(arg)) {
-			ctx.setPriorPhoto(PhotoManager.getPhoto(arg));
+			us.setPriorPhoto(PhotoManager.getPhoto(arg));
 		}
 		
 		if (!link.equals(PartUtil.SHOW_PHOTO_PAGE_NAME)) {
@@ -58,14 +58,14 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
 		
 		if (photo == null) {
 			PhotoManager photoManager = PhotoManager.getInstance();
-			PhotoFilter filter = ctx.getPhotoFilter();
+			PhotoFilter filter = us.getPhotoFilter();
 			photo = photoManager.getVisiblePhoto(filter);
 			if (photo != null) {
 				link = photo.getId().asString();
 			}
 		}
 
-		ctx.setPhoto(photo);
+		us.setPhoto(photo);
 		
 		return link;
 	}
@@ -73,55 +73,55 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
 	/**
 	 * 
 	 */
-	protected boolean isToShowAds(UserSession ctx) {
-		return ctx.getPriorPhoto() != null;
+	protected boolean isToShowAds(UserSession us) {
+		return us.getPriorPhoto() != null;
 	}
 
 	/**
 	 * 
 	 */
-	protected void makeWebPageBody(UserSession ctx, WebPart page) {
-		Photo photo = ctx.getPhoto();
+	protected void makeWebPageBody(UserSession us, WebPart page) {
+		Photo photo = us.getPhoto();
 
-		makeLeftSidebar(ctx, page);
+		makeLeftSidebar(us, page);
 
-		makePhoto(ctx, page);
+		makePhoto(us, page);
 		
 		if (photo != null && photo.isVisible()) {
-			makePhotoCaption(ctx, page);
-			makeEngageGuest(ctx, page);
+			makePhotoCaption(us, page);
+			makeEngageGuest(us, page);
 
 			String photoId = photo.getId().asString();
 			page.addString(Photo.ID, photoId);
 
 			Tags tags = photo.getTags();
-			page.addString(Photo.DESCRIPTION, getPhotoSummary(ctx, photo));
+			page.addString(Photo.DESCRIPTION, getPhotoSummary(us, photo));
 			page.addString(Photo.KEYWORDS, tags.asString(false, ','));
 
-			ctx.addDisplayedPhoto(photo);
+			us.addDisplayedPhoto(photo);
 		}
 		
-		makeRightSidebar(ctx, page);
+		makeRightSidebar(us, page);
 	}
 	
 	/**
 	 * 
 	 */
-	protected void makeLeftSidebar(UserSession ctx, WebPart page) {
+	protected void makeLeftSidebar(UserSession us, WebPart page) {
 		WritableList parts = new WritableList();
 		
-		Photo photo = ctx.getPriorPhoto();
+		Photo photo = us.getPriorPhoto();
 		if (photo != null) {
-			parts.append(makePriorPhotoInfo(ctx));
+			parts.append(makePriorPhotoInfo(us));
 		} else {
-			parts.append(createWebPart(ctx, PartUtil.BLURP_INFO_FILE));
+			parts.append(createWebPart(us, PartUtil.BLURP_INFO_FILE));
 		}
 
 		WebFormHandler handler = getFormHandler(PartUtil.FILTER_PHOTOS_FORM_NAME);
-		Writable filterPhotos = handler.makeWebPart(ctx);
+		Writable filterPhotos = handler.makeWebPart(us);
 		parts.append(filterPhotos);
 
-		parts.append(createWebPart(ctx, PartUtil.LINKS_INFO_FILE));
+		parts.append(createWebPart(us, PartUtil.LINKS_INFO_FILE));
 		
 		page.addWritable("sidebar", parts);
 	}
@@ -129,52 +129,52 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
 	/**
 	 * 
 	 */
-	protected void makePhoto(UserSession ctx, WebPart page) {
-		PhotoSize pagePhotoSize = ctx.getPhotoSize();
+	protected void makePhoto(UserSession us, WebPart page) {
+		PhotoSize pagePhotoSize = us.getPhotoSize();
 
-		Photo photo = ctx.getPhoto();
+		Photo photo = us.getPhoto();
 		if (photo == null) {
 			page.addString("mainWidth", String.valueOf(pagePhotoSize.getMaxPhotoWidth()));
-			WebPart done = createWebPart(ctx, PartUtil.DONE_INFO_FILE);
+			WebPart done = createWebPart(us, PartUtil.DONE_INFO_FILE);
 			page.addWritable(Photo.IMAGE, done);
 			return;
 		}
 		
-		Client client = ctx.getClient();
-		if (!photo.isVisible() && !client.hasModeratorRights() && !ctx.isPhotoOwner(photo)) {
+		Client client = us.getClient();
+		if (!photo.isVisible() && !client.hasModeratorRights() && !us.isPhotoOwner(photo)) {
 			page.addString("mainWidth", String.valueOf(pagePhotoSize.getMaxPhotoWidth()));
-			WebPart done = createWebPart(ctx, PartUtil.HIDDEN_INFO_FILE);
+			WebPart done = createWebPart(us, PartUtil.HIDDEN_INFO_FILE);
 			page.addWritable(Photo.IMAGE, done);
 			return;
 		}
 		
 		PhotoSize maxPhotoSize = photo.getMaxPhotoSize();
 		PhotoSize photoSize = (maxPhotoSize.isSmaller(pagePhotoSize)) ? maxPhotoSize : pagePhotoSize;
-		String imageLink = getPhotoLink(photo, photoSize);
+		String imageLink = getPhotoAsRelativeResourcePathStringLink(photo, photoSize);
 		page.addString(Photo.IMAGE, HtmlUtil.asImg(imageLink));
 	}
 	
 	/**
 	 * 
 	 */
-	protected void makePhotoCaption(UserSession ctx, WebPart page) {
-		Photo photo = ctx.getPhoto();
+	protected void makePhotoCaption(UserSession us, WebPart page) {
+		Photo photo = us.getPhoto();
 		// String photoId = photo.getId().asString();
 			
-		WebPart caption = createWebPart(ctx, PartUtil.CAPTION_INFO_FILE);
-		caption.addString(Photo.CAPTION, getPhotoCaption(ctx, photo));
+		WebPart caption = createWebPart(us, PartUtil.CAPTION_INFO_FILE);
+		caption.addString(Photo.CAPTION, getPhotoCaption(us, photo));
 		page.addWritable(Photo.CAPTION, caption);
 	}
 
 	/**
 	 * 
 	 */
-	protected void makeEngageGuest(UserSession ctx, WebPart page) {
-		Photo photo = ctx.getPhoto();
+	protected void makeEngageGuest(UserSession us, WebPart page) {
+		Photo photo = us.getPhoto();
 		String photoId = photo.getId().asString();
 
-		WebPart engageGuest = createWebPart(ctx, PartUtil.ENGAGE_GUEST_FORM_FILE);
-		engageGuest.addString(Photo.LINK, HtmlUtil.asHref(SysConfig.getLinkAsUrlString(photoId)));
+		WebPart engageGuest = createWebPart(us, PartUtil.ENGAGE_GUEST_FORM_FILE);
+		engageGuest.addString(Photo.LINK, HtmlUtil.asHref(getResourceAsRelativeHtmlPathString(photoId)));
 		engageGuest.addString(Photo.ID, photoId);
 
 		page.addWritable("engageGuest", engageGuest);
@@ -183,15 +183,15 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
 	/**
 	 * 
 	 */
-	protected void makeRightSidebar(UserSession ctx, WebPart page) {
+	protected void makeRightSidebar(UserSession us, WebPart page) {
 		String handlerName = PartUtil.NULL_FORM_NAME;
-		Photo photo = ctx.getPhoto();
+		Photo photo = us.getPhoto();
 		if (photo != null) {
 			handlerName = PartUtil.PRAISE_PHOTO_FORM_NAME;
 		}
 
 		WebFormHandler handler = getFormHandler(handlerName);
-		Writable praisePhotoForm = handler.makeWebPart(ctx);
+		Writable praisePhotoForm = handler.makeWebPart(us);
 		page.addWritable("praisePhoto", praisePhotoForm);
 	}
 
@@ -199,17 +199,17 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
 	/**
 	 * 
 	 */
-	protected WebPart makePriorPhotoInfo(UserSession ctx) {
-		WebPart result = createWebPart(ctx, PartUtil.PHOTO_INFO_FILE);
+	protected WebPart makePriorPhotoInfo(UserSession us) {
+		WebPart result = createWebPart(us, PartUtil.PHOTO_INFO_FILE);
 
-		Photo photo = ctx.getPriorPhoto();
+		Photo photo = us.getPriorPhoto();
 		// String id = photo.getId().asString();
 
-		result.addString(Photo.PRAISE, photo.getPraiseAsString(ctx.cfg()));
-		result.addString(Photo.THUMB, getPhotoThumb(ctx, photo));
-		result.addString(Photo.CAPTION, getPhotoCaption(ctx, photo));
+		result.addString(Photo.PRAISE, photo.getPraiseAsString(us.cfg()));
+		result.addString(Photo.THUMB, getPhotoThumb(us, photo));
+		result.addString(Photo.CAPTION, getPhotoCaption(us, photo));
 			
-		ctx.setPriorPhoto(null); // reset so you don't get repeats
+		us.setPriorPhoto(null); // reset so you don't get repeats
 
 		return result;
 	}
@@ -217,17 +217,17 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
 	/**
 	 * 
 	 */
-	public String handlePost(UserSession ctx, Map args) {
+	public String handlePost(UserSession us, Map args) {
 		String result = PartUtil.DEFAULT_PAGE_NAME;
 		
-		String id = ctx.getAndSaveAsString(args, Photo.ID);
+		String id = us.getAndSaveAsString(args, Photo.ID);
 		Photo photo = PhotoManager.getPhoto(id);
 		if (photo != null) {
-			if (ctx.isFormType(args, "flagPhotoLink")) {
+			if (us.isFormType(args, "flagPhotoLink")) {
 				result = PartUtil.FLAG_PHOTO_PAGE_NAME;
-			} else if (ctx.isFormType(args, "tellFriendLink")) {
+			} else if (us.isFormType(args, "tellFriendLink")) {
 				result = PartUtil.TELL_FRIEND_PAGE_NAME;
-			} else if (ctx.isFormType(args, "sendEmailLink")) {
+			} else if (us.isFormType(args, "sendEmailLink")) {
 				result = PartUtil.SEND_EMAIL_PAGE_NAME;
 			}
 		}

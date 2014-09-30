@@ -46,22 +46,22 @@ public class FilterPhotosPageHandler extends AbstractWebPageHandler {
 	/**
 	 * 
 	 */
-	protected boolean isWellFormedGet(UserSession ctx, String link, Map args) {
+	protected boolean isWellFormedGet(UserSession us, String link, Map args) {
 		return args != null;
 	}
 	
 	/**
 	 * 
 	 */
-	protected String doHandleGet(UserSession ctx, String link, Map args) {
-		PhotoFilter filter = ctx.getPhotoFilter();
+	protected String doHandleGet(UserSession us, String link, Map args) {
+		PhotoFilter filter = us.getPhotoFilter();
 
-		String un = ctx.getAsString(args, PhotoFilter.USER_NAME);
+		String un = us.getAsString(args, PhotoFilter.USER_NAME);
 		if (StringUtil.isLegalUserName(un)) {
 			filter.setUserName(un);
 		}
 
-		String tags = ctx.getAsString(args, PhotoFilter.TAGS);
+		String tags = us.getAsString(args, PhotoFilter.TAGS);
 		if (StringUtil.isLegalTagsString(tags)) {
 			filter.setTags(new Tags(tags));
 		}
@@ -72,9 +72,9 @@ public class FilterPhotosPageHandler extends AbstractWebPageHandler {
 	/**
 	 * 
 	 */
-	protected void makeWebPageBody(UserSession ctx, WebPart page) {
-		page.addString("noteHeading", ctx.cfg().getInformation());
-		String msg1 = ctx.cfg().getContinueWithShowPhoto();
+	protected void makeWebPageBody(UserSession us, WebPart page) {
+		page.addString("noteHeading", us.cfg().getInformation());
+		String msg1 = us.cfg().getContinueWithShowPhoto();
 		page.addString("note", msg1);
 	}
 

@@ -48,8 +48,8 @@ public class ShowInfoPageHandler extends AbstractWebPageHandler {
 	/**
 	 * 
 	 */
-	protected void makeWebPageBody(UserSession ctx, WebPart page) {
-		page.addWritable("info", createWebPart(ctx, infoTmplName));
+	protected void makeWebPageBody(UserSession us, WebPart page) {
+		page.addWritable("info", createWebPart(us, infoTmplName));
 	}
 
 }

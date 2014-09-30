@@ -52,8 +52,8 @@ public class PraisePhotoFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		Photo photo = ctx.getPhoto();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Photo photo = us.getPhoto();
 		if (photo != null) {
 			String photoId = photo.getId().asString();
 			part.addString(Photo.ID, photoId);
@@ -63,8 +63,8 @@ public class PraisePhotoFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected boolean isWellFormedPost(UserSession ctx, Map args) {
-		String photoId = ctx.getAsString(args, Photo.ID);
+	protected boolean isWellFormedPost(UserSession us, Map args) {
+		String photoId = us.getAsString(args, Photo.ID);
 		Photo photo = PhotoManager.getPhoto(photoId);
 		return photo != null;
 	}
@@ -72,17 +72,17 @@ public class PraisePhotoFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
-		String photoId = ctx.getAsString(args, Photo.ID);
+	protected String doHandlePost(UserSession us, Map args) {
+		String photoId = us.getAsString(args, Photo.ID);
 		Photo photo = PhotoManager.getPhoto(photoId);
-		String praise = ctx.getAsString(args, Photo.PRAISE);
+		String praise = us.getAsString(args, Photo.PRAISE);
 
 		boolean wasPraised = false;
 		if (!StringUtil.isNullOrEmptyString(praise)) {
-			if (!ctx.hasPraisedPhoto(photo)) {
+			if (!us.hasPraisedPhoto(photo)) {
 				int value = Integer.parseInt(praise);
 				photo.addToPraise(value);
-				ctx.addPraisedPhoto(photo);
+				us.addPraisedPhoto(photo);
 				wasPraised = true;
 // FIXME
 //				if (photo.getOwnerNotifyAboutPraise()) {
@@ -93,7 +93,7 @@ public class PraisePhotoFormHandler extends AbstractWebFormHandler {
 			}
 		}
 		
-		ctx.setPriorPhoto(photo);
+		us.setPriorPhoto(photo);
 
 		UserLog.logPerformedAction(wasPraised ? "PraisePhoto" : "SkipPhoto");
 		
