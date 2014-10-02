@@ -61,11 +61,11 @@ public class TellFriendFormHandler extends AbstractWebFormHandler {
 		part.maskAndAddStringFromArgs(args, EMAIL_TO);
 		part.maskAndAddStringFromArgsWithDefault(args, EMAIL_SUBJECT, us.cfg().getTellFriendEmailSubject());
 		
-		String emailText = us.cfg().getTellFriendEmailWebsite() + "\n\n" + getSiteUrlAsString() + "\n\n";
+		String emailText = us.cfg().getTellFriendEmailWebsite() + "\n\n" + us.getSiteUrl() + "\n\n";
 
 		String id = us.getAsString(args, Photo.ID);
 		if (!StringUtil.isNullOrEmptyString(id) && PhotoManager.hasPhoto(id)) {
-			emailText += (us.cfg().getTellFriendEmailPhoto() + "\n\n" + getSiteUrlAsString() + id + ".html" + "\n\n");
+			emailText += (us.cfg().getTellFriendEmailPhoto() + "\n\n" + us.getSiteUrl() + id + ".html" + "\n\n");
 		}
 		
 		part.addString(Photo.ID, id);

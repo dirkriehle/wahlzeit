@@ -103,7 +103,7 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
 		EmailAddress to = us.cfg().getModeratorEmailAddress();
 
 		String emailSubject = "Photo: " + id + " of user: " + photo.getOwnerName() + " got flagged";
-		String emailBody = "Photo: " + getSiteUrlAsString() + id + ".html\n\n";
+		String emailBody = "Photo: " + us.getSiteUrl() + id + ".html\n\n";
 		emailBody += "Reason: " + reason + "\n\n";
 		emailBody += "Explanation: " + explanation + "\n\n";
 		

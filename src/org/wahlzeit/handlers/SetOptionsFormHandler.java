@@ -72,8 +72,8 @@ public class SetOptionsFormHandler extends AbstractWebFormHandler {
 		us.setPhotoSize(photoValue);
 		
 		StringBuffer sb = UserLog.createActionEntry("SetOptions");
-		UserLog.addField(sb, "Language", language);
-		UserLog.addField(sb, "PhotoSize", photoSize);
+		UserLog.addField(sb, "language", language);
+		UserLog.addField(sb, "photoSize", photoSize);
 		UserLog.log(sb);
 		
 		String msg1 = us.cfg().getOptionsWereSet();

@@ -41,10 +41,10 @@ public class GenericApp implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent sce) {
 		try {
 			ServletContext sc = sce.getServletContext();
+			String siteUrl = sc.getResource("").toString();
 			File dummyFile = new File(sc.getRealPath("dummy.txt"));
-			String rootDir = dummyFile.getParent();
-			
-			ServiceMain.getInstance().startUp(false, rootDir);
+			String rootDir = dummyFile.getParent();			
+			ServiceMain.getInstance().startUp(false, siteUrl, rootDir);
 		} catch (Exception ex) {
 			SysLog.logThrowable(ex);
 		}

@@ -230,13 +230,6 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	/**
 	 * 
 	 */
-	protected String getSiteUrlAsString() {
-		return ""; //@FIXME
-	}
-	
-	/**
-	 * 
-	 */
 	protected String getEmptyImageAsRelativePathString(Language lang) {
 		String fileName = lang.asIsoCode() + File.separator + "empty.png";
 		return SysConfig.getStaticDir().getRelativeConfigFileName(fileName);

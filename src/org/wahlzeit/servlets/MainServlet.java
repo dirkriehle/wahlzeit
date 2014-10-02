@@ -55,7 +55,7 @@ public class MainServlet extends AbstractServlet {
 	 */
 	public void myGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		long startTime = System.currentTimeMillis();
-		UserSession us = ensureWebContext(request);
+		UserSession us = ensureUserSession(request);
 		
 		String link = request.getRequestURI();
 		int linkStart = link.lastIndexOf("/") + 1;
@@ -93,7 +93,7 @@ public class MainServlet extends AbstractServlet {
 	 */
 	public void myPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		long startTime = System.currentTimeMillis();
-		UserSession us = ensureWebContext(request);
+		UserSession us = ensureUserSession(request);
 		
 		String link = request.getRequestURI();
 		int linkStart = link.lastIndexOf("/") + 1;

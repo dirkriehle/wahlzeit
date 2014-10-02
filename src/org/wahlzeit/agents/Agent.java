@@ -77,7 +77,7 @@ public abstract class Agent implements Runnable {
 	public void run() {
 		synchronized(Agent.class) {
 			String agentName = "agent" + id++;
-			Session ctx = new SysSession(agentName);
+			Session ctx = new SysSession(agentName, ""); //@FIXME
 			SessionManager.setThreadLocalSession(ctx);
 			SysLog.logInfo("started new agent", agentName);
 		}

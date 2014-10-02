@@ -39,8 +39,8 @@ public abstract class ModelMain extends AbstractMain {
 	/**
 	 * 
 	 */
-	protected void startUp(String resourcePath) throws Exception {
-		super.startUp(resourcePath);
+	protected void startUp(String siteUrl, String rootDir) throws Exception {
+		super.startUp(siteUrl, rootDir);
 
 		loadGlobals();
 

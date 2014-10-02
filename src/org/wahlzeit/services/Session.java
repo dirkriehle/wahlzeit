@@ -34,6 +34,7 @@ public class Session {
 	 * Session state
 	 */
 	protected String name = null;
+	protected String siteUrl = null;
 
 	/**
 	 * Database stuff
@@ -55,8 +56,9 @@ public class Session {
 	/**
 	 * 
 	 */
-	protected void initialize(String ctxName) {
-		name = ctxName;
+	protected void initialize(String myName, String mySiteUrl) {
+		name = myName;
+		siteUrl = mySiteUrl;
 	}
 	
 	/**
@@ -75,6 +77,13 @@ public class Session {
 	 */
 	public String getName() {
 		return name;
+	}
+	
+	/**
+	 * 
+	 */
+	public String getSiteUrl() {
+		return siteUrl;
 	}
 	
 	/**

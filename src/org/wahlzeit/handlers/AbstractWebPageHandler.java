@@ -76,7 +76,7 @@ public abstract class AbstractWebPageHandler extends AbstractWebPartHandler impl
 	protected void makeWebPageHeading(UserSession us, WebPart page) {
 		Language langValue = us.cfg().getLanguage();
 		String heading = HtmlUtil.asImg(getHeadingImageAsRelativePathString(langValue));
-		heading = HtmlUtil.asHref(getSiteUrlAsString(), heading);
+		heading = HtmlUtil.asHref(us.getSiteUrl(), heading);
 		page.addString("heading", heading);
 	}
 	

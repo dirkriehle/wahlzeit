@@ -69,7 +69,7 @@ public class HandlerTestSetup extends TestSetup {
 		serverMain.configureWebPartHandlers();
 		serverMain.configureLanguageModels();
 
-		result = new UserSession("testContext");
+		result = new UserSession("testContext", ""); //@FIXME
 		result.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
 
 		return result;

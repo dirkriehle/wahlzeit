@@ -61,8 +61,8 @@ public class UserSession extends Session {
 	/**
 	 * 
 	 */
-	public UserSession(String ctxName) {
-		initialize(ctxName);
+	public UserSession(String myName, String mySiteUrl) {
+		initialize(myName, mySiteUrl);
 	}
 	
 	/**

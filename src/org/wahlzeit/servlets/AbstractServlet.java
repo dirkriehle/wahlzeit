@@ -71,7 +71,7 @@ public abstract class AbstractServlet extends HttpServlet {
 	 * 
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		UserSession us = ensureWebContext(request);	
+		UserSession us = ensureUserSession(request);	
 		SessionManager.setThreadLocalSession(us);
 		
 		if (ServiceMain.getInstance().isShuttingDown() || (us == null)) {
@@ -95,7 +95,7 @@ public abstract class AbstractServlet extends HttpServlet {
 	 * 
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		UserSession us = ensureWebContext(request);	
+		UserSession us = ensureUserSession(request);	
 		SessionManager.setThreadLocalSession(us);
 		
 		if (ServiceMain.getInstance().isShuttingDown() || (us == null)) {
@@ -118,14 +118,15 @@ public abstract class AbstractServlet extends HttpServlet {
 	/**
 	 * 
 	 */
-	protected UserSession ensureWebContext(HttpServletRequest request) {
+	protected UserSession ensureUserSession(HttpServletRequest request) {
 		HttpSession httpSession = request.getSession();
-		UserSession result = (UserSession) httpSession.getAttribute("context");
+		UserSession result = (UserSession) httpSession.getAttribute("session");
 		if (result == null) {
 			try {
-				String ctxName = "ctx" + getNextSessionId();
-				result = new UserSession(ctxName);
-				SysLog.logCreatedObject("WebContext", ctxName);
+				String sessionName = "session" + getNextSessionId();
+				String siteUrl = getSiteUrl(request);
+				result = new UserSession(sessionName, siteUrl);
+				SysLog.logCreatedObject("UserSession", sessionName);
 
 				// yes, "Referer"; typo in original standard documentation
 				String referrer = request.getHeader("Referer");
@@ -138,7 +139,7 @@ public abstract class AbstractServlet extends HttpServlet {
 				SysLog.logThrowable(ex);
 			}
 			
-			httpSession.setAttribute("context", result);
+			httpSession.setAttribute("session", result);
 			httpSession.setMaxInactiveInterval(24 * 60 * 60); // time out after 24h
 		}
 		
@@ -182,6 +183,15 @@ public abstract class AbstractServlet extends HttpServlet {
 		out.close();
 
 		response.setStatus(HttpServletResponse.SC_OK);
+	}
+	
+	/**
+	 * 
+	 */
+	protected String getSiteUrl(HttpServletRequest request) {
+		String result = request.getRequestURL().toString();
+		int lastIndex = result.lastIndexOf('/') + 1;
+		return result.substring(0, lastIndex);
 	}
 	
 	/**
