@@ -27,17 +27,31 @@ package org.wahlzeit.utils;
  *
  */
 public class SiteUtil {
+
+	/**
+	 * 
+	 */
+	protected static String siteUrl = getDefaultSiteUrl();
+
+	/**
+	 * 
+	 */
+	public static String getDefaultSiteUrl() {
+		return "http://wahlzeit.org/";
+	}
 	
 	/**
 	 * 
 	 */
-	public static final String DEFAULT_SITE_PROTOCOL = "http://";
-	public static final String DEFAULT_SITE_DOMAIN = "wahlzeit.org";
-	public static final String DEFAULT_SITE_PORT = "";
-	public static final String DEFAULT_SITE_PATH = "";
+	public static String getSiteUrl() {
+		return siteUrl;
+	}
 	
-	public static String getDefaultSiteUrlAsString() {
-		return "http://wahlzeit.org/";
+	/**
+	 * 
+	 */
+	public static void setSiteUrl(String mySiteUrl) {
+		siteUrl = mySiteUrl;
 	}
 	
 }

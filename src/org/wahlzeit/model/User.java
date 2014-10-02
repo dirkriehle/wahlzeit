@@ -104,7 +104,7 @@ public class User extends Client implements Persistent {
 	 */
 	protected Language language = Language.ENGLISH;
 	protected boolean notifyAboutPraise = true;
-	protected URL homePage = StringUtil.asUrl(SiteUtil.getDefaultSiteUrlAsString());
+	protected URL homePage = getDefaultHomePage();
 	protected Gender gender = Gender.UNDEFINED;
 	protected UserStatus status = UserStatus.CREATED;
 	protected long confirmationCode = 0; // 0 means doesn't need confirmation
@@ -378,7 +378,7 @@ public class User extends Client implements Persistent {
 	 * 
 	 */
 	public URL getDefaultHomePage() {
-		return StringUtil.asUrl(SiteUtil.getDefaultSiteUrlAsString() + "filter?userName=" + name);
+		return StringUtil.asUrl(SiteUtil.getSiteUrl() + "filter?userName=" + name);
 	}
 	
 	/**
