@@ -104,7 +104,7 @@ public class User extends Client implements Persistent {
 	 */
 	protected Language language = Language.ENGLISH;
 	protected boolean notifyAboutPraise = true;
-	protected URL homePage = StringUtil.asUrl("wahlzeit.org");
+	protected URL homePage = StringUtil.asUrl(SiteUtil.getDefaultSiteUrlAsString());
 	protected Gender gender = Gender.UNDEFINED;
 	protected UserStatus status = UserStatus.CREATED;
 	protected long confirmationCode = 0; // 0 means doesn't need confirmation
