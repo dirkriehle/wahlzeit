@@ -25,7 +25,6 @@ import java.sql.*;
 
 import org.wahlzeit.services.*;
 import org.wahlzeit.services.mailing.*;
-import org.wahlzeit.utils.SiteUtil;
 
 /**
  * The UserManager provides access to and manages Users (including Moderators and Administrators).
@@ -231,7 +230,7 @@ public class UserManager extends ObjectManager {
 		String emailBody = us.cfg().getWelcomeEmailBody() + "\n\n";
 		emailBody += us.cfg().getWelcomeEmailUserName() + user.getName() + "\n\n"; 
 		emailBody += us.cfg().getConfirmAccountEmailBody() + "\n\n";
-		emailBody += SiteUtil.getSiteUrl() + "confirm?code=" + user.getConfirmationCode() + "\n\n"; //@FIXME
+		emailBody += user.getSiteUrlAsString() + "confirm?code=" + user.getConfirmationCode() + "\n\n"; // @TODO Application
 		emailBody += us.cfg().getGeneralEmailRegards() + "\n\n----\n";
 		emailBody += us.cfg().getGeneralEmailFooter() + "\n\n";
 
@@ -248,7 +247,7 @@ public class UserManager extends ObjectManager {
 
 		String emailSubject = us.cfg().getConfirmAccountEmailSubject();
 		String emailBody = us.cfg().getConfirmAccountEmailBody() + "\n\n";
-		emailBody += SiteUtil.getSiteUrl() + "confirm?code=" + user.getConfirmationCode() + "\n\n"; //@FIXME
+		emailBody += user.getSiteUrlAsString() + "confirm?code=" + user.getConfirmationCode() + "\n\n"; // @TODO Application
 		emailBody += us.cfg().getGeneralEmailRegards() + "\n\n----\n";
 		emailBody += us.cfg().getGeneralEmailFooter() + "\n\n";
 

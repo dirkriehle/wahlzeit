@@ -124,7 +124,7 @@ public abstract class AbstractServlet extends HttpServlet {
 		if (result == null) {
 			try {
 				String sessionName = "session" + getNextSessionId();
-				String siteUrl = getSiteUrl(request);
+				String siteUrl = getSiteUrl(request); // @TODO Application
 				result = new UserSession(sessionName, siteUrl);
 				SysLog.logCreatedObject("UserSession", sessionName);
 

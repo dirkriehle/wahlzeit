@@ -377,8 +377,15 @@ public class User extends Client implements Persistent {
 	/**
 	 * 
 	 */
+	public String getSiteUrlAsString() {
+		return "http://wahlzeit.org/";
+	}
+	
+	/**
+	 * 
+	 */
 	public URL getDefaultHomePage() {
-		return StringUtil.asUrl(SiteUtil.getSiteUrl() + "filter?userName=" + name);
+		return StringUtil.asUrl(getSiteUrlAsString() + "filter?userName=" + name); // @TODO Application
 	}
 	
 	/**

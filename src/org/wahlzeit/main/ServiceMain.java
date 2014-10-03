@@ -85,10 +85,10 @@ public class ServiceMain extends ModelMain {
 	/**
 	 * 
 	 */
-	public void startUp(boolean inProduction, String siteUrl, String rootDir) throws Exception {
+	public void startUp(boolean inProduction, String rootDir) throws Exception {
 		isInProduction = inProduction;
 		
-		super.startUp(siteUrl, rootDir);
+		super.startUp(rootDir);
 		
 		configureWebPartTemplateService();
 		configureWebPartHandlers();

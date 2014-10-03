@@ -53,10 +53,10 @@ public abstract class AbstractMain {
 	/**
 	 * 
 	 */
-	protected void startUp(String siteUrl, String rootDir) throws Exception {
+	protected void startUp(String rootDir) throws Exception {
 		SysConfig.setInstance(createSysConfig(rootDir));
 		
-		mainSession = new SysSession("system", siteUrl);
+		mainSession = new SysSession("system");
 		SessionManager.setThreadLocalSession(mainSession);
 	}
 	

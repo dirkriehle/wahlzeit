@@ -46,6 +46,8 @@ public class UserSession extends Session {
 	 * Session state
 	 */
 	protected ModelConfig configuration = LanguageConfigs.get(Language.ENGLISH);
+	
+	protected String siteUrl = null; // @TODO Application
 
 	protected Client client = new Guest();
 	protected PhotoSize photoSize = PhotoSize.MEDIUM;
@@ -62,7 +64,8 @@ public class UserSession extends Session {
 	 * 
 	 */
 	public UserSession(String myName, String mySiteUrl) {
-		initialize(myName, mySiteUrl);
+		initialize(myName);
+		siteUrl = mySiteUrl;
 	}
 	
 	/**
@@ -87,6 +90,13 @@ public class UserSession extends Session {
 	 */
 	public void setConfiguration(ModelConfig cfg) {
 		configuration = cfg;
+	}
+	
+	/**
+	 * 
+	 */
+	public String getSiteUrl() {
+		return siteUrl;
 	}
 	
 	/**

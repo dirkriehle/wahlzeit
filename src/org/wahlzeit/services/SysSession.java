@@ -31,8 +31,8 @@ public class SysSession extends Session {
 	/**
 	 * 
 	 */
-	public SysSession(String myName, String mySiteUrl) {
-		initialize(myName, mySiteUrl);	
+	public SysSession(String myName) {
+		initialize(myName);	
 	}
 
 }

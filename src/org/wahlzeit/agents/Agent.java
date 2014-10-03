@@ -21,7 +21,6 @@
 package org.wahlzeit.agents;
 
 import org.wahlzeit.services.*;
-import org.wahlzeit.utils.SiteUtil;
 
 /**
  * 
@@ -78,7 +77,7 @@ public abstract class Agent implements Runnable {
 	public void run() {
 		synchronized(Agent.class) {
 			String agentName = "agent" + id++;
-			Session agentSession = new SysSession(SiteUtil.getSiteUrl(), agentName);
+			Session agentSession = new SysSession(agentName);
 			SessionManager.setThreadLocalSession(agentSession);
 			SysLog.logInfo("started new agent", agentName);
 		}
