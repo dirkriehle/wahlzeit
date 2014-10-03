@@ -61,7 +61,7 @@ public class PhotoManager extends ObjectManager {
 	 * 
 	 */
 	public static final boolean hasPhoto(String id) {
-		return hasPhoto(PhotoId.getId(id));
+		return hasPhoto(PhotoId.getIdFromString(id));
 	}
 	
 	/**
@@ -75,7 +75,7 @@ public class PhotoManager extends ObjectManager {
 	 * 
 	 */
 	public static final Photo getPhoto(String id) {
-		return getPhoto(PhotoId.getId(id));
+		return getPhoto(PhotoId.getIdFromString(id));
 	}
 	
 	/**
@@ -284,11 +284,11 @@ public class PhotoManager extends ObjectManager {
 				noFilterConditions++;
 			}
 
-			int[] ids = new int[PhotoId.getValue() + 1];
+			int[] ids = new int[PhotoId.getCurrentIdAsInt() + 1];
 			while(rset.next()) {
 				int id = rset.getInt("photo_id");
 				if (++ids[id] == noFilterConditions) {
-					PhotoId photoId = PhotoId.getId(id);
+					PhotoId photoId = PhotoId.getIdFromInt(id);
 					if (!filter.isProcessedPhotoId(photoId)) {
 						result.add(photoId);
 					}

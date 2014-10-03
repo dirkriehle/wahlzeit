@@ -78,7 +78,7 @@ public abstract class AbstractServlet extends HttpServlet {
 			displayNullPage(request, response);
 		} else {
 			myGet(request, response);
-			us.dropDatabaseConnection(); //@FIXME
+			us.dropDatabaseConnection(); // @FIXME
 		}
 
 		SessionManager.dropThreadLocalSession();
@@ -132,7 +132,7 @@ public abstract class AbstractServlet extends HttpServlet {
 				String referrer = request.getHeader("Referer");
 				SysLog.logInfo("request referrer: " + referrer);
 
-				if (request.getLocale().getLanguage().equals("de")) { //@FIXME
+				if (request.getLocale().getLanguage().equals("de")) { // @FIXME
 					result.setConfiguration(LanguageConfigs.get(Language.GERMAN));
 				}
 			} catch (Exception ex) {

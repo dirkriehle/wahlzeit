@@ -132,10 +132,10 @@ public class ValueTest extends TestCase {
 		PhotoId test = PhotoId.getNextId();
 
 		int testInt = test.asInt();
-		assert(test == PhotoId.getId(testInt));
+		assert(test == PhotoId.getIdFromInt(testInt));
 
 		String testString = test.asString();
-		assert(test == PhotoId.getId(testString));
+		assert(test == PhotoId.getIdFromString(testString));
 	}
 
 }

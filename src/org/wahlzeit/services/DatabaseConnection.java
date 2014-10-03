@@ -102,7 +102,7 @@ public class DatabaseConnection {
 	 */
 	protected void finalize() {
 		try {
-			pool.remove(this); // FIXME shouldn't be necessary
+			pool.remove(this); // @FIXME shouldn't be necessary
 			closeConnection(rdbmsConnection);
 		} catch (Throwable t) {
 			SysLog.logThrowable(t);

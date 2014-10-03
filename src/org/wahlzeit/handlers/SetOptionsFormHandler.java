@@ -53,7 +53,7 @@ public class SetOptionsFormHandler extends AbstractWebFormHandler {
 		Map args = us.getSavedArgs();
 		part.addStringFromArgs(args, UserSession.MESSAGE);
 		
-//FIXME		part.addString(WebContext.MESSAGE, ctx.getMessage());
+		part.addString(UserSession.MESSAGE, us.getMessage());
 		
 		part.addSelect(LANGUAGE, Language.class, (String) args.get(LANGUAGE));
 		part.addSelect(PHOTO_SIZE, PhotoSize.class, (String) args.get(PHOTO_SIZE));

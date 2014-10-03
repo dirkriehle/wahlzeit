@@ -108,7 +108,7 @@ public class PhotoCaseManager extends ObjectManager {
 			createObject(myCase, stmt1, myCase.getId().asInt());
 			PreparedStatement stmt2 = getUpdatingStatement("SELECT * FROM cases WHERE id = ?");
 			updateObject(myCase, stmt2);
-			//@FIXME Main.saveGlobals();
+			// @FIXME Main.saveGlobals();
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
 		}

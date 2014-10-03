@@ -72,10 +72,8 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
 				String absoluteCustomFileName = templatesDir.getAbsoluteCustomConfigFileName(shortCustomFileName);
 				loadProperties(absoluteCustomFileName);
 			}
-			
-
 		} catch (IOException ioex) {
-			ioex.printStackTrace(); //@FIXME
+			ioex.printStackTrace(); // @FIXME
 		}
 		
 		String menuDash = "&nbsp;" + doGetValue("MenuDash") + "&nbsp;";

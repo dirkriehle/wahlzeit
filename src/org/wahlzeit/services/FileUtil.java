@@ -43,7 +43,7 @@ public class FileUtil {
 		try {
 			reader = new FileReader(file);
 			
-			// FIXME: Assumes files are always < 50000 bytes
+			// @FIXME: Assumes files are always < 50000 bytes
 			char[] readBuffer = new char[50000];
 			int status = reader.read(readBuffer);
 

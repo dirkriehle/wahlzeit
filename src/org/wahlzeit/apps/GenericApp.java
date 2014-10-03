@@ -50,15 +50,7 @@ public class GenericApp implements ServletContextListener {
 		} catch (Exception ex) {
 			SysLog.logThrowable(ex);
 		}
-	}
-	
-	/**
-	 * @FIXME for crying out loud!
-	 */
-	protected String getSiteUrlFromResource(URL url) {
-		return "http://" + url.toString().substring(6);
-	}
-	
+	}	
 	
 	/**
 	 * 
