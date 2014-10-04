@@ -37,10 +37,8 @@ public abstract class ScriptMain extends ModelMain {
 	/**
 	 * 
 	 */
-	protected boolean isToCreateTables = false;
-	protected boolean isToDropTables = false;
-	protected boolean isToRunScript = false;
-	protected String scriptName = null;
+	protected boolean isToSetUpDatabase = false;
+	protected boolean isToTearDownDatabase = false;
 	
 	/**
 	 * 
@@ -67,29 +65,31 @@ public abstract class ScriptMain extends ModelMain {
 	 */
 	protected void handleArgv(String argv[]) {
 		for (int i = 0; i < argv.length; i++) {
-			String arg = argv[i];
-
-			if (arg.equals("-S") || arg.equals("--setup")) {
-				isToCreateTables = true;
-			} else if (arg.equals("-T") || arg.equals("--teardown")) {
-				isToDropTables = true;
-			} else if (arg.equals("--script") && (i++ < argv.length)) {
-				isToRunScript = true;
-				scriptName = argv[i];
-			}
+			i = handleArg(argv[i], i, argv);
 		}
+	}
+	
+	/**
+	 * 
+	 */
+	protected int handleArg(String arg, int i, String argv[]) {
+		if (arg.equals("-S") || arg.equals("--setup")) {
+			isToSetUpDatabase = true;
+		} else if (arg.equals("-T") || arg.equals("--teardown")) {
+			isToTearDownDatabase = true;
+		} 
+		
+		return i;
 	}
 
 	/**
 	 * 
 	 */
 	protected void execute() throws Exception {
-		if (isToCreateTables) {
-			createTables();
-		} else if (isToDropTables) {
-			dropTables();
-		} else if (isToRunScript) {
-			runScript(scriptName);
+		if (isToSetUpDatabase) {
+			setUpDatabase();
+		} else if (isToTearDownDatabase) {
+			tearDownDatabase();
 		}
 	}
 		

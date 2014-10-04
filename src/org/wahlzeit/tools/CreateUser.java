@@ -51,23 +51,29 @@ public class CreateUser extends ScriptMain {
 	/**
 	 * 
 	 */
-	protected void handleArgv(String[] argv) {
-		for (int i = 0; i < argv.length; i++) {
-			String arg = argv[i];
-			if (arg.equals("--password")) {
-				password = argv[++i];
-			} else if (arg.equals("--username")) {
-				userName = argv[++i];
-			} else if (arg.equals("--emailaddress")) {
-				emailAddress = argv[++i];
-			} else if (arg.equals("--photodir")) {
-				photoDir = argv[++i];
-			}
-		}
+	protected void handleArgv(String argv[]) {
+		super.handleArgv(argv);
 		
 		if (StringUtil.isNullOrEmptyString(password)) {
 			password = userName;
 		}
+	}
+	
+	/**
+	 * 
+	 */
+	protected int handleArg(String arg, int i, String[] argv) {
+		if (arg.equals("--password")) {
+			password = argv[++i];
+		} else if (arg.equals("--username")) {
+			userName = argv[++i];
+		} else if (arg.equals("--emailaddress")) {
+			emailAddress = argv[++i];
+		} else if (arg.equals("--photodir")) {
+			photoDir = argv[++i];
+		}
+		
+		return i;
 	}
 	
 	/**

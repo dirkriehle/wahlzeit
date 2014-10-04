@@ -20,43 +20,47 @@
 
 package org.wahlzeit.tools;
 
-import java.io.File;
+import java.io.*;
 
+import org.wahlzeit.utils.*;
 import org.wahlzeit.main.*;
-import org.wahlzeit.services.*;
+import org.wahlzeit.model.*;
 
 /**
- * Sets up a fresh clean Wahlzeit Flowers application database.
  * 
  * @author dirkriehle
  *
  */
-public class SetUpFlowers extends ScriptMain {
-
+public class RunScript extends ScriptMain {
+	
 	/**
 	 * 
 	 */
 	public static void main(String[] argv) {
-		new SetUpFlowers().run(argv);
+		new RunScript().run(argv);
 	}
 	
 	/**
 	 * 
 	 */
-	public void startUp(String rootDir) throws Exception {
-		super.startUp(rootDir);
-
-		tearDownDatabase();
-		setUpDatabase();
-		loadGlobals();
+	protected String scriptName = "";
+	
+	/**
+	 * 
+	 */
+	protected int handleArg(String arg, int i, String argv[]) {
+		scriptName = arg;
+		
+		return i;
 	}
 	
 	/**
 	 * 
 	 */
-	public void execute() throws Exception {
-		String photoDir = SysConfig.getRootDirAsString() + File.separator + "config" + File.separator + "flowers";
-		createUser("testuser", "testuser", "info@wahlzeit.org", photoDir);
+	protected void execute() throws Exception {
+		super.execute();
+		
+		runScript(scriptName);
 	}
-
+	
 }

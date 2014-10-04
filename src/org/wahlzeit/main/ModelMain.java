@@ -43,10 +43,25 @@ public abstract class ModelMain extends AbstractMain {
 	 */
 	protected void startUp(String rootDir) throws Exception {
 		super.startUp(rootDir);
+
+		if (!hasGlobals()) {
+			setUpDatabase();
+		}
 		
-		loadGlobals();
+ 		loadGlobals();
 
 		PhotoFactory.initialize();
+	}
+	
+	/**
+	 * 
+	 */
+	protected boolean hasGlobals() throws SQLException {
+		DatabaseConnection dbc = mainSession.getDatabaseConnection();
+		Connection conn = dbc.getRdbmsConnection();
+		DatabaseMetaData dbm = conn.getMetaData();
+		ResultSet tables = dbm.getTables(null, null, "globals", null);
+		return tables.next();
 	}
 	
 	/**
@@ -61,14 +76,14 @@ public abstract class ModelMain extends AbstractMain {
 	/**
 	 * 
 	 */
-	public void createTables() throws SQLException {
+	public void setUpDatabase() throws SQLException {
 		runScript("CreateTables.sql");
 	}
 	
 	/**
 	 * 
 	 */
-	public void dropTables() throws SQLException {
+	public void tearDownDatabase() throws SQLException {
 		runScript("DropTables.sql");
 	}
 	
@@ -176,19 +191,19 @@ public abstract class ModelMain extends AbstractMain {
 	/**
 	 * 
 	 */
-	protected void runScript(String scriptFileName) throws SQLException {
+	protected void runScript(String scriptName) throws SQLException {
 		DatabaseConnection dbc = SessionManager.getDatabaseConnection();
 		Connection conn = dbc.getRdbmsConnection();
 		
 		ConfigDir scriptsDir = SysConfig.getScriptsDir();
 		
-		if(scriptsDir.hasDefaultFile(scriptFileName)) {
-			String defaultScriptFileName = scriptsDir.getAbsoluteDefaultConfigFileName(scriptFileName);
+		if(scriptsDir.hasDefaultFile(scriptName)) {
+			String defaultScriptFileName = scriptsDir.getAbsoluteDefaultConfigFileName(scriptName);
 			runScript(conn, defaultScriptFileName);
 		}
 			
-		if(scriptsDir.hasCustomFile(scriptFileName)) {
-			String customConfigFileName = scriptsDir.getAbsoluteCustomConfigFileName(scriptFileName);
+		if(scriptsDir.hasCustomFile(scriptName)) {
+			String customConfigFileName = scriptsDir.getAbsoluteCustomConfigFileName(scriptName);
 			runScript(conn, customConfigFileName);
 		}
 	}
