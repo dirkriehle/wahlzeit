@@ -27,7 +27,7 @@ import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
 
 /**
- * A Main class that runs a Wahlzeit web server.
+ * A Main class that serves to run scripts (and exit afterwards).
  * 
  * @author dirkriehle
  *
