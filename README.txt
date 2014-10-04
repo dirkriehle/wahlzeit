@@ -8,9 +8,11 @@ Wahlzeit is an open source web application that lets users upload photos and rat
 
 Wahlzeit is used to teach agile methods and open source software development at the Professorship of Open Source Software at the University of Erlangen.
 
-It is an easy-to-learn yet complete Java application that is available under the GNU Affero Public License v3 license, see the LICENSE.txt file.
+It is an easy-to-learn yet complete Java web application that is available under the GNU Affero Public License v3 license, see the LICENSE.txt file.
 
-For more information, see http://wahlzeit.sourceforge.net and http://osr.cs.fau.de.
+Wahlzeit requires a servlet engine like Tomcat and a relational database like PostgreSQL.
+
+For more information, see http:/github.com/dirkriehle/wahlzeit and http://osr.cs.fau.de.
 
 
 
@@ -38,29 +40,29 @@ PART II: WAHLZEIT SETUP
 
 	Check out the source code from https://github.com/dirkriehle/wahlzeit.git into your Eclipse environment
 	
-5. On a command line, populate the database:
+5. [Optional] Populate the database from Eclipse:
 
-	cd workspace/wahlzeit
-
-	java -cp .:bin:lib/* org.wahlzeit.tools.SetUpFlowers
+	Run as Java Application org.wahlzeit.tools.SetUpFlowers
 	
-	This should initialize the database for the Flowers example application.
+	Alternatively, export SetUpFlowers as a JAR-file, then run it from within the wahlzeit directory.
+	
+	This is optional, because running Wahlzeit will ensure an empty database setup.
 
 
 
 PART III: RUNNING WAHLZEIT
 	
-6. Run Wahlzeit itself
+6. Run Wahlzeit itself from Eclipse Java EE (Tomcat):
 
-	java -cp .:bin:lib/* org.wahlzeit.main.Wahlzeit
-	
-	Direct your browser to http://localhost:8080
+	Start-up your Tomcat server, and Wahlzeit should be running at localhost:8080/wahlzeit/
 	
 	Login using admin/admin as the user/password combination.
 	
 	Change the admin password to something safer.
 	
 	Wahlzeit plays nicely with Apache virtual hosts.
+	
+	Alternatively, export the whole project as a WAR-file, then run it in your favorite container.
 
 Done!
 
