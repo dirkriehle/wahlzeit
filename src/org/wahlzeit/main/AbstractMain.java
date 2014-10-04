@@ -46,13 +46,6 @@ public abstract class AbstractMain {
 	/**
 	 * 
 	 */
-	protected void handleArgv(String[] argv) {
-		// do nothing
-	}
-
-	/**
-	 * 
-	 */
 	protected void startUp(String rootDir) throws Exception {
 		SysConfig.setInstance(createSysConfig(rootDir));
 		

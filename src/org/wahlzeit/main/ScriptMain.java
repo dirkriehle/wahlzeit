@@ -21,6 +21,7 @@
 package org.wahlzeit.main;
 
 import java.io.*;
+import java.sql.*;
 
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
@@ -36,11 +37,19 @@ public abstract class ScriptMain extends ModelMain {
 	/**
 	 * 
 	 */
+	protected boolean isToCreateTables = false;
+	protected boolean isToDropTables = false;
+	protected boolean isToRunScript = false;
+	protected String scriptName = null;
+	
+	/**
+	 * 
+	 */
 	public void run(String[] argv) {
 		handleArgv(argv);
 		
 		try {
-			startUp(""); //@FIXME
+			startUp("web");
 			execute();
 		} catch(Exception ex) {
 			SysLog.logThrowable(ex);
@@ -52,12 +61,36 @@ public abstract class ScriptMain extends ModelMain {
 			SysLog.logThrowable(ex);
 		}
 	} 
+	
+	/**
+	 * 
+	 */
+	protected void handleArgv(String argv[]) {
+		for (int i = 0; i < argv.length; i++) {
+			String arg = argv[i];
+
+			if (arg.equals("-S") || arg.equals("--setup")) {
+				isToCreateTables = true;
+			} else if (arg.equals("-T") || arg.equals("--teardown")) {
+				isToDropTables = true;
+			} else if (arg.equals("--script") && (i++ < argv.length)) {
+				isToRunScript = true;
+				scriptName = argv[i];
+			}
+		}
+	}
 
 	/**
 	 * 
 	 */
 	protected void execute() throws Exception {
-		// do nothing
+		if (isToCreateTables) {
+			createTables();
+		} else if (isToDropTables) {
+			dropTables();
+		} else if (isToRunScript) {
+			runScript(scriptName);
+		}
 	}
 		
 }

@@ -20,6 +20,8 @@
 
 package org.wahlzeit.main;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.sql.*;
 
 import org.wahlzeit.model.*;
@@ -41,7 +43,7 @@ public abstract class ModelMain extends AbstractMain {
 	 */
 	protected void startUp(String rootDir) throws Exception {
 		super.startUp(rootDir);
-
+		
 		loadGlobals();
 
 		PhotoFactory.initialize();
@@ -52,9 +54,48 @@ public abstract class ModelMain extends AbstractMain {
 	 */
 	protected void shutDown() throws Exception {
 		saveAll();
-		
+
 		super.shutDown();
 	}
+
+	/**
+	 * 
+	 */
+	public void createTables() throws SQLException {
+		runScript("CreateTables.sql");
+	}
+	
+	/**
+	 * 
+	 */
+	public void dropTables() throws SQLException {
+		runScript("DropTables.sql");
+	}
+	
+	/**
+	 * 
+	 */
+	protected void createUser(String userName, String password, String emailAddress, String photoDir) throws Exception {
+		UserManager userManager = UserManager.getInstance();
+		long confirmationCode = userManager.createConfirmationCode();
+		User user = new User(userName, password, emailAddress, confirmationCode);
+		userManager.addUser(user);
+		
+		PhotoManager photoManager = PhotoManager.getInstance();
+		File photoDirFile = new File(photoDir);
+		FileFilter photoFileFilter = new FileFilter() {
+			public boolean accept(File file) {
+				return file.getName().endsWith(".jpg");
+			}
+		};
+
+		File[] photoFiles = photoDirFile.listFiles(photoFileFilter);
+		for (int i = 0; i < photoFiles.length; i++) {
+			Photo newPhoto = photoManager.createPhoto(photoFiles[i]);
+			user.addPhoto(newPhoto);
+		}
+	}
+
 	
 	/**
 	 * 
@@ -130,6 +171,37 @@ public abstract class ModelMain extends AbstractMain {
 		UserManager.getInstance().saveUsers();
 
 		saveGlobals();
+	}
+	
+	/**
+	 * 
+	 */
+	protected void runScript(String scriptFileName) throws SQLException {
+		DatabaseConnection dbc = SessionManager.getDatabaseConnection();
+		Connection conn = dbc.getRdbmsConnection();
+		
+		ConfigDir scriptsDir = SysConfig.getScriptsDir();
+		
+		if(scriptsDir.hasDefaultFile(scriptFileName)) {
+			String defaultScriptFileName = scriptsDir.getAbsoluteDefaultConfigFileName(scriptFileName);
+			runScript(conn, defaultScriptFileName);
+		}
+			
+		if(scriptsDir.hasCustomFile(scriptFileName)) {
+			String customConfigFileName = scriptsDir.getAbsoluteCustomConfigFileName(scriptFileName);
+			runScript(conn, customConfigFileName);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	protected void runScript(Connection conn, String fullFileName) throws SQLException {
+		String query = FileUtil.safelyReadFileAsString(fullFileName);
+		SysLog.logQuery(query);
+
+		Statement stmt = conn.createStatement();
+		stmt.execute(query);
 	}
 	
 }

@@ -89,7 +89,7 @@ public class ServiceMain extends ModelMain {
 		isInProduction = inProduction;
 		
 		super.startUp(rootDir);
-		
+
 		configureWebPartTemplateService();
 		configureWebPartHandlers();
 		configureLanguageModels();

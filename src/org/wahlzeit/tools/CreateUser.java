@@ -45,6 +45,7 @@ public class CreateUser extends ScriptMain {
 	 */
 	protected String userName = "testuser";
 	protected String password = "testuser";
+	protected String emailAddress = "info@wahlzeit.org";
 	protected String photoDir = "config/photos";
 	
 	/**
@@ -57,6 +58,8 @@ public class CreateUser extends ScriptMain {
 				password = argv[++i];
 			} else if (arg.equals("--username")) {
 				userName = argv[++i];
+			} else if (arg.equals("--emailaddress")) {
+				emailAddress = argv[++i];
 			} else if (arg.equals("--photodir")) {
 				photoDir = argv[++i];
 			}
@@ -71,24 +74,7 @@ public class CreateUser extends ScriptMain {
 	 * 
 	 */
 	protected void execute() throws Exception {
-		UserManager userManager = UserManager.getInstance();
-		long confirmationCode = userManager.createConfirmationCode();
-		User user = new User(userName, password, "info@wahlzeit.org", confirmationCode);
-		userManager.addUser(user);
-		
-		PhotoManager photoManager = PhotoManager.getInstance();
-		File photoDirFile = new File(photoDir);
-		FileFilter photoFileFilter = new FileFilter() {
-			public boolean accept(File file) {
-				return file.getName().endsWith(".jpg");
-			}
-		};
-
-		File[] photoFiles = photoDirFile.listFiles(photoFileFilter);
-		for (int i = 0; i < photoFiles.length; i++) {
-			Photo newPhoto = photoManager.createPhoto(photoFiles[i]);
-			user.addPhoto(newPhoto);
-		}
+		createUser(userName, password, emailAddress, photoDir);
 	}
 	
 }

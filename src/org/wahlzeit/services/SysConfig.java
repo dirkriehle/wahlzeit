@@ -88,6 +88,11 @@ public class SysConfig extends AbstractConfig {
 	/**
 	 * 
 	 */
+	protected String rootDir;
+	
+	/**
+	 * 
+	 */
 	protected ConfigDir scriptsDir;
 	protected ConfigDir staticDir;
 	protected ConfigDir templatesDir;
@@ -109,7 +114,10 @@ public class SysConfig extends AbstractConfig {
 	/**
 	 *
 	 */
-	public SysConfig(String rootDir) {
+	public SysConfig(String myRootDir) {
+		// Root directory
+		rootDir = myRootDir;
+		
 		// Config directories
 		scriptsDir = new ConfigDir(rootDir, "config" + File.separator + "scripts");
 		staticDir = new ConfigDir(rootDir, "config" + File.separator + "static");
@@ -125,6 +133,13 @@ public class SysConfig extends AbstractConfig {
 		doSetValue(SysConfig.DB_CONNECTION, "jdbc:postgresql://localhost:5432/wahlzeit");
 		doSetValue(SysConfig.DB_USER, "wahlzeit");
 		doSetValue(SysConfig.DB_PASSWORD, "wahlzeit");
+	}
+	
+	/**
+	 * 
+	 */
+	public static String getRootDirAsString() {
+		return getInstance().rootDir;
 	}
 		
 	/**
