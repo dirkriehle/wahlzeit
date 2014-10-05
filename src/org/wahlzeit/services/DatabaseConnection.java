@@ -45,7 +45,7 @@ public class DatabaseConnection {
 	/**
 	 * 
 	 */
-	public static synchronized DatabaseConnection getInstance() throws SQLException {
+	public static synchronized DatabaseConnection ensureDatabaseConnection() throws SQLException {
 		DatabaseConnection result = null;
 		if (pool.isEmpty()) {
 			result = new DatabaseConnection("dbc" + dbcId++);
@@ -61,7 +61,7 @@ public class DatabaseConnection {
 	/**
 	 * 
 	 */
-	public static synchronized void dropInstance(DatabaseConnection dbc) {
+	public static synchronized void returnDatabaseConnection(DatabaseConnection dbc) {
 		if (dbc != null) {
 			if (dbc.isOpen()) {
 				pool.add(dbc);				
@@ -102,7 +102,7 @@ public class DatabaseConnection {
 	 */
 	protected void finalize() {
 		try {
-			pool.remove(this); // @FIXME shouldn't be necessary
+			pool.remove(this); // just to be sure...
 			closeConnection(rdbmsConnection);
 		} catch (Throwable t) {
 			SysLog.logThrowable(t);
@@ -123,7 +123,7 @@ public class DatabaseConnection {
 		boolean result = false;
 		
 		try {
-			result = (rdbmsConnection != null) && rdbmsConnection.isClosed();
+			result = (rdbmsConnection != null) && !rdbmsConnection.isClosed();
 		} catch (SQLException ex) {
 			SysLog.logThrowable(ex);
 		}

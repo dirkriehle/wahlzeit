@@ -1,4 +1,4 @@
-Wahlzeit - An Open Source Package for Rating Sites
+Wahlzeit - An Open Source Package to create Photo Rating Sites
 
 
 

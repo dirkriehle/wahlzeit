@@ -120,7 +120,7 @@ public class Log {
 		String id = (session != null) ? session.getName() : "no-session";
 		addField(sb, "session", id);
 
-		String dbc = (session != null) && session.hasDatabaseConnection() ? session.getDatabaseConnection().getName() : "no-database-connection";
+		String dbc = (session != null) && session.hasDatabaseConnection() ? session.ensureDatabaseConnection().getName() : "no-database-connection";
 		addField(sb, "databaseConnection", dbc);
 		
 		String threadId = String.valueOf(Thread.currentThread().getId());

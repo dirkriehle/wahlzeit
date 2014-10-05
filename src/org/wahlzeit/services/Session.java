@@ -38,7 +38,7 @@ public class Session {
 	/**
 	 * Database stuff
 	 */
-	protected DatabaseConnection dbConnection = null;
+	protected DatabaseConnection databaseConnection = null;
 	
 	/**
 	 * processing time for requests
@@ -64,7 +64,7 @@ public class Session {
 	 */
 	protected void finalize() throws Throwable {
 		try {
-			dropDatabaseConnection();
+			returnDatabaseConnection();
 		} finally {
 			super.finalize();
 		}
@@ -81,31 +81,31 @@ public class Session {
 	 * 
 	 */
 	public boolean hasDatabaseConnection() {
-		return dbConnection != null;
+		return databaseConnection != null;
 	}
 	
 	/**
 	 * 
 	 */
-	public DatabaseConnection getDatabaseConnection() {
-		if (dbConnection == null) {
+	public DatabaseConnection ensureDatabaseConnection() {
+		if (databaseConnection == null) {
 			try {
-				dbConnection = DatabaseConnection.getInstance();
+				databaseConnection = DatabaseConnection.ensureDatabaseConnection();
 			} catch (Throwable t) {
 				SysLog.logThrowable(t);
 			}
 		}
 		
-		return dbConnection;
+		return databaseConnection;
 	}
 	
 	/**
 	 * 
 	 */
-	public void dropDatabaseConnection() {
-		if (dbConnection != null) {
-			DatabaseConnection.dropInstance(dbConnection);
-			dbConnection = null;
+	public void returnDatabaseConnection() {
+		if (databaseConnection != null) {
+			DatabaseConnection.returnDatabaseConnection(databaseConnection);
+			databaseConnection = null;
 		}
 	}
 	

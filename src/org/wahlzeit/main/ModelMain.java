@@ -57,7 +57,7 @@ public abstract class ModelMain extends AbstractMain {
 	 * 
 	 */
 	protected boolean hasGlobals() throws SQLException {
-		DatabaseConnection dbc = mainSession.getDatabaseConnection();
+		DatabaseConnection dbc = mainSession.ensureDatabaseConnection();
 		Connection conn = dbc.getRdbmsConnection();
 		DatabaseMetaData dbm = conn.getMetaData();
 		ResultSet tables = dbm.getTables(null, null, "globals", null);
@@ -116,7 +116,7 @@ public abstract class ModelMain extends AbstractMain {
 	 * 
 	 */
 	public void loadGlobals() throws SQLException {
-		DatabaseConnection dbc = mainSession.getDatabaseConnection();
+		DatabaseConnection dbc = mainSession.ensureDatabaseConnection();
 		Connection conn = dbc.getRdbmsConnection();
 
 		String query = "SELECT * FROM globals";

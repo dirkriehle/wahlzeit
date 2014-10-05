@@ -59,7 +59,7 @@ public class SessionManager {
 	 * 
 	 */
 	public static DatabaseConnection getDatabaseConnection() {
-		return getThreadLocalSession().getDatabaseConnection();
+		return getThreadLocalSession().ensureDatabaseConnection();
 	}
 	
 }
