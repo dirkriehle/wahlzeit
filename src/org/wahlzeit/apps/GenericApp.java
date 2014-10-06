@@ -21,8 +21,6 @@
 package org.wahlzeit.apps;
 
 import java.io.File;
-import java.net.URL;
-
 import javax.servlet.*;
 
 import org.wahlzeit.main.ServiceMain;

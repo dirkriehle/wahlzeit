@@ -131,15 +131,14 @@ public class MainServlet extends AbstractServlet {
 	}
 
 	/**
-	 * 
+	 * @FIXME File upload temporarily disabled
 	 */
 	protected Map getMultiPartRequestArgs(HttpServletRequest request) throws IOException {
 		Map<String, String> result = new HashMap<String, String>();
 
-		// @FIXME
 //		Enumeration names = request.getHeaderNames();
 //		while (names.hasMoreElements()) {
-//			String name = (String) names.nextElement();
+//			String key = (String) names.nextElement();
 //			String value = null;
 //			if (key.equals("fileName")) {
 //				InputStream in = request.getInputStream(key);
@@ -160,6 +159,29 @@ public class MainServlet extends AbstractServlet {
 //			result.put(key, value);
 //		}
 		
+//		String[] keys = request.getPartNames();
+//		for (int i = 0; i < keys.length; i++) {
+//			String key = keys[i];
+//			String value = null;
+//			if (key.equals("fileName")) {
+//				InputStream in = request.getInputStream(key);
+//				String tempName = SysConfig.getTempDirAsString() + Thread.currentThread().getId();
+//				FileOutputStream out = new FileOutputStream(new File(tempName));
+//				int uploaded = 0;
+//				for (int avail = in.available(); (avail > 0) && (uploaded < 1000000); avail = in.available()) {
+//					byte[] buffer = new byte[avail];
+//					in.read(buffer, 0, avail);
+//					out.write(buffer);
+//					uploaded += avail;
+//				}
+//				out.close();
+//				value = tempName;
+//			} else {
+//				value = request.getString(key);
+//			}
+//			result.put(key, value);
+//		}
+
 		return result;
 	}
 
