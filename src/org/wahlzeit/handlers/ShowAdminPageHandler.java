@@ -45,72 +45,72 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
 	/**
 	 * 
 	 */
-	protected void makeWebPageBody(UserSession ctx, WebPart page) {
-		Map args = ctx.getSavedArgs();
+	protected void makeWebPageBody(UserSession us, WebPart page) {
+		Map args = us.getSavedArgs();
 		page.addStringFromArgs(args, UserSession.MESSAGE);
 		
-		Object userId = ctx.getSavedArg("userId");
+		Object userId = us.getSavedArg("userId");
 		if(!StringUtil.isNullOrEmptyString(userId)) {
 			page.addStringFromArgs(args, "userId");
-			page.addWritable("object", makeAdminUserProfile(ctx));
+			page.addWritable("object", makeAdminUserProfile(us));
 		}
 
-		Object photoId = ctx.getSavedArg("photoId");
+		Object photoId = us.getSavedArg("photoId");
 		if(!StringUtil.isNullOrEmptyString(photoId)) {
 			page.addStringFromArgs(args, "photoId");
-			page.addWritable("object", makeAdminUserPhoto(ctx));
+			page.addWritable("object", makeAdminUserPhoto(us));
 		}
 	}
 	
 	/**
 	 * 
 	 */
-	protected Writable makeAdminUserProfile(UserSession ctx) {
+	protected Writable makeAdminUserProfile(UserSession us) {
 		WebFormHandler handler = getFormHandler(PartUtil.NULL_FORM_NAME);
 
-		String userId = ctx.getSavedArg("userId").toString();
+		String userId = us.getSavedArg("userId").toString();
 		User user = UserManager.getInstance().getUserByName(userId);
 		if (user != null) {
 			handler = getFormHandler(PartUtil.ADMIN_USER_PROFILE_FORM_NAME);
 		}
 		
-		return handler.makeWebPart(ctx);
+		return handler.makeWebPart(us);
 	}
 
 	/**
 	 * 
 	 */
-	protected Writable makeAdminUserPhoto(UserSession ctx) {
+	protected Writable makeAdminUserPhoto(UserSession us) {
 		WebFormHandler handler = getFormHandler(PartUtil.NULL_FORM_NAME);
 
-		String photoId = ctx.getSavedArg("photoId").toString();
+		String photoId = us.getSavedArg("photoId").toString();
 		Photo photo = PhotoManager.getPhoto(photoId);
 		if (photo != null) {
 			handler = getFormHandler(PartUtil.ADMIN_USER_PHOTO_FORM_NAME);
 		}
 		
-		return handler.makeWebPart(ctx);
+		return handler.makeWebPart(us);
 	}
 
 	/**
 	 * 
 	 */
-	public String handlePost(UserSession ctx, Map args) {
-		if (!hasAccessRights(ctx, args)) {
-			SysLog.logInfo("insufficient rights for POST from: " + ctx.getEmailAddressAsString());
-			return getIllegalAccessErrorPage(ctx);
+	public String handlePost(UserSession us, Map args) {
+		if (!hasAccessRights(us, args)) {
+			SysLog.logInfo("insufficient rights for POST from: " + us.getEmailAddressAsString());
+			return getIllegalAccessErrorPage(us);
 		}
 				
 		String result = PartUtil.SHOW_ADMIN_PAGE_NAME;
 		
-		if (ctx.isFormType(args, "adminUser")) {
-			result = performAdminUserProfileRequest(ctx, args);
-		} else if (ctx.isFormType(args, "adminPhoto")) {
-			result = performAdminUserPhotoRequest(ctx, args);
-		} else if (ctx.isFormType(args, "saveAll")) {
-			result = performSaveAllRequest(ctx);
-		} else if (ctx.isFormType(args, "shutdown")) {
-			result = performShutdownRequest(ctx);
+		if (us.isFormType(args, "adminUser")) {
+			result = performAdminUserProfileRequest(us, args);
+		} else if (us.isFormType(args, "adminPhoto")) {
+			result = performAdminUserPhotoRequest(us, args);
+		} else if (us.isFormType(args, "saveAll")) {
+			result = performSaveAllRequest(us);
+		} else if (us.isFormType(args, "shutdown")) {
+			result = performShutdownRequest(us);
 		}
 
 		return result;
@@ -119,11 +119,11 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
 	/**
 	 * 
 	 */
-	protected String performAdminUserProfileRequest(UserSession ctx, Map args) {
-		String userId = ctx.getAndSaveAsString(args, "userId");
+	protected String performAdminUserProfileRequest(UserSession us, Map args) {
+		String userId = us.getAndSaveAsString(args, "userId");
 		User user = UserManager.getInstance().getUserByName(userId);
 		if (user == null) {
-			ctx.setMessage(ctx.cfg().getUserNameIsUnknown());
+			us.setMessage(us.cfg().getUserNameIsUnknown());
 		}
 		
 		return PartUtil.SHOW_ADMIN_PAGE_NAME;
@@ -132,11 +132,11 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
 	/**
 	 * 
 	 */
-	protected String performAdminUserPhotoRequest(UserSession ctx, Map args) {
-		String photoId = ctx.getAndSaveAsString(args, "photoId");
+	protected String performAdminUserPhotoRequest(UserSession us, Map args) {
+		String photoId = us.getAndSaveAsString(args, "photoId");
 		Photo photo = PhotoManager.getPhoto(photoId);
 		if (photo == null) {
-			ctx.setMessage(ctx.cfg().getPhotoIsUnknown());
+			us.setMessage(us.cfg().getPhotoIsUnknown());
 		}
 		
 		return PartUtil.SHOW_ADMIN_PAGE_NAME;
@@ -145,32 +145,32 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
 	/**
 	 * 
 	 */
-	protected String performShutdownRequest(UserSession ctx) {
+	protected String performShutdownRequest(UserSession us) {
 		SysLog.logInfo("shutting down");
 		
 		try {
-			Wahlzeit.requestStop();
+			ServiceMain.getInstance().requestStop();
 		} catch (Exception ex) {
 			SysLog.logThrowable(ex);
 		}
 		
-		ctx.setMessage("Shutting down...");
+		us.setMessage("Shutting down...");
 		return PartUtil.SHOW_NOTE_PAGE_NAME;
 	}
 	
 	/**
 	 * 
 	 */
-	protected String performSaveAllRequest(UserSession ctx) {
+	protected String performSaveAllRequest(UserSession us) {
 		SysLog.logInfo("saving objects");
 
 		try {
-			Wahlzeit.saveAll();
+			ServiceMain.getInstance().saveAll();
 		} catch (Exception ex) {
 			SysLog.logThrowable(ex);
 		}
 		
-		ctx.setMessage("Saved objects...");
+		us.setMessage("Saved objects...");
 		return PartUtil.SHOW_NOTE_PAGE_NAME;
 	}	
 

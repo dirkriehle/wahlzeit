@@ -37,7 +37,7 @@ public abstract class ObjectManager {
 	 * 
 	 */
 	public DatabaseConnection getDatabaseConnection() throws SQLException {
-		return ContextManager.getDatabaseConnection();
+		return SessionManager.getDatabaseConnection();
 	}
 	    
 	/**

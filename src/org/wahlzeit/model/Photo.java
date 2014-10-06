@@ -145,7 +145,7 @@ public class Photo extends DataObject {
 	 * 
 	 */
 	public void readFrom(ResultSet rset) throws SQLException {
-		id = PhotoId.getId(rset.getInt("id"));
+		id = PhotoId.getIdFromInt(rset.getInt("id"));
 
 		ownerId = rset.getInt("owner_id");
 		ownerName = rset.getString("owner_name");

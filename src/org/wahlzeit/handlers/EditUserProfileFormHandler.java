@@ -44,15 +44,15 @@ public class EditUserProfileFormHandler extends AbstractWebFormHandler {
 	/**
 	 * @methodtype command
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		Map<String, Object> args = ctx.getSavedArgs();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map<String, Object> args = us.getSavedArgs();
 		part.addStringFromArgs(args, UserSession.MESSAGE);
 
-		User user = (User) ctx.getClient();
+		User user = (User) us.getClient();
 		part.maskAndAddString(User.NAME, user.getName());
 
 		Photo photo = user.getUserPhoto();
-		part.addString(Photo.THUMB, getPhotoThumb(ctx, photo));
+		part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 		part.addSelect(User.GENDER, Gender.class, (String) args.get(User.GENDER), user.getGender()); 
 		part.addSelect(User.LANGUAGE, Language.class, (String) args.get(User.LANGUAGE), user.getLanguage());
 		
@@ -66,25 +66,25 @@ public class EditUserProfileFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
-		String emailAddress = ctx.getAndSaveAsString(args, User.EMAIL_ADDRESS);
-		String homePage = ctx.getAndSaveAsString(args, User.HOME_PAGE);
-		String gender = ctx.getAndSaveAsString(args, User.GENDER);
-		String language = ctx.getAndSaveAsString(args, User.LANGUAGE);
+	protected String doHandlePost(UserSession us, Map args) {
+		String emailAddress = us.getAndSaveAsString(args, User.EMAIL_ADDRESS);
+		String homePage = us.getAndSaveAsString(args, User.HOME_PAGE);
+		String gender = us.getAndSaveAsString(args, User.GENDER);
+		String language = us.getAndSaveAsString(args, User.LANGUAGE);
 		
 		if (!StringUtil.isValidStrictEmailAddress(emailAddress)) {
-			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
+			us.setMessage(us.cfg().getEmailAddressIsInvalid());
 			return PartUtil.EDIT_USER_PROFILE_PAGE_NAME;
 		} else if (!StringUtil.isValidURL(homePage)) {
-			ctx.setMessage(ctx.cfg().getUrlIsInvalid());
+			us.setMessage(us.cfg().getUrlIsInvalid());
 			return PartUtil.EDIT_USER_PROFILE_PAGE_NAME;
 		}
 		
-		User user = (User) ctx.getClient();
+		User user = (User) us.getClient();
 		
 		user.setEmailAddress(EmailAddress.getFromString(emailAddress));
 	
-		String status = ctx.getAndSaveAsString(args, User.NOTIFY_ABOUT_PRAISE);
+		String status = us.getAndSaveAsString(args, User.NOTIFY_ABOUT_PRAISE);
 		boolean notify = (status != null) && status.equals("on");
 		user.setNotifyAboutPraise(notify);
 
@@ -96,7 +96,7 @@ public class EditUserProfileFormHandler extends AbstractWebFormHandler {
 		
 		if (!StringUtil.isNullOrEmptyString(language)) {
 			Language langValue = Language.getFromString(language);
-			ctx.setConfiguration(LanguageConfigs.get(langValue));
+			us.setConfiguration(LanguageConfigs.get(langValue));
 			user.setLanguage(langValue);
 		}
 		
@@ -104,7 +104,7 @@ public class EditUserProfileFormHandler extends AbstractWebFormHandler {
 		UserLog.addUpdatedObject(sb, "User", user.getName());
 		UserLog.log(sb);
 		
-		ctx.setTwoLineMessage(ctx.cfg().getProfileUpdateSucceeded(), ctx.cfg().getContinueWithShowUserHome());
+		us.setTwoLineMessage(us.cfg().getProfileUpdateSucceeded(), us.cfg().getContinueWithShowUserHome());
 
 		return PartUtil.SHOW_NOTE_PAGE_NAME;
 	}

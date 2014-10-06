@@ -35,7 +35,7 @@ public class PhotoId {
 	/**
 	 * 0 is never returned from nextValue; first value is 1
 	 */
-	protected static int value = 0;
+	protected static int currentId = 0;
 	
 	/**
 	 * 
@@ -65,37 +65,37 @@ public class PhotoId {
 	/**
 	 * 
 	 */
-	public static int getValue() {
-		return value;
+	public static int getCurrentIdAsInt() {
+		return currentId;
 	}
 	
 	/**
 	 * 
 	 */
-	public static synchronized void setValue(int id) {
-		value = id;
-		ids = new PhotoId[value + BUFFER_SIZE_INCREMENT];
+	public static synchronized void setCurrentIdFromInt(int id) {
+		currentId = id;
+		ids = new PhotoId[currentId + BUFFER_SIZE_INCREMENT];
 		ids[0] = NULL_ID;
 	}
 	
 	/**
 	 * 
 	 */
-	public static synchronized int getNextValue() {
-		value += 1;
-		if (value >= ids.length) {
-			PhotoId[] nids = new PhotoId[value + BUFFER_SIZE_INCREMENT];
-			System.arraycopy(ids, 0, nids, 0, value);
+	public static synchronized int getNextIdAsInt() {
+		currentId += 1;
+		if (currentId >= ids.length) {
+			PhotoId[] nids = new PhotoId[currentId + BUFFER_SIZE_INCREMENT];
+			System.arraycopy(ids, 0, nids, 0, currentId);
 			ids = nids;
 		}
-		return value;
+		return currentId;
 	}
 
 	/**
 	 * 
 	 */
-	public static PhotoId getId(int id) {
-		if ((id < 0) || (id > value)) {
+	public static PhotoId getIdFromInt(int id) {
+		if ((id < 0) || (id > currentId)) {
 			return NULL_ID;
 		}
 		
@@ -117,39 +117,39 @@ public class PhotoId {
 	/**
 	 * 
 	 */
-	public static PhotoId getId(String id) {
-		return getId(getFromString(id));
+	public static PhotoId getIdFromString(String id) {
+		return getIdFromInt(getFromString(id));
 	}
 	
 	/**
 	 * 
 	 */
 	public static PhotoId getNextId() {
-		return getId(getNextValue());
+		return getIdFromInt(getNextIdAsInt());
 	}
 	
 	/**
 	 * 
 	 */
 	public static PhotoId getRandomId() {
-		int max = getValue() - 1;
+		int max = getCurrentIdAsInt() - 1;
 		int id = randomNumber.nextInt();
 		id = (id == Integer.MIN_VALUE) ? id ++ : id;
 		id = (Math.abs(id) % max) + 1;
-		return getId(id);
+		return getIdFromInt(id);
 	}
 	
 	/**
 	 * 
 	 */
-	protected int intValue = 0;
+	protected int value = 0;
 	protected String stringValue = null;
 
 	/**
 	 * 
 	 */
 	protected PhotoId(int myValue) {
-		intValue = myValue;
+		value = myValue;
 		stringValue = getFromInt(myValue);
 	}
 	
@@ -171,14 +171,14 @@ public class PhotoId {
 	 * 
 	 */
 	public boolean isEqual(PhotoId other) {
-		return other.intValue == intValue;
+		return other.value == value;
 	}
 	
 	/**
 	 * @methodtype get
 	 */
 	public int hashCode() {
-		return intValue;
+		return value;
 	}
 	
 	/**
@@ -192,7 +192,7 @@ public class PhotoId {
 	 * 
 	 */
 	public int asInt() {
-		return intValue;
+		return value;
 	}
 	
 	/**

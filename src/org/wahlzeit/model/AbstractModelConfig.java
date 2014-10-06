@@ -23,6 +23,7 @@ package org.wahlzeit.model;
 import java.io.*;
 import java.text.*;
 
+import org.wahlzeit.main.*;
 import org.wahlzeit.services.*;
 import org.wahlzeit.utils.*;
 
@@ -58,16 +59,21 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
 		praiseFormatter = myPraiseFormatter;
 		
 		try {
-			String basicFileName = FileUtil.getTmplFileName(language, "ModelConfig.properties");
-			loadProperties(basicFileName);
-
-			String customFileName = FileUtil.getTmplFileName(language, "CustomModelConfig.properties");
-			File customFile = new File(customFileName);
-			if (customFile.exists()) {
-				loadProperties(customFile);
+			ConfigDir templatesDir = SysConfig.getTemplatesDir();
+			
+			String shortDefaultFileName = myLanguage.asIsoCode() + File.separator + "ModelConfig.properties";
+			if(templatesDir.hasDefaultFile(shortDefaultFileName)) {
+				String absoluteDefaultFileName = templatesDir.getAbsoluteDefaultConfigFileName(shortDefaultFileName);
+				loadProperties(absoluteDefaultFileName);
+			}
+			
+			String shortCustomFileName = myLanguage.asIsoCode() + File.separator + "CustomModelConfig.properties";
+			if(templatesDir.hasCustomFile(shortCustomFileName)) {
+				String absoluteCustomFileName = templatesDir.getAbsoluteCustomConfigFileName(shortCustomFileName);
+				loadProperties(absoluteCustomFileName);
 			}
 		} catch (IOException ioex) {
-			ioex.printStackTrace(); //@FIXME
+			ioex.printStackTrace(); // @FIXME
 		}
 		
 		String menuDash = "&nbsp;" + doGetValue("MenuDash") + "&nbsp;";
@@ -80,7 +86,9 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
 		String footerPhotoSizePart2 = doGetValue("FooterPhotoSizePart2");
 		String footerPhotoSizePart3 = doGetValue("FooterPhotoSizePart3");
 		String footerPhotoSizePart4 = doGetValue("FooterPhotoSizePart4");
-		String footerDebugPart = SysLog.isInDevelopmentMode() ? menuDash + doGetValue("FooterDebugPart") : "";
+		
+		boolean isInProduction = ServiceMain.getInstance().isInProduction();
+		String footerDebugPart = !isInProduction ? menuDash + doGetValue("FooterDebugPart") : "";
 		
 		doSetValue("PageFooter0", footerCommunityPart + menuDash + footerAboutPart + menuDash + footerLanguagePart + menuDash + footerPhotoSizePart0 + footerDebugPart);
 		doSetValue("PageFooter1", footerCommunityPart + menuDash + footerAboutPart + menuDash + footerLanguagePart + menuDash + footerPhotoSizePart1 + footerDebugPart);

@@ -57,7 +57,7 @@ public abstract class Agent implements Runnable {
 	}
 	
 	/**
-	 *@methodtype initialization
+	 * @methodtype initialization
 	 */
 	protected void initialize(String myName, long myPeriod) {
 		name = myName;
@@ -76,8 +76,10 @@ public abstract class Agent implements Runnable {
 	 */
 	public void run() {
 		synchronized(Agent.class) {
-			Session ctx = new SysSession("agent" + id++);
-			ContextManager.setThreadLocalContext(ctx);
+			String agentName = "agent" + id++;
+			Session agentSession = new SysSession(agentName);
+			SessionManager.setThreadLocalSession(agentSession);
+			SysLog.logInfo("started new agent", agentName);
 		}
 
 		while(!isToStop) {

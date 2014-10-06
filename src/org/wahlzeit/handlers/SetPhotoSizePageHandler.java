@@ -47,7 +47,7 @@ public class SetPhotoSizePageHandler extends AbstractWebPageHandler {
 	/**
 	 * 
 	 */
-	protected String doHandleGet(UserSession ctx, String link, Map args) {
+	protected String doHandleGet(UserSession us, String link, Map args) {
 		PhotoSize result = PhotoSize.MEDIUM;
 		
 		if (link.equals(PartUtil.SET_EXTRA_SMALL_PHOTO_SIZE_PAGE_NAME)) {
@@ -60,7 +60,7 @@ public class SetPhotoSizePageHandler extends AbstractWebPageHandler {
 			result = PhotoSize.EXTRA_LARGE;
 		}
 		
-		ctx.setPhotoSize(result);
+		us.setPhotoSize(result);
 		
 		return link;
 	}
@@ -68,11 +68,11 @@ public class SetPhotoSizePageHandler extends AbstractWebPageHandler {
 	/**
 	 * 
 	 */
-	protected void makeWebPageBody(UserSession ctx, WebPart page) {
-		page.addString("noteHeading", ctx.cfg().getInformation());
-		String msg1 = ctx.cfg().getNewPhotoSizeSet(ctx.getPhotoSize());
-		String msg2 = ctx.cfg().getNoteMaximumPhotoSize();
-		String msg3 = ctx.cfg().getContinueWithShowPhoto();
+	protected void makeWebPageBody(UserSession us, WebPart page) {
+		page.addString("noteHeading", us.cfg().getInformation());
+		String msg1 = us.cfg().getNewPhotoSizeSet(us.getPhotoSize());
+		String msg2 = us.cfg().getNoteMaximumPhotoSize();
+		String msg3 = us.cfg().getContinueWithShowPhoto();
 		page.addString("note", HtmlUtil.asPara(msg1) + HtmlUtil.asPara(msg2) + HtmlUtil.asPara(msg3));
 	}
 

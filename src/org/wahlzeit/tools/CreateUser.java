@@ -31,14 +31,13 @@ import org.wahlzeit.model.*;
  * @author dirkriehle
  *
  */
-public class CreateUser extends ModelMain {
+public class CreateUser extends ScriptMain {
 	
 	/**
 	 * 
 	 */
 	public static void main(String[] argv) {
-		instance = new CreateUser();
-		instance.run(argv);
+		new CreateUser().run(argv);
 	}
 	
 	/**
@@ -46,22 +45,14 @@ public class CreateUser extends ModelMain {
 	 */
 	protected String userName = "testuser";
 	protected String password = "testuser";
+	protected String emailAddress = "info@wahlzeit.org";
 	protected String photoDir = "config/photos";
 	
 	/**
 	 * 
 	 */
-	protected void handleArgv(String[] argv) {
-		for (int i = 0; i < argv.length; i++) {
-			String arg = argv[i];
-			if (arg.equals("--password")) {
-				password = argv[++i];
-			} else if (arg.equals("--username")) {
-				userName = argv[++i];
-			} else if (arg.equals("--photodir")) {
-				photoDir = argv[++i];
-			}
-		}
+	protected void handleArgv(String argv[]) {
+		super.handleArgv(argv);
 		
 		if (StringUtil.isNullOrEmptyString(password)) {
 			password = userName;
@@ -71,25 +62,25 @@ public class CreateUser extends ModelMain {
 	/**
 	 * 
 	 */
-	protected void execute() throws Exception {
-		UserManager userManager = UserManager.getInstance();
-		long confirmationCode = userManager.createConfirmationCode();
-		User user = new User(userName, password, "info@wahlzeit.org", confirmationCode);
-		userManager.addUser(user);
-		
-		PhotoManager photoManager = PhotoManager.getInstance();
-		File photoDirFile = new File(photoDir);
-		FileFilter photoFileFilter = new FileFilter() {
-			public boolean accept(File file) {
-				return file.getName().endsWith(".jpg");
-			}
-		};
-
-		File[] photoFiles = photoDirFile.listFiles(photoFileFilter);
-		for (int i = 0; i < photoFiles.length; i++) {
-			Photo newPhoto = photoManager.createPhoto(photoFiles[i]);
-			user.addPhoto(newPhoto);
+	protected int handleArg(String arg, int i, String[] argv) {
+		if (arg.equals("--password")) {
+			password = argv[++i];
+		} else if (arg.equals("--username")) {
+			userName = argv[++i];
+		} else if (arg.equals("--emailaddress")) {
+			emailAddress = argv[++i];
+		} else if (arg.equals("--photodir")) {
+			photoDir = argv[++i];
 		}
+		
+		return i;
+	}
+	
+	/**
+	 * 
+	 */
+	protected void execute() throws Exception {
+		createUser(userName, password, emailAddress, photoDir);
 	}
 	
 }

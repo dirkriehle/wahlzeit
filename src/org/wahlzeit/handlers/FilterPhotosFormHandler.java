@@ -43,8 +43,8 @@ public class FilterPhotosFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		PhotoFilter filter = ctx.getPhotoFilter();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		PhotoFilter filter = us.getPhotoFilter();
 			
 		part.maskAndAddString(PhotoFilter.USER_NAME, filter.getUserName());
 		part.maskAndAddString(PhotoFilter.TAGS, filter.getTags().asString());
@@ -53,15 +53,15 @@ public class FilterPhotosFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
-		PhotoFilter filter = ctx.getPhotoFilter();
+	protected String doHandlePost(UserSession us, Map args) {
+		PhotoFilter filter = us.getPhotoFilter();
 
-		String un = ctx.getAsString(args, PhotoFilter.USER_NAME);
+		String un = us.getAsString(args, PhotoFilter.USER_NAME);
 		if (StringUtil.isLegalUserName(un)) {
 			filter.setUserName(un);
 		}
 		
-		String tags = ctx.getAsString(args, PhotoFilter.TAGS);
+		String tags = us.getAsString(args, PhotoFilter.TAGS);
 		if (StringUtil.isLegalTagsString(tags)) {
 			filter.setTags(new Tags(tags));
 		}

@@ -20,6 +20,7 @@
 
 package org.wahlzeit.handlers;
 
+import java.io.File;
 import java.util.*;
 
 import org.wahlzeit.model.*;
@@ -55,30 +56,30 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	/**
 	 * @methodtype factory
 	 */
-	protected final WebPart createWebPart(UserSession ctx) {
-		return createWebPart(ctx, tmplName);
+	protected final WebPart createWebPart(UserSession us) {
+		return createWebPart(us, tmplName);
 	}
 	
 	/**
 	 * @methodtype factory
 	 */
-	protected final WebPart createWebPart(UserSession ctx, String name) {
-		WebPartTemplateServer wpts = WebPartTemplateServer.getInstance();
-		WebPartTemplate tmpl = wpts.getTemplate(ctx.cfg().getLanguageCode(), name);
+	protected final WebPart createWebPart(UserSession us, String name) {
+		WebPartTemplateService wpts = WebPartTemplateService.getInstance();
+		WebPartTemplate tmpl = wpts.getTemplate(us.cfg().getLanguageCode(), name);
 		return new WebPart(tmpl);
 	}
 		
 	/**
 	 * 
 	 */
-	protected String getPhotoThumb(UserSession ctx, Photo photo) {
+	protected String getPhotoThumb(UserSession us, Photo photo) {
 		String result = null;
 		if (photo != null) {
-			String imageLink = getPhotoLink(photo, PhotoSize.THUMB);
+			String imageLink = getPhotoAsRelativeResourcePathStringLink(photo, PhotoSize.THUMB);
 			result = HtmlUtil.asImg(imageLink, photo.getThumbWidth(), photo.getThumbHeight());
 		} else {
-			Language langValue = ctx.cfg().getLanguage();
-			result = HtmlUtil.asImg(SysConfig.getEmptyImageAsUrlString(langValue));
+			Language langValue = us.cfg().getLanguage();
+			result = HtmlUtil.asImg(getEmptyImageAsRelativePathString(langValue));
 		}
 		return result;
 	}
@@ -86,22 +87,15 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	/**
 	 * 
 	 */
-	protected String getPhotoLink(Photo photo, PhotoSize size) {
-		return SysConfig.getPhotosUrlAsString() + photo.getId().asString() + size.asInt() + ".jpg";
+	protected String getPhotoSummary(UserSession us, Photo photo) {
+		return photo.getSummary(us.cfg());
 	}
 	
 	/**
 	 * 
 	 */
-	protected String getPhotoSummary(UserSession ctx, Photo photo) {
-		return photo.getSummary(ctx.cfg());
-	}
-	
-	/**
-	 * 
-	 */
-	protected String getPhotoCaption(UserSession ctx, Photo photo) {
-		return photo.getCaption(ctx.cfg());
+	protected String getPhotoCaption(UserSession us, Photo photo) {
+		return photo.getCaption(us.cfg());
 	}
 	
 	/**
@@ -121,30 +115,30 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	/**
 	 * 
 	 */
-	protected boolean hasAccessRights(UserSession ctx, Map args) {
-		return ctx.getClient().hasRights(getNeededRights());
+	protected boolean hasAccessRights(UserSession us, Map args) {
+		return us.getClient().hasRights(getNeededRights());
 	}
 	
 	/**
 	 * 
 	 */
-	protected boolean isWellFormedGet(UserSession ctx, String link, Map args) {
+	protected boolean isWellFormedGet(UserSession us, String link, Map args) {
 		return true;
 	}
 	
 	/**
 	 * 
 	 */
-	protected boolean hasSavedPhotoId(UserSession ctx) {
-		String id = ctx.getAsString(ctx.getSavedArgs(), Photo.ID);
+	protected boolean hasSavedPhotoId(UserSession us) {
+		String id = us.getAsString(us.getSavedArgs(), Photo.ID);
 		return !StringUtil.isNullOrEmptyString(id);
 	}
 	
 	/**
 	 * 
 	 */
-	protected boolean isSavedPhotoVisible(UserSession ctx) {
-		String id = ctx.getAsString(ctx.getSavedArgs(), Photo.ID);
+	protected boolean isSavedPhotoVisible(UserSession us) {
+		String id = us.getAsString(us.getSavedArgs(), Photo.ID);
 		Photo photo = PhotoManager.getPhoto(id);
 		return photo.isVisible();
 	}
@@ -152,30 +146,30 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	/**
 	 * 
 	 */
-	protected boolean hasSavedMessage(UserSession ctx) {
-		return !StringUtil.isNullOrEmptyString(ctx.getMessage());
+	protected boolean hasSavedMessage(UserSession us) {
+		return !StringUtil.isNullOrEmptyString(us.getMessage());
 	}
 
 	/**
 	 * 
 	 */
-	public final String handleGet(UserSession ctx, String link, Map args) {
-		if (!hasAccessRights(ctx, args)) {
-			SysLog.logInfo("insufficient rights for GET from: " + ctx.getEmailAddressAsString());
-			return getIllegalAccessErrorPage(ctx);
+	public final String handleGet(UserSession us, String link, Map args) {
+		if (!hasAccessRights(us, args)) {
+			SysLog.logInfo("insufficient rights for GET from: " + us.getEmailAddressAsString());
+			return getIllegalAccessErrorPage(us);
 		}
 		
-		if (!isWellFormedGet(ctx, link, args)) {
-			SysLog.logInfo("received ill-formed GET from: " + ctx.getEmailAddressAsString());
-			return getIllegalArgumentErrorPage(ctx);
+		if (!isWellFormedGet(us, link, args)) {
+			SysLog.logInfo("received ill-formed GET from: " + us.getEmailAddressAsString());
+			return getIllegalArgumentErrorPage(us);
 		}
 		
 		try {
 			// may throw Exception
-			return doHandleGet(ctx, link, args);
+			return doHandleGet(us, link, args);
 		} catch (Throwable t) {
 			SysLog.logThrowable(t);
-			return getInternalProcessingErrorPage(ctx);
+			return getInternalProcessingErrorPage(us);
 		}
 	}
 		
@@ -183,18 +177,18 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	 * @param args TODO
 	 * 
 	 */
-	protected String doHandleGet(UserSession ctx, String link, Map args) {
+	protected String doHandleGet(UserSession us, String link, Map args) {
 		return link;
 	}
 	
 	/**
 	 * 
 	 */
-	protected String getIllegalAccessErrorPage(UserSession ctx) {
-		ctx.setHeading(ctx.cfg().getInformation());
+	protected String getIllegalAccessErrorPage(UserSession us) {
+		us.setHeading(us.cfg().getInformation());
 		
-		String msg1 = ctx.cfg().getIllegalAccessError();
-		ctx.setMessage(msg1);
+		String msg1 = us.cfg().getIllegalAccessError();
+		us.setMessage(msg1);
 		
 		return PartUtil.SHOW_NOTE_PAGE_NAME;
 	}
@@ -202,16 +196,16 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	/**
 	 * 
 	 */
-	protected String getIllegalArgumentErrorPage(UserSession ctx) {
-		ctx.setHeading(ctx.cfg().getInformation());
+	protected String getIllegalArgumentErrorPage(UserSession us) {
+		us.setHeading(us.cfg().getInformation());
 
-		String msg1 = ctx.cfg().getIllegalArgumentError();
-		String msg2 = ctx.cfg().getContinueWithShowPhoto();
-		if (ctx.getClient() instanceof User) {
-			msg2 = ctx.cfg().getContinueWithShowUserHome();
+		String msg1 = us.cfg().getIllegalArgumentError();
+		String msg2 = us.cfg().getContinueWithShowPhoto();
+		if (us.getClient() instanceof User) {
+			msg2 = us.cfg().getContinueWithShowUserHome();
 		}
 		
-		ctx.setTwoLineMessage(msg1, msg2);
+		us.setTwoLineMessage(msg1, msg2);
 
 		return PartUtil.SHOW_NOTE_PAGE_NAME;
 	}
@@ -219,18 +213,49 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	/**
 	 * 
 	 */
-	protected String getInternalProcessingErrorPage(UserSession ctx) {
-		ctx.setHeading(ctx.cfg().getInformation());
+	protected String getInternalProcessingErrorPage(UserSession us) {
+		us.setHeading(us.cfg().getInformation());
 
-		String msg1 = ctx.cfg().getInternalProcessingError();
-		String msg2 = ctx.cfg().getContinueWithShowPhoto();
-		if (ctx.getClient() instanceof User) {
-			msg2 = ctx.cfg().getContinueWithShowUserHome();
+		String msg1 = us.cfg().getInternalProcessingError();
+		String msg2 = us.cfg().getContinueWithShowPhoto();
+		if (us.getClient() instanceof User) {
+			msg2 = us.cfg().getContinueWithShowUserHome();
 		}
 		
-		ctx.setTwoLineMessage(msg1, msg2);
+		us.setTwoLineMessage(msg1, msg2);
 
 		return PartUtil.SHOW_NOTE_PAGE_NAME;
+	}
+	
+	/**
+	 * 
+	 */
+	protected String getEmptyImageAsRelativePathString(Language lang) {
+		String fileName = lang.asIsoCode() + File.separator + "empty.png";
+		return SysConfig.getStaticDir().getRelativeConfigFileName(fileName);
+	}
+
+	/**
+	 * 
+	 */
+	protected String getHeadingImageAsRelativePathString(Language lang) {
+		String fileName = lang.asIsoCode() + File.separator + "heading.png";
+		return SysConfig.getStaticDir().getRelativeConfigFileName(fileName);
+	}
+	
+	/**
+	 * 
+	 */
+	protected String getResourceAsRelativeHtmlPathString(String resource) {
+		return resource + ".html";
+	}
+	
+	/**
+	 * 
+	 */
+	protected String getPhotoAsRelativeResourcePathStringLink(Photo photo, PhotoSize size) {
+		String fileName = photo.getId().asString() + size.asInt() + ".jpg";
+		return SysConfig.getPhotosDir().getRelativeDir() + File.separator + fileName;
 	}
 
 }

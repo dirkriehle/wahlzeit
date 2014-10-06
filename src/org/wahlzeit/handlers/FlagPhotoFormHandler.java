@@ -45,22 +45,22 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected boolean isWellFormedGet(UserSession ctx, String link, Map args) {
-		return hasSavedPhotoId(ctx) && isSavedPhotoVisible(ctx);
+	protected boolean isWellFormedGet(UserSession us, String link, Map args) {
+		return hasSavedPhotoId(us) && isSavedPhotoVisible(us);
 	}
 
 	/**
 	 * 
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		Map args = ctx.getSavedArgs();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map args = us.getSavedArgs();
 		part.addStringFromArgs(args, UserSession.MESSAGE);
 		
-		String id = ctx.getAsString(args, Photo.ID);
+		String id = us.getAsString(args, Photo.ID);
 		Photo photo = PhotoManager.getPhoto(id);
 		part.addString(Photo.ID, id);
-		part.addString(Photo.THUMB, getPhotoThumb(ctx, photo));
-		part.maskAndAddStringFromArgsWithDefault(args, PhotoCase.FLAGGER, ctx.getEmailAddressAsString());
+		part.addString(Photo.THUMB, getPhotoThumb(us, photo));
+		part.maskAndAddStringFromArgsWithDefault(args, PhotoCase.FLAGGER, us.getEmailAddressAsString());
 		part.addSelect(PhotoCase.REASON, FlagReason.MISMATCH);
 		part.maskAndAddStringFromArgs(args, PhotoCase.EXPLANATION);
 	}
@@ -68,20 +68,20 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
-		String id = ctx.getAndSaveAsString(args, Photo.ID);
-		String flagger = ctx.getAndSaveAsString(args, PhotoCase.FLAGGER);
-		FlagReason reason = FlagReason.getFromString(ctx.getAndSaveAsString(args, PhotoCase.REASON));
-		String explanation = ctx.getAndSaveAsString(args, PhotoCase.EXPLANATION);
+	protected String doHandlePost(UserSession us, Map args) {
+		String id = us.getAndSaveAsString(args, Photo.ID);
+		String flagger = us.getAndSaveAsString(args, PhotoCase.FLAGGER);
+		FlagReason reason = FlagReason.getFromString(us.getAndSaveAsString(args, PhotoCase.REASON));
+		String explanation = us.getAndSaveAsString(args, PhotoCase.EXPLANATION);
 		
 		if (StringUtil.isNullOrEmptyString(flagger)) {
-			ctx.setMessage(ctx.cfg().getEmailAddressIsMissing());
+			us.setMessage(us.cfg().getEmailAddressIsMissing());
 			return PartUtil.FLAG_PHOTO_PAGE_NAME;
 		} else if (!StringUtil.isValidStrictEmailAddress(flagger)) {
-			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
+			us.setMessage(us.cfg().getEmailAddressIsInvalid());
 			return PartUtil.FLAG_PHOTO_PAGE_NAME;
 		} else if (explanation.length() > 1024) {
-			ctx.setMessage(ctx.cfg().getInputIsTooLong());
+			us.setMessage(us.cfg().getInputIsTooLong());
 			return PartUtil.FLAG_PHOTO_PAGE_NAME;			
 		}
 		
@@ -100,22 +100,22 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
 		EmailService emailService = EmailServiceManager.getDefaultService();
 
 		EmailAddress from = EmailAddress.getFromString(flagger);
-		EmailAddress to = ctx.cfg().getModeratorEmailAddress();
+		EmailAddress to = us.cfg().getModeratorEmailAddress();
 
 		String emailSubject = "Photo: " + id + " of user: " + photo.getOwnerName() + " got flagged";
-		String emailBody = "Photo: " + SysConfig.getSiteUrlAsString() + id + ".html\n\n";
+		String emailBody = "Photo: " + us.getSiteUrl() + id + ".html\n\n";
 		emailBody += "Reason: " + reason + "\n\n";
 		emailBody += "Explanation: " + explanation + "\n\n";
 		
-		emailService.sendEmailIgnoreException(from, to, ctx.cfg().getAuditEmailAddress(), emailSubject, emailBody);
+		emailService.sendEmailIgnoreException(from, to, us.cfg().getAuditEmailAddress(), emailSubject, emailBody);
 		
-		ctx.setEmailAddress(from);
+		us.setEmailAddress(from);
 
 		StringBuffer sb = UserLog.createActionEntry("FlagPhoto");
 		UserLog.addUpdatedObject(sb, "Photo", photo.getId().asString());
 		UserLog.log(sb);
 		
-		ctx.setTwoLineMessage(ctx.cfg().getModeratorWasInformed(), ctx.cfg().getContinueWithShowPhoto());
+		us.setTwoLineMessage(us.cfg().getModeratorWasInformed(), us.cfg().getContinueWithShowPhoto());
 		
 		return PartUtil.SHOW_NOTE_PAGE_NAME;
 	}

@@ -20,6 +20,8 @@
 
 package org.wahlzeit.main;
 
+import javax.servlet.http.*;
+
 import org.wahlzeit.services.*;
 
 /**
@@ -32,119 +34,45 @@ public abstract class AbstractMain {
 	/**
 	 * 
 	 */
-	protected static AbstractMain instance;
+	protected SysSession mainSession = null;
 	
 	/**
 	 * 
 	 */
-	protected static boolean isToStopFlag = false;
-
-	/**
-	 * 
-	 */
-	protected static boolean isInProductionFlag = false;
-	
-	/**
-	 * 
-	 */
-	public static void requestStop() {
-		synchronized(instance) {
-			isToStopFlag = true;
-			instance.notify();
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	public static boolean isShuttingDown() {
-		return isToStopFlag;
-	}
-		
-	/**
-	 * 
-	 */
-	public static boolean isInProduction() {
-		return isInProductionFlag;
-	}
-	
-	/**
-	 * 
-	 */
-	public synchronized void run(String[] argv) {
-		handleArgv(argv);
-		
-		try {
-			startUp();
-			execute();
-		} catch(Exception ex) {
-			SysLog.logThrowable(ex);
-		}
-
-		try {
-			shutDown();
-		} catch (Exception ex) {
-			SysLog.logThrowable(ex);
-		}
-	} 
-
-	/**
-	 * 
-	 */
-	protected void handleArgv(String[] argv) {
-		for (int i = 0; i < argv.length; i++) {
-			String arg = argv[i];
-			if (arg.equals("-P") || arg.equals("--production")) {
-				AbstractMain.isInProductionFlag = true;
-			} else if (arg.equals("-D") || arg.equals("--development")) {
-				AbstractMain.isInProductionFlag = false;
-			}
-		}		
-	}
-
-	/**
-	 * 
-	 */
-	protected void startUp() throws Exception {
-		SysLog.initialize(isInProductionFlag);
-		SysConfig.setInstance(createSysConfig());
-		
-		Session ctx = new SysSession("system");
-		ContextManager.setThreadLocalContext(ctx);
-	}
-	
-	/**
-	 * 
-	 */
-	protected SysConfig createSysConfig() {
-		if (isInProduction()) {
-			return createProdSysConfig();
-		} else {
-			return createDevSysConfig();
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	protected SysConfig createProdSysConfig() {
-		return createDevSysConfig(); 
-	}
-	
-	/**
-	 * 
-	 */
-	protected SysConfig createDevSysConfig() {
-		return new SysConfig("localhost", "8585");
-	}
-	
-	/**
-	 * 
-	 */
-	protected void execute() throws Exception {
+	protected AbstractMain() {
 		// do nothing
 	}
-
+	
+	/**
+	 * 
+	 */
+	protected void startUp(String rootDir) throws Exception {
+		SysConfig.setInstance(createSysConfig(rootDir));
+		
+		mainSession = new SysSession("system");
+		SessionManager.setThreadLocalSession(mainSession);
+	}
+	
+	/**
+	 * 
+	 */
+	protected SysConfig createSysConfig(String rootDir) {
+		return createDevSysConfig(rootDir);
+	}
+	/**
+	 * 
+	 */
+	protected SysConfig createProdSysConfig(String rootDir) {
+		return new SysConfig(rootDir); 
+	}
+	
+	/**
+	 * 
+	 */
+	protected SysConfig createDevSysConfig(String rootDir) {
+		return new SysConfig(rootDir);
+	}
+	
 	/**
 	 * 
 	 */

@@ -50,8 +50,8 @@ public class ShowPhotoCasesPageHandler extends AbstractWebPageHandler {
 	/**
 	 * 
 	 */
-	protected void makeWebPageBody(UserSession ctx, WebPart page) {
-		Map args = ctx.getSavedArgs();
+	protected void makeWebPageBody(UserSession us, WebPart page) {
+		Map args = us.getSavedArgs();
 		page.addStringFromArgs(args, UserSession.MESSAGE);
 		
 		PhotoCaseManager pcm = PhotoCaseManager.getInstance();
@@ -59,21 +59,21 @@ public class ShowPhotoCasesPageHandler extends AbstractWebPageHandler {
 		if (flaggedCases.length != 0) {
 			WritableList openCases = new WritableList();
 			for (int i = 0; i < flaggedCases.length; i++) {
-				openCases.append(makePhotoCaseForm(ctx, flaggedCases[i]));
+				openCases.append(makePhotoCaseForm(us, flaggedCases[i]));
 			}
 			page.addWritable("openCases", openCases);
 		} else {
-			page.addString("openCases", HtmlUtil.asPara(ctx.cfg().getNoFlaggedPhotoCases()));
+			page.addString("openCases", HtmlUtil.asPara(us.cfg().getNoFlaggedPhotoCases()));
 		}
 	}
 	
 	/**
 	 * 
 	 */
-	protected Writable makePhotoCaseForm(UserSession ctx, PhotoCase photoCase) {
-		ctx.setPhotoCase(photoCase);
+	protected Writable makePhotoCaseForm(UserSession us, PhotoCase photoCase) {
+		us.setPhotoCase(photoCase);
 		WebFormHandler handler = getFormHandler(PartUtil.EDIT_PHOTO_CASE_FORM_NAME);
-		return handler.makeWebPart(ctx);
+		return handler.makeWebPart(us);
 	}
 	
 }

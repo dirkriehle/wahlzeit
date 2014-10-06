@@ -25,12 +25,12 @@ public class Version {
 	/**
 	 * 
 	 */
-	public static final String CODE_VERSION = "2.0";
+	public static final String CODE_VERSION = "3.0";
 	
 	/**
 	 * 
 	 */
-	public static final String DATA_VERSION = "1.3.11";
+	public static final String DATA_VERSION = "2.0";
 	
 	/**
 	 * 

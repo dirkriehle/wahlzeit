@@ -20,10 +20,13 @@
 
 package org.wahlzeit.main;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.sql.*;
 
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
+import org.wahlzeit.servlets.AbstractServlet;
 import org.wahlzeit.webparts.*;
 
 /**
@@ -38,12 +41,27 @@ public abstract class ModelMain extends AbstractMain {
 	/**
 	 * 
 	 */
-	protected void startUp() throws Exception {
-		super.startUp();
+	protected void startUp(String rootDir) throws Exception {
+		super.startUp(rootDir);
 
-		configureWebPartTemplateServer();
+		if (!hasGlobals()) {
+			setUpDatabase();
+		}
+		
+ 		loadGlobals();
 
-		loadGlobals();
+		PhotoFactory.initialize();
+	}
+	
+	/**
+	 * 
+	 */
+	protected boolean hasGlobals() throws SQLException {
+		DatabaseConnection dbc = mainSession.ensureDatabaseConnection();
+		Connection conn = dbc.getRdbmsConnection();
+		DatabaseMetaData dbm = conn.getMetaData();
+		ResultSet tables = dbm.getTables(null, null, "globals", null);
+		return tables.next();
 	}
 	
 	/**
@@ -51,15 +69,54 @@ public abstract class ModelMain extends AbstractMain {
 	 */
 	protected void shutDown() throws Exception {
 		saveAll();
-		
+
 		super.shutDown();
+	}
+
+	/**
+	 * 
+	 */
+	public void setUpDatabase() throws SQLException {
+		runScript("CreateTables.sql");
 	}
 	
 	/**
 	 * 
 	 */
-	public static void loadGlobals() throws SQLException {
-		DatabaseConnection dbc = ContextManager.getDatabaseConnection();
+	public void tearDownDatabase() throws SQLException {
+		runScript("DropTables.sql");
+	}
+	
+	/**
+	 * 
+	 */
+	protected void createUser(String userName, String password, String emailAddress, String photoDir) throws Exception {
+		UserManager userManager = UserManager.getInstance();
+		long confirmationCode = userManager.createConfirmationCode();
+		User user = new User(userName, password, emailAddress, confirmationCode);
+		userManager.addUser(user);
+		
+		PhotoManager photoManager = PhotoManager.getInstance();
+		File photoDirFile = new File(photoDir);
+		FileFilter photoFileFilter = new FileFilter() {
+			public boolean accept(File file) {
+				return file.getName().endsWith(".jpg");
+			}
+		};
+
+		File[] photoFiles = photoDirFile.listFiles(photoFileFilter);
+		for (int i = 0; i < photoFiles.length; i++) {
+			Photo newPhoto = photoManager.createPhoto(photoFiles[i]);
+			user.addPhoto(newPhoto);
+		}
+	}
+
+	
+	/**
+	 * 
+	 */
+	public void loadGlobals() throws SQLException {
+		DatabaseConnection dbc = mainSession.ensureDatabaseConnection();
 		Connection conn = dbc.getRdbmsConnection();
 
 		String query = "SELECT * FROM globals";
@@ -72,7 +129,7 @@ public abstract class ModelMain extends AbstractMain {
 			User.setLastUserId(lastUserId);
 			SysLog.logInfo("loaded global variable lastUserId: " + lastUserId);
 			int lastPhotoId = result.getInt("last_photo_id");
-			PhotoId.setValue(lastPhotoId);
+			PhotoId.setCurrentIdFromInt(lastPhotoId);
 			SysLog.logInfo("loaded global variable lastPhotoId: " + lastPhotoId);
 			int lastCaseId = result.getInt("last_case_id");
 			Case.setLastCaseId(new CaseId(lastCaseId));
@@ -90,8 +147,8 @@ public abstract class ModelMain extends AbstractMain {
 	/**
 	 *
 	 */
-	public static synchronized void saveGlobals() throws SQLException {
-		DatabaseConnection dbc = ContextManager.getDatabaseConnection();
+	public synchronized void saveGlobals() throws SQLException {
+		DatabaseConnection dbc = SessionManager.getDatabaseConnection();
 		Connection conn = dbc.getRdbmsConnection();
 
 		String query = "SELECT * FROM globals";
@@ -103,7 +160,7 @@ public abstract class ModelMain extends AbstractMain {
 			int lastUserId = User.getLastUserId();
 			rset.updateInt("last_user_id", lastUserId);
 			SysLog.logInfo("saved global variable lastUserId: " + lastUserId);
-			int lastPhotoId = PhotoId.getValue();
+			int lastPhotoId = PhotoId.getCurrentIdAsInt();
 			rset.updateInt("last_photo_id", lastPhotoId);
 			SysLog.logInfo("saved global variable lastPhotoId: " + lastPhotoId);
 			int lastCaseId = Case.getLastCaseId().asInt();
@@ -123,20 +180,43 @@ public abstract class ModelMain extends AbstractMain {
 	/**
 	 * 
 	 */
-	public static void saveAll() throws SQLException {
+	public void saveAll() throws SQLException {
 		PhotoCaseManager.getInstance().savePhotoCases();
 		PhotoManager.getInstance().savePhotos();			
 		UserManager.getInstance().saveUsers();
 
 		saveGlobals();
 	}
+	
+	/**
+	 * 
+	 */
+	protected void runScript(String scriptName) throws SQLException {
+		DatabaseConnection dbc = SessionManager.getDatabaseConnection();
+		Connection conn = dbc.getRdbmsConnection();
+		
+		ConfigDir scriptsDir = SysConfig.getScriptsDir();
+		
+		if(scriptsDir.hasDefaultFile(scriptName)) {
+			String defaultScriptFileName = scriptsDir.getAbsoluteDefaultConfigFileName(scriptName);
+			runScript(conn, defaultScriptFileName);
+		}
+			
+		if(scriptsDir.hasCustomFile(scriptName)) {
+			String customConfigFileName = scriptsDir.getAbsoluteCustomConfigFileName(scriptName);
+			runScript(conn, customConfigFileName);
+		}
+	}
 
 	/**
 	 * 
 	 */
-	public static void configureWebPartTemplateServer() {
-		ConfigDir templatesDir = SysConfig.getTemplatesDir();
-		WebPartTemplateServer.getInstance().setTemplatesDir(templatesDir);
+	protected void runScript(Connection conn, String fullFileName) throws SQLException {
+		String query = FileUtil.safelyReadFileAsString(fullFileName);
+		SysLog.logQuery(query);
+
+		Statement stmt = conn.createStatement();
+		stmt.execute(query);
 	}
 	
 }

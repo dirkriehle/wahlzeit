@@ -100,33 +100,33 @@ public class Log {
 		}
 		sb.append(date);
 		addField(sb, "level", level);
-		addContext(sb);
+		addSession(sb);
 		return sb;
 	}
 	
 	/**
 	 * 
 	 */
-	public static final void addField(StringBuffer sb, String type, String field) {
-		sb.append(", " + type + "=" + field);
+	public static final void addField(StringBuffer sb, String name, String value) {
+		sb.append(", " + name + "=" + value);
 	}
 	
 	/**
 	 * 
 	 */
-	public static final void addContext(StringBuffer sb) {
-		Session ctx = ContextManager.getThreadLocalContext();
+	public static final void addSession(StringBuffer sb) {
+		Session session = SessionManager.getThreadLocalSession();
 
-		String id = (ctx != null) ? ctx.getName() : "noctx";
-		addField(sb, "context", id);
+		String id = (session != null) ? session.getName() : "no-session";
+		addField(sb, "session", id);
 
-		String dbc = (ctx != null) && ctx.hasDatabaseConnection() ? ctx.getDatabaseConnection().getName() : "nodbc";
-		addField(sb, "dbconnection", dbc);
+		String dbc = (session != null) && session.hasDatabaseConnection() ? session.ensureDatabaseConnection().getName() : "no-database-connection";
+		addField(sb, "databaseConnection", dbc);
 		
 		String threadId = String.valueOf(Thread.currentThread().getId());
-		addField(sb, "threadid", threadId);
+		addField(sb, "threadId", threadId);
 		
-		String cn = (ctx != null) ? ctx.getClientName() : "nocn";
+		String cn = (session != null) ? session.getClientName() : "no-client";
 		addField(sb, "client", cn);
 	}
 	
@@ -134,7 +134,7 @@ public class Log {
 	 * 
 	 */
 	public static final void addLogType(StringBuffer sb, String logType) {
-		addField(sb, "logtype", logType);
+		addField(sb, "logType", logType);
 	}
 	
 	/**

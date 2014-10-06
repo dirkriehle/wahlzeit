@@ -90,6 +90,8 @@ public class NotifyAboutPraiseAgent extends Agent {
 	 * 
 	 */
 	protected void notifyOwner(Photo photo, Photo[] photos) {
+		UserManager um = UserManager.getInstance();
+		User user = um.getUserByName(photo.getOwnerName());
 		ModelConfig cfg = LanguageConfigs.get(photo.getOwnerLanguage());
 		
 		EmailAddress from = cfg.getAdministratorEmailAddress();
@@ -103,7 +105,7 @@ public class NotifyAboutPraiseAgent extends Agent {
 			if ((current != null) && current.hasSameOwner(photo)) {
 				String id = current.getId().asString();
 				UserLog.logInfo("notifying user: " + photo.getOwnerName() + " about photo: " + id);
-				emailBody += SysConfig.getLinkAsUrlString(id) + "\n";
+				emailBody += user.getSiteUrlAsString() + id + ".html\n"; // @TODO Application
 				photos[i] = null;
 			}
 		}

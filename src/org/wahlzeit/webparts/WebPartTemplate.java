@@ -111,14 +111,14 @@ public class WebPartTemplate {
 	 * 
 	 */
 	public String[] getKeys() {
-		return keys; //@FIXME needs cloning?
+		return keys; // @FIXME needs cloning?
 	}
 
 	/**
 	 * 
 	 */
 	public int[] getSlots() {
-		return slots; //@FIXME needs cloning?
+		return slots; // @FIXME needs cloning?
 	}
 
 }

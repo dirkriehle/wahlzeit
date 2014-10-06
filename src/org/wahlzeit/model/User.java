@@ -104,7 +104,7 @@ public class User extends Client implements Persistent {
 	 */
 	protected Language language = Language.ENGLISH;
 	protected boolean notifyAboutPraise = true;
-	protected URL homePage = StringUtil.asUrl(SysConfig.getSiteUrlAsString());
+	protected URL homePage = getDefaultHomePage();
 	protected Gender gender = Gender.UNDEFINED;
 	protected UserStatus status = UserStatus.CREATED;
 	protected long confirmationCode = 0; // 0 means doesn't need confirmation
@@ -220,7 +220,7 @@ public class User extends Client implements Persistent {
 		status = UserStatus.getFromInt(rset.getInt("status"));
 		confirmationCode = rset.getLong("confirmation_code");
 		photos = PhotoManager.getInstance().findPhotosByOwner(name);
-		userPhoto = PhotoManager.getPhoto(PhotoId.getId(rset.getInt("photo")));
+		userPhoto = PhotoManager.getPhoto(PhotoId.getIdFromInt(rset.getInt("photo")));
 		creationTime = rset.getLong("creation_time");
 	}
 	
@@ -377,8 +377,15 @@ public class User extends Client implements Persistent {
 	/**
 	 * 
 	 */
+	public String getSiteUrlAsString() {
+		return "http://wahlzeit.org/";
+	}
+	
+	/**
+	 * 
+	 */
 	public URL getDefaultHomePage() {
-		return StringUtil.asUrl(SysConfig.getSiteUrlAsString() + "filter?userName=" + name);
+		return StringUtil.asUrl(getSiteUrlAsString() + "filter?userName=" + name); // @TODO Application
 	}
 	
 	/**

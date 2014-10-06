@@ -44,14 +44,14 @@ public class AdminUserProfileFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		Map<String, Object> args = ctx.getSavedArgs();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map<String, Object> args = us.getSavedArgs();
 
-		String userId = ctx.getAndSaveAsString(args, "userId");
+		String userId = us.getAndSaveAsString(args, "userId");
 		User user = UserManager.getInstance().getUserByName(userId);
 	
 		Photo photo = user.getUserPhoto();
-		part.addString(Photo.THUMB, getPhotoThumb(ctx, photo));
+		part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 
 		part.maskAndAddString("userId", user.getName());
 		part.maskAndAddString(User.NAME, user.getName());
@@ -70,24 +70,24 @@ public class AdminUserProfileFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
+	protected String doHandlePost(UserSession us, Map args) {
 		UserManager um = UserManager.getInstance();
-		String userId = ctx.getAndSaveAsString(args, "userId");
+		String userId = us.getAndSaveAsString(args, "userId");
 		User user = um.getUserByName(userId);
 		
-		String status = ctx.getAndSaveAsString(args, User.STATUS);
-		String rights = ctx.getAndSaveAsString(args, User.RIGHTS);
-		String gender = ctx.getAndSaveAsString(args, User.GENDER);
-		String language = ctx.getAndSaveAsString(args, User.LANGUAGE);
-		String emailAddress = ctx.getAndSaveAsString(args, User.EMAIL_ADDRESS);
-		String homePage = ctx.getAndSaveAsString(args, User.HOME_PAGE);
-		String notifyAboutPraise = ctx.getAndSaveAsString(args, User.NOTIFY_ABOUT_PRAISE);
+		String status = us.getAndSaveAsString(args, User.STATUS);
+		String rights = us.getAndSaveAsString(args, User.RIGHTS);
+		String gender = us.getAndSaveAsString(args, User.GENDER);
+		String language = us.getAndSaveAsString(args, User.LANGUAGE);
+		String emailAddress = us.getAndSaveAsString(args, User.EMAIL_ADDRESS);
+		String homePage = us.getAndSaveAsString(args, User.HOME_PAGE);
+		String notifyAboutPraise = us.getAndSaveAsString(args, User.NOTIFY_ABOUT_PRAISE);
 		
 		if (!StringUtil.isValidStrictEmailAddress(emailAddress)) {
-			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
+			us.setMessage(us.cfg().getEmailAddressIsInvalid());
 			return PartUtil.SHOW_ADMIN_PAGE_NAME;
 		} else if (!StringUtil.isValidURL(homePage)) {
-			ctx.setMessage(ctx.cfg().getUrlIsInvalid());
+			us.setMessage(us.cfg().getUrlIsInvalid());
 			return PartUtil.SHOW_ADMIN_PAGE_NAME;
 		}
 		
@@ -101,13 +101,13 @@ public class AdminUserProfileFormHandler extends AbstractWebFormHandler {
 
 		um.removeUser(user);
 		user = um.getUserByName(userId);
-		ctx.setSavedArg("userId", userId);
+		us.setSavedArg("userId", userId);
 
 		StringBuffer sb = UserLog.createActionEntry("AdminUserProfile");
 		UserLog.addUpdatedObject(sb, "User", user.getName());
 		UserLog.log(sb);
 		
-		ctx.setMessage(ctx.cfg().getProfileUpdateSucceeded());
+		us.setMessage(us.cfg().getProfileUpdateSucceeded());
 
 		return PartUtil.SHOW_ADMIN_PAGE_NAME;
 	}

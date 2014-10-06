@@ -36,11 +36,11 @@ public interface WebPartHandler {
 	/**
 	 * 
 	 */
-	public WebPart makeWebPart(UserSession ctx);
+	public WebPart makeWebPart(UserSession us);
 	
 	/**
 	 * 
 	 */
-	public String handleGet(UserSession ctx, String link, Map args);
+	public String handleGet(UserSession us, String link, Map args);
 	
 }

@@ -49,8 +49,8 @@ public class LoginFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		Map args = ctx.getSavedArgs();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map args = us.getSavedArgs();
 		part.addStringFromArgs(args, UserSession.MESSAGE);
 		
 //		part.addString(WebContext.MESSAGE, ctx.getMessage());
@@ -61,49 +61,49 @@ public class LoginFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
-		String userName = ctx.getAndSaveAsString(args, User.NAME);
-		String password = ctx.getAndSaveAsString(args, User.PASSWORD);
+	protected String doHandlePost(UserSession us, Map args) {
+		String userName = us.getAndSaveAsString(args, User.NAME);
+		String password = us.getAndSaveAsString(args, User.PASSWORD);
 		
 		UserManager userManager = UserManager.getInstance();
 		
 		if (StringUtil.isNullOrEmptyString(userName)) {
-			ctx.setMessage(ctx.cfg().getFieldIsMissing());
+			us.setMessage(us.cfg().getFieldIsMissing());
 			return PartUtil.LOGIN_PAGE_NAME;
 		} else if (!StringUtil.isLegalUserName(userName)) {
-			ctx.setMessage(ctx.cfg().getLoginIsIncorrect());
+			us.setMessage(us.cfg().getLoginIsIncorrect());
 			return PartUtil.LOGIN_PAGE_NAME;
 		} else if (StringUtil.isNullOrEmptyString(password)) {
-			ctx.setMessage(ctx.cfg().getFieldIsMissing());
+			us.setMessage(us.cfg().getFieldIsMissing());
 			return PartUtil.LOGIN_PAGE_NAME;
 		} else if (!userManager.hasUserByName(userName)) {
-			ctx.setMessage(ctx.cfg().getLoginIsIncorrect());
+			us.setMessage(us.cfg().getLoginIsIncorrect());
 			return PartUtil.LOGIN_PAGE_NAME;
 		}
 		
 		User user = userManager.getUserByName(userName);
 		if (!user.hasPassword(password)) {
-			ctx.setMessage(ctx.cfg().getLoginIsIncorrect());
+			us.setMessage(us.cfg().getLoginIsIncorrect());
 			return PartUtil.LOGIN_PAGE_NAME;
 		} else if (user.getStatus().isDisabled()) {
-			ctx.setMessage(ctx.cfg().getUserIsDisabled());
+			us.setMessage(us.cfg().getUserIsDisabled());
 			return PartUtil.LOGIN_PAGE_NAME;
 		}
 
-		ctx.setClient(user);
+		us.setClient(user);
 		if (!user.isConfirmed() && user.needsConfirmation()) {
-			if (ctx.hasConfirmationCode()) {
-				if (user.getConfirmationCode() == ctx.getConfirmationCode()) {
+			if (us.hasConfirmationCode()) {
+				if (user.getConfirmationCode() == us.getConfirmationCode()) {
 					user.setConfirmed();
-					ctx.setTwoLineMessage(ctx.cfg().getConfirmAccountSucceeded(), ctx.cfg().getContinueWithShowUserHome());
+					us.setTwoLineMessage(us.cfg().getConfirmAccountSucceeded(), us.cfg().getContinueWithShowUserHome());
 				} else {
-					UserManager.getInstance().emailConfirmationRequest(ctx, user);
-					ctx.setTwoLineMessage(ctx.cfg().getConfirmAccountFailed(), ctx.cfg().getConfirmationEmailWasSent());
+					UserManager.getInstance().emailConfirmationRequest(us, user);
+					us.setTwoLineMessage(us.cfg().getConfirmAccountFailed(), us.cfg().getConfirmationEmailWasSent());
 				}
-				ctx.clearConfirmationCode();
+				us.clearConfirmationCode();
 			} else {
-				UserManager.getInstance().emailConfirmationRequest(ctx, user);
-				ctx.setTwoLineMessage(ctx.cfg().getConfirmationEmailWasSent(), ctx.cfg().getContinueWithShowUserHome());
+				UserManager.getInstance().emailConfirmationRequest(us, user);
+				us.setTwoLineMessage(us.cfg().getConfirmationEmailWasSent(), us.cfg().getContinueWithShowUserHome());
 			}
 			return PartUtil.SHOW_NOTE_PAGE_NAME;
 		}

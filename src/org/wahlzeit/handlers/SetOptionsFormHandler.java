@@ -49,11 +49,11 @@ public class SetOptionsFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		Map args = ctx.getSavedArgs();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map args = us.getSavedArgs();
 		part.addStringFromArgs(args, UserSession.MESSAGE);
 		
-//FIXME		part.addString(WebContext.MESSAGE, ctx.getMessage());
+		part.addString(UserSession.MESSAGE, us.getMessage());
 		
 		part.addSelect(LANGUAGE, Language.class, (String) args.get(LANGUAGE));
 		part.addSelect(PHOTO_SIZE, PhotoSize.class, (String) args.get(PHOTO_SIZE));
@@ -62,24 +62,24 @@ public class SetOptionsFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
-		String language = ctx.getAndSaveAsString(args, LANGUAGE);
+	protected String doHandlePost(UserSession us, Map args) {
+		String language = us.getAndSaveAsString(args, LANGUAGE);
 		Language langValue = Language.getFromString(language);
-		ctx.setConfiguration(LanguageConfigs.get(langValue));
+		us.setConfiguration(LanguageConfigs.get(langValue));
 
-		String photoSize = ctx.getAndSaveAsString(args, PHOTO_SIZE);
+		String photoSize = us.getAndSaveAsString(args, PHOTO_SIZE);
 		PhotoSize photoValue = PhotoSize.getFromString(photoSize);
-		ctx.setPhotoSize(photoValue);
+		us.setPhotoSize(photoValue);
 		
 		StringBuffer sb = UserLog.createActionEntry("SetOptions");
-		UserLog.addField(sb, "Language", language);
-		UserLog.addField(sb, "PhotoSize", photoSize);
+		UserLog.addField(sb, "language", language);
+		UserLog.addField(sb, "photoSize", photoSize);
 		UserLog.log(sb);
 		
-		String msg1 = ctx.cfg().getOptionsWereSet();
-		String msg2 = ctx.cfg().getNoteMaximumPhotoSize();
-		String msg3 = ctx.cfg().getContinueWithShowPhoto();
-		ctx.setThreeLineMessage(msg1, msg2, msg3);
+		String msg1 = us.cfg().getOptionsWereSet();
+		String msg2 = us.cfg().getNoteMaximumPhotoSize();
+		String msg3 = us.cfg().getContinueWithShowPhoto();
+		us.setThreeLineMessage(msg1, msg2, msg3);
 
 		return PartUtil.SHOW_NOTE_PAGE_NAME;
 	}

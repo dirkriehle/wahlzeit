@@ -1,1 +1,0 @@
-java -cp .;bin;lib/* org.wahlzeit.main.Wahlzeit

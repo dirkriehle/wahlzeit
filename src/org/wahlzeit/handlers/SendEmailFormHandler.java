@@ -52,39 +52,39 @@ public class SendEmailFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	public boolean isWellFormedGet(UserSession ctx, String link, Map args) {
-		return hasSavedPhotoId(ctx);
+	public boolean isWellFormedGet(UserSession us, String link, Map args) {
+		return hasSavedPhotoId(us);
 	}
 
 	/**
 	 * 
 	 */
-	protected String doHandleGet(UserSession ctx, String link, Map args) {
-		if(!(ctx.getClient() instanceof User)) {
-			ctx.setHeading(ctx.cfg().getInformation());
-			ctx.setMessage(ctx.cfg().getNeedToSignupFirst());
+	protected String doHandleGet(UserSession us, String link, Map args) {
+		if(!(us.getClient() instanceof User)) {
+			us.setHeading(us.cfg().getInformation());
+			us.setMessage(us.cfg().getNeedToSignupFirst());
 			return PartUtil.SHOW_NOTE_PAGE_NAME;
 		}
 		
-		return super.doHandleGet(ctx, link, args);
+		return super.doHandleGet(us, link, args);
 	}
 	
 	/**
 	 * 
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		Map args = ctx.getSavedArgs();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map args = us.getSavedArgs();
 		part.addStringFromArgs(args, UserSession.MESSAGE);
 		
-		String id = ctx.getAndSaveAsString(args, Photo.ID);
+		String id = us.getAndSaveAsString(args, Photo.ID);
 		part.addString(Photo.ID, id);
 		Photo photo = PhotoManager.getPhoto(id);
-		part.addString(Photo.THUMB, getPhotoThumb(ctx, photo));
+		part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 
 		part.maskAndAddString(USER, photo.getOwnerName());
 		
-		User user = (User) ctx.getClient();
-		part.addString(USER_LANGUAGE, ctx.cfg().asValueString(user.getLanguage()));
+		User user = (User) us.getClient();
+		part.addString(USER_LANGUAGE, us.cfg().asValueString(user.getLanguage()));
 		
 		part.maskAndAddStringFromArgs(args, EMAIL_SUBJECT);
 		part.maskAndAddStringFromArgs(args, EMAIL_BODY);
@@ -93,37 +93,37 @@ public class SendEmailFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected boolean isWellFormedPost(UserSession ctx, Map args) {
-		return PhotoManager.getPhoto(ctx.getAsString(args, Photo.ID)) != null;
+	protected boolean isWellFormedPost(UserSession us, Map args) {
+		return PhotoManager.getPhoto(us.getAsString(args, Photo.ID)) != null;
 	}
 	
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
-		String id = ctx.getAndSaveAsString(args, Photo.ID);
+	protected String doHandlePost(UserSession us, Map args) {
+		String id = us.getAndSaveAsString(args, Photo.ID);
 		Photo photo = PhotoManager.getPhoto(id);
 
-		String emailSubject = ctx.getAndSaveAsString(args, EMAIL_SUBJECT);
-		String emailBody = ctx.getAndSaveAsString(args, EMAIL_BODY);
+		String emailSubject = us.getAndSaveAsString(args, EMAIL_SUBJECT);
+		String emailBody = us.getAndSaveAsString(args, EMAIL_BODY);
 		if ((emailSubject.length() > 128) || (emailBody.length() > 1024)) {
-			ctx.setMessage(ctx.cfg().getInputIsTooLong());
+			us.setMessage(us.cfg().getInputIsTooLong());
 			return PartUtil.SEND_EMAIL_PAGE_NAME;			
 		}
 
 		UserManager userManager = UserManager.getInstance();
 		User toUser = userManager.getUserByName(photo.getOwnerName());
-		User fromUser = (User) ctx.getClient();
+		User fromUser = (User) us.getClient();
 
-		emailSubject = ctx.cfg().getSendEmailSubjectPrefix() + emailSubject;
-		emailBody = ctx.cfg().getSendEmailBodyPrefix() + emailBody + ctx.cfg().getSendEmailBodyPostfix();
+		emailSubject = us.cfg().getSendEmailSubjectPrefix() + emailSubject;
+		emailBody = us.cfg().getSendEmailBodyPrefix() + emailBody + us.cfg().getSendEmailBodyPostfix();
 
 		EmailService emailService = EmailServiceManager.getDefaultService();
-		emailService.sendEmailIgnoreException(fromUser.getEmailAddress(), toUser.getEmailAddress(), ctx.cfg().getAuditEmailAddress(), emailSubject, emailBody);
+		emailService.sendEmailIgnoreException(fromUser.getEmailAddress(), toUser.getEmailAddress(), us.cfg().getAuditEmailAddress(), emailSubject, emailBody);
 
 		UserLog.logPerformedAction("SendEmail");
 		
-		ctx.setMessage(ctx.cfg().getEmailWasSent() + toUser.getName() + "!");
+		us.setMessage(us.cfg().getEmailWasSent() + toUser.getName() + "!");
 		
 		return PartUtil.SHOW_NOTE_PAGE_NAME;
 	}

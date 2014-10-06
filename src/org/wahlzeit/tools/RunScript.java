@@ -20,77 +20,47 @@
 
 package org.wahlzeit.tools;
 
-import java.sql.*;
-import org.wahlzeit.services.*;
+import java.io.*;
+
+import org.wahlzeit.utils.*;
 import org.wahlzeit.main.*;
+import org.wahlzeit.model.*;
 
 /**
  * 
  * @author dirkriehle
  *
  */
-public class RunScript extends AbstractMain {
+public class RunScript extends ScriptMain {
 	
 	/**
 	 * 
 	 */
 	public static void main(String[] argv) {
-		instance = new RunScript();
-		instance.run(argv);
+		new RunScript().run(argv);
 	}
 	
 	/**
 	 * 
 	 */
-	protected boolean isToRunScript = false;
-	protected String scriptFileName = "dummy";
-
+	protected String scriptName = "";
+	
 	/**
 	 * 
 	 */
-	protected void handleArgv(String[] argv) {
-		for (int i = 0; i < argv.length; i++) {
-			String arg = argv[i];
-			if (arg.equals("-S") || arg.equals("--setup")) {
-				isToRunScript = true;
-				scriptFileName = "CreateTables.sql";
-			} else if (arg.equals("-T") || arg.equals("--teardown")) {
-				isToRunScript = true;
-				scriptFileName = "DropTables.sql";
-			} else if (arg.equals("--script") && (i++ < argv.length)) {
-				isToRunScript = true;
-				scriptFileName = argv[i];
-			}
-		}
+	protected int handleArg(String arg, int i, String argv[]) {
+		scriptName = arg;
+		
+		return i;
 	}
-
 	
 	/**
 	 * 
 	 */
 	protected void execute() throws Exception {
-		DatabaseConnection dbc = ContextManager.getDatabaseConnection();
-		Connection conn = dbc.getRdbmsConnection();
+		super.execute();
 		
-		ConfigDir scriptsDir = SysConfig.getScriptsDir();
-		String defaultScriptFileName = scriptsDir.getDefaultConfigFileName(scriptFileName);
-		runScript(conn, defaultScriptFileName);
-			
-		if(scriptsDir.hasCustomFile("CreateTables.sql")) {
-			String customConfigFileName = scriptsDir.getCustomConfigFileName(scriptFileName);
-			runScript(conn, customConfigFileName);
-		}
-	}
-
-	/**
-	 * 
-	 */
-	protected void runScript(Connection conn, String fullFileName) throws Exception {
-		String query = FileUtil.safelyReadFileAsString(fullFileName);
-		SysLog.logQuery(query);
-
-		Statement stmt = conn.createStatement();
-		stmt.execute(query);
+		runScript(scriptName);
 	}
 	
 }

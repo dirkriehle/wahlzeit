@@ -59,15 +59,15 @@ public class ShowPartPageHandler extends AbstractWebPageHandler {
 	/**
 	 * 
 	 */
-	protected String doHandleGet(UserSession ctx, String link, Map args) {
-		return partHandler.handleGet(ctx, link, null);
+	protected String doHandleGet(UserSession us, String link, Map args) {
+		return partHandler.handleGet(us, link, null);
 	}
 
 	/**
 	 * 
 	 */
-	public void makeWebPageBody(UserSession ctx, WebPart page) {
-		Writable part = partHandler.makeWebPart(ctx);
+	public void makeWebPageBody(UserSession us, WebPart page) {
+		Writable part = partHandler.makeWebPart(us);
 		page.addWritable("part", part);
 	}
 	

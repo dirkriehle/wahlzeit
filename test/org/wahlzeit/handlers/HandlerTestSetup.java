@@ -34,7 +34,7 @@ public class HandlerTestSetup extends TestSetup {
 	/**
 	 * 
 	 */
-	public UserSession session;	
+	protected UserSession userSession;	
 	
 	/**
 	 * 
@@ -49,30 +49,18 @@ public class HandlerTestSetup extends TestSetup {
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		session = createUserSession();
-		ContextManager.setThreadLocalContext(session);
+		ServiceMain serviceMain = ServiceMain.getInstance();
+		serviceMain.startUp(false, "web");
+
+		userSession = new UserSession("testContext", ""); //@FIXME
+		userSession.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
+
+		SessionManager.setThreadLocalSession(userSession);
 		
 		if (fTest instanceof HandlerTest) {
 			HandlerTest test = (HandlerTest) fTest;
-			test.setUserSession(session);
+			test.setUserSession(userSession);
 		}
-	}
-	
-	/**
-	 * 
-	 */
-	protected UserSession createUserSession() {
-		UserSession result = null;
-		
-		ModelMain.configureWebPartTemplateServer();
-		
-		Wahlzeit.configurePartHandlers();
-		Wahlzeit.configureLanguageModels();
-
-		result = new UserSession("testContext");
-		result.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
-
-		return result;
 	}
 	
 }

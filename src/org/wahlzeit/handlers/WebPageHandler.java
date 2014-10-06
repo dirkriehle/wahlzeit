@@ -34,7 +34,7 @@ public interface WebPageHandler extends WebPartHandler {
 	/**
 	 * 
 	 */
-	public WebPart makeWebPart(UserSession ctx);
+	public WebPart makeWebPart(UserSession us);
 	
 	
 }

@@ -49,8 +49,8 @@ public class SignupFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		Map args = ctx.getSavedArgs();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map args = us.getSavedArgs();
 		part.addStringFromArgs(args, UserSession.MESSAGE);
 		
 //		part.addString(WebContext.MESSAGE, ctx.getMessage());
@@ -59,50 +59,50 @@ public class SignupFormHandler extends AbstractWebFormHandler {
 		part.addStringFromArgs(args, User.PASSWORD_AGAIN);
 
 		part.maskAndAddStringFromArgs(args, User.NAME);
-		part.maskAndAddStringFromArgsWithDefault(args, User.EMAIL_ADDRESS, ctx.getEmailAddressAsString());
+		part.maskAndAddStringFromArgsWithDefault(args, User.EMAIL_ADDRESS, us.getEmailAddressAsString());
 	}
 	
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
-		String userName = ctx.getAndSaveAsString(args, User.NAME);
-		String password = ctx.getAndSaveAsString(args, User.PASSWORD);
-		String passwordAgain = ctx.getAndSaveAsString(args, User.PASSWORD_AGAIN);
-		String emailAddress = ctx.getAndSaveAsString(args, User.EMAIL_ADDRESS);
-		String terms = ctx.getAndSaveAsString(args, User.TERMS);
+	protected String doHandlePost(UserSession us, Map args) {
+		String userName = us.getAndSaveAsString(args, User.NAME);
+		String password = us.getAndSaveAsString(args, User.PASSWORD);
+		String passwordAgain = us.getAndSaveAsString(args, User.PASSWORD_AGAIN);
+		String emailAddress = us.getAndSaveAsString(args, User.EMAIL_ADDRESS);
+		String terms = us.getAndSaveAsString(args, User.TERMS);
 		
 		UserManager userManager = UserManager.getInstance();
 		
 		if (StringUtil.isNullOrEmptyString(userName)) {
-			ctx.setMessage(ctx.cfg().getFieldIsMissing());
+			us.setMessage(us.cfg().getFieldIsMissing());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (StringUtil.isNullOrEmptyString(password)) {
-			ctx.setMessage(ctx.cfg().getFieldIsMissing());
+			us.setMessage(us.cfg().getFieldIsMissing());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (StringUtil.isNullOrEmptyString(emailAddress)) {
-			ctx.setMessage(ctx.cfg().getFieldIsMissing());
+			us.setMessage(us.cfg().getFieldIsMissing());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (userManager.hasUserByName(userName)) {
-			ctx.setMessage(ctx.cfg().getUserAlreadyExists());
+			us.setMessage(us.cfg().getUserAlreadyExists());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (!StringUtil.isLegalUserName(userName)) {
-			ctx.setMessage(ctx.cfg().getInputIsInvalid());
+			us.setMessage(us.cfg().getInputIsInvalid());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (!password.equals(passwordAgain)) {
-			ctx.setMessage(ctx.cfg().getPasswordsDontMatch());
+			us.setMessage(us.cfg().getPasswordsDontMatch());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (!StringUtil.isLegalPassword(password)) {
-			ctx.setMessage(ctx.cfg().getInputIsInvalid());
+			us.setMessage(us.cfg().getInputIsInvalid());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (StringUtil.isNullOrEmptyString(emailAddress)) {
-			ctx.setMessage(ctx.cfg().getEmailAddressIsMissing());
+			us.setMessage(us.cfg().getEmailAddressIsMissing());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (!StringUtil.isValidStrictEmailAddress(emailAddress)) {
-			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
+			us.setMessage(us.cfg().getEmailAddressIsInvalid());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if ((terms == null) || !terms.equals("on")) {
-			ctx.setMessage(ctx.cfg().getDidntCheckTerms());
+			us.setMessage(us.cfg().getDidntCheckTerms());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		}
 
@@ -110,8 +110,8 @@ public class SignupFormHandler extends AbstractWebFormHandler {
 		User user = new User(userName, password, emailAddress, confirmationCode);
 		userManager.addUser(user);
 		
-		userManager.emailWelcomeMessage(ctx, user);
-		ctx.setClient(user);
+		userManager.emailWelcomeMessage(us, user);
+		us.setClient(user);
 		
 		userManager.saveUser(user);
 		
@@ -119,7 +119,7 @@ public class SignupFormHandler extends AbstractWebFormHandler {
 		UserLog.addCreatedObject(sb, "User", userName);
 		UserLog.log(sb);
 		
-		ctx.setTwoLineMessage(ctx.cfg().getConfirmationEmailWasSent(), ctx.cfg().getContinueWithShowUserHome());
+		us.setTwoLineMessage(us.cfg().getConfirmationEmailWasSent(), us.cfg().getContinueWithShowUserHome());
 
 		return PartUtil.SHOW_NOTE_PAGE_NAME;
 	}

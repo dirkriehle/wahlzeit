@@ -45,8 +45,8 @@ public class EmailUserNameFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		Map<String, Object> savedArgs = ctx.getSavedArgs();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map<String, Object> savedArgs = us.getSavedArgs();
 		part.addStringFromArgs(savedArgs, UserSession.MESSAGE);
 		part.maskAndAddStringFromArgs(savedArgs, User.EMAIL_ADDRESS);
 	}
@@ -54,32 +54,32 @@ public class EmailUserNameFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
-		String emailAddress = ctx.getAndSaveAsString(args, User.EMAIL_ADDRESS);
+	protected String doHandlePost(UserSession us, Map args) {
+		String emailAddress = us.getAndSaveAsString(args, User.EMAIL_ADDRESS);
 		if (StringUtil.isNullOrEmptyString(emailAddress)) {
-			ctx.setMessage(ctx.cfg().getFieldIsMissing());
+			us.setMessage(us.cfg().getFieldIsMissing());
 			return PartUtil.EMAIL_PASSWORD_PAGE_NAME;
 		} else if (!StringUtil.isValidStrictEmailAddress(emailAddress)) {
-			ctx.setMessage(ctx.cfg().getEmailAddressIsInvalid());
+			us.setMessage(us.cfg().getEmailAddressIsInvalid());
 			return PartUtil.EMAIL_PASSWORD_PAGE_NAME;
 		}
 
 		UserManager userManager = UserManager.getInstance();	
 		User user = userManager.getUserByEmailAddress(emailAddress);
 		if (user == null) {
-			ctx.setMessage(ctx.cfg().getUnknownEmailAddress());
+			us.setMessage(us.cfg().getUnknownEmailAddress());
 			return PartUtil.EMAIL_PASSWORD_PAGE_NAME;
 		}
 
 		EmailService emailService = EmailServiceManager.getDefaultService();
 		
-		EmailAddress from = ctx.cfg().getModeratorEmailAddress();
+		EmailAddress from = us.cfg().getModeratorEmailAddress();
 		EmailAddress to = user.getEmailAddress();
-		emailService.sendEmailIgnoreException(from, to, ctx.cfg().getAuditEmailAddress(), ctx.cfg().getSendUserNameEmailSubject(), user.getName());
+		emailService.sendEmailIgnoreException(from, to, us.cfg().getAuditEmailAddress(), us.cfg().getSendUserNameEmailSubject(), user.getName());
 
 		UserLog.logPerformedAction("EmailUserName");
 
-		ctx.setTwoLineMessage(ctx.cfg().getUserNameWasEmailed(), ctx.cfg().getContinueWithShowPhoto());
+		us.setTwoLineMessage(us.cfg().getUserNameWasEmailed(), us.cfg().getContinueWithShowPhoto());
 
 		return PartUtil.SHOW_NOTE_PAGE_NAME;
 	}

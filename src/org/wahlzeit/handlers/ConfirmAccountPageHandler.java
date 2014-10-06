@@ -43,21 +43,21 @@ public class ConfirmAccountPageHandler extends AbstractWebPageHandler {
 	/**
 	 * 
 	 */
-	protected boolean isWellFormedGet(UserSession ctx, String link, Map args) {
+	protected boolean isWellFormedGet(UserSession us, String link, Map args) {
 		return (args != null) && (args.get("code") != null);
 	}
 	
 	/**
 	 * 
 	 */
-	protected String doHandleGet(UserSession ctx, String link, Map args) {
-		Client client = ctx.getClient();
+	protected String doHandleGet(UserSession us, String link, Map args) {
+		Client client = us.getClient();
 		long confirmationCode = -1;
 		
 		try {
-			String arg = ctx.getAsString(args, "code");
+			String arg = us.getAsString(args, "code");
 			confirmationCode = Long.valueOf(arg).longValue();
-			ctx.setConfirmationCode(confirmationCode);
+			us.setConfirmationCode(confirmationCode);
 		} catch (Exception ex) {
 			// NumberFormatException
 		}
@@ -67,9 +67,9 @@ public class ConfirmAccountPageHandler extends AbstractWebPageHandler {
 			if (user.getConfirmationCode() == confirmationCode) {
 				user.setConfirmed();
 			} else {
-				UserManager.getInstance().emailConfirmationRequest(ctx, user);
+				UserManager.getInstance().emailConfirmationRequest(us, user);
 			}
-			ctx.clearConfirmationCode();
+			us.clearConfirmationCode();
 		}
 
 		return link;
@@ -78,25 +78,25 @@ public class ConfirmAccountPageHandler extends AbstractWebPageHandler {
 	/**
 	 * 
 	 */
-	protected void makeWebPageBody(UserSession ctx, WebPart page) {
+	protected void makeWebPageBody(UserSession us, WebPart page) {
 		String heading, msg1, msg2 = "";
 		
-		Client client = ctx.getClient();
+		Client client = us.getClient();
 		if (client instanceof User) {
 			User user = (User) client;
 			if (user.isConfirmed()) {
-				heading = ctx.cfg().getThankYou();
-				msg1 = ctx.cfg().getConfirmAccountSucceeded();
-				msg2 = ctx.cfg().getContinueWithShowUserHome();
+				heading = us.cfg().getThankYou();
+				msg1 = us.cfg().getConfirmAccountSucceeded();
+				msg2 = us.cfg().getContinueWithShowUserHome();
 			} else {
-				heading = ctx.cfg().getInformation();
-				msg1 = ctx.cfg().getConfirmAccountFailed();
-				msg2 = ctx.cfg().getConfirmationEmailWasSent();
+				heading = us.cfg().getInformation();
+				msg1 = us.cfg().getConfirmAccountFailed();
+				msg2 = us.cfg().getConfirmationEmailWasSent();
 			}
 			page.addString("note", HtmlUtil.asPara(msg1) + HtmlUtil.asPara(msg2));
 		} else {
-			heading = ctx.cfg().getInformation();
-			page.addString("note", ctx.cfg().getNeedToLoginFirst());
+			heading = us.cfg().getInformation();
+			page.addString("note", us.cfg().getNeedToLoginFirst());
 		}
 			
 		page.addString("noteHeading", heading);

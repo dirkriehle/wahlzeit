@@ -48,21 +48,21 @@ public class LogoutPageHandler extends AbstractWebPageHandler {
 	/**
 	 * 
 	 */
-	protected String doHandleGet(UserSession ctx, String link, Map args) {
-		EmailAddress ea = ctx.getClient().getEmailAddress();
-		ctx.setClient(new Guest());
-		ctx.getClient().setEmailAddress(ea);
-		ctx.clearSavedArgs();
+	protected String doHandleGet(UserSession us, String link, Map args) {
+		EmailAddress ea = us.getClient().getEmailAddress();
+		us.setClient(new Guest());
+		us.getClient().setEmailAddress(ea);
+		us.clearSavedArgs();
 		return link;
 	}
 	
 	/**
 	 * @methodtype command
 	 */
-	protected void makeWebPageBody(UserSession ctx, WebPart page) {
-		page.addString("noteHeading", ctx.cfg().getThankYou());
-		String msg1 = ctx.cfg().getLogoutSucceeded();
-		String msg2 = ctx.cfg().getContinueWithTellFriends();
+	protected void makeWebPageBody(UserSession us, WebPart page) {
+		page.addString("noteHeading", us.cfg().getThankYou());
+		String msg1 = us.cfg().getLogoutSucceeded();
+		String msg2 = us.cfg().getContinueWithTellFriends();
 		page.addString("note", HtmlUtil.asPara(msg1) + HtmlUtil.asPara(msg2));
 	}
 

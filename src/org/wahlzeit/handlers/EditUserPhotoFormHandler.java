@@ -43,52 +43,52 @@ public class EditUserPhotoFormHandler extends AbstractWebFormHandler {
 	/**
 	 * 
 	 */
-	protected boolean isWellFormedGet(UserSession ctx, String link, Map args) {
-		return hasSavedPhotoId(ctx);
+	protected boolean isWellFormedGet(UserSession us, String link, Map args) {
+		return hasSavedPhotoId(us);
 	}
 
 	/**
 	 * 
 	 */
-	protected void doMakeWebPart(UserSession ctx, WebPart part) {
-		Map<String, Object> args = ctx.getSavedArgs();
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map<String, Object> args = us.getSavedArgs();
 		part.addStringFromArgs(args, UserSession.MESSAGE);
 
-		String id = ctx.getAsString(args, Photo.ID);
+		String id = us.getAsString(args, Photo.ID);
 		Photo photo = PhotoManager.getPhoto(id);
 
 		part.addString(Photo.ID, id);
-		part.addString(Photo.THUMB, getPhotoThumb(ctx, photo));
+		part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 		
-		part.addString(Photo.PRAISE, photo.getPraiseAsString(ctx.cfg()));
+		part.addString(Photo.PRAISE, photo.getPraiseAsString(us.cfg()));
 		part.maskAndAddString(Photo.TAGS, photo.getTags().asString());
 		
 		part.addString(Photo.IS_INVISIBLE, HtmlUtil.asCheckboxCheck(photo.getStatus().isInvisible()));
-		part.addString(Photo.STATUS, ctx.cfg().asValueString(photo.getStatus()));
-		part.addString(Photo.UPLOADED_ON, ctx.cfg().asDateString(photo.getCreationTime()));	
+		part.addString(Photo.STATUS, us.cfg().asValueString(photo.getStatus()));
+		part.addString(Photo.UPLOADED_ON, us.cfg().asDateString(photo.getCreationTime()));	
 	}
 	
 	/**
 	 * 
 	 */
-	protected boolean isWellFormedPost(UserSession ctx, Map args) {
-		String id = ctx.getAsString(args, Photo.ID);
+	protected boolean isWellFormedPost(UserSession us, Map args) {
+		String id = us.getAsString(args, Photo.ID);
 		Photo photo = PhotoManager.getPhoto(id);
-		return (photo != null) && ctx.isPhotoOwner(photo);
+		return (photo != null) && us.isPhotoOwner(photo);
 	}
 	
 	/**
 	 * 
 	 */
-	protected String doHandlePost(UserSession ctx, Map args) {
-		String id = ctx.getAndSaveAsString(args, Photo.ID);
+	protected String doHandlePost(UserSession us, Map args) {
+		String id = us.getAndSaveAsString(args, Photo.ID);
 		PhotoManager pm = PhotoManager.getInstance();
 		Photo photo = PhotoManager.getPhoto(id);
 
-		String tags = ctx.getAndSaveAsString(args, Photo.TAGS);
+		String tags = us.getAndSaveAsString(args, Photo.TAGS);
 		photo.setTags(new Tags(tags));
 
-		String status = ctx.getAndSaveAsString(args, Photo.IS_INVISIBLE);
+		String status = us.getAndSaveAsString(args, Photo.IS_INVISIBLE);
 		boolean isInvisible = (status != null) && status.equals("on");
 		PhotoStatus ps = photo.getStatus().asInvisible(isInvisible);
 		photo.setStatus(ps);
@@ -99,7 +99,7 @@ public class EditUserPhotoFormHandler extends AbstractWebFormHandler {
 		UserLog.addUpdatedObject(sb, "Photo", photo.getId().asString());
 		UserLog.log(sb);
 		
-		ctx.setTwoLineMessage(ctx.cfg().getPhotoUpdateSucceeded(), ctx.cfg().getContinueWithShowUserHome());
+		us.setTwoLineMessage(us.cfg().getPhotoUpdateSucceeded(), us.cfg().getContinueWithShowUserHome());
 
 		return PartUtil.SHOW_NOTE_PAGE_NAME;
 	}

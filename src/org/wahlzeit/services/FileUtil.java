@@ -33,15 +33,7 @@ public class FileUtil {
 	/**
 	 * 
 	 */
-	public static String getTmplFileName(Language lang, String fileName) {
-		String sfn = lang.asIsoCode() + File.separator + fileName;
-		return SysConfig.getTemplatesDir().getFullConfigFileName(sfn);
-	}
-	
-	/**
-	 * 
-	 */
-	public static String safelyReadFileAsString(String fileName) throws IOException {
+	public static String safelyReadFileAsString(String fileName) {
 		String result = "";
 		
 		File file = new File(fileName);
@@ -51,7 +43,7 @@ public class FileUtil {
 		try {
 			reader = new FileReader(file);
 			
-			// FIXME: Assumes files are always < 50000 bytes
+			// @FIXME Assumes files are always < 50000 bytes
 			char[] readBuffer = new char[50000];
 			int status = reader.read(readBuffer);
 
@@ -60,9 +52,15 @@ public class FileUtil {
 			if (status != -1) {
 				result = new String(readBuffer, 0, status);
 			}
+		} catch(IOException ioex) {
+			SysLog.logThrowable(ioex);
 		} finally {
 			if (reader != null) {
-				reader.close();
+				try {
+					reader.close();
+				} catch (IOException ioex) {
+					SysLog.logThrowable(ioex);
+				}
 			}
 		}
 		

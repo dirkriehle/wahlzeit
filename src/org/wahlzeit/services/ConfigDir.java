@@ -22,110 +22,97 @@ package org.wahlzeit.services;
 
 import java.io.File;
 
+import javax.servlet.ServletContext;
+
 import org.wahlzeit.utils.StringUtil;
 
 /**
+ * A ConfigDir is a Directory that can provides a two-way switch between a default directory and custom directory.
  * 
  * @author dirkriehle
  *
  */
-public class ConfigDir {
+public class ConfigDir extends Directory {
 	
 	/**
 	 * 
 	 */
-	protected String rootPath = "";
-	protected String defaultPath = "";
-	protected String customPath = "";
+	public static final String DEFAULT_DIR_NAME = "default";
+	public static final String CUSTOM_DIR_NAME = "custom";
 	
 	/**
 	 * 
 	 */
-	public ConfigDir(String dirName) {
-		rootPath = dirName;
-		defaultPath = dirName + File.separator + "default";
-		customPath = dirName + File.separator + "custom";
+	protected String defaultDirName;
+	protected String customDirName;
+	
+	/**
+	 * 
+	 */
+	public ConfigDir(String newRootDir, String newRelativeDir) {
+		super(newRootDir, newRelativeDir);
+		defaultDirName = asString() + File.separator + DEFAULT_DIR_NAME;
+		customDirName = asString() + File.separator + CUSTOM_DIR_NAME;
 	}
 	
 	/**
 	 * 
 	 */
-	public String getRootPath() {
-		return rootPath;
+	public String getAbsoluteConfigFileName(String shortFileName) {
+		return getRootDir() + File.separator + getRelativeConfigFileName(shortFileName);
 	}
 	
 	/**
-	 * @return the root path as URL fragment
-	 */
-	public String getRootUrl() {
-		return StringUtil.pathAsUrlString(getRootPath());
-	}
-
-	/**
 	 * 
 	 */
-	public String getFullConfigFileName(String shortFileName) {
-		String customFileName = getCustomConfigFileName(shortFileName);
-		if (doesFileExist(customFileName)) {
-			return customFileName;
+	public String getRelativeConfigFileName(String shortFileName) {
+		if (hasDefaultFile(shortFileName)) {
+			return getRelativeDefaultConfigFileName(shortFileName);
+		} else {
+			return getRelativeCustomConfigFileName(shortFileName);
 		}
+	}
 
-		return getDefaultConfigFileName(shortFileName);
+	/**
+	 * 
+	 */
+	public String getAbsoluteDefaultConfigFileName(String shortFileName) {
+		return getRootDir() + File.separator + getRelativeDefaultConfigFileName(shortFileName);
 	}
 	
 	/**
 	 * 
-	 * @param shortFileName
-	 * @return the full file path as URL
 	 */
-	public String getFullConfigFileUrl(String shortFileName) {
-		return StringUtil.pathAsUrlString(getFullConfigFileName(shortFileName));
-	}
-
-	/**
-	 *
-	 */
-	public String getDefaultConfigFileName(String shortFileName) {
-		return defaultPath + File.separator + shortFileName;
-	}
-
-	/**
-	 *
-	 * @param shortFileName
-	 * @return the default file path as URL
-	 */
-	public String getDefaultConfigFileUrl(String shortFileName) {
-		return StringUtil.pathAsUrlString(getDefaultConfigFileName(shortFileName));
-	}
-
-	/**
-	 *
-	 */
-	public String getCustomConfigFileName(String shortFileName) {
-		return customPath + File.separator + shortFileName;
+	public String getRelativeDefaultConfigFileName(String shortFileName) {
+		return getRelativeDir() + File.separator + DEFAULT_DIR_NAME + File.separator + shortFileName;
 	}
 	
 	/**
 	 * 
-	 * @param shortFileName
-	 * @return the custom file path as URL
 	 */
-	public String getCustomConfigFileUrl(String shortFileName) {
-		return StringUtil.pathAsUrlString(getCustomConfigFileName(shortFileName));
+	public String getAbsoluteCustomConfigFileName(String shortFileName) {
+		return getRootDir() + File.separator + getRelativeCustomConfigFileName(shortFileName);
 	}
-
+	
+	/**
+	 * 
+	 */
+	public String getRelativeCustomConfigFileName(String shortFileName) {
+		return getRelativeDir() + File.separator + CUSTOM_DIR_NAME + File.separator + shortFileName;
+	}
+	
 	/**
 	 *
 	 */
 	public boolean hasDefaultFile(String shortFileName) {
-		return doesFileExist(defaultPath + File.separator + shortFileName);
+		return doesFileExist(defaultDirName + File.separator + shortFileName);
 	}
 	
 	/**
 	 * 
 	 */
 	public boolean hasCustomFile(String shortFileName) {
-		return doesFileExist(customPath + File.separator + shortFileName);
+		return doesFileExist(customDirName + File.separator + shortFileName);
 	}
 	
 	/**

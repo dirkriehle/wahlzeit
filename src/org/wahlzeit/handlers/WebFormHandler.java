@@ -30,6 +30,6 @@ public interface WebFormHandler extends WebPartHandler {
 	/**
 	 * @return suggest name of page to render
 	 */
-	public String handlePost(UserSession ctx, Map args);
+	public String handlePost(UserSession us, Map args);
 	
 }

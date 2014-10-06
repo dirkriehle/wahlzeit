@@ -31,8 +31,8 @@ public class SysSession extends Session {
 	/**
 	 * 
 	 */
-	public SysSession(String ctxName) {
-		initialize(ctxName);	
+	public SysSession(String myName) {
+		initialize(myName);	
 	}
 
 }
