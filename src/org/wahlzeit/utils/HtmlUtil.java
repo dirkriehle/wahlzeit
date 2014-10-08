@@ -20,6 +20,8 @@
 
 package org.wahlzeit.utils;
 
+import java.io.File;
+
 /**
  * A set of utility functions for HTML formatting.
  * 
@@ -34,6 +36,13 @@ public class HtmlUtil {
 	public static final String RADIO_BUTTON_CHECK = "CHECKED";
 	public static final String CHECKBOX_CHECK = "CHECKED";
 	public static final String SELECT_SELECTED = "SELECTED";
+	
+	/**
+	 * 
+	 */
+	public static String asPath(String dirName) {
+		return dirName.replace(File.separatorChar, '/');
+	}
 	
 	/**
 	 * 
@@ -94,7 +103,7 @@ public class HtmlUtil {
 	/**
 	 * 
 	 */
-	public static String asPara(String value) {
+	public static String asP(String value) {
 		return "<p>" + value + "</p>";
 	}
 	

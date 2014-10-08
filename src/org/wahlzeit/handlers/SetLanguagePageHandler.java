@@ -72,7 +72,7 @@ public class SetLanguagePageHandler extends AbstractWebPageHandler {
 		page.addString("noteHeading", us.cfg().getInformation());
 		String msg1 = us.cfg().getNewLanguageSet();
 		String msg2 = us.cfg().getContinueWithShowPhoto();
-		page.addString("note", HtmlUtil.asPara(msg1) + HtmlUtil.asPara(msg2));
+		page.addString("note", HtmlUtil.asP(msg1) + HtmlUtil.asP(msg2));
 	}
 
 }

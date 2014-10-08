@@ -75,11 +75,11 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	protected String getPhotoThumb(UserSession us, Photo photo) {
 		String result = null;
 		if (photo != null) {
-			String imageLink = getPhotoAsRelativeResourcePathStringLink(photo, PhotoSize.THUMB);
-			result = HtmlUtil.asImg(imageLink, photo.getThumbWidth(), photo.getThumbHeight());
+			String imageLink = getPhotoAsRelativeResourcePathString(photo, PhotoSize.THUMB);
+			result = HtmlUtil.asImg(HtmlUtil.asPath(imageLink), photo.getThumbWidth(), photo.getThumbHeight());
 		} else {
 			Language langValue = us.cfg().getLanguage();
-			result = HtmlUtil.asImg(getEmptyImageAsRelativePathString(langValue));
+			result = HtmlUtil.asImg(getEmptyImageAsRelativeResourcePathString(langValue));
 		}
 		return result;
 	}
@@ -230,17 +230,17 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	/**
 	 * 
 	 */
-	protected String getEmptyImageAsRelativePathString(Language lang) {
-		String fileName = lang.asIsoCode() + File.separator + "empty.png";
-		return SysConfig.getStaticDir().getRelativeConfigFileName(fileName);
+	protected String getEmptyImageAsRelativeResourcePathString(Language lang) {
+		String resName = lang.asIsoCode() + File.separator + "empty.png";
+		return HtmlUtil.asPath(SysConfig.getStaticDir().getRelativeConfigFileName(resName));
 	}
 
 	/**
 	 * 
 	 */
-	protected String getHeadingImageAsRelativePathString(Language lang) {
-		String fileName = lang.asIsoCode() + File.separator + "heading.png";
-		return SysConfig.getStaticDir().getRelativeConfigFileName(fileName);
+	protected String getHeadingImageAsRelativeResourcePathString(Language lang) {
+		String resName = lang.asIsoCode() + File.separator + "heading.png";
+		return HtmlUtil.asPath(SysConfig.getStaticDir().getRelativeConfigFileName(resName));
 	}
 	
 	/**
@@ -253,9 +253,9 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	/**
 	 * 
 	 */
-	protected String getPhotoAsRelativeResourcePathStringLink(Photo photo, PhotoSize size) {
-		String fileName = photo.getId().asString() + size.asInt() + ".jpg";
-		return SysConfig.getPhotosDir().getRelativeDir() + File.separator + fileName;
+	protected String getPhotoAsRelativeResourcePathString(Photo photo, PhotoSize size) {
+		String resName = photo.getId().asString() + size.asInt() + ".jpg";
+		return SysConfig.getPhotosDir().getRelativeDir() + '/' + resName;
 	}
 
 }

@@ -46,9 +46,9 @@ public abstract class AbstractWebPageHandler extends AbstractWebPartHandler impl
 		WebPart result = createWebPart(us);
 		
 		ConfigDir staticDir = SysConfig.getStaticDir();
-		String stylesheetUrl = staticDir.getRelativeConfigFileName("wahlzeit.css");
+		String stylesheetUrl = HtmlUtil.asPath(staticDir.getRelativeConfigFileName("wahlzeit.css"));
 		result.addString("stylesheet", stylesheetUrl);
-		String javascriptUrl = staticDir.getRelativeConfigFileName("wahlzeit.js");
+		String javascriptUrl = HtmlUtil.asPath(staticDir.getRelativeConfigFileName("wahlzeit.js"));
 		result.addString("javascript", javascriptUrl);
 
 		makeWebPageFrame(us, result);
@@ -75,7 +75,7 @@ public abstract class AbstractWebPageHandler extends AbstractWebPartHandler impl
 	 */
 	protected void makeWebPageHeading(UserSession us, WebPart page) {
 		Language langValue = us.cfg().getLanguage();
-		String heading = HtmlUtil.asImg(getHeadingImageAsRelativePathString(langValue));
+		String heading = HtmlUtil.asImg(getHeadingImageAsRelativeResourcePathString(langValue));
 		heading = HtmlUtil.asHref(us.getSiteUrl(), heading);
 		page.addString("heading", heading);
 	}

@@ -73,7 +73,7 @@ public class SetPhotoSizePageHandler extends AbstractWebPageHandler {
 		String msg1 = us.cfg().getNewPhotoSizeSet(us.getPhotoSize());
 		String msg2 = us.cfg().getNoteMaximumPhotoSize();
 		String msg3 = us.cfg().getContinueWithShowPhoto();
-		page.addString("note", HtmlUtil.asPara(msg1) + HtmlUtil.asPara(msg2) + HtmlUtil.asPara(msg3));
+		page.addString("note", HtmlUtil.asP(msg1) + HtmlUtil.asP(msg2) + HtmlUtil.asP(msg3));
 	}
 
 }

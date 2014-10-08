@@ -55,7 +55,7 @@ public class ResetSessionPageHandler extends AbstractWebPageHandler {
 		page.addString("noteHeading", us.cfg().getThankYou());
 		String msg1 = us.cfg().getResetSession();
 		String msg2 = us.cfg().getContinueWithShowPhoto();
-		page.addString("note", HtmlUtil.asPara(msg1) + HtmlUtil.asPara(msg2));
+		page.addString("note", HtmlUtil.asP(msg1) + HtmlUtil.asP(msg2));
 	}
 
 }

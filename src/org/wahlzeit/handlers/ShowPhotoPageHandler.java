@@ -150,8 +150,8 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
 		
 		PhotoSize maxPhotoSize = photo.getMaxPhotoSize();
 		PhotoSize photoSize = (maxPhotoSize.isSmaller(pagePhotoSize)) ? maxPhotoSize : pagePhotoSize;
-		String imageLink = getPhotoAsRelativeResourcePathStringLink(photo, photoSize);
-		page.addString(Photo.IMAGE, HtmlUtil.asImg(imageLink));
+		String imageLink = getPhotoAsRelativeResourcePathString(photo, photoSize);
+		page.addString(Photo.IMAGE, HtmlUtil.asImg(HtmlUtil.asPath(imageLink)));
 	}
 	
 	/**

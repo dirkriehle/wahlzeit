@@ -93,7 +93,7 @@ public class ConfirmAccountPageHandler extends AbstractWebPageHandler {
 				msg1 = us.cfg().getConfirmAccountFailed();
 				msg2 = us.cfg().getConfirmationEmailWasSent();
 			}
-			page.addString("note", HtmlUtil.asPara(msg1) + HtmlUtil.asPara(msg2));
+			page.addString("note", HtmlUtil.asP(msg1) + HtmlUtil.asP(msg2));
 		} else {
 			heading = us.cfg().getInformation();
 			page.addString("note", us.cfg().getNeedToLoginFirst());

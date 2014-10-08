@@ -259,21 +259,21 @@ public class UserSession extends Session {
 	 * 
 	 */
 	public void setMessage(String myMessage) {
-		savedArgs.put(MESSAGE, HtmlUtil.asPara(myMessage));
+		savedArgs.put(MESSAGE, HtmlUtil.asP(myMessage));
 	}
 	
 	/**
 	 * 
 	 */
 	public void setTwoLineMessage(String msg1, String msg2) {
-		savedArgs.put(MESSAGE, HtmlUtil.asPara(msg1) + HtmlUtil.asPara(msg2));
+		savedArgs.put(MESSAGE, HtmlUtil.asP(msg1) + HtmlUtil.asP(msg2));
 	}
 	
 	/**
 	 * 
 	 */
 	public void setThreeLineMessage(String msg1, String msg2, String msg3) {
-		savedArgs.put(MESSAGE, HtmlUtil.asPara(msg1) + HtmlUtil.asPara(msg2) + HtmlUtil.asPara(msg3));
+		savedArgs.put(MESSAGE, HtmlUtil.asP(msg1) + HtmlUtil.asP(msg2) + HtmlUtil.asP(msg3));
 	}
 	
 	/**
