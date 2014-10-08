@@ -25,16 +25,12 @@ import java.util.*;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 
-import org.wahlzeit.handlers.WebFormHandler;
-import org.wahlzeit.handlers.WebPageHandler;
-import org.wahlzeit.handlers.WebPartHandlerManager;
-import org.wahlzeit.handlers.PartUtil;
-import org.wahlzeit.model.UserLog;
-import org.wahlzeit.model.UserSession;
-import org.wahlzeit.services.SysConfig;
-import org.wahlzeit.services.SysLog;
-import org.wahlzeit.webparts.WebPart;
+import org.wahlzeit.handlers.*;
+import org.wahlzeit.model.*;
+import org.wahlzeit.services.*;
+import org.wahlzeit.webparts.*;
 
 
 
@@ -43,6 +39,7 @@ import org.wahlzeit.webparts.WebPart;
  * @author dirkriehle
  *
  */
+@MultipartConfig // Servlet 3.0 support for file upload
 public class MainServlet extends AbstractServlet {
 
 	/**
@@ -121,7 +118,7 @@ public class MainServlet extends AbstractServlet {
 	/**
 	 * 
 	 */
-	protected Map getRequestArgs(HttpServletRequest request) throws IOException {
+	protected Map getRequestArgs(HttpServletRequest request) throws IOException, ServletException {
         String contentType = request.getContentType();
         if ((contentType != null) && contentType.startsWith("multipart/form-data")) {
 			return getMultiPartRequestArgs(request);
@@ -131,57 +128,25 @@ public class MainServlet extends AbstractServlet {
 	}
 
 	/**
-	 * @FIXME File upload temporarily disabled
+	 * 
 	 */
-	protected Map getMultiPartRequestArgs(HttpServletRequest request) throws IOException {
+	protected Map getMultiPartRequestArgs(HttpServletRequest request) throws IOException, ServletException {
 		Map<String, String> result = new HashMap<String, String>();
 
-//		Enumeration names = request.getHeaderNames();
-//		while (names.hasMoreElements()) {
-//			String key = (String) names.nextElement();
-//			String value = null;
-//			if (key.equals("fileName")) {
-//				InputStream in = request.getInputStream(key);
-//				String tempName = SysConfig.getTempDirAsString() + Thread.currentThread().getId();
-//				FileOutputStream out = new FileOutputStream(new File(tempName));
-//				int uploaded = 0;
-//				for (int avail = in.available(); (avail > 0) && (uploaded < 1000000); avail = in.available()) {
-//					byte[] buffer = new byte[avail];
-//					in.read(buffer, 0, avail);
-//					out.write(buffer);
-//					uploaded += avail;
-//				}
-//				out.close();
-//				value = tempName;
-//			} else {
-//				value = request.getString(key);
-//			}
-//			result.put(key, value);
-//		}
-		
-//		String[] keys = request.getPartNames();
-//		for (int i = 0; i < keys.length; i++) {
-//			String key = keys[i];
-//			String value = null;
-//			if (key.equals("fileName")) {
-//				InputStream in = request.getInputStream(key);
-//				String tempName = SysConfig.getTempDirAsString() + Thread.currentThread().getId();
-//				FileOutputStream out = new FileOutputStream(new File(tempName));
-//				int uploaded = 0;
-//				for (int avail = in.available(); (avail > 0) && (uploaded < 1000000); avail = in.available()) {
-//					byte[] buffer = new byte[avail];
-//					in.read(buffer, 0, avail);
-//					out.write(buffer);
-//					uploaded += avail;
-//				}
-//				out.close();
-//				value = tempName;
-//			} else {
-//				value = request.getString(key);
-//			}
-//			result.put(key, value);
-//		}
+		Collection<Part> parts = request.getParts();
+		for (Iterator<Part> i = parts.iterator(); i.hasNext(); ) {
+			Part part = i.next();
 
+			String key = part.getName();
+			if (key.equals("file")) {
+				String tempFileName = SysConfig.getTempDir().asString() + Thread.currentThread().getId();
+				part.write(tempFileName);
+				result.put("fileName", tempFileName);
+			} else {
+				result.put(key, request.getParameter(key));
+			}			
+		}
+		
 		return result;
 	}
 

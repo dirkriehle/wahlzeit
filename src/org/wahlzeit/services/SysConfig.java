@@ -180,7 +180,7 @@ public class SysConfig extends AbstractConfig {
 	/**
 	 * 
 	 */
-	public static Directory getTempDirAsString() {
+	public static Directory getTempDir() {
 		return getInstance().tempDir;
 	}
 
