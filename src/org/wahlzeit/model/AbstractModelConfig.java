@@ -73,7 +73,7 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
 				loadProperties(absoluteCustomFileName);
 			}
 		} catch (IOException ioex) {
-			ioex.printStackTrace(); // @FIXME
+			SysLog.logThrowable(ioex);
 		}
 		
 		String menuDash = "&nbsp;" + doGetValue("MenuDash") + "&nbsp;";
@@ -112,13 +112,6 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
 		doSetValue("AdministratorMenu", administratorMenu);
 	}
 
-	/**
-	 * FIXME
-	 */
-	public boolean isRegularUserName(String un) {
-		return !un.equals("admin") && !un.equals("anonymous") && !un.equals("flickr");
-	}
-	
 	/**
 	 * 
 	 */
@@ -453,6 +446,13 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
 	 */
 	public String getUserNameIsUnknown() {
 		return doGetValue("UserNameIsUnknown"); 
+	}
+
+	/**
+	 * 
+	 */
+	public String getUserNameIsReserved() {
+		return doGetValue("UserNameIsReserved"); 
 	}
 
 	/**

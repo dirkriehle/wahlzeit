@@ -95,6 +95,7 @@ public interface ModelConfig extends Configuration {
 
 	// SIGNUP_FORM
 	public String getUserAlreadyExists();
+	public String getUserNameIsReserved();
 	public String getPasswordsDontMatch();
 	public String getDidntCheckTerms();
 	public String getConfirmationEmailWasSent();

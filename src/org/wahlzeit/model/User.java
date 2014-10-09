@@ -59,7 +59,7 @@ public class User extends Client implements Persistent {
 	public static final String HOME_PAGE = "homePage";
 	public static final String MEMBER_SINCE = "memberSince";
 	public static final String NO_PHOTOS = "noPhotos";
-		
+	
 	/**
 	 * 0 is never returned, first value is 1
 	 */

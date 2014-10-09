@@ -60,11 +60,7 @@ public class EnglishModelConfig extends AbstractModelConfig {
 	 */
 	public String asPhotoSummary(String un) {
 		String result = "Photo";
-		
-		if (isRegularUserName(un)) {
-			result += " by " + un;				
-		}
-		
+		result += " by " + un;				
 		return result;
 	}
 
@@ -73,15 +69,11 @@ public class EnglishModelConfig extends AbstractModelConfig {
 	 */
 	public String asPhotoCaption(String un, URL url) {
 		String result = "Photo";
-		
-		if (isRegularUserName(un)) {
-			if (url != null) {
-				result += " by " + HtmlUtil.asHref(url.toString(), un);
-			} else {
-				result += " by " + un;				
-			}
+		if (url != null) {
+			result += " by " + HtmlUtil.asHref(url.toString(), un);
+		} else {
+			result += " by " + un;				
 		}
-		
 		return result;
 	}
 

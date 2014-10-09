@@ -34,13 +34,6 @@ public class SysLog extends Log {
 	/**
 	 * 
 	 */
-	public static StringBuffer createSysLogEntry() {
-		return createLogEntry("sl");
-	}
-
-	/**
-	 * 
-	 */
 	public static void logInfo(String s) {
 		logInfo("sl", s);
 	}
@@ -107,6 +100,13 @@ public class SysLog extends Log {
 		addThrowable(sb, t);
 		addStacktrace(sb, t);
 		log(sb);
+	}
+
+	/**
+	 * 
+	 */
+	protected static StringBuffer createSysLogEntry() {
+		return createLogEntry("sl");
 	}
 
 }

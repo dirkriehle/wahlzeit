@@ -22,13 +22,9 @@ package org.wahlzeit.handlers;
 
 import java.util.*;
 
-import org.wahlzeit.model.AccessRights;
-import org.wahlzeit.model.User;
-import org.wahlzeit.model.UserLog;
-import org.wahlzeit.model.UserManager;
-import org.wahlzeit.model.UserSession;
-import org.wahlzeit.utils.StringUtil;
-import org.wahlzeit.webparts.WebPart;
+import org.wahlzeit.model.*;
+import org.wahlzeit.utils.*;
+import org.wahlzeit.webparts.*;
 
 
 
@@ -73,36 +69,40 @@ public class SignupFormHandler extends AbstractWebFormHandler {
 		String terms = us.getAndSaveAsString(args, User.TERMS);
 		
 		UserManager userManager = UserManager.getInstance();
+		ModelConfig cfg = us.cfg();
 		
 		if (StringUtil.isNullOrEmptyString(userName)) {
-			us.setMessage(us.cfg().getFieldIsMissing());
+			us.setMessage(cfg.getFieldIsMissing());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (StringUtil.isNullOrEmptyString(password)) {
-			us.setMessage(us.cfg().getFieldIsMissing());
+			us.setMessage(cfg.getFieldIsMissing());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (StringUtil.isNullOrEmptyString(emailAddress)) {
-			us.setMessage(us.cfg().getFieldIsMissing());
+			us.setMessage(cfg.getFieldIsMissing());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (userManager.hasUserByName(userName)) {
-			us.setMessage(us.cfg().getUserAlreadyExists());
+			us.setMessage(cfg.getUserAlreadyExists());
+			return PartUtil.SIGNUP_PAGE_NAME;
+		} else if (!userManager.isReservedUserName(userName)) {
+			us.setMessage(cfg.getUserNameIsReserved());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (!StringUtil.isLegalUserName(userName)) {
-			us.setMessage(us.cfg().getInputIsInvalid());
+			us.setMessage(cfg.getInputIsInvalid());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (!password.equals(passwordAgain)) {
-			us.setMessage(us.cfg().getPasswordsDontMatch());
+			us.setMessage(cfg.getPasswordsDontMatch());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (!StringUtil.isLegalPassword(password)) {
-			us.setMessage(us.cfg().getInputIsInvalid());
+			us.setMessage(cfg.getInputIsInvalid());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (StringUtil.isNullOrEmptyString(emailAddress)) {
-			us.setMessage(us.cfg().getEmailAddressIsMissing());
+			us.setMessage(cfg.getEmailAddressIsMissing());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (!StringUtil.isValidStrictEmailAddress(emailAddress)) {
-			us.setMessage(us.cfg().getEmailAddressIsInvalid());
+			us.setMessage(cfg.getEmailAddressIsInvalid());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if ((terms == null) || !terms.equals("on")) {
-			us.setMessage(us.cfg().getDidntCheckTerms());
+			us.setMessage(cfg.getDidntCheckTerms());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		}
 

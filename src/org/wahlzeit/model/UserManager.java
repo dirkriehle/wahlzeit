@@ -35,6 +35,16 @@ import org.wahlzeit.services.mailing.*;
 public class UserManager extends ObjectManager {
 
 	/**
+	 * Reserved names cannot be registered by regular users
+	 * @FIXME Load from file eventually
+	 */
+	public static List<String> reservedNames = Arrays.asList( 
+		"admin",
+		"anonymous",
+		"flckr"
+	);
+	
+	/**
 	 *
 	 */
 	protected static UserManager instance = new UserManager();
@@ -110,6 +120,13 @@ public class UserManager extends ObjectManager {
 		return result;
 	}
 	
+	/**
+	 * 
+	 */
+	public boolean isReservedUserName(String userName) {
+		return reservedNames.contains(Tags.asTag(userName));
+	}
+		
 	/**
 	 * 
 	 */
