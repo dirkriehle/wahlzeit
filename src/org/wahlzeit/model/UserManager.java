@@ -35,7 +35,7 @@ import org.wahlzeit.services.mailing.*;
 public class UserManager extends ObjectManager {
 
 	/**
-	 * Reserved names cannot be registered by regular users
+	 * Reserved names that cannot be registered by regular users
 	 * @FIXME Load from file eventually
 	 */
 	public static List<String> reservedNames = Arrays.asList( 
