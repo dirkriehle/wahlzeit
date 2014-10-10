@@ -83,7 +83,7 @@ public class SignupFormHandler extends AbstractWebFormHandler {
 		} else if (userManager.hasUserByName(userName)) {
 			us.setMessage(cfg.getUserAlreadyExists());
 			return PartUtil.SIGNUP_PAGE_NAME;
-		} else if (!userManager.isReservedUserName(userName)) {
+		} else if (userManager.isReservedUserName(userName)) {
 			us.setMessage(cfg.getUserNameIsReserved());
 			return PartUtil.SIGNUP_PAGE_NAME;
 		} else if (!StringUtil.isLegalUserName(userName)) {

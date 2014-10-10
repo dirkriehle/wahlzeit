@@ -41,7 +41,7 @@ public class UserManager extends ObjectManager {
 	public static List<String> reservedNames = Arrays.asList( 
 		"admin",
 		"anonymous",
-		"flckr"
+		"flickr"
 	);
 	
 	/**
