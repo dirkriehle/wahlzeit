@@ -23,6 +23,7 @@ package org.wahlzeit.services;
 import java.io.*;
 import java.sql.*;
 import java.text.*;
+import java.util.logging.*;
 
 /**
  * Simple logging class; should be replaced with log4j or the like.
@@ -163,8 +164,13 @@ public class Log {
 	/**
 	 * 
 	 */
+	protected static Logger logger = Logger.getLogger(Log.class.getName());
+	
+	/**
+	 * 
+	 */
 	public static final void log(StringBuffer sb) {
-		System.out.println(sb);
+		 logger.info(sb.toString());
 	}
 	
 }
