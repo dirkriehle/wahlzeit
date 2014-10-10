@@ -40,7 +40,12 @@ public class GenericApp implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent sce) {
 		try {
 			ServletContext sc = sce.getServletContext();
+			
+			// configures log4j
+			String contextPath = sc.getContextPath();
+			System.setProperty("contextPath", contextPath);
 
+			// determines file system root path to resources
 			File dummyFile = new File(sc.getRealPath("dummy.txt"));
 			String rootDir = dummyFile.getParent();			
 

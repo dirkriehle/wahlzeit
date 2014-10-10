@@ -23,7 +23,8 @@ package org.wahlzeit.services;
 import java.io.*;
 import java.sql.*;
 import java.text.*;
-import java.util.logging.*;
+
+import org.apache.log4j.Logger;
 
 /**
  * Simple logging class; should be replaced with log4j or the like.
