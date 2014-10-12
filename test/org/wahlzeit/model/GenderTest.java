@@ -21,16 +21,24 @@ package org.wahlzeit.model;
 
 import junit.framework.*;
 
+/**
+ * 
+ * @author dirk
+ *
+ */
 public class GenderTest extends TestCase {
 
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(UserStatusTest.class);
-	}
-
+	/**
+	 * 
+	 * @param name
+	 */
 	public GenderTest(String name) {
 		super(name);
 	}
 
+	/**
+	 * 
+	 */
 	public void testGetFromInt() {
 		assertTrue(Gender.getFromInt(Gender.UNDEFINED.asInt()) == Gender.UNDEFINED);
 		assertTrue(Gender.getFromInt(Gender.MALE.asInt()) == Gender.MALE);
@@ -38,6 +46,9 @@ public class GenderTest extends TestCase {
 		assertTrue(Gender.getFromInt(Gender.OTHER.asInt()) == Gender.OTHER);
 	}
 
+	/**
+	 * 
+	 */
 	public void testGetFromString() {
 		assertTrue(Gender.getFromString(Gender.UNDEFINED.asString()).equals(Gender.UNDEFINED));
 		assertTrue(Gender.getFromString(Gender.MALE.asString()).equals(Gender.MALE));
@@ -45,6 +56,9 @@ public class GenderTest extends TestCase {
 		assertTrue(Gender.getFromString(Gender.OTHER.asString()).equals(Gender.OTHER));
 	}
 	
+	/**
+	 * 
+	 */
 	public void testNonValidValues() {
 		try {
 			Gender.getFromInt(-1);

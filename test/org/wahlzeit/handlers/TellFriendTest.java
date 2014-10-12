@@ -40,23 +40,8 @@ public class TellFriendTest extends HandlerTestCase {
 	/**
 	 * 
 	 */
-	public static void main(String[] args) {
-		Test test = new HandlerTestSetup(new HandlerTestSuite(TellFriendTest.class));
-		junit.textui.TestRunner.run(test);
-	}
-
-	/**
-	 * 
-	 */
 	public TellFriendTest(String name) {
 		super(name);
-	}
-	
-	/**
-	 * 
-	 */
-	public void setUp() {
-		handler = WebPartHandlerManager.getWebFormHandler(PartUtil.TELL_FRIEND_FORM_NAME);
 	}
 	
 	/**

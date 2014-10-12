@@ -29,15 +29,16 @@ import junit.framework.*;
  */
 public class AllTests extends TestSuite {
 
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(suite());
-	}
-
+	/**
+	 * 
+	 */
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
+		
 		suite.addTestSuite(SafeInputTest.class);
 		suite.addTestSuite(VersionTest.class);
 		suite.addTestSuite(StringUtilTest.class);
+		
 		return suite;
 	}
 

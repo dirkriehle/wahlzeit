@@ -29,14 +29,16 @@ import junit.framework.*;
  */
 public class AllTests extends TestSuite {
 
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(suite());
-	}
-
+	/**
+	 * 
+	 */
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
+		
 		suite.addTestSuite(EmailAddressTest.class);
-		suite.addTest(org.wahlzeit.services.mailing.AllTests.suite());		
+		
+		suite.addTest(org.wahlzeit.services.mailing.AllTests.suite());	
+		
 		return suite;
 	}
 

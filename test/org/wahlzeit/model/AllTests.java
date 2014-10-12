@@ -29,12 +29,12 @@ import junit.framework.*;
  */
 public class AllTests extends TestSuite {
 
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(suite());
-	}
-
+	/**
+	 * 
+	 */
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
+		
 		suite.addTestSuite(TagsTest.class);
 		suite.addTestSuite(ValueTest.class);
 		suite.addTestSuite(GenderTest.class);
@@ -42,6 +42,7 @@ public class AllTests extends TestSuite {
 		suite.addTestSuite(AccessRightsTest.class);
 		suite.addTestSuite(UserStatusTest.class);
 		suite.addTestSuite(FlagReasonTest.class);
+		
 		return suite;
 	}
 

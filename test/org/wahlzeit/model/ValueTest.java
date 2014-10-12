@@ -32,13 +32,6 @@ public class ValueTest extends TestCase {
 	/**
 	 * 
 	 */
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(ValueTest.class);
-	}
-
-	/**
-	 * 
-	 */
 	public ValueTest(String name) {
 		super(name);
 	}

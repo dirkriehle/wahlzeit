@@ -29,6 +29,9 @@ import junit.framework.*;
  */
 public class VersionTest extends TestCase {
 
+	/**
+	 * 
+	 */
 	public void testGetVersionAsInt() {
 		assertTrue(Version.getVersionAsInt("0.0.0") == 0);
 		assertTrue(Version.getVersionAsInt("0.0.1") == 1);
@@ -38,16 +41,25 @@ public class VersionTest extends TestCase {
 		//FIXME add exception test cases
 	}
 	
+	/**
+	 * 
+	 */
 	public void testGetMajorVersionAsInt() {
 		assertTrue(Version.getMajorNumberAsInt("12.33.15") == 12);		
 		//FIXME add exception test cases
 	}
 
+	/**
+	 * 
+	 */
 	public void testGetMinorVersionAsInt() {
 		assertTrue(Version.getMinorNumberAsInt("12.33.15") == 33);		
 		//FIXME add exception test cases
 	}
 
+	/**
+	 * 
+	 */
 	public void testGetRevisionVersionAsInt() {
 		assertTrue(Version.getRevisionNumberAsInt("12.33.15") == 15);		
 		//FIXME add exception test cases

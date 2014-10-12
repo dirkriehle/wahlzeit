@@ -29,17 +29,18 @@ import junit.framework.*;
  */
 public class AllTests extends TestSuite {
 	
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(suite());
-	}
-
+	/**
+	 * 
+	 */
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
+		
 		suite.addTest(org.wahlzeit.handlers.AllTests.suite());
 		suite.addTest(org.wahlzeit.services.AllTests.suite());		
 		suite.addTest(org.wahlzeit.model.AllTests.suite());
 		suite.addTest(org.wahlzeit.utils.AllTests.suite());
-		return suite;
+		
+		return new WahlzeitTestSetup(suite);
 	}
 
 }

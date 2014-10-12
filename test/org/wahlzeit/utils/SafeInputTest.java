@@ -29,14 +29,17 @@ import junit.framework.*;
  */
 public class SafeInputTest extends TestCase {
 
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(SafeInputTest.class);
-	}
-
+	/**
+	 * 
+	 * @param name
+	 */
 	public SafeInputTest(String name) {
 		super(name);
 	}
 
+	/**
+	 * 
+	 */
 	public void testIsLegalUserName() {
 		assertTrue(StringUtil.isLegalUserName("abcd"));
 		assertTrue(StringUtil.isLegalUserName("ab cd"));
@@ -53,6 +56,9 @@ public class SafeInputTest extends TestCase {
 		assertFalse(StringUtil.isLegalUserName(""));
 	}
 
+	/**
+	 * 
+	 */
 	public void testIsLegalPassword() {
 		assertTrue(StringUtil.isLegalPassword("abcd"));
 		assertTrue(StringUtil.isLegalPassword("ab cd"));
@@ -61,6 +67,9 @@ public class SafeInputTest extends TestCase {
 		assertFalse(StringUtil.isLegalPassword(""));
 	}
 
+	/**
+	 * 
+	 */
 	public void testIsValidStrictEmailAddress() {
 		assertTrue(StringUtil.isValidStrictEmailAddress("admin@wahlzeit.org"));
 		assertTrue(StringUtil.isValidStrictEmailAddress("a@b2.com"));
@@ -80,14 +89,23 @@ public class SafeInputTest extends TestCase {
 		assertFalse(StringUtil.isValidStrictEmailAddress("a\\\\@b2.com"));
 	}
 
+	/**
+	 * 
+	 */
 	public void testIsLegalCharacterName() {
 		// same as user name
 	}
 
+	/**
+	 * 
+	 */
 	public void testIsLegalSeriesName() {
 		// same as user name
 	}
 
+	/**
+	 * 
+	 */
 	public void testIsLegalTagsString() {
 		// same as user name
 	}

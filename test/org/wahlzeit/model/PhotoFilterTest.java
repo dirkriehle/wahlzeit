@@ -23,14 +23,17 @@ import junit.framework.*;
 
 public class PhotoFilterTest extends TestCase {
 
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(PhotoFilterTest.class);
-	}
-
+	/**
+	 * 
+	 * @param name
+	 */
 	public PhotoFilterTest(String name) {
 		super(name);
 	}
 
+	/**
+	 * 
+	 */
 	public void testConstructor() {
 		PhotoFilter pf = new PhotoFilter();
 		assertNotNull(pf);
@@ -43,11 +46,17 @@ public class PhotoFilterTest extends TestCase {
 		assertEquals(0, pf.displayablePhotoIds.size());
 	}
 
+	/**
+	 * 
+	 */
 	public void testStaticProperties() {
 		assertEquals("userName", PhotoFilter.USER_NAME);
 		assertEquals("tags", PhotoFilter.TAGS);
 	}
 
+	/**
+	 * 
+	 */
 	public void testClear() {
 		PhotoFilter pf = new PhotoFilter();
 		pf.setUserName("test");

@@ -42,6 +42,13 @@ public class HandlerTestCase extends TestCase implements HandlerTest {
 	/**
 	 * 
 	 */
+	public void setUp() {
+		handler = WebPartHandlerManager.getWebFormHandler(PartUtil.TELL_FRIEND_FORM_NAME);
+	}
+	
+	/**
+	 * 
+	 */
 	public void setUserSession(UserSession mySession) {
 		session = mySession;
 	}

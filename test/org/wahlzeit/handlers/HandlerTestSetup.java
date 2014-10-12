@@ -49,9 +49,6 @@ public class HandlerTestSetup extends TestSetup {
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		ServiceMain serviceMain = ServiceMain.getInstance();
-		serviceMain.startUp(false, "web");
-
 		userSession = new UserSession("testContext", ""); //@FIXME
 		userSession.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
 

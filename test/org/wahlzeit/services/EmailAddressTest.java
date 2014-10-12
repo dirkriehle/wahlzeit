@@ -34,13 +34,6 @@ public class EmailAddressTest extends TestCase {
 	/**
 	 * 
 	 */
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(EmailAddressTest.class);
-	}
-
-	/**
-	 * 
-	 */
 	public EmailAddressTest(String name) {
 		super(name);
 	}

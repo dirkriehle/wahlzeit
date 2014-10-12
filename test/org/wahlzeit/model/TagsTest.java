@@ -31,14 +31,25 @@ import junit.framework.TestCase;
  */
 public class TagsTest extends TestCase {
 
+	/**
+	 * 
+	 * @param args
+	 */
 	public static void main(final String[] args) {
 		junit.textui.TestRunner.run(TagsTest.class);
 	}
 
+	/**
+	 * 
+	 * @param name
+	 */
 	public TagsTest(final String name) {
 		super(name);
 	}
 
+	/**
+	 * 
+	 */
 	public void testEquals() {
 		Tags tags1 = new Tags("a, b, c");
 		Tags tags2 = new Tags("a, b, c");
@@ -54,12 +65,18 @@ public class TagsTest extends TestCase {
 		assertFalse(tags1.equals(new Object()));
 	}
 
+	/**
+	 * 
+	 */
 	public void testAsTag() {
 		assertEquals(Tags.asTag("flo wer"), "flower");
 		assertEquals(Tags.asTag(" 35j lNM#&In>B << f2"), "35jlnminbf2");
 		assertEquals(Tags.asTag(",,,,,,"), "");
 	}
 
+	/**
+	 * 
+	 */
 	public void testAsString() {
 		Tags tags1 = new Tags("tag1, tag2");
 		assertSame(tags1.getSize(), 2);
@@ -67,6 +84,9 @@ public class TagsTest extends TestCase {
 		assertEquals(tags1.asString(true, '+'), "tag1 + tag2");
 	}
 
+	/**
+	 * 
+	 */
 	public void testAsArray1() {
 		Tags tags1 = new Tags("blume, zeug");
 		String[] array1 = tags1.asArray();
@@ -79,6 +99,9 @@ public class TagsTest extends TestCase {
 		assertEquals(array2.length, 0);
 	}
 
+	/**
+	 * 
+	 */
 	public void testAsArray2() {
 		Tags tags1 = new Tags("a, b, c, d, e");
 		assertEquals(tags1.asArray().length, 5);
@@ -91,6 +114,9 @@ public class TagsTest extends TestCase {
 		assertEquals(tags2.asArray()[2], "c");
 	}
 
+	/**
+	 * 
+	 */
 	public void testGetSize() {
 		Tags tags1 = new Tags("tag1, tag2, tag3");
 		assertEquals(3, tags1.getSize());
@@ -128,6 +154,9 @@ public class TagsTest extends TestCase {
 
 	}
 
+	/**
+	 * 
+	 */
 	public void testHasTag1() {
 		assertFalse(new Tags(null).hasTag(null));
 		assertFalse(new Tags("").hasTag(null));
@@ -147,6 +176,9 @@ public class TagsTest extends TestCase {
 				new Tags("tag1,tag 2").hasTag("tag 2"));
 	}
 
+	/**
+	 * 
+	 */
 	public void testHasTag2() {
 		Tags tags1 = new Tags(" flo wer , Kinokuniya, bingo, bongo");
 		assertTrue(tags1.hasTag("flower"));
@@ -162,6 +194,9 @@ public class TagsTest extends TestCase {
 		assertFalse(tags2.hasTag(""));
 	}
 
+	/**
+	 * 
+	 */
 	public void testHasTag3() {
 		Tags tags1 = new Tags("\"/&%$(&a,\"\\'");
 		assertTrue(tags1.hasTag("a"));
@@ -169,6 +204,9 @@ public class TagsTest extends TestCase {
 		assertFalse(tags1.hasTag(""));
 	}
 
+	/**
+	 * 
+	 */
 	public void testHasTag4()	{
 		Tags t = new Tags("tag, long tag, even@longer;tag");
 
@@ -180,6 +218,9 @@ public class TagsTest extends TestCase {
 		assertFalse(t.hasTag(""));
 	}
 
+	/**
+	 * 
+	 */
 	public void testHasSetSemantics() {
 		Tags tags1 = new Tags("tag1, tag1");
 		assertEquals(1, tags1.getSize());
@@ -192,6 +233,9 @@ public class TagsTest extends TestCase {
 		assertTrue(tags3array.length == 1);
 	}
 
+	/**
+	 * 
+	 */
 	public void testTagList() {
 		Tags tags1 = new Tags(" flo wer , Kinokuniya, bingo, bongo");
 		String[] tags1array = tags1.asArray();
@@ -215,7 +259,9 @@ public class TagsTest extends TestCase {
 		assertEquals(tags3array.length, 0);
 	}
 
-	
+	/**
+	 * 
+	 */
 	public void testGetTagListFromString()	{
 		Set<String> set = Tags.asTagSetFromString("x-y--z@!;,b---ni hao", '-');
 		

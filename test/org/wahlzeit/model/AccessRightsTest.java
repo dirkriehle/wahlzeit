@@ -23,14 +23,9 @@ import junit.framework.TestCase;
 
 public class AccessRightsTest extends TestCase {
 
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(AccessRightsTest.class);
-	}
-
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
+	/**
+	 * 
+	 */
 	public void testGetFromInt() {
 		assertSame(AccessRights.NONE, AccessRights.getFromInt(0));
 		assertSame(AccessRights.GUEST, AccessRights.getFromInt(1));
@@ -53,6 +48,9 @@ public class AccessRightsTest extends TestCase {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public void testGetFromString() {
 		assertSame(AccessRights.NONE, AccessRights.getFromString("none"));
 		assertSame(AccessRights.GUEST, AccessRights.getFromString("guest"));
@@ -108,6 +106,9 @@ public class AccessRightsTest extends TestCase {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public void testHasRights() {
 		assertTrue(AccessRights.hasRights(AccessRights.ADMINISTRATOR, AccessRights.MODERATOR));
 		assertTrue(AccessRights.hasRights(AccessRights.MODERATOR, AccessRights.USER));

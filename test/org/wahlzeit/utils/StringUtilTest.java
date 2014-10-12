@@ -31,14 +31,17 @@ import junit.framework.*;
  */
 public class StringUtilTest extends TestCase {
 
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(StringUtilTest.class);
-	}
-
+	/**
+	 * 
+	 * @param name
+	 */
 	public StringUtilTest(String name) {
 		super(name);
 	}
 
+	/**
+	 * 
+	 */
 	public void testPathAsUrlString() {
 		String path1 = "folder" + File.separator + "subfolder" + File.separator + "file.test";
 		String url1 = StringUtil.pathAsUrlString(path1);
