@@ -34,21 +34,21 @@ public class SysLog extends Log {
 	/**
 	 * 
 	 */
-	public static void logInfo(String s) {
+	public static void logSysInfo(String s) {
 		Log.logInfo("sl", s);
 	}
 	
 	/**
 	 * 
 	 */
-	public static void logValue(String type, String value) {
+	public static void logSysInfo(String type, String value) {
 		Log.logInfo("sl", type, value);
 	}
 	
 	/**
 	 * 
 	 */
-	public static void logValueWithInfo(String type, String value, String info) {
+	public static void logSysInfo(String type, String value, String info) {
 		Log.logInfo("sl", type, value, info);
 	}
 	
@@ -62,8 +62,8 @@ public class SysLog extends Log {
 	/**
 	 * 
 	 */
-	public static void logError(String s) {
-		logError("sl", s);
+	public static void logSysError(String s) {
+		Log.logError("sl", s);
 	}
 	
 	/**

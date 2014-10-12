@@ -66,10 +66,10 @@ public class DatabaseConnection {
 			if (dbc.isOpen()) {
 				pool.add(dbc);				
 			} else {
-				SysLog.logError("tried to return closed database connection to pool; ignoring it");
+				SysLog.logSysError("tried to return closed database connection to pool; ignoring it");
 			}
 		} else {
-			SysLog.logError("tried to return null to database connection pool; ignoring it");
+			SysLog.logSysError("tried to return null to database connection pool; ignoring it");
 		}
 	}
 	
@@ -185,7 +185,7 @@ public class DatabaseConnection {
 		String dbUser = SysConfig.getDbUserAsString();
 		String dbPassword = SysConfig.getDbPasswordAsString();
    		Connection result = DriverManager.getConnection(dbConnection, dbUser, dbPassword);
-   		SysLog.logInfo("opening database connection: " + result.toString());
+   		SysLog.logSysInfo("opening database connection: " + result.toString());
    		return result;
 	}
 	
@@ -193,7 +193,7 @@ public class DatabaseConnection {
 	 * 
 	 */
 	public static void closeConnection(Connection cn) throws SQLException {
-  		SysLog.logInfo("closing database connection: " + cn.toString());
+  		SysLog.logSysInfo("closing database connection: " + cn.toString());
 		cn.close();
 	}
 

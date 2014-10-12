@@ -62,13 +62,13 @@ public class MainServlet extends AbstractServlet {
 		}
 		
 		link = link.substring(linkStart, linkEnd);
-		UserLog.logValue("requested", link);
+		UserLog.logUserInfo("requested", link);
 
 		WebPageHandler handler = WebPartHandlerManager.getWebPageHandler(link);
 		String newLink = PartUtil.DEFAULT_PAGE_NAME;
 		if (handler != null) {
 			Map args = getRequestArgs(request);
-			SysLog.logInfo("GET arguments: " + getRequestArgsAsString(us, args));
+			SysLog.logSysInfo("GET arguments: " + getRequestArgsAsString(us, args));
 			newLink = handler.handleGet(us, link, args);
 		}
 
@@ -79,7 +79,7 @@ public class MainServlet extends AbstractServlet {
 			us.clearSavedArgs(); // saved args go from post to next get
 			us.resetProcessingTime();
 		} else {
-			SysLog.logValue("redirect", newLink);
+			SysLog.logSysInfo("redirect", newLink);
 			redirectRequest(response, newLink);
 			us.addProcessingTime(System.currentTimeMillis() - startTime);
 		}
@@ -100,10 +100,10 @@ public class MainServlet extends AbstractServlet {
 		} else {
 			link = PartUtil.NULL_FORM_NAME;
 		}
-		UserLog.logValue("postedto", link);
+		UserLog.logUserInfo("postedto", link);
 			
 		Map args = getRequestArgs(request);
-		SysLog.logInfo("POST arguments: " + getRequestArgsAsString(us, args));
+		SysLog.logSysInfo("POST arguments: " + getRequestArgsAsString(us, args));
 		
 		WebFormHandler formHandler = WebPartHandlerManager.getWebFormHandler(link);
 		link = PartUtil.DEFAULT_PAGE_NAME;

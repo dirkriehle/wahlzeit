@@ -34,38 +34,38 @@ public class UserLog extends Log {
 	/**
 	 * 
 	 */
+	public static void logUserInfo(String s) {
+		Log.logInfo("ul", s);
+	}
+	
+	/**
+	 * 
+	 */
+	public static void logUserInfo(String type, String value) {
+		Log.logInfo("ul", type, value);
+	}
+	
+	/**
+	 * 
+	 */
+	public static void logUserInfo(String type, String value, String info) {
+		Log.logInfo("ul", type, value, info);
+	}
+	
+	/**
+	 * 
+	 */
+	public static void logUserError(String s) {
+		Log.logError("ul", s);
+	}
+	
+	/**
+	 * 
+	 */
 	public static StringBuffer createUserLogEntry() {
-		return createLogEntry("ul");
+		return Log.createLogEntry("ul");
 	}
 
-	/**
-	 * 
-	 */
-	public static void logInfo(String s) {
-		logInfo("ul", s);
-	}
-	
-	/**
-	 * 
-	 */
-	public static void logError(String s) {
-		logError("ul", s);
-	}
-	
-	/**
-	 * 
-	 */
-	public static void logValue(String type, String value) {
-		logInfo("ul", type, value);
-	}
-	
-	/**
-	 * 
-	 */
-	public static void logValueWithInfo(String type, String value, String info) {
-		logInfo("ul", type, value, info);
-	}
-	
 	/**
 	 * 
 	 */

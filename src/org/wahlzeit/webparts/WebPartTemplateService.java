@@ -104,7 +104,7 @@ public class WebPartTemplateService {
 		WebPartTemplate template = new WebPartTemplate(shortName);
 		String fileName = getTemplatesDir().getAbsoluteConfigFileName(shortName + ".html");
 		File file = new File(fileName);
-		SysLog.logValueWithInfo("file name", fileName, "opened HTML template file");
+		SysLog.logSysInfo("file name", fileName, "opened HTML template file");
 
 		FileReader reader = null;
 		try {
@@ -114,7 +114,7 @@ public class WebPartTemplateService {
 			char[] readBuffer = new char[50000];
 			int status = reader.read(readBuffer);
 
-			SysLog.logValueWithInfo("file size", Integer.toString(status), "read HTML template file");
+			SysLog.logSysInfo("file size", Integer.toString(status), "read HTML template file");
 			
 			if (status != -1) {
 				String source = new String(readBuffer, 0, status);

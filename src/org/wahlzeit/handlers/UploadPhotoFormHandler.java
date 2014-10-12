@@ -103,7 +103,7 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 			OutputStream outputStream = new FileOutputStream(targetFile);
 			// @FIXME IO.copy(inputStream, outputStream);
 		} catch (Exception ex) {
-			SysLog.logInfo("could not create backup file of photo");
+			SysLog.logSysInfo("could not create backup file of photo");
 			SysLog.logThrowable(ex);			
 		}
 	}

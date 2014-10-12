@@ -50,7 +50,7 @@ public class SysConfig extends AbstractConfig {
 	 */
 	public static SysConfig getInstance() {
 		if (instance == null) {
-			SysLog.logInfo("creating generic SysConfig");
+			SysLog.logSysInfo("creating generic SysConfig");
 			setInstance(new SysConfig(""));
 		}
 		return instance;
@@ -82,7 +82,7 @@ public class SysConfig extends AbstractConfig {
 	 */
 	public static synchronized void dropInstance() {
 		instance = null;
-		SysLog.logInfo("dropped current SysConfig");
+		SysLog.logSysInfo("dropped current SysConfig");
 	}
 	
 	/**

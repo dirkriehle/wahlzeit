@@ -85,7 +85,7 @@ public class PhotoUtil {
 		File target = new File(SysConfig.getPhotosDir().asString() + File.separator + id.asString() + size.asInt() + ".jpg");
 		ImageIO.write(targetImage, "jpg", target);
 
-		SysLog.logInfo("created image file for id: " + id.asString() + " of size: " + size.asString());
+		SysLog.logSysInfo("created image file for id: " + id.asString() + " of size: " + size.asString());
 	}
 
 	/**

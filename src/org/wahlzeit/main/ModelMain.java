@@ -128,18 +128,18 @@ public abstract class ModelMain extends AbstractMain {
 		if (result.next()) {
 			int lastUserId = result.getInt("last_user_id");
 			User.setLastUserId(lastUserId);
-			SysLog.logInfo("loaded global variable lastUserId: " + lastUserId);
+			SysLog.logSysInfo("loaded global variable lastUserId: " + lastUserId);
 			int lastPhotoId = result.getInt("last_photo_id");
 			PhotoId.setCurrentIdFromInt(lastPhotoId);
-			SysLog.logInfo("loaded global variable lastPhotoId: " + lastPhotoId);
+			SysLog.logSysInfo("loaded global variable lastPhotoId: " + lastPhotoId);
 			int lastCaseId = result.getInt("last_case_id");
 			Case.setLastCaseId(new CaseId(lastCaseId));
-			SysLog.logInfo("loaded global variable lastCaseId: " + lastCaseId);
+			SysLog.logSysInfo("loaded global variable lastCaseId: " + lastCaseId);
 			int lastSessionId = result.getInt("last_session_id");
 			AbstractServlet.setLastSessionId(lastSessionId);		
-			SysLog.logInfo("loaded global variable lastSessionId: " + lastSessionId);
+			SysLog.logSysInfo("loaded global variable lastSessionId: " + lastSessionId);
 		} else {
-			SysLog.logError("Could not load globals!");
+			SysLog.logSysError("Could not load globals!");
 		}
 		
 		stmt.close();
@@ -160,19 +160,19 @@ public abstract class ModelMain extends AbstractMain {
 		if (rset.next()) {
 			int lastUserId = User.getLastUserId();
 			rset.updateInt("last_user_id", lastUserId);
-			SysLog.logInfo("saved global variable lastUserId: " + lastUserId);
+			SysLog.logSysInfo("saved global variable lastUserId: " + lastUserId);
 			int lastPhotoId = PhotoId.getCurrentIdAsInt();
 			rset.updateInt("last_photo_id", lastPhotoId);
-			SysLog.logInfo("saved global variable lastPhotoId: " + lastPhotoId);
+			SysLog.logSysInfo("saved global variable lastPhotoId: " + lastPhotoId);
 			int lastCaseId = Case.getLastCaseId().asInt();
 			rset.updateInt("last_case_id", lastCaseId);
-			SysLog.logInfo("saved global variable lastCaseId: " + lastCaseId);
+			SysLog.logSysInfo("saved global variable lastCaseId: " + lastCaseId);
 			int lastSessionId = AbstractServlet.getLastSessionId();
 			rset.updateInt("last_session_id", lastSessionId);
-			SysLog.logInfo("saved global variable lastSessionId: " + lastSessionId);
+			SysLog.logSysInfo("saved global variable lastSessionId: " + lastSessionId);
 			rset.updateRow();
 		} else {
-			SysLog.logError("Could not save globals!");
+			SysLog.logSysError("Could not save globals!");
 		}
 		
 		stmt.close();

@@ -97,7 +97,7 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
 	 */
 	public String handlePost(UserSession us, Map args) {
 		if (!hasAccessRights(us, args)) {
-			SysLog.logInfo("insufficient rights for POST from: " + us.getEmailAddressAsString());
+			SysLog.logSysInfo("insufficient rights for POST from: " + us.getEmailAddressAsString());
 			return getIllegalAccessErrorPage(us);
 		}
 				
@@ -146,7 +146,7 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
 	 * 
 	 */
 	protected String performShutdownRequest(UserSession us) {
-		SysLog.logInfo("shutting down");
+		SysLog.logSysInfo("shutting down");
 		
 		try {
 			ServiceMain.getInstance().requestStop();
@@ -162,7 +162,7 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
 	 * 
 	 */
 	protected String performSaveAllRequest(UserSession us) {
-		SysLog.logInfo("saving objects");
+		SysLog.logSysInfo("saving objects");
 
 		try {
 			ServiceMain.getInstance().saveAll();

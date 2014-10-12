@@ -115,7 +115,7 @@ public class AgentManager {
 	public void startThread(AgentThread thread) {
 		thread.start();
 		String name = thread.getAgent().getName();
-		SysLog.logValueWithInfo("agent", name, "agent/thread was started");
+		SysLog.logSysInfo("agent", name, "agent/thread was started");
 	}
 	
 	/**
@@ -152,7 +152,7 @@ public class AgentManager {
 		}
 
 		String agentName = thread.getAgent().getName();
-		SysLog.logValueWithInfo("agent", agentName, "agent/thread was stopped");
+		SysLog.logSysInfo("agent", agentName, "agent/thread was stopped");
 	}
 
 }

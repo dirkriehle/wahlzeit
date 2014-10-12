@@ -148,7 +148,7 @@ public abstract class ObjectManager {
 				updateDependents(obj);
 				obj.resetWriteCount();
 			} else {
-				SysLog.logError("trying to update non-existent object: " + obj.getIdAsString() + "(" + obj.toString() + ")");
+				SysLog.logSysError("trying to update non-existent object: " + obj.getIdAsString() + "(" + obj.toString() + ")");
 			}
 		}
 	}

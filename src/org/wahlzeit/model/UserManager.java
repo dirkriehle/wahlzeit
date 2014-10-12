@@ -152,7 +152,7 @@ public class UserManager extends ObjectManager {
 			result = new Administrator();
 			result.readFrom(rset);
 		} else {
-			SysLog.logInfo("received NONE rights value");
+			SysLog.logSysInfo("received NONE rights value");
 		}
 
 		return result;
@@ -219,14 +219,14 @@ public class UserManager extends ObjectManager {
 				if (!doHasUserByTag(user.getNameAsTag())) {
 					doAddUser(user);
 				} else {
-					SysLog.logValueWithInfo("user", user.getName(), "user had already been loaded");
+					SysLog.logSysInfo("user", user.getName(), "user had already been loaded");
 				}
 			}
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
 		}
 		
-		SysLog.logInfo("loaded all users");
+		SysLog.logSysInfo("loaded all users");
 	}
 	
 	/**

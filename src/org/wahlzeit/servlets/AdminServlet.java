@@ -48,15 +48,15 @@ public class AdminServlet extends AbstractServlet {
 	 */
 	public void myGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String link = request.getRequestURI();
-		UserLog.logValue("requested", link);
+		UserLog.logUserInfo("requested", link);
 		if (isLocalHost(request)) {
 			ServiceMain.getInstance().requestStop();
 			displayNullPage(request, response);
 		} else if (link.length() == "/admin".length()){
-			SysLog.logValue("redirect", PartUtil.DEFAULT_PAGE_NAME);
+			SysLog.logSysInfo("redirect", PartUtil.DEFAULT_PAGE_NAME);
 			redirectRequest(response, PartUtil.DEFAULT_PAGE_NAME);
 		} else {
-			SysLog.logValue("redirect", "../" + PartUtil.DEFAULT_PAGE_NAME);
+			SysLog.logSysInfo("redirect", "../" + PartUtil.DEFAULT_PAGE_NAME);
 			redirectRequest(response, "../" + PartUtil.DEFAULT_PAGE_NAME);
 		}
 	}

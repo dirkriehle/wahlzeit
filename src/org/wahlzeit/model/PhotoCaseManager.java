@@ -140,7 +140,7 @@ public class PhotoCaseManager extends ObjectManager {
 			SysLog.logThrowable(sex);
 		}
 		
-		SysLog.logInfo("loaded all open photo cases");
+		SysLog.logSysInfo("loaded all open photo cases");
 	}
 	
 	/**

@@ -104,7 +104,7 @@ public class NotifyAboutPraiseAgent extends Agent {
 			Photo current = photos[i];
 			if ((current != null) && current.hasSameOwner(photo)) {
 				String id = current.getId().asString();
-				UserLog.logInfo("notifying user: " + photo.getOwnerName() + " about photo: " + id);
+				UserLog.logUserInfo("notifying user: " + photo.getOwnerName() + " about photo: " + id);
 				emailBody += user.getSiteUrlAsString() + id + ".html\n"; // @TODO Application
 				photos[i] = null;
 			}

@@ -37,7 +37,7 @@ public class FileUtil {
 		String result = "";
 		
 		File file = new File(fileName);
-		SysLog.logValueWithInfo("file name", fileName, "opened file for safe string reading");
+		SysLog.logSysInfo("file name", fileName, "opened file for safe string reading");
 
 		FileReader reader = null;
 		try {
@@ -47,7 +47,7 @@ public class FileUtil {
 			char[] readBuffer = new char[50000];
 			int status = reader.read(readBuffer);
 
-			SysLog.logValueWithInfo("file size", Integer.toString(status), "read file");
+			SysLog.logSysInfo("file size", Integer.toString(status), "read file");
 			
 			if (status != -1) {
 				result = new String(readBuffer, 0, status);

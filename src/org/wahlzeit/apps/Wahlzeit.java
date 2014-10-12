@@ -44,11 +44,12 @@ public class Wahlzeit implements ServletContextListener {
 			// configures log4j
 			String contextPath = sc.getContextPath();
 			System.setProperty("contextPath", contextPath);
-			SysLog.logValue("context-path", contextPath);
+			SysLog.logSysInfo("context-path", contextPath);
 			
 			// determines file system root path to resources
 			File dummyFile = new File(sc.getRealPath("dummy.txt"));
 			String rootDir = dummyFile.getParent();			
+			SysLog.logSysInfo("root-directory", rootDir);
 
 			ServiceMain.getInstance().startUp(false, rootDir);
 		} catch (Exception ex) {

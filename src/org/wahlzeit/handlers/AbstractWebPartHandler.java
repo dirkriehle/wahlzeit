@@ -155,12 +155,12 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	 */
 	public final String handleGet(UserSession us, String link, Map args) {
 		if (!hasAccessRights(us, args)) {
-			SysLog.logInfo("insufficient rights for GET from: " + us.getEmailAddressAsString());
+			SysLog.logSysInfo("insufficient rights for GET from: " + us.getEmailAddressAsString());
 			return getIllegalAccessErrorPage(us);
 		}
 		
 		if (!isWellFormedGet(us, link, args)) {
-			SysLog.logInfo("received ill-formed GET from: " + us.getEmailAddressAsString());
+			SysLog.logSysInfo("received ill-formed GET from: " + us.getEmailAddressAsString());
 			return getIllegalArgumentErrorPage(us);
 		}
 		

@@ -84,12 +84,12 @@ public abstract class Agent implements Runnable {
 
 		while(!isToStop) {
 			try {
-				SysLog.logInfo("going to sleep for: " + (period / 1000) + " seconds");
+				SysLog.logSysInfo("going to sleep for: " + (period / 1000) + " seconds");
 				Thread.sleep(period);
 			} catch (Exception ex) {
 				// do nothing
 			}
-			SysLog.logInfo("just woke up");
+			SysLog.logSysInfo("just woke up");
 			doRun();
 		}
 	}

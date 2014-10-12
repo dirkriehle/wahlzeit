@@ -51,7 +51,7 @@ public class LoggingEmailService implements EmailService {
 		String toString = (to == null) ? "null" : to.asString();
 		String subjectString = (subject == null) ? "null" : subject;
 		
-		SysLog.logInfo("Called sendEmail from: " + fromString + " to: " + toString + " with subject: " + subjectString);
+		SysLog.logSysInfo("Called sendEmail from: " + fromString + " to: " + toString + " with subject: " + subjectString);
 		
 		decorated.sendEmail(from, to, subject, body);
 	}
@@ -80,7 +80,7 @@ public class LoggingEmailService implements EmailService {
 		String bccString = (bcc == null) ? "null" : bcc.asString();
 		String subjectString = (subject == null) ? "null" : subject;
 		
-		SysLog.logInfo("Called sendEmail from: " + fromString + " to: " + toString + " bcc: " + bccString + " with subject: " + subjectString);
+		SysLog.logSysInfo("Called sendEmail from: " + fromString + " to: " + toString + " bcc: " + bccString + " with subject: " + subjectString);
 		
 		decorated.sendEmail(from, to, bcc, subject, body);
 	}

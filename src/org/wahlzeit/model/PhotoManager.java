@@ -177,14 +177,14 @@ public class PhotoManager extends ObjectManager {
 				if (!doHasPhoto(photo.getId())) {
 					doAddPhoto(photo);
 				} else {
-					SysLog.logValueWithInfo("photo", photo.getId().asString(), "photo had already been loaded");
+					SysLog.logSysInfo("photo", photo.getId().asString(), "photo had already been loaded");
 				}
 			}
 		} catch (SQLException sex) {
 			SysLog.logThrowable(sex);
 		}
 		
-		SysLog.logInfo("loaded all photos");
+		SysLog.logSysInfo("loaded all photos");
 	}
 	
 	/**

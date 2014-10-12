@@ -146,7 +146,7 @@ public class UserSession extends Session {
 		if (client != null) {
 			client.setEmailAddress(emailAddress);
 		} else {
-			SysLog.logError("attempted to set email address to null client");
+			SysLog.logSysError("attempted to set email address to null client");
 		}
 	}
 	

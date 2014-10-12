@@ -67,12 +67,12 @@ public abstract class AbstractWebFormHandler extends AbstractWebPartHandler impl
 	 */
 	public final String handlePost(UserSession us, Map args) {
 		if (!hasAccessRights(us, args)) {
-			SysLog.logInfo("insufficient rights for POST from: " + us.getEmailAddressAsString());
+			SysLog.logSysInfo("insufficient rights for POST from: " + us.getEmailAddressAsString());
 			return getIllegalAccessErrorPage(us);
 		}
 		
 		if (!isWellFormedPost(us, args)) {
-			SysLog.logInfo("received ill-formed POST from: " + us.getEmailAddressAsString());
+			SysLog.logSysInfo("received ill-formed POST from: " + us.getEmailAddressAsString());
 			return getIllegalArgumentErrorPage(us);
 		}
 		

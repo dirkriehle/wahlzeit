@@ -130,7 +130,7 @@ public abstract class AbstractServlet extends HttpServlet {
 
 				// yes, "Referer"; typo in original standard documentation
 				String referrer = request.getHeader("Referer");
-				SysLog.logInfo("request referrer: " + referrer);
+				SysLog.logSysInfo("request referrer: " + referrer);
 
 				if (request.getLocale().getLanguage().equals("de")) { // @FIXME
 					result.setConfiguration(LanguageConfigs.get(Language.GERMAN));
@@ -174,7 +174,7 @@ public abstract class AbstractServlet extends HttpServlet {
 	protected void configureResponse(Session ctx, HttpServletResponse response, WebPart result) throws IOException {
 		long processingTime = ctx.getProcessingTime();
 		result.addString("processingTime", StringUtil.asStringInSeconds((processingTime == 0) ? 1 : processingTime));
-		SysLog.logValue("proctime", String.valueOf(processingTime));
+		SysLog.logSysInfo("proctime", String.valueOf(processingTime));
 		
 		response.setContentType("text/html");
 
