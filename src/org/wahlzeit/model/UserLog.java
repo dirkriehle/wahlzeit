@@ -56,14 +56,14 @@ public class UserLog extends Log {
 	 * 
 	 */
 	public static void logValue(String type, String value) {
-		logValue("ul", type, value);
+		logInfo("ul", type, value);
 	}
 	
 	/**
 	 * 
 	 */
 	public static void logValueWithInfo(String type, String value, String info) {
-		logValueWithInfo("ul", type, value, info);
+		logInfo("ul", type, value, info);
 	}
 	
 	/**

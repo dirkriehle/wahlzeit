@@ -52,17 +52,7 @@ public class Log {
 	/**
 	 * 
 	 */
-	public static void logError(String l, String s) {
-		StringBuffer sb = createLogEntry(l);
-		addLogType(sb, "error");
-		addField(sb, "error", s);
-		log(sb);
-	}
-	
-	/**
-	 * 
-	 */
-	public static void logValue(String level, String type, String value) {
+	public static void logInfo(String level, String type, String value) {
 		StringBuffer sb = createLogEntry(level);
 		addLogType(sb, "info");
 		addField(sb, type, value);
@@ -72,7 +62,7 @@ public class Log {
 	/**
 	 * 
 	 */
-	public static void logValueWithInfo(String level, String type, String value, String info) {
+	public static void logInfo(String level, String type, String value, String info) {
 		StringBuffer sb = createLogEntry(level);
 		addLogType(sb, "info");
 		addField(sb, type, value);
@@ -91,6 +81,16 @@ public class Log {
 		log(sb);
 	}
 
+	/**
+	 * 
+	 */
+	public static void logError(String l, String s) {
+		StringBuffer sb = createLogEntry(l);
+		addLogType(sb, "error");
+		addField(sb, "error", s);
+		log(sb);
+	}
+	
 	/**
 	 * 
 	 */

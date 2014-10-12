@@ -35,7 +35,28 @@ public class SysLog extends Log {
 	 * 
 	 */
 	public static void logInfo(String s) {
-		logInfo("sl", s);
+		Log.logInfo("sl", s);
+	}
+	
+	/**
+	 * 
+	 */
+	public static void logValue(String type, String value) {
+		Log.logInfo("sl", type, value);
+	}
+	
+	/**
+	 * 
+	 */
+	public static void logValueWithInfo(String type, String value, String info) {
+		Log.logInfo("sl", type, value, info);
+	}
+	
+	/**
+	 * 
+	 */
+	public static void logCreatedObject(String type, String object) {
+		Log.logCreatedObject("sl", type, object);
 	}
 	
 	/**
@@ -43,27 +64,6 @@ public class SysLog extends Log {
 	 */
 	public static void logError(String s) {
 		logError("sl", s);
-	}
-	
-	/**
-	 * 
-	 */
-	public static void logValue(String type, String value) {
-		logValue("sl", type, value);
-	}
-	
-	/**
-	 * 
-	 */
-	public static void logValueWithInfo(String type, String value, String info) {
-		logValueWithInfo("sl", type, value, info);
-	}
-	
-	/**
-	 * 
-	 */
-	public static void logCreatedObject(String type, String object) {
-		logCreatedObject("sl", type, object);
 	}
 	
 	/**

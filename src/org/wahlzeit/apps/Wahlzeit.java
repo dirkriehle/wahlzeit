@@ -32,7 +32,7 @@ import org.wahlzeit.services.*;
  * @author dirkriehle
  *
  */
-public class GenericApp implements ServletContextListener {
+public class Wahlzeit implements ServletContextListener {
 	
 	/**
 	 * 
@@ -44,7 +44,8 @@ public class GenericApp implements ServletContextListener {
 			// configures log4j
 			String contextPath = sc.getContextPath();
 			System.setProperty("contextPath", contextPath);
-
+			SysLog.logValue("context-path", contextPath);
+			
 			// determines file system root path to resources
 			File dummyFile = new File(sc.getRealPath("dummy.txt"));
 			String rootDir = dummyFile.getParent();			
