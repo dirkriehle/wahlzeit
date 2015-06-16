@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+    <cron>
+        <url>/_ah/sessioncleanup?clear</url>
+        <description>Cleanup old sessions</description>
+        <!--> make sure to keep it synchronized with the <session-timeout> in web.xml!</!-->
+        <schedule>every 30 minutes</schedule>
+    </cron>
+</cronentries>

@@ -1,0 +1,55 @@
+apply plugin: 'war'
+apply plugin: 'appengine'
+apply plugin: 'java'
+
+def gaeVersion = "1.9.21"
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "com.google.appengine:gradle-appengine-plugin:1.9.21"
+    }
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    appengineSdk 'com.google.appengine:appengine-java-sdk:' + gaeVersion
+
+    compile 'com.google.appengine:appengine-api-1.0-sdk:' + gaeVersion
+    compile 'com.google.appengine.tools:appengine-gcs-client:0.4.4'
+    compile 'com.googlecode.objectify:objectify:5.1.5'
+    compile 'javax.servlet:servlet-api:2.5' // GAE works with 2.5
+    compile 'commons-fileupload:commons-fileupload:1.2'
+
+    // testing dependencies
+    testCompile 'com.google.appengine:appengine-testing:' + gaeVersion
+    testCompile 'com.google.appengine:appengine-api-stubs:' + gaeVersion
+    testCompile 'com.google.appengine:appengine-api-labs:' + gaeVersion
+    testCompile 'junit:junit:4.+'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+}
+
+test {
+    filter {
+        //include all tests from package
+        includeTestsMatching "org.wahlzeit.model.*"
+    }
+}
+
+appengine {
+    httpPort = 8080
+    downloadSdk = true
+    jvmFlags = ['-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000']
+
+    appcfg {
+        oauth2 = true
+        noCookies = false
+    }
+}

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5"
+		 xmlns="http://java.sun.com/xml/ns/javaee"
+		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+
+	<!--> Main listener Application </!-->
+	<listener>
+		<listener-class>org.wahlzeit.apps.Wahlzeit</listener-class>
+	</listener>
+	<!--> Main listener Application end </!-->
+
+
+	<!--> Servlets </-->
+	<servlet>
+		<servlet-name>showStaticStuff</servlet-name>
+		<servlet-class>org.wahlzeit.servlets.StaticDataServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>showStaticStuff</servlet-name>
+		<url-pattern>/org-wahlzeit-data/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>persistPhotos</servlet-name>
+		<servlet-class>org.wahlzeit.servlets.PersistPhotoAsynchronousServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>persistPhotos</servlet-name>
+		<url-pattern>/persistPhoto</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>main</servlet-name>
+		<servlet-class>org.wahlzeit.servlets.MainServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>main</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+	<!--> Servlets end </-->
+
+
+	<!--> Tidy up servlets </-->
+	<servlet>
+		<servlet-name>_ah_sessioncleanup</servlet-name>
+		<servlet-class>org.wahlzeit.servlets.SessionCleanupServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>_ah_sessioncleanup</servlet-name>
+		<url-pattern>/_ah/sessioncleanup</url-pattern>
+	</servlet-mapping>
+	<!--> Tidy up servlets end </-->
+
+
+	<!--> Security constraints for cron jobs etc.</!-->
+	<security-constraint>
+		<web-resource-collection>
+			<url-pattern>/_ah/sessioncleanup/*</url-pattern>
+			<url-pattern>/cron/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+	<!--> Security constraints for cron jobs etc. end </!-->
+
+
+	<!--> Welcome files </-->
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+	<!--> Welcome files end </-->
+
+
+	<!--> Objectify Filter </!-->
+	<filter>
+		<filter-name>ObjectifyFilter</filter-name>
+		<filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ObjectifyFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!--> Objectify Filter end </!-->
+
+
+	<!--> Session config </!-->
+	<session-config>
+        <!--> make sure to keep it synchronized with schedule of "Cleanup old sessions" cron job in cron.xml </!-->
+        <session-timeout>30</session-timeout>
+	</session-config>
+	<!--> Session config end </!-->
+</web-app>
