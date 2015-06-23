@@ -221,7 +221,7 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
 
         Photo photo = us.getPriorPhoto();
 
-        result.addString(Photo.PRAISE, photo.getPraiseAsString(us.getConfiguration()));
+        result.addString(Photo.PRAISE, photo.getPraiseAsString(us.getClient().getLanguageConfiguration()));
         result.addString(Photo.THUMB, getPhotoThumb(us, photo));
         result.addString(Photo.CAPTION, getPhotoCaption(us, photo));
 

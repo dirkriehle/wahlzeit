@@ -21,6 +21,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.Client;
+import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.UserSession;
 import org.wahlzeit.services.ConfigDir;
 import org.wahlzeit.services.Language;
@@ -63,19 +64,19 @@ public abstract class AbstractWebPageHandler extends AbstractWebPartHandler impl
      *
      */
     protected void makeWebPageFrame(UserSession us, WebPart page) {
-        page.addString("title", us.getConfiguration().getPageTitle());
+        page.addString("title", us.getClient().getLanguageConfiguration().getPageTitle());
 
         makeWebPageHeading(us, page);
 
-        page.addString("footer", us.getConfiguration().getPageFooter(us.getPhotoSize()));
-        page.addString("mission", us.getConfiguration().getPageMission());
+        page.addString("footer", us.getClient().getLanguageConfiguration().getPageFooter(us.getPhotoSize()));
+        page.addString("mission", us.getClient().getLanguageConfiguration().getPageMission());
     }
 
     /**
      *
      */
     protected void makeWebPageHeading(UserSession us, WebPart page) {
-        Language langValue = us.getConfiguration().getLanguage();
+        Language langValue = us.getClient().getLanguage();
         String heading = HtmlUtil.asImg(getHeadingImageAsRelativeResourcePathString(langValue));
         heading = HtmlUtil.asHref(us.getSiteUrl(), heading);
         page.addString("heading", heading);
@@ -94,15 +95,16 @@ public abstract class AbstractWebPageHandler extends AbstractWebPartHandler impl
     protected void makeWebPageMenu(UserSession us, WebPart page) {
         Client client = us.getClient();
         String menu = "";
+        ModelConfig config = client.getLanguageConfiguration();
 
         if (client.hasAdministratorRights()) {
-            menu = us.getConfiguration().getAdministratorMenu();
+            menu = config.getAdministratorMenu();
         } else if (client.hasModeratorRights()) {
-            menu = us.getConfiguration().getModeratorMenu();
+            menu = config.getModeratorMenu();
         } else if (client.hasUserRights()) {
-            menu = us.getConfiguration().getUserMenu();
+            menu = config.getUserMenu();
         } else {
-            menu = us.getConfiguration().getGuestMenu();
+            menu = config.getGuestMenu();
         }
 
         page.addString("menu", menu.toString());

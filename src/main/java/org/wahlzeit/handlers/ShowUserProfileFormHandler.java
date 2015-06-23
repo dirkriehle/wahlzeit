@@ -21,6 +21,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.User;
 import org.wahlzeit.model.UserSession;
@@ -48,16 +49,17 @@ public class ShowUserProfileFormHandler extends AbstractWebFormHandler {
         User user = (User) us.getClient();
 
         Photo photo = user.getUserPhoto();
+        ModelConfig config = us.getClient().getLanguageConfiguration();
         part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 
         part.maskAndAddString(User.NICK_NAME, user.getNickName());
-        part.addString(User.STATUS, us.getConfiguration().asValueString(user.getStatus()));
+        part.addString(User.STATUS, config.asValueString(user.getStatus()));
         part.maskAndAddString(User.EMAIL_ADDRESS, user.getEmailAddress().asString());
-        part.addString(User.MEMBER_SINCE, us.getConfiguration().asDateString(user.getCreationTime()));
-        part.addString(User.NOTIFY_ABOUT_PRAISE, us.getConfiguration().asYesOrNoString(user.getNotifyAboutPraise()));
+        part.addString(User.MEMBER_SINCE, config.asDateString(user.getCreationTime()));
+        part.addString(User.NOTIFY_ABOUT_PRAISE, config.asYesOrNoString(user.getNotifyAboutPraise()));
         part.addString(User.NO_PHOTOS, String.valueOf(user.getNoOfPhotos()));
-        part.addString(User.GENDER, us.getConfiguration().asValueString(user.getGender()));
-        part.addString(User.LANGUAGE, us.getConfiguration().asValueString(user.getLanguage()));
+        part.addString(User.GENDER, config.asValueString(user.getGender()));
+        part.addString(User.LANGUAGE, config.asValueString(user.getLanguage()));
     }
 
     /**

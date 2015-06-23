@@ -21,7 +21,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.AccessRights;
-import org.wahlzeit.model.LanguageConfigs;
+import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.PhotoSize;
 import org.wahlzeit.model.UserSession;
 import org.wahlzeit.services.Language;
@@ -70,7 +70,7 @@ public class SetOptionsFormHandler extends AbstractWebFormHandler {
     protected String doHandlePost(UserSession us, Map args) {
         String language = us.getAndSaveAsString(args, LANGUAGE);
         Language langValue = Language.getFromString(language);
-        us.setConfiguration(LanguageConfigs.get(langValue));
+        us.getClient().setLanguage(langValue);
 
         String photoSize = us.getAndSaveAsString(args, PHOTO_SIZE);
         PhotoSize photoValue = PhotoSize.getFromString(photoSize);
@@ -81,9 +81,10 @@ public class SetOptionsFormHandler extends AbstractWebFormHandler {
                 addParameter("language", language).
                 addParameter("photo size", photoSize).toString());
 
-        String msg1 = us.getConfiguration().getOptionsWereSet();
-        String msg2 = us.getConfiguration().getNoteMaximumPhotoSize();
-        String msg3 = us.getConfiguration().getContinueWithShowPhoto();
+        ModelConfig config = us.getClient().getLanguageConfiguration();
+        String msg1 = config.getOptionsWereSet();
+        String msg2 = config.getNoteMaximumPhotoSize();
+        String msg3 = config.getContinueWithShowPhoto();
         us.setThreeLineMessage(msg1, msg2, msg3);
 
         return PartUtil.SHOW_NOTE_PAGE_NAME;

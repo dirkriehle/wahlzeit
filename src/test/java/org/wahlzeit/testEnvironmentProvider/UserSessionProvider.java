@@ -4,6 +4,7 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Work;
 import org.junit.rules.ExternalResource;
 import org.wahlzeit.model.EnglishModelConfig;
+import org.wahlzeit.model.GermanModelConfig;
 import org.wahlzeit.model.Guest;
 import org.wahlzeit.model.LanguageConfigs;
 import org.wahlzeit.model.UserSession;
@@ -28,13 +29,18 @@ public class UserSessionProvider extends ExternalResource {
 
     @Override
     protected void before() throws Throwable {
+        // init language configs because they are used e.g. for AbstractWebPartHandler
+        LanguageConfigs.put(Language.ENGLISH, new EnglishModelConfig());
+        LanguageConfigs.put(Language.GERMAN, new GermanModelConfig());
+
         HttpSession httpSession = mock(HttpSession.class);
         when(httpSession.getAttribute(UserSession.INITIALIZED)).thenReturn(UserSession.INITIALIZED);
-        when(httpSession.getAttribute(UserSession.CONFIGURATION)).thenReturn(new EnglishModelConfig());
         String guestName = ObjectifyService.run(new Work<String>() {
             @Override
             public String run() {
-                return new Guest().getId();
+                Guest guest = new Guest();
+                guest.setLanguage(Language.ENGLISH);
+                return guest.getId();
             }
         });
         when(httpSession.getAttribute(UserSession.CLIENT_ID)).thenReturn(guestName);
@@ -44,7 +50,6 @@ public class UserSessionProvider extends ExternalResource {
         when(httpSession.getAttribute(UserSession.SAVED_ARGS)).thenReturn(dummyMap);
 
         UserSession userSession = new UserSession(USER_SESSION_NAME, "", httpSession, "en");
-        userSession.setConfiguration(LanguageConfigs.get(Language.ENGLISH));
         SessionManager.setThreadLocalSession(userSession);
     }
 

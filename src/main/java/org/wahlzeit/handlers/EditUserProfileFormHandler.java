@@ -22,7 +22,7 @@ package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.AccessRights;
 import org.wahlzeit.model.Gender;
-import org.wahlzeit.model.LanguageConfigs;
+import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.User;
 import org.wahlzeit.model.UserSession;
@@ -83,12 +83,13 @@ public class EditUserProfileFormHandler extends AbstractWebFormHandler {
         boolean notify = (status != null) && status.equals("on");
         user.setNotifyAboutPraise(notify);
 
+
         try {
             if (!nickName.equals(user.getNickName())) {
                 user.setNickName(nickName);
             }
         } catch (IllegalArgumentException e) {
-            us.setMessage(us.getConfiguration().getNickNameExists(nickName));
+            us.setMessage(us.getClient().getLanguageConfiguration().getNickNameExists(nickName));
             return PartUtil.SHOW_NOTE_PAGE_NAME;
         }
 
@@ -101,13 +102,13 @@ public class EditUserProfileFormHandler extends AbstractWebFormHandler {
 
         if (!StringUtil.isNullOrEmptyString(language)) {
             Language langValue = Language.getFromString(language);
-            us.setConfiguration(LanguageConfigs.get(langValue));
             user.setLanguage(langValue);
             log.info(LogBuilder.createUserMessage().
                     addParameter("Language", langValue.asString()).toString());
         }
 
-        us.setTwoLineMessage(us.getConfiguration().getProfileUpdateSucceeded(), us.getConfiguration().getContinueWithShowUserHome());
+        ModelConfig config = us.getClient().getLanguageConfiguration();
+        us.setTwoLineMessage(config.getProfileUpdateSucceeded(), config.getContinueWithShowUserHome());
 
         return PartUtil.SHOW_NOTE_PAGE_NAME;
     }

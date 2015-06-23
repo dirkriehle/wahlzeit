@@ -23,6 +23,7 @@ package org.wahlzeit.handlers;
 import org.wahlzeit.agents.AsyncTaskExecutor;
 import org.wahlzeit.model.AccessRights;
 import org.wahlzeit.model.FlagReason;
+import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoCase;
 import org.wahlzeit.model.PhotoCaseManager;
@@ -84,15 +85,16 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
         String flagger = us.getAndSaveAsString(args, PhotoCase.FLAGGER);
         FlagReason reason = FlagReason.getFromString(us.getAndSaveAsString(args, PhotoCase.REASON));
         String explanation = us.getAndSaveAsString(args, PhotoCase.EXPLANATION);
+        ModelConfig config = us.getClient().getLanguageConfiguration();
 
         if (StringUtil.isNullOrEmptyString(flagger)) {
-            us.setMessage(us.getConfiguration().getEmailAddressIsMissing());
+            us.setMessage(config.getEmailAddressIsMissing());
             return PartUtil.FLAG_PHOTO_PAGE_NAME;
         } else if (!StringUtil.isValidStrictEmailAddress(flagger)) {
-            us.setMessage(us.getConfiguration().getEmailAddressIsInvalid());
+            us.setMessage(config.getEmailAddressIsInvalid());
             return PartUtil.FLAG_PHOTO_PAGE_NAME;
         } else if (explanation.length() > 1024) {
-            us.setMessage(us.getConfiguration().getInputIsTooLong());
+            us.setMessage(config.getInputIsTooLong());
             return PartUtil.FLAG_PHOTO_PAGE_NAME;
         }
 
@@ -109,20 +111,20 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
 
         EmailService emailService = EmailServiceManager.getDefaultService();
 
-        EmailAddress to = us.getConfiguration().getModeratorEmailAddress();
+        EmailAddress to = config.getModeratorEmailAddress();
 
         String emailSubject = "Photo: " + id + " of user: " + photo.getOwnerId() + " got flagged";
         String emailBody = "Photo: " + us.getSiteUrl() + id + ".html\n\n";
         emailBody += "Reason: " + reason + "\n\n";
         emailBody += "Explanation: " + explanation + "\n\n";
 
-        emailService.sendEmailIgnoreException(to, us.getConfiguration().getAuditEmailAddress(), emailSubject, emailBody);
+        emailService.sendEmailIgnoreException(to, config.getAuditEmailAddress(), emailSubject, emailBody);
 
         log.info(LogBuilder.createUserMessage()
                 .addAction("Flag Photo")
                 .addParameter("Photo", photo.getId().asString()).toString());
 
-        us.setTwoLineMessage(us.getConfiguration().getModeratorWasInformed(), us.getConfiguration().getContinueWithShowPhoto());
+        us.setTwoLineMessage(config.getModeratorWasInformed(), config.getContinueWithShowPhoto());
 
         return PartUtil.SHOW_NOTE_PAGE_NAME;
     }

@@ -57,7 +57,7 @@ public class SetLanguagePageHandler extends AbstractWebPageHandler {
             result = LanguageConfigs.get(Language.JAPANESE);
         }
 
-        us.setConfiguration(result);
+        us.getClient().setLanguage(result.getLanguage());
 
         return link;
     }
@@ -66,9 +66,10 @@ public class SetLanguagePageHandler extends AbstractWebPageHandler {
      *
      */
     protected void makeWebPageBody(UserSession us, WebPart page) {
-        page.addString("noteHeading", us.getConfiguration().getInformation());
-        String msg1 = us.getConfiguration().getNewLanguageSet();
-        String msg2 = us.getConfiguration().getContinueWithShowPhoto();
+        ModelConfig config = us.getClient().getLanguageConfiguration();
+        page.addString("noteHeading", config.getInformation());
+        String msg1 = config.getNewLanguageSet();
+        String msg2 = config.getContinueWithShowPhoto();
         page.addString("note", HtmlUtil.asP(msg1) + HtmlUtil.asP(msg2));
     }
 

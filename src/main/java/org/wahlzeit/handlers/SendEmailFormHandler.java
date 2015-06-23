@@ -21,6 +21,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.User;
@@ -68,8 +69,8 @@ public class SendEmailFormHandler extends AbstractWebFormHandler {
      */
     protected String doHandleGet(UserSession us, String link, Map args) {
         if (!(us.getClient() instanceof User)) {
-            us.setHeading(us.getConfiguration().getInformation());
-            us.setMessage(us.getConfiguration().getNeedToSignupFirst());
+            us.setHeading(us.getClient().getLanguageConfiguration().getInformation());
+            us.setMessage(us.getClient().getLanguageConfiguration().getNeedToSignupFirst());
             return PartUtil.SHOW_NOTE_PAGE_NAME;
         }
 
@@ -91,7 +92,7 @@ public class SendEmailFormHandler extends AbstractWebFormHandler {
         part.maskAndAddString(USER, photo.getOwnerId());
 
         User user = (User) us.getClient();
-        part.addString(USER_LANGUAGE, us.getConfiguration().asValueString(user.getLanguage()));
+        part.addString(USER_LANGUAGE, user.getLanguageConfiguration().asValueString(user.getLanguage()));
 
         part.maskAndAddStringFromArgs(args, EMAIL_SUBJECT);
         part.maskAndAddStringFromArgs(args, EMAIL_BODY);
@@ -113,25 +114,26 @@ public class SendEmailFormHandler extends AbstractWebFormHandler {
 
         String emailSubject = us.getAndSaveAsString(args, EMAIL_SUBJECT);
         String emailBody = us.getAndSaveAsString(args, EMAIL_BODY);
+        ModelConfig config = us.getClient().getLanguageConfiguration();
         if ((emailSubject.length() > 128) || (emailBody.length() > 1024)) {
-            us.setMessage(us.getConfiguration().getInputIsTooLong());
+            us.setMessage(config.getInputIsTooLong());
             return PartUtil.SEND_EMAIL_PAGE_NAME;
         }
 
         UserManager userManager = UserManager.getInstance();
         User toUser = userManager.getUserById(photo.getOwnerId());
 
-        emailSubject = us.getConfiguration().getSendEmailSubjectPrefix() + emailSubject;
-        emailBody = us.getConfiguration().getSendEmailBodyPrefix() + emailBody + us.getConfiguration().getSendEmailBodyPostfix();
+        emailSubject = config.getSendEmailSubjectPrefix() + emailSubject;
+        emailBody = config.getSendEmailBodyPrefix() + emailBody + config.getSendEmailBodyPostfix();
 
         EmailService emailService = EmailServiceManager.getDefaultService();
-        emailService.sendEmailIgnoreException(toUser.getEmailAddress(), us.getConfiguration().getAuditEmailAddress(), emailSubject, emailBody);
+        emailService.sendEmailIgnoreException(toUser.getEmailAddress(), config.getAuditEmailAddress(), emailSubject, emailBody);
 
         log.info(LogBuilder.createUserMessage().
                 addAction("Send E-Mail").
                 addParameter("Recipient", toUser.getNickName()).toString());
 
-        us.setMessage(us.getConfiguration().getEmailWasSent() + toUser.getNickName() + "!");
+        us.setMessage(config.getEmailWasSent() + toUser.getNickName() + "!");
 
         return PartUtil.SHOW_NOTE_PAGE_NAME;
     }

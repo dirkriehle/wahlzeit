@@ -55,7 +55,6 @@ public class UserSession extends Session implements Serializable {
     public static final String HEADING = "heading";
     public static final String CLIENT_ID = "clientId";
     public static final String SITE_URL = "siteUrl";
-    public static final String CONFIGURATION = "configuration";
     public static final String SAVED_ARGS = "savedArgs";
     public static final String INITIALIZED = "initialized";
     public static final String ANONYMOUS_CLIENT = "anon";
@@ -75,19 +74,18 @@ public class UserSession extends Session implements Serializable {
             httpSession.setAttribute(SITE_URL, mySiteUrl);
             httpSession.setAttribute(PHOTO_FILTER, PhotoFactory.getInstance().createPhotoFilter());
 
-            Language language;
+            setClient(new Guest());
             try {
-                language = Language.getFromIsoCode(myLanguage);
+                Language language = Language.getFromIsoCode(myLanguage);
+                getClient().setLanguage(language);
             } catch (IllegalArgumentException e) {
-                language = Language.ENGLISH;
+                // default language of guest is english
             }
-            setConfiguration(LanguageConfigs.get(language));
 
             initPhotoSize();
             clearDisplayedPhotos();
             clearPraisedPhotos();
             clearSavedArgs();
-            setClient(new Guest());
             httpSession.setAttribute(INITIALIZED, INITIALIZED);
 
         }
@@ -131,31 +129,9 @@ public class UserSession extends Session implements Serializable {
      * @methodtype init
      */
     public void clear() {
-        initConfiguration();
         initPhotoSize();
         clearDisplayedPhotos();
         clearPraisedPhotos();
-    }
-
-    /**
-     * @methodtype init
-     */
-    protected void initConfiguration() {
-        setConfiguration(LanguageConfigs.get(Language.ENGLISH));
-    }
-
-    /**
-     * @methodtype get
-     */
-    public ModelConfig getConfiguration() {
-        return (ModelConfig) httpSession.getAttribute(CONFIGURATION);
-    }
-
-    /**
-     * @methodtype set
-     */
-    public void setConfiguration(ModelConfig cfg) {
-        httpSession.setAttribute(CONFIGURATION, cfg);
     }
 
     /**

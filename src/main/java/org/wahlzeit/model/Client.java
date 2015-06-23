@@ -26,6 +26,7 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Parent;
 import org.wahlzeit.services.EmailAddress;
+import org.wahlzeit.services.Language;
 import org.wahlzeit.services.ObjectManager;
 import org.wahlzeit.services.Persistent;
 
@@ -42,6 +43,7 @@ public abstract class Client implements Serializable, Persistent {
 
     public static final String ID = "id";
     public static final String NICK_NAME = "nickName";
+    public static final String LANGUAGE = "language";
 
     @Id
     protected String id;
@@ -65,6 +67,8 @@ public abstract class Client implements Serializable, Persistent {
     protected int writeCount = 0;
 
     private String httpSessionId;
+
+    protected Language language = Language.ENGLISH;
 
 
     /**
@@ -207,6 +211,36 @@ public abstract class Client implements Serializable, Persistent {
     public void setHttpSessionId(String httpSessionId) {
         this.httpSessionId = httpSessionId;
         incWriteCount();
+    }
+
+    /**
+     * @methodtype get
+     */
+    public Language getLanguage() {
+        return language;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setLanguage(Language newLanguage) {
+        language = newLanguage;
+        incWriteCount();
+        doSetLanguage(newLanguage);
+    }
+
+    /**
+     * @methodtype set
+     * @methodpoperty hook
+     */
+    protected void doSetLanguage(Language newLanguage) {
+    }
+
+    /**
+     * @methodtype get
+     */
+    public ModelConfig getLanguageConfiguration() {
+        return LanguageConfigs.get(language);
     }
 
 }

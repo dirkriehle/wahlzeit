@@ -52,7 +52,7 @@ public class ShowNotePageHandler extends AbstractWebPageHandler {
      */
     protected void makeWebPageBody(UserSession us, WebPart page) {
         String heading = us.getHeading();
-        heading = StringUtil.isNullOrEmptyString(heading) ? us.getConfiguration().getThankYou() : heading;
+        heading = StringUtil.isNullOrEmptyString(heading) ? us.getClient().getLanguageConfiguration().getThankYou() : heading;
         page.addString("noteHeading", heading);
 
         page.addString("note", us.getMessage());

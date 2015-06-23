@@ -21,6 +21,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.PhotoSize;
@@ -74,7 +75,7 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
      */
     protected final WebPart createWebPart(UserSession us, String name) {
         WebPartTemplateService wpts = WebPartTemplateService.getInstance();
-        WebPartTemplate tmpl = wpts.getTemplate(us.getConfiguration().getLanguageCode(), name);
+        WebPartTemplate tmpl = wpts.getTemplate(us.getClient().getLanguageConfiguration().getLanguageCode(), name);
         return new WebPart(tmpl);
     }
 
@@ -87,7 +88,7 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
             String imageLink = getPhotoAsRelativeResourcePathString(photo, PhotoSize.THUMB);
             result = HtmlUtil.asImg(HtmlUtil.asPath(imageLink), photo.getThumbWidth(), photo.getThumbHeight());
         } else {
-            Language langValue = us.getConfiguration().getLanguage();
+            Language langValue = us.getClient().getLanguage();
             result = HtmlUtil.asImg(getEmptyImageAsRelativeResourcePathString(langValue));
         }
         return result;
@@ -112,14 +113,14 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
      *
      */
     protected String getPhotoSummary(UserSession us, Photo photo) {
-        return photo.getSummary(us.getConfiguration());
+        return photo.getSummary(us.getClient().getLanguageConfiguration());
     }
 
     /**
      *
      */
     protected String getPhotoCaption(UserSession us, Photo photo) {
-        return photo.getCaption(us.getConfiguration());
+        return photo.getCaption(us.getClient().getLanguageConfiguration());
     }
 
     /**
@@ -189,9 +190,10 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
      *
      */
     protected String getIllegalAccessErrorPage(UserSession us) {
-        us.setHeading(us.getConfiguration().getInformation());
+        ModelConfig config = us.getClient().getLanguageConfiguration();
+        us.setHeading(config.getInformation());
 
-        String msg1 = us.getConfiguration().getIllegalAccessError();
+        String msg1 = config.getIllegalAccessError();
         us.setMessage(msg1);
 
         return PartUtil.SHOW_NOTE_PAGE_NAME;
@@ -208,12 +210,13 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
      *
      */
     protected String getIllegalArgumentErrorPage(UserSession us) {
-        us.setHeading(us.getConfiguration().getInformation());
+        ModelConfig config = us.getClient().getLanguageConfiguration();
+        us.setHeading(config.getInformation());
 
-        String msg1 = us.getConfiguration().getIllegalArgumentError();
-        String msg2 = us.getConfiguration().getContinueWithShowPhoto();
+        String msg1 = config.getIllegalArgumentError();
+        String msg2 = config.getContinueWithShowPhoto();
         if (us.getClient() instanceof User) {
-            msg2 = us.getConfiguration().getContinueWithShowUserHome();
+            msg2 = config.getContinueWithShowUserHome();
         }
 
         us.setTwoLineMessage(msg1, msg2);
@@ -232,12 +235,13 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
      *
      */
     protected String getInternalProcessingErrorPage(UserSession us) {
-        us.setHeading(us.getConfiguration().getInformation());
+        ModelConfig config = us.getClient().getLanguageConfiguration();
+        us.setHeading(config.getInformation());
 
-        String msg1 = us.getConfiguration().getInternalProcessingError();
-        String msg2 = us.getConfiguration().getContinueWithShowPhoto();
+        String msg1 = config.getInternalProcessingError();
+        String msg2 = config.getContinueWithShowPhoto();
         if (us.getClient() instanceof User) {
-            msg2 = us.getConfiguration().getContinueWithShowUserHome();
+            msg2 = config.getContinueWithShowUserHome();
         }
 
         us.setTwoLineMessage(msg1, msg2);

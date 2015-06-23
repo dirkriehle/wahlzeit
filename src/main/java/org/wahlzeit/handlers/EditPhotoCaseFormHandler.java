@@ -67,14 +67,14 @@ public class EditPhotoCaseFormHandler extends AbstractWebFormHandler {
         part.maskAndAddString(Photo.DESCRIPTION, description);
 
         String tags = photo.getTags().asString();
-        tags = !StringUtil.isNullOrEmptyString(tags) ? tags : us.getConfiguration().getNoTags();
+        tags = !StringUtil.isNullOrEmptyString(tags) ? tags : us.getClient().getLanguageConfiguration().getNoTags();
         part.maskAndAddString(Photo.TAGS, tags);
 
         String photoId = photo.getId().asString();
         part.addString(Photo.LINK, HtmlUtil.asHref(getResourceAsRelativeHtmlPathString(photoId)));
 
         part.addString(PhotoCase.FLAGGER, photoCase.getFlagger());
-        part.addString(PhotoCase.REASON, us.getConfiguration().asValueString(photoCase.getReason()));
+        part.addString(PhotoCase.REASON, us.getClient().getLanguageConfiguration().asValueString(photoCase.getReason()));
         part.addString(PhotoCase.EXPLANATION, photoCase.getExplanation());
     }
 

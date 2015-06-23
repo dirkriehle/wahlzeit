@@ -80,7 +80,7 @@ public class AdminUserPhotoFormHandler extends AbstractWebFormHandler {
                 addAction("AdminUserPhoto").
                 addParameter("Photo", photo.getId().asString()).toString());
 
-        us.setMessage(us.getConfiguration().getPhotoUpdateSucceeded());
+        us.setMessage(us.getClient().getLanguageConfiguration().getPhotoUpdateSucceeded());
 
         return PartUtil.SHOW_ADMIN_PAGE_NAME;
     }

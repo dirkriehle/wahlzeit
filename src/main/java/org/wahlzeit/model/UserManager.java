@@ -117,14 +117,15 @@ public class UserManager extends ClientManager {
     public void emailWelcomeMessage(UserSession us, User user) {
         EmailAddress to = user.getEmailAddress();
 
-        String emailSubject = us.getConfiguration().getWelcomeEmailSubject();
-        String emailBody = us.getConfiguration().getWelcomeEmailBody() + "\n\n";
-        emailBody += us.getConfiguration().getWelcomeEmailUserName() + user.getNickName() + "\n\n";
-        emailBody += us.getConfiguration().getGeneralEmailRegards() + "\n\n----\n";
-        emailBody += us.getConfiguration().getGeneralEmailFooter() + "\n\n";
+        ModelConfig config = us.getClient().getLanguageConfiguration();
+        String emailSubject = config.getWelcomeEmailSubject();
+        String emailBody = config.getWelcomeEmailBody() + "\n\n";
+        emailBody += config.getWelcomeEmailUserName() + user.getNickName() + "\n\n";
+        emailBody += config.getGeneralEmailRegards() + "\n\n----\n";
+        emailBody += config.getGeneralEmailFooter() + "\n\n";
 
         EmailService emailService = EmailServiceManager.getDefaultService();
-        emailService.sendEmailIgnoreException(to, us.getConfiguration().getAuditEmailAddress(), emailSubject, emailBody);
+        emailService.sendEmailIgnoreException(to, config.getAuditEmailAddress(), emailSubject, emailBody);
     }
 
     /**

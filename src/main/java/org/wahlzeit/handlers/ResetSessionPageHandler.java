@@ -21,6 +21,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.UserSession;
 import org.wahlzeit.utils.HtmlUtil;
 import org.wahlzeit.webparts.WebPart;
@@ -51,9 +52,10 @@ public class ResetSessionPageHandler extends AbstractWebPageHandler {
      *
      */
     protected void makeWebPageBody(UserSession us, WebPart page) {
-        page.addString("noteHeading", us.getConfiguration().getThankYou());
-        String msg1 = us.getConfiguration().getResetSession();
-        String msg2 = us.getConfiguration().getContinueWithShowPhoto();
+        ModelConfig config = us.getClient().getLanguageConfiguration();
+        page.addString("noteHeading", config.getThankYou());
+        String msg1 = config.getResetSession();
+        String msg2 = config.getContinueWithShowPhoto();
         page.addString("note", HtmlUtil.asP(msg1) + HtmlUtil.asP(msg2));
     }
 

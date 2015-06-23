@@ -21,6 +21,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoId;
 import org.wahlzeit.model.PhotoManager;
@@ -57,19 +58,20 @@ public class ShowUserPhotoFormHandler extends AbstractWebFormHandler {
         PhotoId photoId = us.getPhotoId();
         Photo photo = PhotoManager.getPhoto(photoId);
         String id = photo.getId().asString();
+        ModelConfig config = us.getClient().getLanguageConfiguration();
         part.addString(Photo.ID, id);
         part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 
-        part.addString(Photo.PRAISE, photo.getPraiseAsString(us.getConfiguration()));
+        part.addString(Photo.PRAISE, photo.getPraiseAsString(config));
 
         String tags = photo.getTags().asString();
-        tags = !StringUtil.isNullOrEmptyString(tags) ? tags : us.getConfiguration().getNoTags();
+        tags = !StringUtil.isNullOrEmptyString(tags) ? tags : config.getNoTags();
         part.maskAndAddString(Photo.TAGS, tags);
 
-        String photoStatus = us.getConfiguration().asValueString(photo.getStatus());
+        String photoStatus = config.asValueString(photo.getStatus());
         part.addString(Photo.STATUS, photoStatus);
 
-        part.addString(Photo.UPLOADED_ON, us.getConfiguration().asDateString(photo.getCreationTime()));
+        part.addString(Photo.UPLOADED_ON, config.asDateString(photo.getCreationTime()));
         part.addString(Photo.LINK, HtmlUtil.asHref(getResourceAsRelativeHtmlPathString(id)));
     }
 

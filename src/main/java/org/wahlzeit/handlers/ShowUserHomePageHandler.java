@@ -67,7 +67,7 @@ public class ShowUserHomePageHandler extends AbstractWebPageHandler {
         }
 
         if (wasEmpty) {
-            page.addString("photos", HtmlUtil.asP(us.getConfiguration().getNoPhotoUploaded()));
+            page.addString("photos", HtmlUtil.asP(us.getClient().getLanguageConfiguration().getNoPhotoUploaded()));
         }
     }
 

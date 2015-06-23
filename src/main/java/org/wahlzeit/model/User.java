@@ -54,7 +54,6 @@ public class User extends Client {
     public static final String STATUS = "status";
     public static final String RIGHTS = "accessRights";
     public static final String GENDER = "gender";
-    public static final String LANGUAGE = "language";
     public static final String NOTIFY_ABOUT_PRAISE = "notifyAboutPraise";
     public static final String MEMBER_SINCE = "memberSince";
     public static final String NO_PHOTOS = "noPhotos";
@@ -64,7 +63,6 @@ public class User extends Client {
     /**
      *
      */
-    protected Language language = Language.ENGLISH;
     protected boolean notifyAboutPraise = true;
     protected Gender gender = Gender.UNDEFINED;
     protected UserStatus status = UserStatus.CREATED;
@@ -115,20 +113,8 @@ public class User extends Client {
         // do nothing
     }
 
-    /**
-     * @methodtype get
-     */
-    public Language getLanguage() {
-        return language;
-    }
-
-    /**
-     * @methodtype set
-     */
-    public void setLanguage(Language newLanguage) {
-        language = newLanguage;
-        incWriteCount();
-
+    @Override
+    protected void doSetLanguage(Language newLanguage) {
         for (Iterator<Photo> i = photos.iterator(); i.hasNext(); ) {
             Photo photo = i.next();
             photo.setOwnerLanguage(language);

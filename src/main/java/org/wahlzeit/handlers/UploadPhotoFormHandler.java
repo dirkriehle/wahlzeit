@@ -23,6 +23,7 @@ package org.wahlzeit.handlers;
 import com.google.appengine.api.images.Image;
 import org.wahlzeit.agents.AsyncTaskExecutor;
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.Tags;
@@ -65,8 +66,9 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
     protected String doHandlePost(UserSession us, Map args) {
         String tags = us.getAndSaveAsString(args, Photo.TAGS);
 
+        ModelConfig config = us.getClient().getLanguageConfiguration();
         if (!StringUtil.isLegalTagsString(tags)) {
-            us.setMessage(us.getConfiguration().getInputIsInvalid());
+            us.setMessage(config.getInputIsInvalid());
             return PartUtil.UPLOAD_PHOTO_PAGE_NAME;
         }
 
@@ -86,7 +88,7 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
                     addParameter("Photo", photo.getId().asString()).
                     addParameter("tags", photo.getTags().asString()).toString());
 
-            us.setTwoLineMessage(us.getConfiguration().getPhotoUploadSucceeded(), us.getConfiguration().getKeepGoing());
+            us.setTwoLineMessage(config.getPhotoUploadSucceeded(), config.getKeepGoing());
             log.config(LogBuilder.createSystemMessage().
                     addAction("Calling async task to save Photo").
                     addParameter("ID", photo.getId().asString()).toString());
@@ -94,7 +96,7 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
             AsyncTaskExecutor.savePhotoAsync(photo.getId().asString());
         } catch (Exception ex) {
             log.warning(LogBuilder.createSystemMessage().addException("uploading photo failed", ex).toString());
-            us.setMessage(us.getConfiguration().getPhotoUploadFailed());
+            us.setMessage(config.getPhotoUploadFailed());
         }
 
         return PartUtil.UPLOAD_PHOTO_PAGE_NAME;

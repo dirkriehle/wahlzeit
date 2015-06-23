@@ -135,7 +135,7 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
         User user = UserManager.getInstance().getUserById(userId);
         if (user == null) {
             log.config("User = null");
-            us.setMessage(us.getConfiguration().getUserNameIsUnknown());
+            us.setMessage(user.getLanguageConfiguration().getUserNameIsUnknown());
         }
 
         return PartUtil.SHOW_ADMIN_PAGE_NAME;
@@ -148,7 +148,7 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
         String photoId = us.getAndSaveAsString(args, "photoId");
         Photo photo = PhotoManager.getPhoto(photoId);
         if (photo == null) {
-            us.setMessage(us.getConfiguration().getPhotoIsUnknown());
+            us.setMessage(us.getClient().getLanguageConfiguration().getPhotoIsUnknown());
         }
 
         return PartUtil.SHOW_ADMIN_PAGE_NAME;

@@ -21,6 +21,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.PhotoFilter;
 import org.wahlzeit.model.Tags;
 import org.wahlzeit.model.UserSession;
@@ -75,8 +76,9 @@ public class FilterPhotosPageHandler extends AbstractWebPageHandler {
      *
      */
     protected void makeWebPageBody(UserSession us, WebPart page) {
-        page.addString("noteHeading", us.getConfiguration().getInformation());
-        String msg1 = us.getConfiguration().getContinueWithShowPhoto();
+        ModelConfig config = us.getClient().getLanguageConfiguration();
+        page.addString("noteHeading", config.getInformation());
+        String msg1 = config.getContinueWithShowPhoto();
         page.addString("note", msg1);
     }
 

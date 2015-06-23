@@ -21,6 +21,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.UserSession;
@@ -61,16 +62,17 @@ public class TellFriendFormHandler extends AbstractWebFormHandler {
      */
     protected void doMakeWebPart(UserSession us, WebPart part) {
         Map args = us.getSavedArgs();
+        ModelConfig config = us.getClient().getLanguageConfiguration();
         part.addStringFromArgs(args, UserSession.MESSAGE);
 
         part.maskAndAddStringFromArgs(args, EMAIL_TO);
-        part.maskAndAddStringFromArgsWithDefault(args, EMAIL_SUBJECT, us.getConfiguration().getTellFriendEmailSubject());
+        part.maskAndAddStringFromArgsWithDefault(args, EMAIL_SUBJECT, config.getTellFriendEmailSubject());
 
-        String emailText = us.getConfiguration().getTellFriendEmailWebsite() + "\n\n" + us.getSiteUrl() + "\n\n";
+        String emailText = config.getTellFriendEmailWebsite() + "\n\n" + us.getSiteUrl() + "\n\n";
 
         String id = us.getAsString(args, Photo.ID);
         if (!StringUtil.isNullOrEmptyString(id) && PhotoManager.hasPhoto(id)) {
-            emailText += (us.getConfiguration().getTellFriendEmailPhoto() + "\n\n" + us.getSiteUrl() + id + ".html" + "\n\n");
+            emailText += (config.getTellFriendEmailPhoto() + "\n\n" + us.getSiteUrl() + id + ".html" + "\n\n");
         }
 
         part.addString(Photo.ID, id);
@@ -87,30 +89,31 @@ public class TellFriendFormHandler extends AbstractWebFormHandler {
         String friendsEmailAddress = us.getAndSaveAsString(args, EMAIL_TO);
         String emailSubject = us.getAndSaveAsString(args, EMAIL_SUBJECT);
         String emailBody = us.getAndSaveAsString(args, EMAIL_BODY);
+        ModelConfig config = us.getClient().getLanguageConfiguration();
 
         if (StringUtil.isNullOrEmptyString(friendsEmailAddress)) {
-            us.setMessage(us.getConfiguration().getEmailAddressIsMissing());
+            us.setMessage(config.getEmailAddressIsMissing());
             return PartUtil.TELL_FRIEND_PAGE_NAME;
         } else if (!StringUtil.isValidStrictEmailAddress(friendsEmailAddress)) {
-            us.setMessage(us.getConfiguration().getEmailAddressIsInvalid());
+            us.setMessage(config.getEmailAddressIsInvalid());
             return PartUtil.TELL_FRIEND_PAGE_NAME;
         }
         if ((emailSubject.length() > 128) || (emailBody.length() > 1024)) {
-            us.setMessage(us.getConfiguration().getInputIsTooLong());
+            us.setMessage(config.getInputIsTooLong());
             return PartUtil.TELL_FRIEND_PAGE_NAME;
         }
 
         EmailAddress to = EmailAddress.getFromString(friendsEmailAddress);
 
         EmailService emailService = EmailServiceManager.getDefaultService();
-        emailService.sendEmailIgnoreException(to, us.getConfiguration().getAuditEmailAddress(), emailSubject, emailBody);
+        emailService.sendEmailIgnoreException(to, config.getAuditEmailAddress(), emailSubject, emailBody);
 
         log.info(LogBuilder.createUserMessage().
                 addAction("TellFriend").
                 addParameter("recipient", to.asString()).toString());
 
 
-        us.setTwoLineMessage(us.getConfiguration().getEmailWasSent() + friendsEmailAddress + "! ", us.getConfiguration().getKeepGoing());
+        us.setTwoLineMessage(config.getEmailWasSent() + friendsEmailAddress + "! ", config.getKeepGoing());
 
         return PartUtil.SHOW_NOTE_PAGE_NAME;
     }

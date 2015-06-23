@@ -60,7 +60,7 @@ public class ShowPhotoCasesPageHandler extends AbstractWebPageHandler {
             }
             page.addWritable("openCases", openCases);
         } else {
-            page.addString("openCases", HtmlUtil.asP(us.getConfiguration().getNoFlaggedPhotoCases()));
+            page.addString("openCases", HtmlUtil.asP(us.getClient().getLanguageConfiguration().getNoFlaggedPhotoCases()));
         }
     }
 

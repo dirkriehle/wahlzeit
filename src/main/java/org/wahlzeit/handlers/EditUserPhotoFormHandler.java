@@ -22,6 +22,7 @@ package org.wahlzeit.handlers;
 
 import org.wahlzeit.agents.AsyncTaskExecutor;
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.PhotoStatus;
@@ -61,6 +62,7 @@ public class EditUserPhotoFormHandler extends AbstractWebFormHandler {
      */
     protected void doMakeWebPart(UserSession us, WebPart part) {
         Map<String, Object> args = us.getSavedArgs();
+        ModelConfig config = us.getClient().getLanguageConfiguration();
         part.addStringFromArgs(args, UserSession.MESSAGE);
 
         String id = us.getAsString(args, Photo.ID);
@@ -69,12 +71,12 @@ public class EditUserPhotoFormHandler extends AbstractWebFormHandler {
         part.addString(Photo.ID, id);
         part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 
-        part.addString(Photo.PRAISE, photo.getPraiseAsString(us.getConfiguration()));
+        part.addString(Photo.PRAISE, photo.getPraiseAsString(config));
         part.maskAndAddString(Photo.TAGS, photo.getTags().asString());
 
         part.addString(Photo.IS_INVISIBLE, HtmlUtil.asCheckboxCheck(photo.getStatus().isInvisible()));
-        part.addString(Photo.STATUS, us.getConfiguration().asValueString(photo.getStatus()));
-        part.addString(Photo.UPLOADED_ON, us.getConfiguration().asDateString(photo.getCreationTime()));
+        part.addString(Photo.STATUS, config.asValueString(photo.getStatus()));
+        part.addString(Photo.UPLOADED_ON, config.asDateString(photo.getCreationTime()));
     }
 
     /**
@@ -107,7 +109,8 @@ public class EditUserPhotoFormHandler extends AbstractWebFormHandler {
                 addAction("EditUserPhoto").
                 addParameter("Photo", photo.getId().asString()).toString());
 
-        us.setTwoLineMessage(us.getConfiguration().getPhotoUpdateSucceeded(), us.getConfiguration().getContinueWithShowUserHome());
+        ModelConfig config = us.getClient().getLanguageConfiguration();
+        us.setTwoLineMessage(config.getPhotoUpdateSucceeded(), config.getContinueWithShowUserHome());
 
         return PartUtil.SHOW_NOTE_PAGE_NAME;
     }
