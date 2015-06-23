@@ -56,7 +56,6 @@ public class UserSession extends Session implements Serializable {
     public static final String CLIENT_ID = "clientId";
     public static final String SITE_URL = "siteUrl";
     public static final String CONFIGURATION = "configuration";
-    public static final String CONFIRMATION_CODE = "confirmationCode";
     public static final String SAVED_ARGS = "savedArgs";
     public static final String INITIALIZED = "initialized";
     public static final String ANONYMOUS_CLIENT = "anon";
@@ -88,7 +87,6 @@ public class UserSession extends Session implements Serializable {
             clearDisplayedPhotos();
             clearPraisedPhotos();
             clearSavedArgs();
-            clearConfirmationCode();
             setClient(new Guest());
             httpSession.setAttribute(INITIALIZED, INITIALIZED);
 
@@ -127,13 +125,6 @@ public class UserSession extends Session implements Serializable {
      */
     public void clearSavedArgs() {
         httpSession.setAttribute(SAVED_ARGS, new HashMap<String, Object>());
-    }
-
-    /**
-     * @methodtype init
-     */
-    public void clearConfirmationCode() {
-        setConfirmationCode(-1L);
     }
 
     /**
@@ -239,33 +230,6 @@ public class UserSession extends Session implements Serializable {
      */
     public void setPhotoSize(PhotoSize newPhotoSize) {
         httpSession.setAttribute(PHOTO_SIZE, newPhotoSize);
-    }
-
-    /**
-     * @methodtype boolean query
-     */
-    public boolean hasConfirmationCode() {
-        Long confirmationCode = getConfirmationCode();
-        if (confirmationCode != null) {
-            return confirmationCode != -1;
-        } else {
-            log.warning("No configuration code found.");
-            return false;
-        }
-    }
-
-    /**
-     * @methodtype get
-     */
-    public Long getConfirmationCode() {
-        return (Long) httpSession.getAttribute(CONFIRMATION_CODE);
-    }
-
-    /**
-     * @methodtype set
-     */
-    public void setConfirmationCode(Long vc) {
-        httpSession.setAttribute(CONFIRMATION_CODE, vc);
     }
 
     /**
