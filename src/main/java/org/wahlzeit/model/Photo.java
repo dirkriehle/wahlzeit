@@ -158,7 +158,7 @@ public class Photo extends DataObject {
      * @methodtype get
      */
     public String getIdAsString() {
-        return String.valueOf(id);
+        return id.asString();
     }
 
     /**

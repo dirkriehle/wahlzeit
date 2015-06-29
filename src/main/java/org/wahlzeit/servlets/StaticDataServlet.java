@@ -40,7 +40,7 @@ public class StaticDataServlet extends AbstractServlet {
                     addParameter("size", size).toString());
 
             if ("image".equals(type)) {
-                Photo photo = PhotoManager.getPhoto(photoId);
+                Photo photo = PhotoManager.getInstance().getPhoto(photoId);
                 Image image = null;
                 if(photo != null) {
                     PhotoSize photoSize = PhotoSize.getFromInt(size);

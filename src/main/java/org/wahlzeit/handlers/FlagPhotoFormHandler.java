@@ -69,7 +69,7 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
         part.addStringFromArgs(args, UserSession.MESSAGE);
 
         String id = us.getAsString(args, Photo.ID);
-        Photo photo = PhotoManager.getPhoto(id);
+        Photo photo = PhotoManager.getInstance().getPhoto(id);
         part.addString(Photo.ID, id);
         part.addString(Photo.THUMB, getPhotoThumb(us, photo));
         part.maskAndAddStringFromArgsWithDefault(args, PhotoCase.FLAGGER, us.getEmailAddressAsString());
@@ -98,7 +98,7 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
             return PartUtil.FLAG_PHOTO_PAGE_NAME;
         }
 
-        Photo photo = PhotoManager.getPhoto(id);
+        Photo photo = PhotoManager.getInstance().getPhoto(id);
         photo.setStatus(photo.getStatus().asFlagged(true));
         AsyncTaskExecutor.savePhotoAsync(id);
 

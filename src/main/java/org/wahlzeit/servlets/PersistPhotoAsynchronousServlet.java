@@ -31,7 +31,7 @@ public class PersistPhotoAsynchronousServlet extends HttpServlet {
         String id = request.getParameter(Photo.ID);
         log.config(LogBuilder.createSystemMessage().addParameter("Try to persist PhotoId", id).toString());
         if(id != null && !"".equals(id)) {
-            Photo photo = PhotoManager.getPhoto(id);
+            Photo photo = PhotoManager.getInstance().getPhoto(id);
             if(photo != null) {
                 PhotoManager.getInstance().savePhoto(photo);
                 log.config(LogBuilder.createSystemMessage().addMessage("Photo saved.").toString());

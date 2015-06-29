@@ -93,7 +93,7 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
         WebFormHandler handler = getFormHandler(PartUtil.NULL_FORM_NAME);
 
         String photoId = us.getSavedArg("photoId").toString();
-        Photo photo = PhotoManager.getPhoto(photoId);
+        Photo photo = PhotoManager.getInstance().getPhoto(photoId);
         if (photo != null) {
             handler = getFormHandler(PartUtil.ADMIN_USER_PHOTO_FORM_NAME);
         }
@@ -146,7 +146,7 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
      */
     protected String performAdminUserPhotoRequest(UserSession us, Map args) {
         String photoId = us.getAndSaveAsString(args, "photoId");
-        Photo photo = PhotoManager.getPhoto(photoId);
+        Photo photo = PhotoManager.getInstance().getPhoto(photoId);
         if (photo == null) {
             us.setMessage(us.getClient().getLanguageConfiguration().getPhotoIsUnknown());
         }

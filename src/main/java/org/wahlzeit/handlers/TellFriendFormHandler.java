@@ -71,12 +71,12 @@ public class TellFriendFormHandler extends AbstractWebFormHandler {
         String emailText = config.getTellFriendEmailWebsite() + "\n\n" + us.getSiteUrl() + "\n\n";
 
         String id = us.getAsString(args, Photo.ID);
-        if (!StringUtil.isNullOrEmptyString(id) && PhotoManager.hasPhoto(id)) {
+        if (!StringUtil.isNullOrEmptyString(id) && PhotoManager.getInstance().hasPhoto(id)) {
             emailText += (config.getTellFriendEmailPhoto() + "\n\n" + us.getSiteUrl() + id + ".html" + "\n\n");
         }
 
         part.addString(Photo.ID, id);
-        Photo photo = PhotoManager.getPhoto(id);
+        Photo photo = PhotoManager.getInstance().getPhoto(id);
         part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 
         part.maskAndAddStringFromArgsWithDefault(args, EMAIL_BODY, emailText);

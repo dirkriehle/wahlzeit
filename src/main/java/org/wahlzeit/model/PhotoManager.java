@@ -32,11 +32,13 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -61,6 +63,12 @@ public class PhotoManager extends ObjectManager {
     protected Map<PhotoId, Photo> photoCache = new HashMap<PhotoId, Photo>();
 
     /**
+     * Doubly linked list of the {@link PhotoId}s as {@link String} of all loaded {@link Photo}s. The order in this list
+     * that specifies which photo is shown before or after another {@link Photo}.
+     */
+    protected List<String> photoOrder = Collections.synchronizedList(new LinkedList<String>());
+
+    /**
      *
      */
     protected PhotoTagCollector photoTagCollector = null;
@@ -82,21 +90,21 @@ public class PhotoManager extends ObjectManager {
     /**
      *
      */
-    public static final boolean hasPhoto(String id) {
+    public final boolean hasPhoto(String id) {
         return hasPhoto(PhotoId.getIdFromString(id));
     }
 
     /**
      *
      */
-    public static final boolean hasPhoto(PhotoId id) {
+    public final boolean hasPhoto(PhotoId id) {
         return getPhoto(id) != null;
     }
 
     /**
      *
      */
-    public static final Photo getPhoto(PhotoId id) {
+    public final Photo getPhoto(PhotoId id) {
         return instance.getPhotoFromId(id);
     }
 
@@ -134,13 +142,91 @@ public class PhotoManager extends ObjectManager {
      */
     protected void doAddPhoto(Photo myPhoto) {
         photoCache.put(myPhoto.getId(), myPhoto);
+        photoOrder.add(myPhoto.getIdAsString());
+        log.config(LogBuilder.createSystemMessage().
+                addAction("add photo to order ").
+                addParameter("photoId", myPhoto.getId().asString()).
+                addParameter("index", photoOrder.size() - 1).toString());
+
     }
 
     /**
-     *
+     * @methodtype get
      */
-    public static final Photo getPhoto(String id) {
+    public final Photo getPhoto(String id) {
         return getPhoto(PhotoId.getIdFromString(id));
+    }
+
+    /**
+     * @methodtype get
+     * @methodproperty wrapper
+     * <p/>
+     * Returns the predecessor of the current {@link Photo} specified by the parameter. Returns null in case of the
+     * current {@link Photo} is the first one or no {@link Photo} is uploaded yet. When the parameter == null, the very
+     * last {@link Photo} is taken.
+     */
+    public final Photo getPreviousPhoto(String idCurrentPhoto) {
+        if (idCurrentPhoto != null) {
+            return doGetPreviousPhoto(idCurrentPhoto);
+        }
+        else {
+            return getLastPhoto();
+        }
+    }
+
+    /**
+     * @methodtype get
+     * @methodproperty primitive
+     */
+    private final Photo doGetPreviousPhoto(String idCurrentPhoto) {
+        Photo previousPhoto = null;
+        if (photoOrder.contains(idCurrentPhoto)) {
+            int currentIndex = photoOrder.indexOf(idCurrentPhoto);
+            ListIterator<String> iterator = photoOrder.listIterator(currentIndex);
+            if (iterator.hasPrevious()) {
+                String previousPhotoId;
+                do {
+                    previousPhotoId = iterator.previous();
+                    previousPhoto = getPhoto(previousPhotoId);
+                } while (!previousPhoto.isVisible());
+            }
+        }
+        return previousPhoto;
+    }
+
+    /**
+     * @methodtype get
+     * <p/>
+     * Returns the very last {@link Photo} in {@link #photoOrder}.
+     */
+    private final Photo getLastPhoto() {
+        Photo result = null;
+        if (photoOrder.size() > 0) {
+            String photoId = photoOrder.get(photoOrder.size() - 1);
+            result = getPhoto(photoId);
+        }
+        return result;
+    }
+
+    /**
+     * @methodtype get
+     * <p/>
+     * Returns the successor of the current {@link Photo} specified by the parameter. Returns null in case of the
+     * current {@link Photo} is the last one.
+     */
+    public final Photo getNextPhoto(String idCurrentPhoto) {
+        Photo successorPhoto = null;
+        if (photoOrder.contains(idCurrentPhoto)) {
+            int index = photoOrder.indexOf(idCurrentPhoto);
+            ListIterator<String> iterator = photoOrder.listIterator(index);
+            if (iterator.hasNext()) {
+                do {
+                    String nextPhotoId = iterator.next();
+                    successorPhoto = getPhoto(nextPhotoId);
+                } while (!successorPhoto.isVisible());
+            }
+        }
+        return successorPhoto;
     }
 
     /**

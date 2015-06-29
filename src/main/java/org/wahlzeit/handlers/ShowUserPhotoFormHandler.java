@@ -56,7 +56,7 @@ public class ShowUserPhotoFormHandler extends AbstractWebFormHandler {
      */
     protected void doMakeWebPart(UserSession us, WebPart part) {
         PhotoId photoId = us.getPhotoId();
-        Photo photo = PhotoManager.getPhoto(photoId);
+        Photo photo = PhotoManager.getInstance().getPhoto(photoId);
         String id = photo.getId().asString();
         ModelConfig config = us.getClient().getLanguageConfiguration();
         part.addString(Photo.ID, id);
@@ -80,7 +80,7 @@ public class ShowUserPhotoFormHandler extends AbstractWebFormHandler {
      */
     protected boolean isWellFormedPost(UserSession us, Map args) {
         String id = us.getAsString(args, Photo.ID);
-        Photo photo = PhotoManager.getPhoto(id);
+        Photo photo = PhotoManager.getInstance().getPhoto(id);
         return (photo != null) && us.isPhotoOwner(photo);
     }
 
@@ -91,7 +91,7 @@ public class ShowUserPhotoFormHandler extends AbstractWebFormHandler {
         String result = PartUtil.SHOW_USER_HOME_PAGE_NAME;
 
         String id = us.getAndSaveAsString(args, Photo.ID);
-        Photo photo = PhotoManager.getPhoto(id);
+        Photo photo = PhotoManager.getInstance().getPhoto(id);
 
         UserManager userManager = UserManager.getInstance();
         User user = userManager.getUserById(photo.getOwnerId());

@@ -35,7 +35,7 @@ import java.util.logging.Logger;
 
 /**
  * Wrapper class for {@link HttpSession} to provide a readable interface for Wahlzeit.
- *
+ * <p/>
  * {@link HttpSession}s are managed automatically by Google App Engine.
  *
  * @author dirkriehle
@@ -46,7 +46,6 @@ public class UserSession extends Session implements Serializable {
      * Keys to store the according properties in the <code>HttpSession</code>
      */
     public static final String UPLOADED_IMAGE = "uploadedImage";
-    public static final String PRIOR_PHOTO = "priorPhoto";
     public static final String PHOTO_CASE = "photoCase";
     public static final String PHOTO_SIZE = "photoSize";
     public static final String PHOTO_FILTER = "photoFilter";
@@ -323,20 +322,6 @@ public class UserSession extends Session implements Serializable {
      */
     public void setUploadedImage(Image image) {
         httpSession.setAttribute(UPLOADED_IMAGE, image);
-    }
-
-    /**
-     * @methodtype get
-     */
-    public Photo getPriorPhoto() {
-        return (Photo) httpSession.getAttribute(PRIOR_PHOTO);
-    }
-
-    /**
-     * @methodtype set
-     */
-    public void setPriorPhoto(Photo oldPhoto) {
-        httpSession.setAttribute(PRIOR_PHOTO, oldPhoto);
     }
 
     /**

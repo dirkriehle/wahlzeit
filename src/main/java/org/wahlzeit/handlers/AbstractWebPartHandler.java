@@ -143,7 +143,7 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
      */
     protected boolean isSavedPhotoVisible(UserSession us) {
         String id = us.getAsString(us.getSavedArgs(), Photo.ID);
-        Photo photo = PhotoManager.getPhoto(id);
+        Photo photo = PhotoManager.getInstance().getPhoto(id);
         return photo.isVisible();
     }
 
