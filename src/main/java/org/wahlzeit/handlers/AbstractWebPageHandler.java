@@ -64,12 +64,13 @@ public abstract class AbstractWebPageHandler extends AbstractWebPartHandler impl
      *
      */
     protected void makeWebPageFrame(UserSession us, WebPart page) {
-        page.addString("title", us.getClient().getLanguageConfiguration().getPageTitle());
+        Client client = us.getClient();
+        page.addString("title", client.getLanguageConfiguration().getPageTitle());
 
         makeWebPageHeading(us, page);
 
-        page.addString("footer", us.getClient().getLanguageConfiguration().getPageFooter(us.getPhotoSize()));
-        page.addString("mission", us.getClient().getLanguageConfiguration().getPageMission());
+        page.addString("footer", client.getLanguageConfiguration().getPageFooter(client.getPhotoSize()));
+        page.addString("mission", client.getLanguageConfiguration().getPageMission());
     }
 
     /**

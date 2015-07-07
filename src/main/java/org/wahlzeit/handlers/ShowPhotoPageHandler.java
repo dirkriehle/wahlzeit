@@ -122,9 +122,13 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
         WritableList parts = new WritableList();
 
         PhotoId currentPhotoId = us.getPhotoId();
-        Photo previousPhoto = PhotoManager.getInstance().getPreviousPhoto(currentPhotoId.asString());
-        if (previousPhoto != null) {
-            parts.append(makePriorPhotoInfo(us));
+        if (currentPhotoId != null) {
+            Photo previousPhoto = PhotoManager.getInstance().getPreviousPhoto(currentPhotoId.asString());
+            if (previousPhoto != null) {
+                parts.append(makePriorPhotoInfo(us));
+            } else {
+                parts.append(createWebPart(us, PartUtil.BLURP_INFO_FILE));
+            }
         } else {
             parts.append(createWebPart(us, PartUtil.BLURP_INFO_FILE));
         }
@@ -142,7 +146,8 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
      *
      */
     protected void makePhoto(UserSession us, WebPart page) {
-        PhotoSize pagePhotoSize = us.getPhotoSize();
+        Client client = us.getClient();
+        PhotoSize pagePhotoSize = client.getPhotoSize();
 
         PhotoId photoId = us.getPhotoId();
         Photo photo = PhotoManager.getInstance().getPhoto(photoId);
@@ -154,7 +159,6 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
             return;
         }
 
-        Client client = us.getClient();
         if (!photo.isVisible() && !client.hasModeratorRights() && !us.isPhotoOwner(photo)) {
             page.addString("mainWidth", String.valueOf(pagePhotoSize.getMaxPhotoWidth()));
             WebPart done = createWebPart(us, PartUtil.HIDDEN_INFO_FILE);

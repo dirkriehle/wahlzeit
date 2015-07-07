@@ -21,6 +21,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.Client;
 import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.PhotoSize;
 import org.wahlzeit.model.UserSession;
@@ -58,7 +59,7 @@ public class SetPhotoSizePageHandler extends AbstractWebPageHandler {
             result = PhotoSize.EXTRA_LARGE;
         }
 
-        us.setPhotoSize(result);
+        us.getClient().setPhotoSize(result);
 
         return link;
     }
@@ -67,9 +68,10 @@ public class SetPhotoSizePageHandler extends AbstractWebPageHandler {
      *
      */
     protected void makeWebPageBody(UserSession us, WebPart page) {
-        ModelConfig config = us.getClient().getLanguageConfiguration();
+        Client client = us.getClient();
+        ModelConfig config = client.getLanguageConfiguration();
         page.addString("noteHeading", config.getInformation());
-        String msg1 = config.getNewPhotoSizeSet(us.getPhotoSize());
+        String msg1 = config.getNewPhotoSizeSet(client.getPhotoSize());
         String msg2 = config.getNoteMaximumPhotoSize();
         String msg3 = config.getContinueWithShowPhoto();
         page.addString("note", HtmlUtil.asP(msg1) + HtmlUtil.asP(msg2) + HtmlUtil.asP(msg3));

@@ -143,11 +143,8 @@ public class PhotoManager extends ObjectManager {
     protected void doAddPhoto(Photo myPhoto) {
         photoCache.put(myPhoto.getId(), myPhoto);
         photoOrder.add(myPhoto.getIdAsString());
-        log.config(LogBuilder.createSystemMessage().
-                addAction("add photo to order ").
-                addParameter("photoId", myPhoto.getId().asString()).
-                addParameter("index", photoOrder.size() - 1).toString());
-
+        log.config(LogBuilder.createSystemMessage().addAction("add photo to order ").addParameter("photoId",
+                myPhoto.getId().asString()).addParameter("index", photoOrder.size() - 1).toString());
     }
 
     /**
@@ -168,8 +165,7 @@ public class PhotoManager extends ObjectManager {
     public final Photo getPreviousPhoto(String idCurrentPhoto) {
         if (idCurrentPhoto != null) {
             return doGetPreviousPhoto(idCurrentPhoto);
-        }
-        else {
+        } else {
             return getLastPhoto();
         }
     }

@@ -21,6 +21,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.Client;
 import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.PhotoSize;
 import org.wahlzeit.model.UserSession;
@@ -70,11 +71,12 @@ public class SetOptionsFormHandler extends AbstractWebFormHandler {
     protected String doHandlePost(UserSession us, Map args) {
         String language = us.getAndSaveAsString(args, LANGUAGE);
         Language langValue = Language.getFromString(language);
-        us.getClient().setLanguage(langValue);
+        Client client = us.getClient();
+        client.setLanguage(langValue);
 
-        String photoSize = us.getAndSaveAsString(args, PHOTO_SIZE);
+        String photoSize = (String) args.get(PHOTO_SIZE);
         PhotoSize photoValue = PhotoSize.getFromString(photoSize);
-        us.setPhotoSize(photoValue);
+        client.setPhotoSize(photoValue);
 
         log.info(LogBuilder.createUserMessage().
                 addAction("Set options").

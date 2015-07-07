@@ -70,6 +70,8 @@ public abstract class Client implements Serializable, Persistent {
 
     protected Language language = Language.ENGLISH;
 
+    protected PhotoSize photoSize = PhotoSize.MEDIUM;
+
 
     /**
      *
@@ -241,6 +243,20 @@ public abstract class Client implements Serializable, Persistent {
      */
     public ModelConfig getLanguageConfiguration() {
         return LanguageConfigs.get(language);
+    }
+
+    /**
+     * @methodtype get
+     */
+    public PhotoSize getPhotoSize() {
+        return photoSize;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setPhotoSize(PhotoSize photoSize) {
+        this.photoSize = photoSize;
     }
 
 }

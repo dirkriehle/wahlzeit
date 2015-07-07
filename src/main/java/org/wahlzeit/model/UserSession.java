@@ -47,7 +47,6 @@ public class UserSession extends Session implements Serializable {
      */
     public static final String UPLOADED_IMAGE = "uploadedImage";
     public static final String PHOTO_CASE = "photoCase";
-    public static final String PHOTO_SIZE = "photoSize";
     public static final String PHOTO_FILTER = "photoFilter";
     public static final String PRAISED_PHOTOS = "praisedPhotos";
     public static final String MESSAGE = "message";
@@ -81,20 +80,12 @@ public class UserSession extends Session implements Serializable {
                 // default language of guest is english
             }
 
-            initPhotoSize();
             clearDisplayedPhotos();
             clearPraisedPhotos();
             clearSavedArgs();
             httpSession.setAttribute(INITIALIZED, INITIALIZED);
 
         }
-    }
-
-    /**
-     * @methodtype init
-     */
-    protected void initPhotoSize() {
-        setPhotoSize(PhotoSize.MEDIUM);
     }
 
     /**
@@ -128,7 +119,6 @@ public class UserSession extends Session implements Serializable {
      * @methodtype init
      */
     public void clear() {
-        initPhotoSize();
         clearDisplayedPhotos();
         clearPraisedPhotos();
     }
@@ -191,20 +181,6 @@ public class UserSession extends Session implements Serializable {
 
         httpSession.setAttribute(CLIENT_ID, newClient.getId());
         UserManager.getInstance().addHttpSessionIdToClientMapping(httpSession.getId(), newClient);
-    }
-
-    /**
-     * @methodtype get
-     */
-    public PhotoSize getPhotoSize() {
-        return (PhotoSize) httpSession.getAttribute(PHOTO_SIZE);
-    }
-
-    /**
-     * @methodtype set
-     */
-    public void setPhotoSize(PhotoSize newPhotoSize) {
-        httpSession.setAttribute(PHOTO_SIZE, newPhotoSize);
     }
 
     /**

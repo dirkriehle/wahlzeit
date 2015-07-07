@@ -72,6 +72,7 @@ public class User extends Client {
      */
     protected Photo userPhoto = null;
     protected Set<Photo> photos = new HashSet<Photo>();
+
     /**
      *
      */
@@ -282,5 +283,4 @@ public class User extends Client {
             }
         };
     }
-
 }
