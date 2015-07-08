@@ -107,7 +107,7 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
     public String handlePost(UserSession us, Map args) {
         if (!hasAccessRights(us, args)) {
             log.warning(LogBuilder.createSystemMessage().
-                    addParameter("insufficient rights for POST from", us.getEmailAddressAsString()).toString());
+                    addMessage("insufficient rights for POST").toString());
             return getIllegalAccessErrorPage(us);
         }
 

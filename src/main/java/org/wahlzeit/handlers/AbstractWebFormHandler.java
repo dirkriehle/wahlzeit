@@ -21,6 +21,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.Client;
 import org.wahlzeit.model.UserSession;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.webparts.WebPart;
@@ -61,15 +62,16 @@ public abstract class AbstractWebFormHandler extends AbstractWebPartHandler impl
      *
      */
     public final String handlePost(UserSession us, Map args) {
+        String emailAddress = us.getClient().getEmailAddress().asString();
         if (!hasAccessRights(us, args)) {
             log.warning(LogBuilder.createSystemMessage().
-                    addParameter("insufficient rights for POST from", us.getEmailAddressAsString()).toString());
+                    addParameter("insufficient rights for POST from", emailAddress).toString());
             return getIllegalAccessErrorPage(us);
         }
 
         if (!isWellFormedPost(us, args)) {
             log.warning(LogBuilder.createSystemMessage().
-                    addParameter("received ill-formed POST from", us.getEmailAddressAsString()).toString());
+                    addParameter("received ill-formed POST from", emailAddress).toString());
             return getIllegalArgumentErrorPage(us);
         }
 

@@ -72,7 +72,7 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
         Photo photo = PhotoManager.getInstance().getPhoto(id);
         part.addString(Photo.ID, id);
         part.addString(Photo.THUMB, getPhotoThumb(us, photo));
-        part.maskAndAddStringFromArgsWithDefault(args, PhotoCase.FLAGGER, us.getEmailAddressAsString());
+        part.maskAndAddStringFromArgsWithDefault(args, PhotoCase.FLAGGER, us.getClient().getEmailAddress().asString());
         part.addSelect(PhotoCase.REASON, FlagReason.MISMATCH);
         part.maskAndAddStringFromArgs(args, PhotoCase.EXPLANATION);
     }

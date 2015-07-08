@@ -148,18 +148,6 @@ public class UserSession extends Session implements Serializable {
     }
 
     /**
-     * @methodtype convert
-     */
-    public String getEmailAddressAsString() {
-        String result = null;
-        Client client = getClient();
-        if (client != null) {
-            result = client.getEmailAddress().asString();
-        }
-        return result;
-    }
-
-    /**
      * @methodtype get
      */
     public Client getClient() {
