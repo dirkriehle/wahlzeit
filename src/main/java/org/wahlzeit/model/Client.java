@@ -31,6 +31,8 @@ import org.wahlzeit.services.ObjectManager;
 import org.wahlzeit.services.Persistent;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A Client uses the system. It is an abstract superclass. This package defines guest, user, moderator, and
@@ -72,6 +74,10 @@ public abstract class Client implements Serializable, Persistent {
 
     protected PhotoSize photoSize = PhotoSize.MEDIUM;
 
+    protected List<PhotoId> praisedPhotoIds = new ArrayList<PhotoId>();
+
+    protected List<PhotoId> skippedPhotoIds = new ArrayList<PhotoId>();
+
 
     /**
      *
@@ -83,11 +89,18 @@ public abstract class Client implements Serializable, Persistent {
     /**
      * @methodtype initialization
      */
-    protected void initialize(String id, String nickName, EmailAddress emailAddress, AccessRights accessRights) {
+    protected void initialize(String id, String nickName, EmailAddress emailAddress, AccessRights accessRights, Client previousClient) {
         this.id = id;
         this.nickName = nickName;
         this.accessRights = accessRights;
         this.emailAddress = emailAddress;
+
+        // use some of the existing properties for the new user
+        if(previousClient != null) {
+            this.setLanguage(previousClient.getLanguage());
+            this.setPraisedPhotoIds(previousClient.getPraisedPhotoIds());
+            this.setPhotoSize(previousClient.getPhotoSize());
+        }
 
         incWriteCount();
 
@@ -259,4 +272,72 @@ public abstract class Client implements Serializable, Persistent {
         this.photoSize = photoSize;
     }
 
+    /**
+     * @methodtype get
+     */
+    public List<PhotoId> getPraisedPhotoIds() {
+        return praisedPhotoIds;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setPraisedPhotoIds(List<PhotoId> praisedPhotoIds) {
+        this.praisedPhotoIds = praisedPhotoIds;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void addPraisedPhotoId(PhotoId ratedPhotoId) {
+        praisedPhotoIds.add(ratedPhotoId);
+        removeSkippedPhotoId(ratedPhotoId);
+    }
+
+    /**
+     * @methodtype get
+     */
+    public Photo getLastPraisedPhoto() {
+        int indexOfLastPraisedPhoto = praisedPhotoIds.size() - 1;
+        Photo result = null;
+        while (indexOfLastPraisedPhoto >= 0 && result == null) {
+            PhotoId lastPraisedPhotoId = praisedPhotoIds.get(indexOfLastPraisedPhoto);
+            result = PhotoManager.getInstance().getPhoto(lastPraisedPhotoId);
+            if (!result.isVisible()) {
+                result = null;
+                indexOfLastPraisedPhoto--;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @methodtype get
+     */
+    public List<PhotoId> getSkippedPhotoIds() {
+        return skippedPhotoIds;
+    }
+
+    /**
+     * @methodtype get
+     */
+    public void setSkippedPhotoIds(List<PhotoId> skippedPhotoIds) {
+        this.skippedPhotoIds = skippedPhotoIds;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void removeSkippedPhotoId(PhotoId skippedPhotoIdToRemove) {
+        skippedPhotoIds.remove(skippedPhotoIdToRemove);
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void addSkippedPhotoId(PhotoId skippedPhotoId) {
+        if(!skippedPhotoIds.contains(skippedPhotoId)) {
+            skippedPhotoIds.add(skippedPhotoId);
+        }
+    }
 }

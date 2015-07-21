@@ -35,14 +35,11 @@ import org.wahlzeit.webparts.Writable;
 import org.wahlzeit.webparts.WritableList;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * @author dirkriehle
  */
 public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebFormHandler {
-
-    private static Logger log = Logger.getLogger(ShowPhotoPageHandler.class.getName());
 
     /**
      *
@@ -61,8 +58,16 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
             photo = PhotoManager.getInstance().getPhoto(link);
         }
 
+        PhotoManager photoManager = PhotoManager.getInstance();
+        // check if an image has been skipped
+        if(args.containsKey("prior")) {
+            String skippedPhotoIdString = us.getAsString(args, "prior");
+            PhotoId skippedPhotoId = PhotoId.getIdFromString(skippedPhotoIdString);
+            us.getClient().addSkippedPhotoId(skippedPhotoId);
+            us.getPhotoFilter().addSkippedPhotoId(skippedPhotoId);
+        }
+
         if (photo == null) {
-            PhotoManager photoManager = PhotoManager.getInstance();
             PhotoFilter filter = us.getPhotoFilter();
             photo = photoManager.getVisiblePhoto(filter);
             if (photo != null) {
@@ -82,9 +87,9 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
      *
      */
     protected boolean isToShowAds(UserSession us) {
-        PhotoId currentPhotoId = us.getPhotoId();
-        Photo previousPhoto = PhotoManager.getInstance().getPreviousPhoto(currentPhotoId.asString());
-        return previousPhoto != null;
+        Client client = us.getClient();
+        Photo lastPraisedPhoto = client.getLastPraisedPhoto();
+        return lastPraisedPhoto != null;
     }
 
     /**
@@ -107,9 +112,6 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
             Tags tags = photo.getTags();
             page.addString(Photo.DESCRIPTION, getPhotoSummary(us, photo));
             page.addString(Photo.KEYWORDS, tags.asString(false, ','));
-
-            log.info("addProcessedPhoto: " + photoId.asString());
-            us.addDisplayedPhoto(photo);
         }
 
         makeRightSidebar(us, page);
@@ -121,15 +123,12 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
     protected void makeLeftSidebar(UserSession us, WebPart page) {
         WritableList parts = new WritableList();
 
-        PhotoId currentPhotoId = us.getPhotoId();
-        if (currentPhotoId != null) {
-            Photo previousPhoto = PhotoManager.getInstance().getPreviousPhoto(currentPhotoId.asString());
-            if (previousPhoto != null) {
-                parts.append(makePriorPhotoInfo(us));
-            } else {
-                parts.append(createWebPart(us, PartUtil.BLURP_INFO_FILE));
-            }
-        } else {
+        Client client = us.getClient();
+        Photo lastPraisedPhoto = client.getLastPraisedPhoto();
+        if(lastPraisedPhoto != null) {
+            parts.append(makePriorPhotoInfo(us, lastPraisedPhoto));
+        }
+        else {
             parts.append(createWebPart(us, PartUtil.BLURP_INFO_FILE));
         }
 
@@ -217,15 +216,12 @@ public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebF
     /**
      *
      */
-    protected WebPart makePriorPhotoInfo(UserSession us) {
+    protected WebPart makePriorPhotoInfo(UserSession us, Photo lastPraisedPhoto) {
         WebPart result = createWebPart(us, PartUtil.PHOTO_INFO_FILE);
 
-        PhotoId currentPhotoId = us.getPhotoId();
-        Photo previousPhoto = PhotoManager.getInstance().getPreviousPhoto(currentPhotoId.asString());
-
-        result.addString(Photo.PRAISE, previousPhoto.getPraiseAsString(us.getClient().getLanguageConfiguration()));
-        result.addString(Photo.THUMB, getPhotoThumb(us, previousPhoto));
-        result.addString(Photo.CAPTION, getPhotoCaption(us, previousPhoto));
+        result.addString(Photo.PRAISE, lastPraisedPhoto.getPraiseAsString(us.getClient().getLanguageConfiguration()));
+        result.addString(Photo.THUMB, getPhotoThumb(us, lastPraisedPhoto));
+        result.addString(Photo.CAPTION, getPhotoCaption(us, lastPraisedPhoto));
 
         return result;
     }

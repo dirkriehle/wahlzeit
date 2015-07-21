@@ -75,10 +75,10 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
         try {
             PhotoManager pm = PhotoManager.getInstance();
             String fileName = us.getAsString(args, "fileName");
-            Image uploadedImage = us.getUploadedImage();
+            User user = (User) us.getClient();
+            Image uploadedImage = user.getUploadedImage();
             Photo photo = pm.createPhoto(fileName, uploadedImage);
 
-            User user = (User) us.getClient();
             user.addPhoto(photo);
 
             photo.setTags(new Tags(tags));

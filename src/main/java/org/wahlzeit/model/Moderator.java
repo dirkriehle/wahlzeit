@@ -34,15 +34,15 @@ public class Moderator extends User {
     /**
      *
      */
-    public Moderator(String id, String myName, String myEmailAddress) {
-        this(id, myName, EmailAddress.getFromString(myEmailAddress));
+    public Moderator(String id, String myName, String myEmailAddress, Client previousClient) {
+        this(id, myName, EmailAddress.getFromString(myEmailAddress), previousClient);
     }
 
     /**
      *
      */
-    public Moderator(String userId, String nickname, EmailAddress emailAddress) {
-        initialize(userId, nickname, emailAddress, AccessRights.MODERATOR);
+    public Moderator(String userId, String nickname, EmailAddress emailAddress, Client previousClient) {
+        initialize(userId, nickname, emailAddress, AccessRights.MODERATOR, previousClient);
     }
 
     /**

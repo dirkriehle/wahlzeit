@@ -21,6 +21,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.Client;
 import org.wahlzeit.model.Guest;
 import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.UserSession;
@@ -46,7 +47,8 @@ public class LogoutPageHandler extends AbstractWebPageHandler {
      *
      */
     protected String doHandleGet(UserSession us, String link, Map args) {
-        us.setClient(new Guest());
+        Client previousClient = us.getClient();
+        us.setClient(new Guest(previousClient));
         us.clearSavedArgs();
         return link;
     }

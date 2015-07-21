@@ -20,11 +20,12 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.utils.StringUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -54,6 +55,7 @@ public class PhotoFilter implements Serializable {
      */
     protected List<PhotoId> displayablePhotoIds;
     protected List<PhotoId> processedPhotoIds = new LinkedList<PhotoId>();
+    protected List<PhotoId> skippedPhotoIds = new LinkedList<PhotoId>();
 
     /**
      *
@@ -134,7 +136,14 @@ public class PhotoFilter implements Serializable {
     }
 
     /**
-     *
+     * @methodtype command
+     */
+    public void generateDisplayablePhotoIds() {
+        displayablePhotoIds = getFilteredPhotoIds();
+    }
+
+    /**
+     * Get a random photo that has not been rated. If possible avoid skipped photos.
      */
     public PhotoId getRandomDisplayablePhotoId() {
         if (!displayablePhotoIds.isEmpty()) {
@@ -189,10 +198,79 @@ public class PhotoFilter implements Serializable {
      *
      */
     public void addProcessedPhoto(Photo photo) {
-        processedPhotoIds.add(photo.getId());
+        PhotoId photoId = photo.getId();
+        processedPhotoIds.add(photoId);
+        skippedPhotoIds.remove(photoId);
         if (displayablePhotoIds != null) {
-            displayablePhotoIds.remove(photo.getId());
+            displayablePhotoIds.remove(photoId);
         }
     }
 
+
+    /**
+     * @methodtype get
+     */
+    public List<PhotoId> getSkippedPhotoIds() {
+        return skippedPhotoIds;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setSkippedPhotoIds(List<PhotoId> skippedPhotoIds) {
+        this.skippedPhotoIds = skippedPhotoIds;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void addSkippedPhotoId(PhotoId skippedPhotoId) {
+        if(!skippedPhotoIds.contains(skippedPhotoId)) {
+            skippedPhotoIds.add(skippedPhotoId);
+        }
+    }
+
+    /**
+     *
+     */
+    protected List<PhotoId> getFilteredPhotoIds() {
+        // get all tags that match the filter conditions
+        List<PhotoId> result = new LinkedList<PhotoId>();
+        int noFilterConditions = getFilterConditions().size();
+        log.config(LogBuilder.createSystemMessage().
+                addParameter("Number of filter conditions", String.valueOf(noFilterConditions)).toString());
+
+        Collection<PhotoId> candidates;
+        if (noFilterConditions == 0) {
+            candidates = PhotoManager.getInstance().getPhotoCache().keySet();
+        } else {
+            List<Tag> tags = new LinkedList<Tag>();
+            candidates = new LinkedList<PhotoId>();
+            for (String condition : getFilterConditions()) {
+                PhotoManager.getInstance().addTagsThatMatchCondition(tags, condition);
+            }
+            // get the list of all photo ids that correspond to the tags
+            for (Tag tag : tags) {
+                candidates.add(PhotoId.getIdFromString(tag.getPhotoId()));
+            }
+        }
+
+        int newPhotos = 0;
+        for (PhotoId candidate : candidates) {
+            if (!processedPhotoIds.contains(candidate) && !skippedPhotoIds.contains(candidate)) {
+                result.add(candidate);
+                ++newPhotos;
+            }
+        }
+        int skippedPhotos = skippedPhotoIds.size();
+        if (newPhotos == 0 && skippedPhotos > 0) {
+            result.addAll(skippedPhotoIds);
+            newPhotos = skippedPhotos;
+        }
+
+        log.config(LogBuilder.createSystemMessage().addParameter("Number of photos to show", newPhotos)
+                .toString());
+
+        return result;
+    }
 }

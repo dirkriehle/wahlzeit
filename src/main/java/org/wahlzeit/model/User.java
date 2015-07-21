@@ -20,6 +20,8 @@
 
 package org.wahlzeit.model;
 
+import com.google.appengine.api.images.Image;
+import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Subclass;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.Language;
@@ -72,6 +74,8 @@ public class User extends Client {
      */
     protected Photo userPhoto = null;
     protected Set<Photo> photos = new HashSet<Photo>();
+    @Ignore // only used as temporary variable
+    protected Image uploadedImage = null;
 
     /**
      *
@@ -83,21 +87,29 @@ public class User extends Client {
      *
      */
     public User(String id, String myName, String myEmailAddress) {
-        this(id, myName, EmailAddress.getFromString(myEmailAddress));
+        this(id, myName, EmailAddress.getFromString(myEmailAddress), null);
     }
 
     /**
      *
      */
-    public User(String id, String nickname, EmailAddress emailAddress) {
-        initialize(id, nickname, emailAddress, AccessRights.USER);
+    public User(String id, String myName, String myEmailAddress, Client previousClient) {
+        this(id, myName, EmailAddress.getFromString(myEmailAddress), previousClient);
+    }
+
+    /**
+     *
+     */
+    public User(String id, String nickname, EmailAddress emailAddress, Client previousClient) {
+        initialize(id, nickname, emailAddress, AccessRights.USER, previousClient);
     }
 
     /**
      * @methodtype initialization
      */
-    protected void initialize(String id, String nickName, EmailAddress emailAddress, AccessRights accessRights) {
-        super.initialize(id, nickName, emailAddress, accessRights);
+    protected void initialize(String id, String nickName, EmailAddress emailAddress, AccessRights accessRights,
+                              Client previousClient) {
+        super.initialize(id, nickName, emailAddress, accessRights, previousClient);
 
         log.config(LogBuilder.createSystemMessage().
                 addAction("initialize user").
@@ -282,5 +294,19 @@ public class User extends Client {
                 }
             }
         };
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setUploadedImage(Image image) {
+        uploadedImage = image;
+    }
+
+    /**
+     * @methodtype get
+     */
+    public Image getUploadedImage() {
+        return uploadedImage;
     }
 }

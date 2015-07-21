@@ -4,6 +4,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import org.wahlzeit.model.AccessRights;
 import org.wahlzeit.model.Administrator;
+import org.wahlzeit.model.Client;
 import org.wahlzeit.model.User;
 import org.wahlzeit.model.UserManager;
 import org.wahlzeit.model.UserSession;
@@ -63,10 +64,11 @@ public class LoginHandler extends AbstractWebFormHandler {
                 String emailAddress = googleUser.getEmail();
                 String nickName = googleUser.getNickname();
 
+                Client previousClient = us.getClient();
                 if (userService.isUserAdmin()) {
-                    user = new Administrator(userId, nickName, emailAddress);
+                    user = new Administrator(userId, nickName, emailAddress, previousClient);
                 } else {
-                    user = new User(userId, nickName, emailAddress);
+                    user = new User(userId, nickName, emailAddress, previousClient);
                 }
                 userManager.emailWelcomeMessage(us, user);
                 us.setClient(user);

@@ -21,6 +21,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.AccessRights;
+import org.wahlzeit.model.Client;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoId;
 import org.wahlzeit.model.PhotoManager;
@@ -74,13 +75,15 @@ public class PraisePhotoFormHandler extends AbstractWebFormHandler {
         String photoId = us.getAsString(args, Photo.ID);
         Photo photo = PhotoManager.getInstance().getPhoto(photoId);
         String praise = us.getAsString(args, Photo.PRAISE);
+        Client client = us.getClient();
 
         boolean wasPraised = false;
         if (!StringUtil.isNullOrEmptyString(praise)) {
             if (!us.hasPraisedPhoto(photo)) {
                 int value = Integer.parseInt(praise);
                 photo.addToPraise(value);
-                us.addPraisedPhoto(photo);
+                client.addPraisedPhotoId(photo.getId());
+                us.addProcessedPhoto(photo);
                 wasPraised = true;
             }
         }

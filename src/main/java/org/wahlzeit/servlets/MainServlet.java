@@ -31,6 +31,7 @@ import org.wahlzeit.handlers.PartUtil;
 import org.wahlzeit.handlers.WebFormHandler;
 import org.wahlzeit.handlers.WebPageHandler;
 import org.wahlzeit.handlers.WebPartHandlerManager;
+import org.wahlzeit.model.User;
 import org.wahlzeit.model.UserSession;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.SessionManager;
@@ -161,7 +162,8 @@ public class MainServlet extends AbstractServlet {
                 if (!fileItemStream.isFormField()) {
                     InputStream inputStream = fileItemStream.openStream();
                     Image image = getImage(inputStream);
-                    us.setUploadedImage(image);
+                    User user = (User) us.getClient();
+                    user.setUploadedImage(image);
                     result.put("fileName", filename);
                     log.config(LogBuilder.createSystemMessage().addParameter("Uploaded image", filename).toString());
                 } else {

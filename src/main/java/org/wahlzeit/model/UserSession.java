@@ -20,7 +20,6 @@
 
 package org.wahlzeit.model;
 
-import com.google.appengine.api.images.Image;
 import org.wahlzeit.services.Language;
 import org.wahlzeit.services.Session;
 import org.wahlzeit.utils.HtmlUtil;
@@ -45,10 +44,9 @@ public class UserSession extends Session implements Serializable {
     /**
      * Keys to store the according properties in the <code>HttpSession</code>
      */
-    public static final String UPLOADED_IMAGE = "uploadedImage";
     public static final String PHOTO_CASE = "photoCase";
     public static final String PHOTO_FILTER = "photoFilter";
-    public static final String PRAISED_PHOTOS = "praisedPhotos";
+    public static final String PRAISED_PHOTOS = "praisedPhotoIds";
     public static final String MESSAGE = "message";
     public static final String HEADING = "heading";
     public static final String CLIENT_ID = "clientId";
@@ -194,21 +192,7 @@ public class UserSession extends Session implements Serializable {
     /**
      *
      */
-    public void addPraisedPhoto(Photo photo) {
-        Set<Photo> praisedPhotos = (Set<Photo>) httpSession.getAttribute(PRAISED_PHOTOS);
-        if (praisedPhotos != null) {
-            praisedPhotos.add(photo);
-            httpSession.setAttribute(PRAISED_PHOTOS, praisedPhotos);
-        } else {
-            log.warning("Found no set of praised Photos to add Photo.");
-        }
-        addDisplayedPhoto(photo);
-    }
-
-    /**
-     *
-     */
-    public void addDisplayedPhoto(Photo photo) {
+    public void addProcessedPhoto(Photo photo) {
         PhotoFilter photoFilter = (PhotoFilter) httpSession.getAttribute(PHOTO_FILTER);
         if (photoFilter != null) {
             photoFilter.addProcessedPhoto(photo);
@@ -272,20 +256,6 @@ public class UserSession extends Session implements Serializable {
      */
     public void setPhotoId(PhotoId newPhotoId) {
         httpSession.setAttribute(Photo.ID, newPhotoId);
-    }
-
-    /**
-     * @methodtype get
-     */
-    public Image getUploadedImage() {
-        return (Image) httpSession.getAttribute(UPLOADED_IMAGE);
-    }
-
-    /**
-     * @methodtype set
-     */
-    public void setUploadedImage(Image image) {
-        httpSession.setAttribute(UPLOADED_IMAGE, image);
     }
 
     /**
