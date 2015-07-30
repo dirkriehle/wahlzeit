@@ -61,8 +61,9 @@ public class SetOptionsFormHandler extends AbstractWebFormHandler {
 
         part.addString(UserSession.MESSAGE, us.getMessage());
 
-        part.addSelect(LANGUAGE, Language.class, (String) args.get(LANGUAGE));
-        part.addSelect(PHOTO_SIZE, PhotoSize.class, (String) args.get(PHOTO_SIZE));
+        Client client = us.getClient();
+        part.addSelect(LANGUAGE, Language.class, client.getLanguage().asString());
+        part.addSelect(PHOTO_SIZE, PhotoSize.class, client.getPhotoSize().asString());
     }
 
     /**
@@ -74,7 +75,7 @@ public class SetOptionsFormHandler extends AbstractWebFormHandler {
         Client client = us.getClient();
         client.setLanguage(langValue);
 
-        String photoSize = (String) args.get(PHOTO_SIZE);
+        String photoSize = us.getAndSaveAsString(args, PHOTO_SIZE);
         PhotoSize photoValue = PhotoSize.getFromString(photoSize);
         client.setPhotoSize(photoValue);
 
