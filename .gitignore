@@ -1,6 +1,10 @@
+/bin/
 /build
 /classes
 /src/main/webapp/WEB-INF/lib/
+/.settings/
+*.iml
 .gradle
 .idea
-*.iml
+.project
+.classpath
