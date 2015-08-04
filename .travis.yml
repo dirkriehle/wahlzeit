@@ -1,0 +1,6 @@
+language: java
+script:
+ - mkdir bin
+ - javac -d bin -classpath 'bin:lib/*' -sourcepath src src/org/wahlzeit/main/Wahlzeit.java -Xlint:unchecked
+ - javac -d bin -classpath 'bin:lib/*' -sourcepath 'test:src' test/org/wahlzeit/NoDbTests.java -Xlint:unchecked
+ - java -cp 'bin:lib/*' junit.textui.TestRunner org.wahlzeit.NoDbTests
