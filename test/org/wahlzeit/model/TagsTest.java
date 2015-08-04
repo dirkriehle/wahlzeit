@@ -46,6 +46,7 @@ public class TagsTest extends TestCase {
 	public TagsTest(final String name) {
 		super(name);
 	}
+<<<<<<< HEAD
 
 	/**
 	 * 
@@ -69,6 +70,29 @@ public class TagsTest extends TestCase {
 	 * 
 	 */
 	public void testAsTag() {
+=======
+	
+	public void testHasTag() {
+		Tags tags1 = new Tags("tag1, tag2");
+		assertTrue(tags1.hasTag("tag1"));
+		assertTrue(tags1.hasTag("tag2"));
+		assertFalse(tags1.hasTag("tag3"));
+	}
+	
+	public void testGetSize() {
+		Tags tags1 = new Tags("tag1, tag2, tag3");
+		assertEquals(3, tags1.getSize());
+		Tags tags2 = new Tags();
+		assertEquals(0, tags2.getSize());
+	}
+	
+	public void testTagNotDouble() {
+		Tags tags1 = new Tags("tag1, tag1");
+		assertEquals(1, tags1.getSize());
+	}
+	
+	public void testAsTag() {		
+>>>>>>> 6e7dbe321d44d5fe3fa4278f871c32a9e6106d53
 		assertEquals(Tags.asTag("flo wer"), "flower");
 		assertEquals(Tags.asTag(" 35j lNM#&In>B << f2"), "35jlnminbf2");
 		assertEquals(Tags.asTag(",,,,,,"), "");
