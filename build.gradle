@@ -1,19 +1,18 @@
 plugins {
     id 'war'
     id 'org.gretty' version '3.0.3'  
+    id 'java'
 }
 
 repositories {
     jcenter()
 }
 
-apply plugin: 'java'
-apply plugin: 'war'
-
 ext {
     mainSourcesDir = 'src/main/java'
     generatedSourcesDir = 'target/generated-sources/java'
 }
+
 sourceSets {
     main {
         java {
@@ -31,4 +30,15 @@ dependencies {
     implementation 'com.sun.mail:javax.mail:1.6.2'
     
     testCompile 'junit:junit:4.12'
+}
+
+gradle.taskGraph.whenReady {
+    // check if JAVA_HOME is set, otherwise build tasks will fail
+    graph ->
+    if (System.env.'JAVA_HOME' == null) {
+        throw new GradleException("JAVA_HOME not set!")
+    }
+    else {
+        println "JAVA_HOME = " + System.env.'JAVA_HOME'
+    }
 }
