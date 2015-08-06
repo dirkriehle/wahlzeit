@@ -27,7 +27,6 @@ gradle.taskGraph.whenReady {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
