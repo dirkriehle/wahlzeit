@@ -2,23 +2,23 @@ apply plugin: 'war'
 apply plugin: 'appengine'
 apply plugin: 'java'
 
-def gaeVersion = "1.9.23"
-
 buildscript {
+    ext {
+        gaeVersion = '1.9.23'
+    }
     repositories {
         mavenCentral()
     }
-
     dependencies {
-        classpath "com.google.appengine:gradle-appengine-plugin:1.9.23"
+        classpath 'com.google.appengine:gradle-appengine-plugin:' + gaeVersion
     }
 }
 
+// check if JAVA_HOME is set, otherwise build tasks will fail
 gradle.taskGraph.whenReady {
-    // check if JAVA_HOME is set, otherwise build tasks will fail
     graph ->
     if (System.env.'JAVA_HOME' == null) {
-        throw new GradleException("JAVA_HOME not set!")
+        throw new GradleException("JAVA_HOME not set. Please set it, otherwise this task can not be executed.")
     }
     else {
         println "JAVA_HOME = " + System.env.'JAVA_HOME'
@@ -35,7 +35,7 @@ dependencies {
     compile 'com.google.appengine:appengine-api-1.0-sdk:' + gaeVersion
     compile 'com.google.appengine.tools:appengine-gcs-client:0.4.4'
     compile 'com.googlecode.objectify:objectify:5.1.5'
-    compile 'javax.servlet:servlet-api:2.5' // GAE works with 2.5
+    compile 'javax.servlet:servlet-api:2.5' // GAE works with only with 2.5
     compile 'commons-fileupload:commons-fileupload:1.2'
 
     // testing dependencies
@@ -47,8 +47,8 @@ dependencies {
 }
 
 test {
+    // adjust this filter to your needs
     filter {
-        //include all tests from package
         includeTestsMatching "org.wahlzeit.model.*"
     }
 }
