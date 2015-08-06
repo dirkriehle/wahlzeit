@@ -32,6 +32,11 @@ For more information, see http://github.com/dirkriehle/wahlzeit and http://osr.c
 Open [http://localhost:8080](http://localhost:8080) to use Wahlzeit on your local machine.
 
 
+### Debug Wahlzeit on your local machine
+  1. run Wahlzeit on your local machine (see above)
+  2. create a remote java debug configuration in your IDE with host ```localhost``` and port ```8000``` (not 8080)
+
+
 ### Upload Wahlzeit to Google App Engine
 
 **Create an Google App Engine instance:**
