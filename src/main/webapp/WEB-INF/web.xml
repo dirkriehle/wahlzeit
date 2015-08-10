@@ -18,7 +18,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>showStaticStuff</servlet-name>
-		<url-pattern>/org-wahlzeit-data/*</url-pattern>
+		<url-pattern>/org-wahlzeit-dirkriehle/*</url-pattern>
 	</servlet-mapping>
 
 	<servlet>

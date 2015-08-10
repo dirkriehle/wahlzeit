@@ -55,7 +55,7 @@ Open [http://localhost:8080](http://localhost:8080) to use Wahlzeit on your loca
   3. a browser window pops up and asks for permission, accept it
   4. copy the code from the following browser window to your gradle console
 
-When uploaded, open https://*your-project-ID*.appspot.com to use Wahlzeit on Google App Engine. It may take some seconds until it is completely deployed.
+https://*your-project-ID*.appspot.com to use Wahlzeit on Google App Engine.
 
 Done!
 

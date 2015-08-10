@@ -30,7 +30,7 @@ import java.util.logging.Logger;
  */
 public class SysConfig extends AbstractConfig {
 
-	public static String DATA_PATH = "org-wahlzeit-data";
+	public static String DATA_PATH = "org-wahlzeit-dirkriehle";
 	/**
 	 *
 	 */
@@ -166,4 +166,5 @@ public class SysConfig extends AbstractConfig {
 	public static Directory getTempDir() {
 		return getInstance().tempDir;
 	}
+
 }
