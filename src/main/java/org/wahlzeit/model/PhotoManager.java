@@ -233,6 +233,9 @@ public class PhotoManager extends ObjectManager {
             Photo photo = (Photo) obj;
             saveScaledImages(photo);
             updateTags(photo);
+            UserManager userManager = UserManager.getInstance();
+            Client owner = userManager.getClientById(photo.getOwnerId());
+            userManager.saveClient(owner);
         }
     }
 
