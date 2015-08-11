@@ -225,7 +225,7 @@ public class PhotoFilter implements Serializable {
      * @methodtype set
      */
     public void addSkippedPhotoId(PhotoId skippedPhotoId) {
-        if(!skippedPhotoIds.contains(skippedPhotoId)) {
+        if (!skippedPhotoIds.contains(skippedPhotoId)) {
             skippedPhotoIds.add(skippedPhotoId);
         }
     }
@@ -256,9 +256,11 @@ public class PhotoFilter implements Serializable {
         }
 
         int newPhotos = 0;
-        for (PhotoId candidate : candidates) {
-            if (!processedPhotoIds.contains(candidate) && !skippedPhotoIds.contains(candidate)) {
-                result.add(candidate);
+        for (PhotoId candidateId : candidates) {
+            Photo photoCandidate = PhotoManager.getInstance().getPhoto(candidateId);
+            if (!processedPhotoIds.contains(candidateId) && !skippedPhotoIds.contains(candidateId) &&
+                    photoCandidate.isVisible()) {
+                result.add(candidateId);
                 ++newPhotos;
             }
         }
