@@ -151,6 +151,8 @@ public class PhotoManager extends ObjectManager {
 
     /**
      * @methodtype command
+     *
+     * Load all persisted photos. Executed when Wahlzeit is restarted.
      */
     public void loadPhotos() {
         Collection<Photo> existingPhotos = ObjectifyService.run(new Work<Collection<Photo>>() {
@@ -168,21 +170,6 @@ public class PhotoManager extends ObjectManager {
                         addParameter("Load Photo with ID", photo.getIdAsString()).toString());
                 loadScaledImages(photo);
                 doAddPhoto(photo);
-                try {
-                    String ownerName = photo.getOwnerId();
-                    User user = UserManager.getInstance().getUserById(ownerName);
-                    if (user != null) {
-                        user.addPhoto(photo);
-                        log.config(LogBuilder.createSystemMessage().
-                                addParameter("Found owner", user.getId()).toString());
-                    } else {
-                        log.warning(LogBuilder.createSystemMessage().
-                                addParameter("missing owner", ownerName).toString());
-                    }
-                } catch (Exception e) {
-                    log.warning(LogBuilder.createSystemMessage().
-                            addException("Problem when loading owner", e).toString());
-                }
             } else {
                 log.config(LogBuilder.createSystemMessage().
                         addParameter("Already loaded Photo", photo.getIdAsString()).toString());
