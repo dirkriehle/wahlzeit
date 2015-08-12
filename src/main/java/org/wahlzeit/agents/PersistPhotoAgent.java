@@ -1,4 +1,4 @@
-package org.wahlzeit.servlets;
+package org.wahlzeit.agents;
 
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoManager;
@@ -18,9 +18,9 @@ import java.util.logging.Logger;
  *
  * Created by Lukas Hahmann on 12.05.15.
  */
-public class PersistPhotoAsynchronousServlet extends HttpServlet {
+public class PersistPhotoAgent extends HttpServlet {
 
-    private static final Logger log = Logger.getLogger(PersistPhotoAsynchronousServlet.class.getName());
+    private static final Logger log = Logger.getLogger(PersistPhotoAgent.class.getName());
 
     /**
      * @methodtype command

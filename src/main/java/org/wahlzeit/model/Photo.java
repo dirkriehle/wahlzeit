@@ -106,6 +106,7 @@ public class Photo extends DataObject {
      */
     protected int praiseSum = 10;
     protected int noVotes = 1;
+    protected int noVotesAtLastNotification = 1;
     /**
      *
      */
@@ -394,5 +395,20 @@ public class Photo extends DataObject {
 
     public void setEnding(String ending) {
         this.ending = ending;
+    }
+
+    /**
+     * @methodtype boolean query
+     */
+    public boolean hasNewPraise() {
+        return noVotes > noVotesAtLastNotification;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setNoNewPraise() {
+        noVotesAtLastNotification = noVotes;
+        incWriteCount();
     }
 }
