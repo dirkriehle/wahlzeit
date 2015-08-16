@@ -20,25 +20,24 @@
 
 package org.wahlzeit.services;
 
-import junit.framework.*;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 /**
- * 
  * @author dirkriehle
- * 
  */
 public class AllTests extends TestSuite {
 
 	/**
-	 * 
+	 *
 	 */
 	public static Test suite() {
 		TestSuite suite = new TestSuite();
-		
+
 		suite.addTestSuite(EmailAddressTest.class);
-		
-		suite.addTest(org.wahlzeit.services.mailing.AllTests.suite());	
-		
+
+		suite.addTest(org.wahlzeit.services.mailing.AllTests.suite());
+
 		return suite;
 	}
 

@@ -27,105 +27,104 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * An email address provides a simple email address representation.
- * It is a value object and implemented as immutable.
+ * An email address provides a simple email address representation. It is a value object and implemented as immutable.
  *
  * @author dirkriehle
  */
 public class EmailAddress implements Serializable {
 
-    /**
-     *
-     */
-    protected static final Map<String, EmailAddress> instances = new HashMap<String, EmailAddress>();
+	/**
+	 *
+	 */
+	protected static final Map<String, EmailAddress> instances = new HashMap<String, EmailAddress>();
 
-    /**
-     *
-     */
-    public static final EmailAddress EMPTY = doGetFromString(""); // after map initialization...
-    /**
-     *
-     */
-    protected String value;
+	/**
+	 *
+	 */
+	public static final EmailAddress EMPTY = doGetFromString(""); // after map initialization...
+	/**
+	 *
+	 */
+	protected String value;
 
-    private EmailAddress() {
-        // for Objectify to load
-    }
+	private EmailAddress() {
+		// for Objectify to load
+	}
 
-    /**
-     *
-     */
-    protected EmailAddress(String myAddress) {
-        value = myAddress;
-    }
+	/**
+	 *
+	 */
+	protected EmailAddress(String myAddress) {
+		value = myAddress;
+	}
 
-    /**
-     *
-     */
-    public static EmailAddress getFromString(String myValue) {
-        return doGetFromString(myValue);
-    }
+	/**
+	 *
+	 */
+	public static EmailAddress getFromString(String myValue) {
+		return doGetFromString(myValue);
+	}
 
-    /**
-     *
-     */
-    protected static EmailAddress doGetFromString(String myValue) {
-        EmailAddress result = instances.get(myValue);
-        if (result == null) {
-            synchronized (instances) {
-                result = instances.get(myValue);
-                if (result == null) {
-                    result = new EmailAddress(myValue);
-                    instances.put(myValue, result);
-                }
-            }
-        }
+	/**
+	 *
+	 */
+	protected static EmailAddress doGetFromString(String myValue) {
+		EmailAddress result = instances.get(myValue);
+		if (result == null) {
+			synchronized (instances) {
+				result = instances.get(myValue);
+				if (result == null) {
+					result = new EmailAddress(myValue);
+					instances.put(myValue, result);
+				}
+			}
+		}
 
-        return result;
-    }
+		return result;
+	}
 
-    /**
-     *
-     */
-    public String asString() {
-        return value;
-    }
+	/**
+	 *
+	 */
+	public String asString() {
+		return value;
+	}
 
-    /**
-     *
-     */
-    public InternetAddress asInternetAddress() {
-        InternetAddress result = null;
+	/**
+	 *
+	 */
+	public InternetAddress asInternetAddress() {
+		InternetAddress result = null;
 
-        try {
-            result = new InternetAddress(value);
-        } catch (AddressException ex) {
-            // should not happen
-        }
+		try {
+			result = new InternetAddress(value);
+		} catch (AddressException ex) {
+			// should not happen
+		}
 
-        return result;
-    }
+		return result;
+	}
 
-    /**
-     * @methodtype boolean-query
-     */
-    public boolean isEqual(EmailAddress emailAddress) {
-        return this == emailAddress;
-    }
+	/**
+	 * @methodtype boolean-query
+	 */
+	public boolean isEqual(EmailAddress emailAddress) {
+		return this == emailAddress;
+	}
 
-    /**
-     *
-     */
+	/**
+	 *
+	 */
 
-    public boolean isValid() {
-        return !isEmpty();
-    }
+	public boolean isValid() {
+		return !isEmpty();
+	}
 
-    /**
-     *
-     */
-    public boolean isEmpty() {
-        return this == EMPTY;
-    }
+	/**
+	 *
+	 */
+	public boolean isEmpty() {
+		return this == EMPTY;
+	}
 
 }

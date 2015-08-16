@@ -18,26 +18,26 @@ import org.wahlzeit.model.User;
  */
 public class OfyService {
 
-    /**
-     * Register all entities at startup
-     */
-    static {
-        factory().register(Photo.class);
-        factory().register(Globals.class);
-        factory().register(Tag.class);
-        factory().register(User.class);
-        factory().register(Administrator.class);
-        factory().register(Moderator.class);
-        factory().register(Client.class);
-        factory().register(Guest.class);
-        factory().register(PhotoCase.class);
-    }
+	/**
+	 * Register all entities at startup
+	 */
+	static {
+		factory().register(Photo.class);
+		factory().register(Globals.class);
+		factory().register(Tag.class);
+		factory().register(User.class);
+		factory().register(Administrator.class);
+		factory().register(Moderator.class);
+		factory().register(Client.class);
+		factory().register(Guest.class);
+		factory().register(PhotoCase.class);
+	}
 
-    public static Objectify ofy() {
-        return ObjectifyService.ofy();
-    }
+	public static Objectify ofy() {
+		return ObjectifyService.ofy();
+	}
 
-    public static ObjectifyFactory factory() {
-        return ObjectifyService.factory();
-    }
+	public static ObjectifyFactory factory() {
+		return ObjectifyService.factory();
+	}
 }

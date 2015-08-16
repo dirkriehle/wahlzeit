@@ -30,9 +30,9 @@ import java.io.Writer;
  */
 public interface Writable {
 
-    /**
-     *
-     */
-    public void writeOn(Writer writer) throws IOException;
+	/**
+	 *
+	 */
+	void writeOn(Writer writer) throws IOException;
 
 }

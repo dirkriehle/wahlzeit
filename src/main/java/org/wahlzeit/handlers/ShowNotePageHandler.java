@@ -33,29 +33,30 @@ import java.util.Map;
  */
 public class ShowNotePageHandler extends AbstractWebPageHandler {
 
-    /**
-     *
-     */
-    public ShowNotePageHandler() {
-        initialize(PartUtil.SHOW_NOTE_PAGE_FILE, AccessRights.GUEST);
-    }
+	/**
+	 *
+	 */
+	public ShowNotePageHandler() {
+		initialize(PartUtil.SHOW_NOTE_PAGE_FILE, AccessRights.GUEST);
+	}
 
-    /**
-     *
-     */
-    protected boolean isWellFormedGet(UserSession us, String link, Map args) {
-        return hasSavedMessage(us);
-    }
+	/**
+	 *
+	 */
+	protected boolean isWellFormedGet(UserSession us, String link, Map args) {
+		return hasSavedMessage(us);
+	}
 
-    /**
-     *
-     */
-    protected void makeWebPageBody(UserSession us, WebPart page) {
-        String heading = us.getHeading();
-        heading = StringUtil.isNullOrEmptyString(heading) ? us.getClient().getLanguageConfiguration().getThankYou() : heading;
-        page.addString("noteHeading", heading);
+	/**
+	 *
+	 */
+	protected void makeWebPageBody(UserSession us, WebPart page) {
+		String heading = us.getHeading();
+		heading = StringUtil.isNullOrEmptyString(heading) ? us.getClient().getLanguageConfiguration()
+				.getThankYou() : heading;
+		page.addString("noteHeading", heading);
 
-        page.addString("note", us.getMessage());
-    }
+		page.addString("note", us.getMessage());
+	}
 
 }

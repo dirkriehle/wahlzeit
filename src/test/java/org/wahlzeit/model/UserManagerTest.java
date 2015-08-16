@@ -13,13 +13,14 @@ import org.wahlzeit.testEnvironmentProvider.UserSessionProvider;
  */
 public class UserManagerTest {
 
-    public UserSessionProvider userSessionProvider = new UserSessionProvider();
+	public UserSessionProvider userSessionProvider = new UserSessionProvider();
 
-    public LocalDatastoreServiceTestConfigProvider localDatastoreServiceTestConfigProvider = new LocalDatastoreServiceTestConfigProvider();
+	public LocalDatastoreServiceTestConfigProvider localDatastoreServiceTestConfigProvider =
+			new LocalDatastoreServiceTestConfigProvider();
 
-    @Rule
-    public TestRule chain = RuleChain
-            .outerRule(localDatastoreServiceTestConfigProvider)
-            .around(userSessionProvider);
+	@Rule
+	public TestRule chain = RuleChain
+			.outerRule(localDatastoreServiceTestConfigProvider)
+			.around(userSessionProvider);
 
 }

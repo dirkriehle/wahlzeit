@@ -31,14 +31,14 @@ import java.util.Map;
  */
 public interface WebPartHandler {
 
-    /**
-     *
-     */
-    public WebPart makeWebPart(UserSession us);
+	/**
+	 *
+	 */
+	WebPart makeWebPart(UserSession us);
 
-    /**
-     *
-     */
-    public String handleGet(UserSession us, String link, Map args);
+	/**
+	 *
+	 */
+	String handleGet(UserSession us, String link, Map args);
 
 }

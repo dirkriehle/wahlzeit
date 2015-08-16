@@ -36,114 +36,114 @@ import java.util.Map;
  */
 public class PhotoCaseManager extends ObjectManager {
 
-    /**
-     *
-     */
-    protected static final PhotoCaseManager instance = new PhotoCaseManager();
-    /**
-     *
-     */
-    protected Map<CaseId, PhotoCase> openPhotoCases = new HashMap<CaseId, PhotoCase>();
+	/**
+	 *
+	 */
+	protected static final PhotoCaseManager instance = new PhotoCaseManager();
+	/**
+	 *
+	 */
+	protected Map<CaseId, PhotoCase> openPhotoCases = new HashMap<CaseId, PhotoCase>();
 
-    /**
-     * @methodtype constructor
-     * @methodproperty composed
-     */
-    protected PhotoCaseManager() {
-        initialize();
-    }
+	/**
+	 * @methodtype constructor
+	 * @methodproperty composed
+	 */
+	protected PhotoCaseManager() {
+		initialize();
+	}
 
-    /**
-     * @methodtype initialization
-     * @methodproperty regular
-     */
-    protected void initialize() {
-        Collection<PhotoCase> opc = new LinkedList<PhotoCase>();
-        loadOpenPhotoCases(opc);
-        for (PhotoCase pc : opc) {
-            openPhotoCases.put(pc.getId(), pc);
-        }
-    }
+	/**
+	 * @methodtype initialization
+	 * @methodproperty regular
+	 */
+	protected void initialize() {
+		Collection<PhotoCase> opc = new LinkedList<PhotoCase>();
+		loadOpenPhotoCases(opc);
+		for (PhotoCase pc : opc) {
+			openPhotoCases.put(pc.getId(), pc);
+		}
+	}
 
-    /**
-     * @methodtype command
-     */
-    public void loadOpenPhotoCases(Collection<PhotoCase> result) {
-        readObjects(result, PhotoCase.class, PhotoCase.WAS_DECIDED, false);
-    }
+	/**
+	 * @methodtype command
+	 */
+	public void loadOpenPhotoCases(Collection<PhotoCase> result) {
+		readObjects(result, PhotoCase.class, PhotoCase.WAS_DECIDED, false);
+	}
 
-    /**
-     * @methodtype get
-     */
-    public static final PhotoCaseManager getInstance() {
-        return instance;
-    }
+	/**
+	 * @methodtype get
+	 */
+	public static final PhotoCaseManager getInstance() {
+		return instance;
+	}
 
-    /**
-     * @methodtype get
-     */
-    public PhotoCase getPhotoCase(PhotoId id) {
-        PhotoCase result = openPhotoCases.get(id);
-        if (result == null) {
-            result = readObject(PhotoCase.class, PhotoCase.ID, id);
-        }
+	/**
+	 * @methodtype get
+	 */
+	public PhotoCase getPhotoCase(PhotoId id) {
+		PhotoCase result = openPhotoCases.get(id);
+		if (result == null) {
+			result = readObject(PhotoCase.class, PhotoCase.ID, id);
+		}
 
-        return result;
-    }
+		return result;
+	}
 
-    /**
-     * @methodtype command
-     */
-    public void addPhotoCase(PhotoCase myCase) {
-        openPhotoCases.put(myCase.getId(), myCase);
-        if (myCase.isDirty()) {
-            writeObject(myCase);
-        }
-        // @FIXME Main.saveGlobals();
-    }
+	/**
+	 * @methodtype command
+	 */
+	public void addPhotoCase(PhotoCase myCase) {
+		openPhotoCases.put(myCase.getId(), myCase);
+		if (myCase.isDirty()) {
+			writeObject(myCase);
+		}
+		// @FIXME Main.saveGlobals();
+	}
 
-    /**
-     * @methodtype command
-     */
-    public void removePhotoCase(PhotoCase myCase) {
-        openPhotoCases.remove(myCase.getId());
-        deleteObject(myCase);
-    }
+	/**
+	 * @methodtype command
+	 */
+	public void removePhotoCase(PhotoCase myCase) {
+		openPhotoCases.remove(myCase.getId());
+		deleteObject(myCase);
+	}
 
-    /**
-     * @methodtype command
-     */
-    public void savePhotoCases() {
-        if (openPhotoCases != null && openPhotoCases.size() > 0) {
-            updateObjects(openPhotoCases.values());
-        }
-    }
+	/**
+	 * @methodtype command
+	 */
+	public void savePhotoCases() {
+		if (openPhotoCases != null && openPhotoCases.size() > 0) {
+			updateObjects(openPhotoCases.values());
+		}
+	}
 
-    /**
-     * @methodtype get
-     */
-    public PhotoCase[] getOpenPhotoCasesByAscendingAge() {
-        PhotoCase[] resultArray = openPhotoCases.values().toArray(new PhotoCase[0]);
-        Arrays.sort(resultArray, getPhotoCasesByAscendingAgeComparator());
-        return resultArray;
-    }
+	/**
+	 * @methodtype get
+	 */
+	public PhotoCase[] getOpenPhotoCasesByAscendingAge() {
+		PhotoCase[] resultArray = openPhotoCases.values().toArray(new PhotoCase[0]);
+		Arrays.sort(resultArray, getPhotoCasesByAscendingAgeComparator());
+		return resultArray;
+	}
 
-    /**
-     * @methodtype get
-     */
-    public static Comparator<PhotoCase> getPhotoCasesByAscendingAgeComparator() {
-        return new Comparator<PhotoCase>() {
-            public int compare(PhotoCase pc1, PhotoCase pc2) {
-                long ct1 = pc1.getCreationTime();
-                long ct2 = pc2.getCreationTime();
-                if (ct1 < ct2) {
-                    return 1;
-                } else if (ct1 > ct2) {
-                    return -1;
-                } else {
-                    return 0;
-                }
-            }
-        };
-    }
+	/**
+	 * @methodtype get
+	 */
+	public static Comparator<PhotoCase> getPhotoCasesByAscendingAgeComparator() {
+		return new Comparator<PhotoCase>() {
+			public int compare(PhotoCase pc1, PhotoCase pc2) {
+				long ct1 = pc1.getCreationTime();
+				long ct2 = pc2.getCreationTime();
+				if (ct1 < ct2) {
+					return 1;
+				} else if (ct1 > ct2) {
+					return -1;
+				} else {
+					return 0;
+				}
+			}
+		};
+	}
 }

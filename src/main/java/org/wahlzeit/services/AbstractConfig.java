@@ -31,95 +31,95 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * A generic implementation to manage simple key/value store.
- * Clients can get and set individual values; they can also load properties files.
+ * A generic implementation to manage simple key/value store. Clients can get and set individual values; they can also
+ * load properties files.
  *
  * @author dirkriehle
  */
 public abstract class AbstractConfig implements Configuration, Serializable {
 
-    /**
-     *
-     */
-    protected Map<String, String> store = new HashMap<String, String>();
+	/**
+	 *
+	 */
+	protected Map<String, String> store = new HashMap<String, String>();
 
-    /**
-     *
-     */
-    public boolean hasKey(String key) {
-        return store.containsKey(key);
-    }
+	/**
+	 *
+	 */
+	public boolean hasKey(String key) {
+		return store.containsKey(key);
+	}
 
-    /**
-     *
-     */
-    public String getValue(String key) throws IllegalArgumentException {
-        assertHasKey(key);
-        return doGetValue(key);
-    }
+	/**
+	 *
+	 */
+	public String getValue(String key) throws IllegalArgumentException {
+		assertHasKey(key);
+		return doGetValue(key);
+	}
 
-    /**
-     *
-     */
-    public void setValue(String key, String value) throws IllegalArgumentException {
-        assertHasKey(key);
-        doSetValue(key, value);
-    }
+	/**
+	 *
+	 */
+	public void setValue(String key, String value) throws IllegalArgumentException {
+		assertHasKey(key);
+		doSetValue(key, value);
+	}
 
-    /**
-     *
-     */
-    protected final void doSetValue(String key, String value) {
-        store.put(key, value);
-    }
+	/**
+	 *
+	 */
+	protected final void doSetValue(String key, String value) {
+		store.put(key, value);
+	}
 
-    /**
-     *
-     */
-    public void loadProperties(String fileName) throws IllegalArgumentException, IOException {
-        File file = new File(fileName);
-        if (!file.exists()) {
-            throw new IllegalArgumentException("file does not exist: " + fileName);
-        }
+	/**
+	 *
+	 */
+	public void loadProperties(String fileName) throws IllegalArgumentException, IOException {
+		File file = new File(fileName);
+		if (!file.exists()) {
+			throw new IllegalArgumentException("file does not exist: " + fileName);
+		}
 
-        loadProperties(file);
-    }
+		loadProperties(file);
+	}
 
-    /**
-     *
-     */
-    public void loadProperties(File file) throws IOException {
-        Properties input = new Properties();
+	/**
+	 *
+	 */
+	public void loadProperties(File file) throws IOException {
+		Properties input = new Properties();
 
-        InputStreamReader stream = null;
-        try {
-            stream = new InputStreamReader(new FileInputStream(file), "UTF8");
-            input.load(stream);
+		InputStreamReader stream = null;
+		try {
+			stream = new InputStreamReader(new FileInputStream(file), "UTF8");
+			input.load(stream);
 
-            for (Enumeration e = input.propertyNames(); e.hasMoreElements(); ) {
-                String key = (String) e.nextElement();
-                doSetValue(key, input.getProperty(key));
-            }
-        } finally {
-            if (stream != null) {
-                stream.close();
-            }
-        }
-    }
+			for (Enumeration e = input.propertyNames(); e.hasMoreElements(); ) {
+				String key = (String) e.nextElement();
+				doSetValue(key, input.getProperty(key));
+			}
+		} finally {
+			if (stream != null) {
+				stream.close();
+			}
+		}
+	}
 
-    /**
-     * @methodtype assertion
-     */
-    protected final void assertHasKey(String key) throws IllegalArgumentException {
-        if (!store.containsKey(key)) {
-            throw new IllegalArgumentException("unknown key: " + key);
-        }
-    }
+	/**
+	 * @methodtype assertion
+	 */
+	protected final void assertHasKey(String key) throws IllegalArgumentException {
+		if (!store.containsKey(key)) {
+			throw new IllegalArgumentException("unknown key: " + key);
+		}
+	}
 
-    /**
-     *
-     */
-    protected final String doGetValue(String key) {
-        return store.get(key);
-    }
+	/**
+	 *
+	 */
+	protected final String doGetValue(String key) {
+		return store.get(key);
+	}
 }

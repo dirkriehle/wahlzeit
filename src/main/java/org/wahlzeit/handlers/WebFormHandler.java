@@ -27,9 +27,9 @@ import java.util.Map;
 
 public interface WebFormHandler extends WebPartHandler {
 
-    /**
-     * @return suggest name of page to render
-     */
-    public String handlePost(UserSession us, Map args);
+	/**
+	 * @return suggest name of page to render
+	 */
+	String handlePost(UserSession us, Map args);
 
 }

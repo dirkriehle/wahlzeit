@@ -29,10 +29,10 @@ import org.wahlzeit.webparts.WebPart;
  */
 public interface WebPageHandler extends WebPartHandler {
 
-    /**
-     *
-     */
-    public WebPart makeWebPart(UserSession us);
+	/**
+	 *
+	 */
+	WebPart makeWebPart(UserSession us);
 
 
 }

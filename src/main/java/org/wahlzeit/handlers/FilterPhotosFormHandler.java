@@ -36,48 +36,48 @@ import java.util.logging.Logger;
  */
 public class FilterPhotosFormHandler extends AbstractWebFormHandler {
 
-    private static final Logger log = Logger.getLogger(FilterPhotosFormHandler.class.getName());
+	private static final Logger log = Logger.getLogger(FilterPhotosFormHandler.class.getName());
 
 
-    /**
-     *
-     */
-    public FilterPhotosFormHandler() {
-        initialize(PartUtil.FILTER_PHOTOS_FORM_FILE, AccessRights.GUEST);
-    }
+	/**
+	 *
+	 */
+	public FilterPhotosFormHandler() {
+		initialize(PartUtil.FILTER_PHOTOS_FORM_FILE, AccessRights.GUEST);
+	}
 
-    /**
-     *
-     */
-    protected void doMakeWebPart(UserSession us, WebPart part) {
-        PhotoFilter filter = us.getPhotoFilter();
+	/**
+	 *
+	 */
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		PhotoFilter filter = us.getPhotoFilter();
 
-        part.maskAndAddString(PhotoFilter.USER_NAME, filter.getUserName());
-        part.maskAndAddString(PhotoFilter.TAGS, filter.getTags().asString());
-    }
+		part.maskAndAddString(PhotoFilter.USER_NAME, filter.getUserName());
+		part.maskAndAddString(PhotoFilter.TAGS, filter.getTags().asString());
+	}
 
-    /**
-     *
-     */
-    protected String doHandlePost(UserSession us, Map args) {
-        PhotoFilter filter = us.getPhotoFilter();
+	/**
+	 *
+	 */
+	protected String doHandlePost(UserSession us, Map args) {
+		PhotoFilter filter = us.getPhotoFilter();
 
-        String un = us.getAsString(args, PhotoFilter.USER_NAME);
-        if (StringUtil.isLegalUserName(un)) {
-            filter.setUserName(un);
-        }
+		String un = us.getAsString(args, PhotoFilter.USER_NAME);
+		if (StringUtil.isLegalUserName(un)) {
+			filter.setUserName(un);
+		}
 
-        String tags = us.getAsString(args, PhotoFilter.TAGS);
-        if (StringUtil.isLegalTagsString(tags)) {
-            filter.setTags(new Tags(tags));
-        }
+		String tags = us.getAsString(args, PhotoFilter.TAGS);
+		if (StringUtil.isLegalTagsString(tags)) {
+			filter.setTags(new Tags(tags));
+		}
 
-        log.info(LogBuilder.createUserMessage().
-                addAction("Filter Photos").
-                addParameter("Tags", filter.getTags().asString()).toString());
+		log.info(LogBuilder.createUserMessage().
+				addAction("Filter Photos").
+				addParameter("Tags", filter.getTags().asString()).toString());
 
 
-        return PartUtil.SHOW_PHOTO_PAGE_NAME;
-    }
+		return PartUtil.SHOW_PHOTO_PAGE_NAME;
+	}
 
 }

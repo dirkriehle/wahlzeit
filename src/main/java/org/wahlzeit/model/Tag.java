@@ -14,37 +14,37 @@ import org.wahlzeit.services.ObjectManager;
 @Entity
 public class Tag extends DataObject {
 
-    public static final String TEXT = "text";
-    public static final String PHOTO_ID = "photoId";
+	public static final String TEXT = "text";
+	public static final String PHOTO_ID = "photoId";
 
-    @Id
-    private Long id;
-    @Index
-    private String text;
-    @Index
-    private String photoId;
-    @Parent
-    Key parent = ObjectManager.applicationRootKey;
+	@Id
+	private Long id;
+	@Index
+	private String text;
+	@Index
+	private String photoId;
+	@Parent
+	Key parent = ObjectManager.applicationRootKey;
 
-    public Tag() {
-        // do nothing, necessary for Google Datastore
-    }
+	public Tag() {
+		// do nothing, necessary for Google Datastore
+	}
 
-    public Tag(String text, String photoId) {
-        this.text = text;
-        this.photoId = photoId;
-        incWriteCount();
-    }
+	public Tag(String text, String photoId) {
+		this.text = text;
+		this.photoId = photoId;
+		incWriteCount();
+	}
 
-    public String getText() {
-        return text;
-    }
+	public String getText() {
+		return text;
+	}
 
-    public String getPhotoId() {
-        return photoId;
-    }
+	public String getPhotoId() {
+		return photoId;
+	}
 
-    public String asString() {
-        return "PhotoId: " + photoId + ", Tag: " + text;
-    }
+	public String asString() {
+		return "PhotoId: " + photoId + ", Tag: " + text;
+	}
 }

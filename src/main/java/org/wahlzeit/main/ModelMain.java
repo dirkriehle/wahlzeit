@@ -41,73 +41,73 @@ import java.util.logging.Logger;
  */
 public abstract class ModelMain extends AbstractMain {
 
-    private static final Logger log = Logger.getLogger(ModelMain.class.getName());
+	private static final Logger log = Logger.getLogger(ModelMain.class.getName());
 
-    /**
-     *
-     */
-    protected void startUp(String rootDir) throws Exception {
-        super.startUp(rootDir);
-        log.info("AbstractMain.startUp completed");
+	/**
+	 *
+	 */
+	protected void startUp(String rootDir) throws Exception {
+		super.startUp(rootDir);
+		log.info("AbstractMain.startUp completed");
 
-        log.config(LogBuilder.createSystemMessage().addAction("load image storage").toString());
-        GcsAdapter.Builder gcsAdapterBuilder = new GcsAdapter.Builder();
-        ImageStorage.setInstance(gcsAdapterBuilder.build());
+		log.config(LogBuilder.createSystemMessage().addAction("load image storage").toString());
+		GcsAdapter.Builder gcsAdapterBuilder = new GcsAdapter.Builder();
+		ImageStorage.setInstance(gcsAdapterBuilder.build());
 
-        log.config(LogBuilder.createSystemMessage().addAction("load globals").toString());
-        GlobalsManager.getInstance().loadGlobals();
+		log.config(LogBuilder.createSystemMessage().addAction("load globals").toString());
+		GlobalsManager.getInstance().loadGlobals();
 
-        log.config(LogBuilder.createSystemMessage().addAction("load user").toString());
-        UserManager.getInstance().init();
+		log.config(LogBuilder.createSystemMessage().addAction("load user").toString());
+		UserManager.getInstance().init();
 
-        log.config(LogBuilder.createSystemMessage().addAction("init PhotoFactory").toString());
-        PhotoFactory.initialize();
+		log.config(LogBuilder.createSystemMessage().addAction("init PhotoFactory").toString());
+		PhotoFactory.initialize();
 
-        log.config(LogBuilder.createSystemMessage().addAction("load Photos").toString());
-        PhotoManager.getInstance().init();
-    }
+		log.config(LogBuilder.createSystemMessage().addAction("load Photos").toString());
+		PhotoManager.getInstance().init();
+	}
 
 
-    /**
-     *
-     */
-    protected void shutDown() throws Exception {
-        saveAll();
+	/**
+	 *
+	 */
+	protected void shutDown() throws Exception {
+		saveAll();
 
-        super.shutDown();
-    }
+		super.shutDown();
+	}
 
-    /**
-     *
-     */
-    public void saveAll() {
-        PhotoCaseManager.getInstance().savePhotoCases();
-        PhotoManager.getInstance().savePhotos();
-        UserManager.getInstance().saveClients();
-        GlobalsManager.getInstance().saveGlobals();
-    }
+	/**
+	 *
+	 */
+	public void saveAll() {
+		PhotoCaseManager.getInstance().savePhotoCases();
+		PhotoManager.getInstance().savePhotos();
+		UserManager.getInstance().saveClients();
+		GlobalsManager.getInstance().saveGlobals();
+	}
 
-    /**
-     *
-     */
-    protected void createUser(String userId, String nickName, String emailAddress, String photoDir) throws Exception {
-        UserManager userManager = UserManager.getInstance();
-        new User(userId, nickName, emailAddress);
+	/**
+	 *
+	 */
+	protected void createUser(String userId, String nickName, String emailAddress, String photoDir) throws Exception {
+		UserManager userManager = UserManager.getInstance();
+		new User(userId, nickName, emailAddress);
 
-        PhotoManager photoManager = PhotoManager.getInstance();
-        File photoDirFile = new File(photoDir);
-        FileFilter photoFileFilter = new FileFilter() {
-            public boolean accept(File file) {
-                //TODO: check and change
-                return file.getName().endsWith(".jpg");
-            }
-        };
+		PhotoManager photoManager = PhotoManager.getInstance();
+		File photoDirFile = new File(photoDir);
+		FileFilter photoFileFilter = new FileFilter() {
+			public boolean accept(File file) {
+				//TODO: check and change
+				return file.getName().endsWith(".jpg");
+			}
+		};
 
-        File[] photoFiles = photoDirFile.listFiles(photoFileFilter);
-        for (int i = 0; i < photoFiles.length; i++) {
-            //TODO: change to datastore/cloud storage
-            //Photo newPhoto = photoManager.createPhoto(photoFiles[i]);
-            //user.addPhoto(newPhoto);
-        }
-    }
+		File[] photoFiles = photoDirFile.listFiles(photoFileFilter);
+		for (int i = 0; i < photoFiles.length; i++) {
+			//TODO: change to datastore/cloud storage
+			//Photo newPhoto = photoManager.createPhoto(photoFiles[i]);
+			//user.addPhoto(newPhoto);
+		}
+	}
 }

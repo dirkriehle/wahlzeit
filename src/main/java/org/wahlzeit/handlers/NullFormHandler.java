@@ -30,18 +30,18 @@ import org.wahlzeit.webparts.WebPart;
  */
 public class NullFormHandler extends AbstractWebFormHandler {
 
-    /**
-     *
-     */
-    public NullFormHandler() {
-        initialize(PartUtil.NULL_FORM_FILE, AccessRights.GUEST);
-    }
+	/**
+	 *
+	 */
+	public NullFormHandler() {
+		initialize(PartUtil.NULL_FORM_FILE, AccessRights.GUEST);
+	}
 
-    /**
-     *
-     */
-    protected void doMakeWebPart(UserSession us, WebPart part) {
-        // do nothing
-    }
+	/**
+	 *
+	 */
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		// do nothing
+	}
 
 }

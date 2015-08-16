@@ -29,64 +29,64 @@ import java.util.logging.Logger;
  */
 public abstract class Agent {
 
-    private static Logger log = Logger.getLogger(Agent.class.getName());
+	private static Logger log = Logger.getLogger(Agent.class.getName());
 
-    /**
-     *
-     */
-    protected static int id = 0;
+	/**
+	 *
+	 */
+	protected static int id = 0;
 
-    /**
-     *
-     */
-    protected String name = "no name";
+	/**
+	 *
+	 */
+	protected String name = "no name";
 
-    /**
-     *
-     */
-    protected Agent() {
-        // do nothing
-    }
+	/**
+	 *
+	 */
+	protected Agent() {
+		// do nothing
+	}
 
-    /**
-     * @methodtype initialization
-     */
-    protected void initialize(String myName) {
-        name = myName;
-    }
+	/**
+	 * @methodtype initialization
+	 */
+	protected void initialize(String myName) {
+		name = myName;
+	}
 
-    /**
-     * @methodtype get
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * @methodtype get
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * @methodtype command
-     */
-    public void run() {
-        synchronized (Agent.class) {
-            String agentName = "agent" + id++;
-            log.config(LogBuilder.createSystemMessage().addAction("started new agent").addParameter("name", agentName)
-                    .addParameter("ID", id).toString());
-        }
+	/**
+	 * @methodtype command
+	 */
+	public void run() {
+		synchronized (Agent.class) {
+			String agentName = "agent" + id++;
+			log.config(LogBuilder.createSystemMessage().addAction("started new agent").addParameter("name", agentName)
+					.addParameter("ID", id).toString());
+		}
 
-        try {
-            doRun();
-        } catch (Exception e) {
-            log.config(LogBuilder.createSystemMessage().addParameter("agent name", name).addException(
-                    "Problem when executing task", e).toString());
-        }
-    }
+		try {
+			doRun();
+		} catch (Exception e) {
+			log.config(LogBuilder.createSystemMessage().addParameter("agent name", name).addException(
+					"Problem when executing task", e).toString());
+		}
+	}
 
-    /**
-     * @methodproperty hook
-     *
-     * does the actual work of the agent
-     */
-    protected void doRun() {
-        // do nothing
-    }
+	/**
+	 * @methodproperty hook
+	 * <p/>
+	 * does the actual work of the agent
+	 */
+	protected void doRun() {
+		// do nothing
+	}
 
 }

@@ -44,89 +44,89 @@ import java.util.logging.Logger;
  */
 public class FlagPhotoFormHandler extends AbstractWebFormHandler {
 
-    private static final Logger log = Logger.getLogger(FlagPhotoFormHandler.class.getName());
+	private static final Logger log = Logger.getLogger(FlagPhotoFormHandler.class.getName());
 
 
-    /**
-     *
-     */
-    public FlagPhotoFormHandler() {
-        initialize(PartUtil.FLAG_PHOTO_FORM_FILE, AccessRights.GUEST);
-    }
+	/**
+	 *
+	 */
+	public FlagPhotoFormHandler() {
+		initialize(PartUtil.FLAG_PHOTO_FORM_FILE, AccessRights.GUEST);
+	}
 
-    /**
-     *
-     */
-    protected boolean isWellFormedGet(UserSession us, String link, Map args) {
-        return hasSavedPhotoId(us) && isSavedPhotoVisible(us);
-    }
+	/**
+	 *
+	 */
+	protected boolean isWellFormedGet(UserSession us, String link, Map args) {
+		return hasSavedPhotoId(us) && isSavedPhotoVisible(us);
+	}
 
-    /**
-     *
-     */
-    protected void doMakeWebPart(UserSession us, WebPart part) {
-        Map args = us.getSavedArgs();
-        part.addStringFromArgs(args, UserSession.MESSAGE);
+	/**
+	 *
+	 */
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map args = us.getSavedArgs();
+		part.addStringFromArgs(args, UserSession.MESSAGE);
 
-        String id = us.getAsString(args, Photo.ID);
-        Photo photo = PhotoManager.getInstance().getPhoto(id);
-        part.addString(Photo.ID, id);
-        part.addString(Photo.THUMB, getPhotoThumb(us, photo));
-        part.maskAndAddStringFromArgsWithDefault(args, PhotoCase.FLAGGER, us.getClient().getEmailAddress().asString());
-        part.addSelect(PhotoCase.REASON, FlagReason.MISMATCH);
-        part.maskAndAddStringFromArgs(args, PhotoCase.EXPLANATION);
-    }
+		String id = us.getAsString(args, Photo.ID);
+		Photo photo = PhotoManager.getInstance().getPhoto(id);
+		part.addString(Photo.ID, id);
+		part.addString(Photo.THUMB, getPhotoThumb(us, photo));
+		part.maskAndAddStringFromArgsWithDefault(args, PhotoCase.FLAGGER, us.getClient().getEmailAddress().asString());
+		part.addSelect(PhotoCase.REASON, FlagReason.MISMATCH);
+		part.maskAndAddStringFromArgs(args, PhotoCase.EXPLANATION);
+	}
 
-    /**
-     *
-     */
-    protected String doHandlePost(UserSession us, Map args) {
-        String id = us.getAndSaveAsString(args, Photo.ID);
-        String flagger = us.getAndSaveAsString(args, PhotoCase.FLAGGER);
-        FlagReason reason = FlagReason.getFromString(us.getAndSaveAsString(args, PhotoCase.REASON));
-        String explanation = us.getAndSaveAsString(args, PhotoCase.EXPLANATION);
-        ModelConfig config = us.getClient().getLanguageConfiguration();
+	/**
+	 *
+	 */
+	protected String doHandlePost(UserSession us, Map args) {
+		String id = us.getAndSaveAsString(args, Photo.ID);
+		String flagger = us.getAndSaveAsString(args, PhotoCase.FLAGGER);
+		FlagReason reason = FlagReason.getFromString(us.getAndSaveAsString(args, PhotoCase.REASON));
+		String explanation = us.getAndSaveAsString(args, PhotoCase.EXPLANATION);
+		ModelConfig config = us.getClient().getLanguageConfiguration();
 
-        if (StringUtil.isNullOrEmptyString(flagger)) {
-            us.setMessage(config.getEmailAddressIsMissing());
-            return PartUtil.FLAG_PHOTO_PAGE_NAME;
-        } else if (!StringUtil.isValidStrictEmailAddress(flagger)) {
-            us.setMessage(config.getEmailAddressIsInvalid());
-            return PartUtil.FLAG_PHOTO_PAGE_NAME;
-        } else if (explanation.length() > 1024) {
-            us.setMessage(config.getInputIsTooLong());
-            return PartUtil.FLAG_PHOTO_PAGE_NAME;
-        }
+		if (StringUtil.isNullOrEmptyString(flagger)) {
+			us.setMessage(config.getEmailAddressIsMissing());
+			return PartUtil.FLAG_PHOTO_PAGE_NAME;
+		} else if (!StringUtil.isValidStrictEmailAddress(flagger)) {
+			us.setMessage(config.getEmailAddressIsInvalid());
+			return PartUtil.FLAG_PHOTO_PAGE_NAME;
+		} else if (explanation.length() > 1024) {
+			us.setMessage(config.getInputIsTooLong());
+			return PartUtil.FLAG_PHOTO_PAGE_NAME;
+		}
 
-        Photo photo = PhotoManager.getInstance().getPhoto(id);
-        photo.setStatus(photo.getStatus().asFlagged(true));
-        AsyncTaskExecutor.savePhotoAsync(id);
+		Photo photo = PhotoManager.getInstance().getPhoto(id);
+		photo.setStatus(photo.getStatus().asFlagged(true));
+		AsyncTaskExecutor.savePhotoAsync(id);
 
-        PhotoCase photoCase = new PhotoCase(photo);
-        photoCase.setFlagger(flagger);
-        photoCase.setReason(reason);
-        photoCase.setExplanation(explanation);
-        PhotoCaseManager pcm = PhotoCaseManager.getInstance();
-        pcm.addPhotoCase(photoCase);
+		PhotoCase photoCase = new PhotoCase(photo);
+		photoCase.setFlagger(flagger);
+		photoCase.setReason(reason);
+		photoCase.setExplanation(explanation);
+		PhotoCaseManager pcm = PhotoCaseManager.getInstance();
+		pcm.addPhotoCase(photoCase);
 
-        EmailService emailService = EmailServiceManager.getDefaultService();
+		EmailService emailService = EmailServiceManager.getDefaultService();
 
-        EmailAddress to = config.getModeratorEmailAddress();
+		EmailAddress to = config.getModeratorEmailAddress();
 
-        String emailSubject = "Photo: " + id + " of user: " + photo.getOwnerId() + " got flagged";
-        String emailBody = "Photo: " + us.getSiteUrl() + id + ".html\n\n";
-        emailBody += "Reason: " + reason + "\n\n";
-        emailBody += "Explanation: " + explanation + "\n\n";
+		String emailSubject = "Photo: " + id + " of user: " + photo.getOwnerId() + " got flagged";
+		String emailBody = "Photo: " + us.getSiteUrl() + id + ".html\n\n";
+		emailBody += "Reason: " + reason + "\n\n";
+		emailBody += "Explanation: " + explanation + "\n\n";
 
-        emailService.sendEmailIgnoreException(to, config.getAuditEmailAddress(), emailSubject, emailBody);
+		emailService.sendEmailIgnoreException(to, config.getAuditEmailAddress(), emailSubject, emailBody);
 
-        log.info(LogBuilder.createUserMessage()
-                .addAction("Flag Photo")
-                .addParameter("Photo", photo.getId().asString()).toString());
+		log.info(LogBuilder.createUserMessage()
+				.addAction("Flag Photo")
+				.addParameter("Photo", photo.getId().asString()).toString());
 
-        us.setTwoLineMessage(config.getModeratorWasInformed(), config.getContinueWithShowPhoto());
+		us.setTwoLineMessage(config.getModeratorWasInformed(), config.getContinueWithShowPhoto());
 
-        return PartUtil.SHOW_NOTE_PAGE_NAME;
-    }
+		return PartUtil.SHOW_NOTE_PAGE_NAME;
+	}
 
 }

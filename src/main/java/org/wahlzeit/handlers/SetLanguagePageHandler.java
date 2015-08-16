@@ -36,41 +36,41 @@ import java.util.Map;
  */
 public class SetLanguagePageHandler extends AbstractWebPageHandler {
 
-    /**
-     *
-     */
-    public SetLanguagePageHandler() {
-        initialize(PartUtil.SHOW_NOTE_PAGE_FILE, AccessRights.GUEST);
-    }
+	/**
+	 *
+	 */
+	public SetLanguagePageHandler() {
+		initialize(PartUtil.SHOW_NOTE_PAGE_FILE, AccessRights.GUEST);
+	}
 
-    /**
-     *
-     */
-    protected String doHandleGet(UserSession us, String link, Map args) {
-        ModelConfig result = LanguageConfigs.get(Language.ENGLISH);
+	/**
+	 *
+	 */
+	protected String doHandleGet(UserSession us, String link, Map args) {
+		ModelConfig result = LanguageConfigs.get(Language.ENGLISH);
 
-        if (link.equals(PartUtil.SET_GERMAN_LANGUAGE_PAGE_NAME)) {
-            result = LanguageConfigs.get(Language.GERMAN);
-        } else if (link.equals(PartUtil.SET_SPANISH_LANGUAGE_PAGE_NAME)) {
-            result = LanguageConfigs.get(Language.ENGLISH);
-        } else if (link.equals(PartUtil.SET_JAPANESE_LANGUAGE_PAGE_NAME)) {
-            result = LanguageConfigs.get(Language.JAPANESE);
-        }
+		if (link.equals(PartUtil.SET_GERMAN_LANGUAGE_PAGE_NAME)) {
+			result = LanguageConfigs.get(Language.GERMAN);
+		} else if (link.equals(PartUtil.SET_SPANISH_LANGUAGE_PAGE_NAME)) {
+			result = LanguageConfigs.get(Language.ENGLISH);
+		} else if (link.equals(PartUtil.SET_JAPANESE_LANGUAGE_PAGE_NAME)) {
+			result = LanguageConfigs.get(Language.JAPANESE);
+		}
 
-        us.getClient().setLanguage(result.getLanguage());
+		us.getClient().setLanguage(result.getLanguage());
 
-        return link;
-    }
+		return link;
+	}
 
-    /**
-     *
-     */
-    protected void makeWebPageBody(UserSession us, WebPart page) {
-        ModelConfig config = us.getClient().getLanguageConfiguration();
-        page.addString("noteHeading", config.getInformation());
-        String msg1 = config.getNewLanguageSet();
-        String msg2 = config.getContinueWithShowPhoto();
-        page.addString("note", HtmlUtil.asP(msg1) + HtmlUtil.asP(msg2));
-    }
+	/**
+	 *
+	 */
+	protected void makeWebPageBody(UserSession us, WebPart page) {
+		ModelConfig config = us.getClient().getLanguageConfiguration();
+		page.addString("noteHeading", config.getInformation());
+		String msg1 = config.getNewLanguageSet();
+		String msg2 = config.getContinueWithShowPhoto();
+		page.addString("note", HtmlUtil.asP(msg1) + HtmlUtil.asP(msg2));
+	}
 
 }

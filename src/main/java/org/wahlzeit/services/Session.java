@@ -22,97 +22,97 @@ package org.wahlzeit.services;
 
 
 /**
- * A Session object maintains a DatabaseConnection and helps track processing time.
- * Typically, there is one for each working thread, be it a system thread or a web session.
+ * A Session object maintains a DatabaseConnection and helps track processing time. Typically, there is one for each
+ * working thread, be it a system thread or a web session.
  *
  * @author dirkriehle
  */
 public class Session {
 
-    public static final String NAME = "name";
-    public static final String PROCESSING_TIME = "processingTime";
-    public static final String NO_SESSION = "no sessioin";
+	public static final String NAME = "name";
+	public static final String PROCESSING_TIME = "processingTime";
+	public static final String NO_SESSION = "no sessioin";
 
-    /**
-     * Session state
-     */
-    protected String name = null;
+	/**
+	 * Session state
+	 */
+	protected String name = null;
 
 
-    /**
-     * processing time for requests
-     */
-    protected long processingTime = 0;
+	/**
+	 * processing time for requests
+	 */
+	protected long processingTime = 0;
 
-    /**
-     *
-     */
-    protected Session() {
-        // do nothing
-    }
+	/**
+	 *
+	 */
+	protected Session() {
+		// do nothing
+	}
 
-    /**
-     * @methodtype init
-     */
-    protected void initialize(String myName) {
-        name = myName;
-        notifyNameChanged();
-    }
+	/**
+	 * @methodtype init
+	 */
+	protected void initialize(String myName) {
+		name = myName;
+		notifyNameChanged();
+	}
 
-    /**
-     * @methodproperty hook
-     *
-     * Hook method for subclasses to get to know when name changes.
-     * @see #initialize(String)
-     */
-    protected void notifyNameChanged() {
-    }
+	/**
+	 * @methodproperty hook
+	 * <p/>
+	 * Hook method for subclasses to get to know when name changes.
+	 * @see #initialize(String)
+	 */
+	protected void notifyNameChanged() {
+	}
 
-    /**
-     * @methodtype get
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * @methodtype get
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * @methodtype get
-     */
-    public String getClientId() {
-        return "system";
-    }
+	/**
+	 * @methodtype get
+	 */
+	public String getClientId() {
+		return "system";
+	}
 
-    /**
-     * @methodtype init
-     */
-    public void resetProcessingTime() {
-        processingTime = 0;
-        notifyProcessingTimeChanged();
-    }
+	/**
+	 * @methodtype init
+	 */
+	public void resetProcessingTime() {
+		processingTime = 0;
+		notifyProcessingTimeChanged();
+	}
 
-    /**
-     * @methodproperty hook
-     *
-     * Hook method for subclasses to get to know when processing time changes.
-     * @see #addProcessingTime(long)
-     * @see #resetProcessingTime()
-     */
-    protected void notifyProcessingTimeChanged() {
-    }
+	/**
+	 * @methodproperty hook
+	 * <p/>
+	 * Hook method for subclasses to get to know when processing time changes.
+	 * @see #addProcessingTime(long)
+	 * @see #resetProcessingTime()
+	 */
+	protected void notifyProcessingTimeChanged() {
+	}
 
-    /**
-     * @methodtype set
-     */
-    public void addProcessingTime(long time) {
-        processingTime += time;
-        notifyProcessingTimeChanged();
-    }
+	/**
+	 * @methodtype set
+	 */
+	public void addProcessingTime(long time) {
+		processingTime += time;
+		notifyProcessingTimeChanged();
+	}
 
-    /**
-     * @methodtype get
-     */
-    public long getProcessingTime() {
-        return processingTime;
-    }
+	/**
+	 * @methodtype get
+	 */
+	public long getProcessingTime() {
+		return processingTime;
+	}
 
 }

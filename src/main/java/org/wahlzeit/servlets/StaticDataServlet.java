@@ -24,68 +24,68 @@ import java.util.logging.Logger;
  */
 public class StaticDataServlet extends AbstractServlet {
 
-    Logger log = Logger.getLogger(StaticDataServlet.class.getName());
+	Logger log = Logger.getLogger(StaticDataServlet.class.getName());
 
-    @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            String type = request.getParameter("type");
-            String photoId = request.getParameter("photoId");
-            String sizeString = request.getParameter("size");
-            int size = Integer.valueOf(sizeString);
-            log.info(LogBuilder.createSystemMessage().
-                    addAction("Provide static resource").
-                    addParameter("type", type).
-                    addParameter("photoId", photoId).
-                    addParameter("size", size).toString());
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		try {
+			String type = request.getParameter("type");
+			String photoId = request.getParameter("photoId");
+			String sizeString = request.getParameter("size");
+			int size = Integer.valueOf(sizeString);
+			log.info(LogBuilder.createSystemMessage().
+					addAction("Provide static resource").
+					addParameter("type", type).
+					addParameter("photoId", photoId).
+					addParameter("size", size).toString());
 
-            if ("image".equals(type)) {
-                Image image = getImage(photoId, size);
-                if (image != null) {
-                    response.getOutputStream().write(image.getImageData());
-                    response.getOutputStream().flush();
-                    response.setStatus(HttpStatus.SC_OK);
-                } else {
-                    log.warning(LogBuilder.createSystemMessage().addMessage("image not found").toString());
-                    response.setStatus(HttpStatus.SC_NOT_FOUND);
-                }
-            } else {
-                log.warning(LogBuilder.createSystemMessage().
-                        addMessage("unimplemented static resource type has been requested").toString());
-                response.setStatus(HttpStatus.SC_NOT_IMPLEMENTED);
-            }
+			if ("image".equals(type)) {
+				Image image = getImage(photoId, size);
+				if (image != null) {
+					response.getOutputStream().write(image.getImageData());
+					response.getOutputStream().flush();
+					response.setStatus(HttpStatus.SC_OK);
+				} else {
+					log.warning(LogBuilder.createSystemMessage().addMessage("image not found").toString());
+					response.setStatus(HttpStatus.SC_NOT_FOUND);
+				}
+			} else {
+				log.warning(LogBuilder.createSystemMessage().
+						addMessage("unimplemented static resource type has been requested").toString());
+				response.setStatus(HttpStatus.SC_NOT_IMPLEMENTED);
+			}
 
-        } catch (Exception e) {
-            log.severe(LogBuilder.createSystemMessage().addException("Problem when loading image", e).toString());
-        }
-    }
+		} catch (Exception e) {
+			log.severe(LogBuilder.createSystemMessage().addException("Problem when loading image", e).toString());
+		}
+	}
 
-    /**
-     * @methodtype command
-     * <p/>
-     * Loads image either from the <@link>PhotoManager</@link> or from the <@link>ImageStorage</@link>. If image does
-     * not exist, null is returned.
-     */
-    private Image getImage(String photoId, int size) {
-        Image image = null;
-        Photo photo = PhotoManager.getInstance().getPhoto(photoId);
-        if (photo != null) {
-            PhotoSize photoSize = PhotoSize.getFromInt(size);
-            image = photo.getImage(photoSize);
-        }
-        // if not in cache load from Google Cloud Storage
-        if (image == null) {
-            Serializable rawImage = null;
-            try {
-                rawImage = ImageStorage.getInstance().readImage(photoId, size);
-            } catch (IOException e) {
-                log.warning(LogBuilder.createSystemMessage().addException("Problem when reading image.", e).toString());
-            }
-            if (rawImage != null && rawImage instanceof Image) {
-                image = (Image) rawImage;
-            }
-        }
-        return image;
-    }
+	/**
+	 * @methodtype command
+	 * <p/>
+	 * Loads image either from the <@link>PhotoManager</@link> or from the <@link>ImageStorage</@link>. If image does
+	 * not exist, null is returned.
+	 */
+	private Image getImage(String photoId, int size) {
+		Image image = null;
+		Photo photo = PhotoManager.getInstance().getPhoto(photoId);
+		if (photo != null) {
+			PhotoSize photoSize = PhotoSize.getFromInt(size);
+			image = photo.getImage(photoSize);
+		}
+		// if not in cache load from Google Cloud Storage
+		if (image == null) {
+			Serializable rawImage = null;
+			try {
+				rawImage = ImageStorage.getInstance().readImage(photoId, size);
+			} catch (IOException e) {
+				log.warning(LogBuilder.createSystemMessage().addException("Problem when reading image.", e).toString());
+			}
+			if (rawImage != null && rawImage instanceof Image) {
+				image = (Image) rawImage;
+			}
+		}
+		return image;
+	}
 }
 

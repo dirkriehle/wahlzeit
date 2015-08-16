@@ -38,51 +38,51 @@ import java.util.logging.Logger;
  */
 public class AdminUserPhotoFormHandler extends AbstractWebFormHandler {
 
-    private static final Logger log = Logger.getLogger(AdminUserPhotoFormHandler.class.getName());
+	private static final Logger log = Logger.getLogger(AdminUserPhotoFormHandler.class.getName());
 
 
-    /**
-     *
-     */
-    public AdminUserPhotoFormHandler() {
-        initialize(PartUtil.ADMIN_USER_PHOTO_FORM_FILE, AccessRights.ADMINISTRATOR);
-    }
+	/**
+	 *
+	 */
+	public AdminUserPhotoFormHandler() {
+		initialize(PartUtil.ADMIN_USER_PHOTO_FORM_FILE, AccessRights.ADMINISTRATOR);
+	}
 
-    /**
-     *
-     */
-    protected void doMakeWebPart(UserSession us, WebPart part) {
-        String photoId = (String)us.getSavedArg("photoId");
-        Photo photo = PhotoManager.getInstance().getPhoto(photoId);
-        part.addString(Photo.THUMB, getPhotoThumb(us, photo));
+	/**
+	 *
+	 */
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		String photoId = (String) us.getSavedArg("photoId");
+		Photo photo = PhotoManager.getInstance().getPhoto(photoId);
+		part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 
-        part.addString("photoId", photoId);
-        part.addString(Photo.ID, photo.getId().asString());
-        part.addSelect(Photo.STATUS, PhotoStatus.class, (String) us.getSavedArg(Photo.STATUS));
-        part.maskAndAddStringFromArgsWithDefault(us.getSavedArgs(), Photo.TAGS, photo.getTags().asString());
-    }
+		part.addString("photoId", photoId);
+		part.addString(Photo.ID, photo.getId().asString());
+		part.addSelect(Photo.STATUS, PhotoStatus.class, (String) us.getSavedArg(Photo.STATUS));
+		part.maskAndAddStringFromArgsWithDefault(us.getSavedArgs(), Photo.TAGS, photo.getTags().asString());
+	}
 
-    /**
-     *
-     */
-    protected String doHandlePost(UserSession us, Map args) {
-        String id = us.getAndSaveAsString(args, "photoId");
-        Photo photo = PhotoManager.getInstance().getPhoto(id);
+	/**
+	 *
+	 */
+	protected String doHandlePost(UserSession us, Map args) {
+		String id = us.getAndSaveAsString(args, "photoId");
+		Photo photo = PhotoManager.getInstance().getPhoto(id);
 
-        String tags = us.getAndSaveAsString(args, Photo.TAGS);
-        photo.setTags(new Tags(tags));
-        String status = us.getAndSaveAsString(args, Photo.STATUS);
-        photo.setStatus(PhotoStatus.getFromString(status));
+		String tags = us.getAndSaveAsString(args, Photo.TAGS);
+		photo.setTags(new Tags(tags));
+		String status = us.getAndSaveAsString(args, Photo.STATUS);
+		photo.setStatus(PhotoStatus.getFromString(status));
 
-        AsyncTaskExecutor.savePhotoAsync(id);
+		AsyncTaskExecutor.savePhotoAsync(id);
 
-        log.info(LogBuilder.createUserMessage().
-                addAction("AdminUserPhoto").
-                addParameter("Photo", photo.getId().asString()).toString());
+		log.info(LogBuilder.createUserMessage().
+				addAction("AdminUserPhoto").
+				addParameter("Photo", photo.getId().asString()).toString());
 
-        us.setMessage(us.getClient().getLanguageConfiguration().getPhotoUpdateSucceeded());
+		us.setMessage(us.getClient().getLanguageConfiguration().getPhotoUpdateSucceeded());
 
-        return PartUtil.SHOW_ADMIN_PAGE_NAME;
-    }
+		return PartUtil.SHOW_ADMIN_PAGE_NAME;
+	}
 
 }

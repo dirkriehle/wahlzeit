@@ -21,39 +21,39 @@
 package org.wahlzeit.webparts;
 
 /**
- * A WebValue is representation of enum values providing HTML formatting instructions.
- * It supports drop-down boxes (SELECTED) and radio buttons (CHECKED).
+ * A WebValue is representation of enum values providing HTML formatting instructions. It supports drop-down boxes
+ * (SELECTED) and radio buttons (CHECKED).
  *
  * @author dirkriehle
  */
 public class WebValue {
 
-    /**
-     *
-     */
-    protected String checkedKey = "";
-    protected String selectedKey = "";
+	/**
+	 *
+	 */
+	protected String checkedKey = "";
+	protected String selectedKey = "";
 
-    /**
-     *
-     */
-    public WebValue(String myCheckedKey, String mySelectedKey) {
-        checkedKey = myCheckedKey;
-        selectedKey = mySelectedKey;
-    }
+	/**
+	 *
+	 */
+	public WebValue(String myCheckedKey, String mySelectedKey) {
+		checkedKey = myCheckedKey;
+		selectedKey = mySelectedKey;
+	}
 
-    /**
-     *
-     */
-    public String getCheckedKey() {
-        return checkedKey;
-    }
+	/**
+	 *
+	 */
+	public String getCheckedKey() {
+		return checkedKey;
+	}
 
-    /**
-     *
-     */
-    public String getSelectedKey() {
-        return selectedKey;
-    }
+	/**
+	 *
+	 */
+	public String getSelectedKey() {
+		return selectedKey;
+	}
 
 }

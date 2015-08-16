@@ -22,59 +22,59 @@ import java.util.logging.Logger;
  */
 public class LoginHandler extends AbstractWebFormHandler {
 
-    private static final Logger log = Logger.getLogger(LoginHandler.class.getName());
+	private static final Logger log = Logger.getLogger(LoginHandler.class.getName());
 
 
-    public LoginHandler() {
-        initialize(PartUtil.LOGIN_FORM_FILE, AccessRights.GUEST);
-    }
+	public LoginHandler() {
+		initialize(PartUtil.LOGIN_FORM_FILE, AccessRights.GUEST);
+	}
 
-    @Override
-    protected void doMakeWebPart(UserSession us, WebPart part) {
-        // do nothing as there is no page that should be displayed
-        log.info("doMakeWebPart");
-    }
+	@Override
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		// do nothing as there is no page that should be displayed
+		log.info("doMakeWebPart");
+	}
 
-    /**
-     * Called when a new user logged in. Make sure that a Wahlzeit user exist.
-     */
-    @Override
-    protected String doHandleGet(UserSession us, String link, Map args) {
-        log.info("Link: " + link);
+	/**
+	 * Called when a new user logged in. Make sure that a Wahlzeit user exist.
+	 */
+	@Override
+	protected String doHandleGet(UserSession us, String link, Map args) {
+		log.info("Link: " + link);
 
-        UserService userService = UserServiceFactory.getUserService();
-        com.google.appengine.api.users.User googleUser = userService.getCurrentUser();
+		UserService userService = UserServiceFactory.getUserService();
+		com.google.appengine.api.users.User googleUser = userService.getCurrentUser();
 
-        if (googleUser != null) {
-            // googleUser logged in
-            log.config(LogBuilder.createSystemMessage().
-                    addMessage("Google user exists").
-                    addParameter("E-Mail", googleUser.getEmail()).toString());
-            String userId = googleUser.getUserId();
-            UserManager userManager = UserManager.getInstance();
-            User user = userManager.getUserById(userId);
-            if (user != null) {
-                // Wahlzeit user already exists
-                us.setClient(user);
-                log.config(LogBuilder.createSystemMessage().
-                        addMessage("Wahlzeit user exists").
-                        addParameter("id", user.getId()).toString());
-            } else {
-                // create new Wahlzeit user
-                String emailAddress = googleUser.getEmail();
-                String nickName = googleUser.getNickname();
+		if (googleUser != null) {
+			// googleUser logged in
+			log.config(LogBuilder.createSystemMessage().
+					addMessage("Google user exists").
+					addParameter("E-Mail", googleUser.getEmail()).toString());
+			String userId = googleUser.getUserId();
+			UserManager userManager = UserManager.getInstance();
+			User user = userManager.getUserById(userId);
+			if (user != null) {
+				// Wahlzeit user already exists
+				us.setClient(user);
+				log.config(LogBuilder.createSystemMessage().
+						addMessage("Wahlzeit user exists").
+						addParameter("id", user.getId()).toString());
+			} else {
+				// create new Wahlzeit user
+				String emailAddress = googleUser.getEmail();
+				String nickName = googleUser.getNickname();
 
-                Client previousClient = us.getClient();
-                if (userService.isUserAdmin()) {
-                    user = new Administrator(userId, nickName, emailAddress, previousClient);
-                } else {
-                    user = new User(userId, nickName, emailAddress, previousClient);
-                }
-                userManager.emailWelcomeMessage(us, user);
-                us.setClient(user);
+				Client previousClient = us.getClient();
+				if (userService.isUserAdmin()) {
+					user = new Administrator(userId, nickName, emailAddress, previousClient);
+				} else {
+					user = new User(userId, nickName, emailAddress, previousClient);
+				}
+				userManager.emailWelcomeMessage(us, user);
+				us.setClient(user);
 
-                log.info(LogBuilder.createUserMessage().addAction("Signup").toString());
-            }
+				log.info(LogBuilder.createUserMessage().addAction("Signup").toString());
+			}
 
 //              TODO
 //            if (user.getStatus().isDisabled()) {
@@ -82,11 +82,11 @@ public class LoginHandler extends AbstractWebFormHandler {
 //                return PartUtil.LOGIN_PAGE_NAME;
 //            }
 
-            return PartUtil.SHOW_USER_HOME_PAGE_NAME;
-        } else {
-            // googleUser not logged in
-            return PartUtil.SHOW_NOTE_PAGE_NAME;
-        }
-    }
+			return PartUtil.SHOW_USER_HOME_PAGE_NAME;
+		} else {
+			// googleUser not logged in
+			return PartUtil.SHOW_NOTE_PAGE_NAME;
+		}
+	}
 
 }

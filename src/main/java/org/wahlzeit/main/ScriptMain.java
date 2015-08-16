@@ -30,40 +30,40 @@ import java.util.logging.Logger;
  */
 public abstract class ScriptMain extends ModelMain {
 
-    private static final Logger log = Logger.getLogger(ScriptMain.class.getName());
+	private static final Logger log = Logger.getLogger(ScriptMain.class.getName());
 
-    /**
-     *
-     */
-    public void run() {
-        try {
-            startUp("web");
-        } catch (Exception ex) {
-            log.log(Level.SEVERE, "Exception: ", ex);
-        }
+	/**
+	 *
+	 */
+	public void run() {
+		try {
+			startUp("web");
+		} catch (Exception ex) {
+			log.log(Level.SEVERE, "Exception: ", ex);
+		}
 
-        try {
-            shutDown();
-        } catch (Exception ex) {
-            log.log(Level.SEVERE, "Exception: ", ex);
-        }
-    }
+		try {
+			shutDown();
+		} catch (Exception ex) {
+			log.log(Level.SEVERE, "Exception: ", ex);
+		}
+	}
 
 
-    /**
-     *
-     */
-    protected void handleArgv(String argv[]) {
-        for (int i = 0; i < argv.length; i++) {
-            i = handleArg(argv[i], i, argv);
-        }
-    }
+	/**
+	 *
+	 */
+	protected void handleArgv(String argv[]) {
+		for (int i = 0; i < argv.length; i++) {
+			i = handleArg(argv[i], i, argv);
+		}
+	}
 
-    /**
-     *
-     */
-    protected int handleArg(String arg, int i, String argv[]) {
-        // do nothing
-        return 0;
-    }
+	/**
+	 *
+	 */
+	protected int handleArg(String arg, int i, String argv[]) {
+		// do nothing
+		return 0;
+	}
 }

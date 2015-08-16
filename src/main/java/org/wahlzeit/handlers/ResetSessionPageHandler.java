@@ -33,30 +33,30 @@ import java.util.Map;
  */
 public class ResetSessionPageHandler extends AbstractWebPageHandler {
 
-    /**
-     *
-     */
-    public ResetSessionPageHandler() {
-        initialize(PartUtil.SHOW_NOTE_PAGE_FILE, AccessRights.GUEST);
-    }
+	/**
+	 *
+	 */
+	public ResetSessionPageHandler() {
+		initialize(PartUtil.SHOW_NOTE_PAGE_FILE, AccessRights.GUEST);
+	}
 
-    /**
-     *
-     */
-    protected String doHandleGet(UserSession us, String link, Map args) {
-        us.clear();
-        return link;
-    }
+	/**
+	 *
+	 */
+	protected String doHandleGet(UserSession us, String link, Map args) {
+		us.clear();
+		return link;
+	}
 
-    /**
-     *
-     */
-    protected void makeWebPageBody(UserSession us, WebPart page) {
-        ModelConfig config = us.getClient().getLanguageConfiguration();
-        page.addString("noteHeading", config.getThankYou());
-        String msg1 = config.getResetSession();
-        String msg2 = config.getContinueWithShowPhoto();
-        page.addString("note", HtmlUtil.asP(msg1) + HtmlUtil.asP(msg2));
-    }
+	/**
+	 *
+	 */
+	protected void makeWebPageBody(UserSession us, WebPart page) {
+		ModelConfig config = us.getClient().getLanguageConfiguration();
+		page.addString("noteHeading", config.getThankYou());
+		String msg1 = config.getResetSession();
+		String msg2 = config.getContinueWithShowPhoto();
+		page.addString("note", HtmlUtil.asP(msg1) + HtmlUtil.asP(msg2));
+	}
 
 }
