@@ -29,18 +29,19 @@ import javax.mail.Message;
  */
 public class MockEmailService extends AbstractEmailService {
 
-    /**
-     *
-     */
-    protected Message doCreateEmail(EmailAddress to, EmailAddress bcc, String subject, String body) throws MailingException {
-        return null;
-    }
+	/**
+	 *
+	 */
+	protected Message doCreateEmail(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject,
+									String body) throws MailingException {
+		return null;
+	}
 
-    /**
-     *
-     */
-    protected void doSendEmail(Message msg) throws MailingException {
-        // do nothing
-    }
+	/**
+	 *
+	 */
+	protected void doSendEmail(Message msg) throws MailingException {
+		// do nothing
+	}
 
 }

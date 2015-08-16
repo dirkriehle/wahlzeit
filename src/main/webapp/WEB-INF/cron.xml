@@ -11,7 +11,7 @@
     <cron>
         <url>/agents/notifyUsersAboutPraise</url>
         <description>Sends an email to all users that want to get notified about the praise of her photos</description>
-        <schedule>every 3 days</schedule>
+        <schedule>every day 12:00</schedule>
     </cron>
 
 </cronentries>

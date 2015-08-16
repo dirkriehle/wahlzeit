@@ -69,7 +69,7 @@ public class NotifyUsersAboutPraiseAgent extends Agent {
 	protected void notifyOwner(User user, Collection<Photo> allPhotosOfUser) {
 		ModelConfig cfg = LanguageConfigs.get(user.getLanguage());
 
-
+		EmailAddress from = cfg.getAdministratorEmailAddress();
 		EmailAddress to = user.getEmailAddress();
 		String emailSubject = cfg.getNotifyAboutPraiseEmailSubject();
 
@@ -97,7 +97,7 @@ public class NotifyUsersAboutPraiseAgent extends Agent {
 		emailBody += cfg.getGeneralEmailFooter() + "\n\n";
 
 		EmailService emailService = EmailServiceManager.getDefaultService();
-		emailService.sendEmailIgnoreException(to, emailSubject, emailBody);
+		emailService.sendEmailIgnoreException(from, to, emailSubject, emailBody);
 	}
 
 
