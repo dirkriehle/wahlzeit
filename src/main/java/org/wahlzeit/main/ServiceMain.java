@@ -162,7 +162,7 @@ public class ServiceMain extends ModelMain {
 		manager.addWebPartHandler(PartUtil.SET_OPTIONS_PAGE_NAME, new ShowPartPageHandler(AccessRights.GUEST, temp));
 
 		// Signup, Login, EmailUserName/Password, and Logout pages
-		temp = manager.addWebPartHandler(PartUtil.LOGIN_FORM_NAME, new LoginHandler());
+		temp = manager.addWebPartHandler(PartUtil.LOGIN_FORM_NAME, new LoginFormHandler());
 		manager.addWebPartHandler(PartUtil.LOGIN_FORM_NAME, new ShowPartPageHandler(AccessRights.GUEST, temp));
 
 		manager.addWebPartHandler(PartUtil.LOGOUT_PAGE_NAME, new LogoutPageHandler());

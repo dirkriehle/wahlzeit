@@ -4,7 +4,7 @@ apply plugin: 'appengine'
 
 buildscript {
     ext {
-        gaeVersion = '1.9.23'
+        gaeVersion = '1.9.24'
     }
     repositories {
         mavenCentral()
@@ -42,15 +42,13 @@ dependencies {
     testCompile 'com.google.appengine:appengine-testing:' + gaeVersion
     testCompile 'com.google.appengine:appengine-api-stubs:' + gaeVersion
     testCompile 'com.google.appengine:appengine-api-labs:' + gaeVersion
+    testCompile 'com.google.appengine:appengine-tools-sdk:1.9.24'
     testCompile 'junit:junit:4.+'
     testCompile 'org.mockito:mockito-core:1.10.19'
 }
 
 test {
     // adjust this filter to your needs
-    filter {
-        includeTestsMatching "org.wahlzeit.model.*"
-    }
 }
 
 appengine {

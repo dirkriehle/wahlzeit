@@ -26,9 +26,11 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Test the valid cases of using <code>AccessRights</code>
+ * All test cases of the class {@link AccessRights}.
  */
-public class ValidAccessRightsTest {
+public class AccessRightsTest {
+
+	// test cases that cover valid behavior
 
 	@Test
 	public void getFromIntShouldMatchEnums() {
@@ -62,4 +64,46 @@ public class ValidAccessRightsTest {
 		assertFalse(AccessRights.hasRights(AccessRights.MODERATOR, AccessRights.ADMINISTRATOR));
 	}
 
+
+	// test cases that cover behavior in case of an error
+
+	@Test(expected = IllegalArgumentException.class)
+	public void negativeIndexShouldThrowException() {
+		AccessRights.getFromInt(-1);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void tooBigIndexShouldThrowException() {
+		AccessRights.getFromInt(5);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void nullStringShouldThrowException() {
+		AccessRights.getFromString(null);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void noneStringShouldThrowException() {
+		AccessRights.getFromString("NonE");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void CapitalGuestShouldThrowException() {
+		AccessRights.getFromString("Guest");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void CapitalUserShouldThrowException() {
+		AccessRights.getFromString("User");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void CapitalModeratorShouldThrowException() {
+		AccessRights.getFromString("Moderator");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void CapitalAdministratorShouldThrowException() {
+		AccessRights.getFromString("Administrator");
+	}
 }

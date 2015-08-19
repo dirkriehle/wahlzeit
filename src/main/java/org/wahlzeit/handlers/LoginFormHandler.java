@@ -16,16 +16,16 @@ import java.util.logging.Logger;
 
 /**
  * When a user signs in with its Google account, this handler assures that a Wahlzeit user exists for the Google user.
- * If not {@link LoginHandler} creates one.
+ * If not {@link LoginFormHandler} creates one.
  * <p/>
- * Created by Lukas Hahmann on 02.06.15.
+ * Created by dirkriehle
  */
-public class LoginHandler extends AbstractWebFormHandler {
+public class LoginFormHandler extends AbstractWebFormHandler {
 
-	private static final Logger log = Logger.getLogger(LoginHandler.class.getName());
+	private static final Logger log = Logger.getLogger(LoginFormHandler.class.getName());
 
 
-	public LoginHandler() {
+	public LoginFormHandler() {
 		initialize(PartUtil.LOGIN_FORM_FILE, AccessRights.GUEST);
 	}
 

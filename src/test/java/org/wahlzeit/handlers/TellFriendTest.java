@@ -23,19 +23,23 @@ import java.util.Map;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by Lukas Hahmann on 21.05.15.
+ * Acceptance tests for the TellFriend feature.
+ *
+ * @author dirkriehle
  */
 public class TellFriendTest {
 
 	@ClassRule
 	public static SysConfigProvider sysConfigProvider = new SysConfigProvider();
-	public WebFormHandlerProvider webFormHandlerProvider = new WebFormHandlerProvider();
+	@ClassRule
+	public static WebFormHandlerProvider webFormHandlerProvider = new WebFormHandlerProvider();
+
 	@Rule
 	public TestRule chain = RuleChain.
 			outerRule(new LocalDatastoreServiceTestConfigProvider()).
 			around(new RegisteredOfyEnvironmentProvider()).
-			around(new UserSessionProvider()).
-			around(webFormHandlerProvider);
+			around(new UserSessionProvider());
+
 	private UserSession session;
 	private WebFormHandler handler;
 
