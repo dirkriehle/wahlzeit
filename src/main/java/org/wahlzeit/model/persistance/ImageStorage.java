@@ -67,31 +67,6 @@ public abstract class ImageStorage {
 	}
 
 	/**
-	 * @methodtype assert
-	 */
-	protected void assertImageNotNull(Serializable image)
-			throws IllegalArgumentException {
-
-		if (image == null) {
-			throw new IllegalArgumentException("Image is null!");
-		}
-	}
-
-
-	// read methods ----------------------------------------------------------------------------------------------------
-
-	/**
-	 * @methodtype assert
-	 */
-	protected void assertValidPhotoId(String photoId)
-			throws IllegalArgumentException {
-
-		if (photoId == null || "".equals(photoId)) {
-			throw new IllegalArgumentException("Invalid photoId:" + photoId);
-		}
-	}
-
-	/**
 	 * Actually writes the image to the storage
 	 *
 	 * @methodtype command
@@ -101,7 +76,7 @@ public abstract class ImageStorage {
 			throws IOException, InvalidParameterException;
 
 
-	// exist method ----------------------------------------------------------------------------------------------------
+	// read methods ----------------------------------------------------------------------------------------------------
 
 	/**
 	 * Reads an image from storage via photoId and the size. When the image is not found, null is returned.
@@ -133,7 +108,7 @@ public abstract class ImageStorage {
 			throws IOException;
 
 
-	// assertion method ------------------------------------------------------------------------------------------------
+	// exist method ----------------------------------------------------------------------------------------------------
 
 	/**
 	 * Checks if the specified image already exists in the storage
@@ -155,6 +130,7 @@ public abstract class ImageStorage {
 		return doDoesImageExist(photoIdAsString, size);
 	}
 
+
 	/**
 	 * Actually checks if the specified image already exists in the storage
 	 *
@@ -163,4 +139,28 @@ public abstract class ImageStorage {
 	 */
 	protected abstract boolean doDoesImageExist(String photoIdAsString, int size);
 
+
+	// assertion methods -----------------------------------------------------------------------------------------------
+
+	/**
+	 * @methodtype assert
+	 */
+	protected void assertImageNotNull(Serializable image)
+			throws IllegalArgumentException {
+
+		if (image == null) {
+			throw new IllegalArgumentException("Image is null!");
+		}
+	}
+
+	/**
+	 * @methodtype assert
+	 */
+	protected void assertValidPhotoId(String photoId)
+			throws IllegalArgumentException {
+
+		if (photoId == null || "".equals(photoId)) {
+			throw new IllegalArgumentException("Invalid photoId:" + photoId);
+		}
+	}
 }

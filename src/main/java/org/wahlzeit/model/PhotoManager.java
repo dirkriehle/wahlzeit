@@ -250,30 +250,35 @@ public class PhotoManager extends ObjectManager {
 	/**
 	 * @methodtype command
 	 * <p/>
-	 * Writes all Images of the different sizes to Google Cloud Storage.
+	 * Persists all available sizes of the Photo. If one size exceeds the limit of the persistance layer, e.g. > 1MB for
+	 * the Datastore, it is simply not persisted.
 	 */
 	protected void saveScaledImages(Photo photo) {
 		String photoIdAsString = photo.getId().asString();
 		ImageStorage imageStorage = ImageStorage.getInstance();
-		for (PhotoSize photoSize : PhotoSize.values()) {
+		PhotoSize photoSize;
+		int it = 0;
+		boolean moreSizesExist = true;
+		do{
+			photoSize = PhotoSize.values()[it];
+			it++;
 			Image image = photo.getImage(photoSize);
 			if (image != null) {
 				try {
 					if (!imageStorage.doesImageExist(photoIdAsString, photoSize.asInt())) {
 						imageStorage.writeImage(image, photoIdAsString, photoSize.asInt());
 					}
-				} catch (IllegalArgumentException e) {
+				} catch (Exception e) {
 					log.warning(LogBuilder.createSystemMessage().
-							addException("Invalid parameter to store Image", e).toString());
-				} catch (IOException e) {
-					log.warning(LogBuilder.createSystemMessage().
-							addException("Problem storing image", e).toString());
+							addException("Problem when storing image", e).toString());
+					moreSizesExist = false;
 				}
 			} else {
 				log.config(LogBuilder.createSystemMessage().
 						addParameter("No image for size", photoSize.asString()).toString());
+				moreSizesExist = false;
 			}
-		}
+		} while (it < PhotoSize.values().length && moreSizesExist);
 	}
 
 	/**
@@ -297,7 +302,7 @@ public class PhotoManager extends ObjectManager {
 	/**
 	 *
 	 */
-	public void savePhotos() {
+	public void savePhotos() throws IOException{
 		updateObjects(photoCache.values());
 	}
 
@@ -343,7 +348,7 @@ public class PhotoManager extends ObjectManager {
 	/**
 	 * @methodtype command
 	 */
-	public void addPhoto(Photo photo) {
+	public void addPhoto(Photo photo) throws IOException {
 		PhotoId id = photo.getId();
 		assertIsNewPhoto(id);
 		doAddPhoto(photo);

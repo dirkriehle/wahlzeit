@@ -26,12 +26,13 @@ import org.wahlzeit.model.PhotoFactory;
 import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.User;
 import org.wahlzeit.model.UserManager;
-import org.wahlzeit.model.persistance.GcsAdapter;
+import org.wahlzeit.model.persistance.DatastoreAdapter;
 import org.wahlzeit.model.persistance.ImageStorage;
 import org.wahlzeit.services.LogBuilder;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
@@ -51,8 +52,8 @@ public abstract class ModelMain extends AbstractMain {
 		log.info("AbstractMain.startUp completed");
 
 		log.config(LogBuilder.createSystemMessage().addAction("load image storage").toString());
-		GcsAdapter.Builder gcsAdapterBuilder = new GcsAdapter.Builder();
-		ImageStorage.setInstance(gcsAdapterBuilder.build());
+		//GcsAdapter.Builder gcsAdapterBuilder = new GcsAdapter.Builder();
+		ImageStorage.setInstance(new DatastoreAdapter());
 
 		log.config(LogBuilder.createSystemMessage().addAction("load globals").toString());
 		GlobalsManager.getInstance().loadGlobals();
@@ -80,7 +81,7 @@ public abstract class ModelMain extends AbstractMain {
 	/**
 	 *
 	 */
-	public void saveAll() {
+	public void saveAll() throws IOException{
 		PhotoCaseManager.getInstance().savePhotoCases();
 		PhotoManager.getInstance().savePhotos();
 		UserManager.getInstance().saveClients();

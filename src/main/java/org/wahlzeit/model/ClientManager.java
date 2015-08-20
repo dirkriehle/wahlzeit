@@ -84,6 +84,9 @@ public abstract class ClientManager extends ObjectManager {
 		return getClientById(id) != null;
 	}
 
+
+	// get client methods ----------------------------------------------------------------------------------------------
+
 	/**
 	 * @methodtype get
 	 * @methodproperty wrapper
@@ -95,9 +98,6 @@ public abstract class ClientManager extends ObjectManager {
 
 		return result;
 	}
-
-
-	// get client methods ----------------------------------------------------------------------------------------------
 
 	/**
 	 * @methodtype get
