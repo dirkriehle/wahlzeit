@@ -67,6 +67,7 @@
 		<web-resource-collection>
 			<url-pattern>/_ah/sessioncleanup/*</url-pattern>
 			<url-pattern>/cron/*</url-pattern>
+			<url-pattern>/agents/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>admin</role-name>

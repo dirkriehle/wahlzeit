@@ -5,7 +5,7 @@ import org.apache.http.HttpStatus;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.PhotoSize;
-import org.wahlzeit.model.persistance.ImageStorage;
+import org.wahlzeit.model.persistence.ImageStorage;
 import org.wahlzeit.services.LogBuilder;
 
 import javax.servlet.http.HttpServletRequest;

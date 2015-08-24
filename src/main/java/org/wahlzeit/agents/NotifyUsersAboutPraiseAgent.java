@@ -40,13 +40,18 @@ public class NotifyUsersAboutPraiseAgent extends Agent {
 		Map<PhotoId, Photo> photoCache = PhotoManager.getInstance().getPhotoCache();
 		Collection<Photo> photos = photoCache.values();
 
-		ArrayListMultimap<User, Photo> userPhotosMap = ArrayListMultimap.create();
+		ArrayListMultimap<String, Photo> ownerIdPhotosMap = ArrayListMultimap.create();
 		for (Photo photo : photos) {
 			if (photo != null && photo.isVisible() && photo.hasNewPraise()) {
 				String ownerId = photo.getOwnerId();
 				if (ownerId != null) {
-					User owner = UserManager.getInstance().getUserById(ownerId);
-					userPhotosMap.put(owner, photo);
+					if (ownerIdPhotosMap.containsValue(ownerId)) {
+						Collection<Photo> photosOfUser = ownerIdPhotosMap.get(ownerId);
+						photosOfUser.add(photo);
+					}
+					else {
+						ownerIdPhotosMap.put(ownerId, photo);
+					}
 					photo.setNoNewPraise();
 					PhotoManager.getInstance().savePhoto(photo);
 				}
@@ -54,10 +59,10 @@ public class NotifyUsersAboutPraiseAgent extends Agent {
 		}
 
 		log.config(LogBuilder.createSystemMessage().addAction("notify owner")
-				.addParameter("number of user to notify", userPhotosMap.keys().size()).toString());
+				.addParameter("number of user to notify", ownerIdPhotosMap.keys().size()).toString());
 
-		for (User user : userPhotosMap.keys()) {
-			notifyOwner(user, userPhotosMap.get(user));
+		for (String ownerId : ownerIdPhotosMap.keys()) {
+			notifyOwner(ownerId, ownerIdPhotosMap.get(ownerId));
 		}
 	}
 
@@ -66,11 +71,12 @@ public class NotifyUsersAboutPraiseAgent extends Agent {
 	 * <p/>
 	 * Actually notifies one user about the praise of his/her photos.
 	 */
-	protected void notifyOwner(User user, Collection<Photo> allPhotosOfUser) {
-		ModelConfig cfg = LanguageConfigs.get(user.getLanguage());
+	protected void notifyOwner(String ownerId, Collection<Photo> allPhotosOfUser) {
+		User owner = UserManager.getInstance().getUserById(ownerId);
+		ModelConfig cfg = LanguageConfigs.get(owner.getLanguage());
 
 		EmailAddress from = cfg.getAdministratorEmailAddress();
-		EmailAddress to = user.getEmailAddress();
+		EmailAddress to = owner.getEmailAddress();
 		String emailSubject = cfg.getNotifyAboutPraiseEmailSubject();
 
 		String emailBody = cfg.getNotifyAboutPraiseEmailBody() + "\n\n";

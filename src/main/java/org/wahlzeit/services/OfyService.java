@@ -12,7 +12,7 @@ import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoCase;
 import org.wahlzeit.model.Tag;
 import org.wahlzeit.model.User;
-import org.wahlzeit.model.persistance.DatastoreAdapter.ImageWrapper;
+import org.wahlzeit.model.persistence.DatastoreAdapter.ImageWrapper;
 
 /**
  * Created by Lukas Hahmann on 30.03.15.
