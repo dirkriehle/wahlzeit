@@ -1,16 +1,10 @@
-package org.wahlzeit.model;
+package org.wahlzeit.model.persistence;
 
 import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesServiceFactory;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Test;
-import org.junit.rules.RuleChain;
-import org.junit.rules.TestRule;
-import org.wahlzeit.model.persistance.DatastoreAdapter;
-import org.wahlzeit.model.persistance.ImageStorage;
-import org.wahlzeit.testEnvironmentProvider.LocalDatastoreServiceTestConfigProvider;
-import org.wahlzeit.testEnvironmentProvider.RegisteredOfyEnvironmentProvider;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -19,35 +13,42 @@ import java.nio.ByteBuffer;
 import static org.junit.Assert.fail;
 
 /**
- * Test class for {@link DatastoreAdapter}
- * <p/>
- * Created by Lukas Hahmann on 20.08.15.
+ * Abstract super class for all Adapter classes that implement the {@link ImageStorage}.
+ *
+ * Created by Lukas Hahmann on 24.08.15.
  */
-public class DatastoreAdapterTest {
+public abstract class AbstractAdapterTest {
 
-	@ClassRule
-	public static TestRule chain = RuleChain.
-			outerRule(new LocalDatastoreServiceTestConfigProvider()).
-			around(new RegisteredOfyEnvironmentProvider());
-
-	private ImageStorage imageStorage;
-	private Image smallTestImage;
-	private Image maxSizeTestImage;
-	private Image tooLargeTestImage;
-
+	protected ImageStorage imageStorage;
+	protected Image smallTestImage;
+	protected Image maxSizeTestImage;
 
 	@Before
-	public void setUp() {
-		imageStorage = new DatastoreAdapter();
-
+	public void SetUp() {
 		ByteBuffer bb = ByteBuffer.allocate(1024);
 		smallTestImage = ImagesServiceFactory.makeImage(bb.array());
 
-		bb = ByteBuffer.allocate(1024*1023);
+		bb = ByteBuffer.allocate(1024 * 1023);
 		maxSizeTestImage = ImagesServiceFactory.makeImage(bb.array());
 
-		bb = ByteBuffer.allocate(1024*1025);
-		tooLargeTestImage = ImagesServiceFactory.makeImage(bb.array());
+		storageDependentSetUp();
+	}
+
+	@After
+	public void tearDown() {
+		storageDependentTearDown();
+	}
+
+	/**
+	 * @methodproperty hook
+	 */
+	protected void storageDependentSetUp() {
+	}
+
+	/**
+	 * @methodproperty hook
+	 */
+	protected void storageDependentTearDown() {
 	}
 
 
@@ -61,16 +62,6 @@ public class DatastoreAdapterTest {
 
 		try {
 			imageStorage.writeImage(maxSizeTestImage, "blub", 1);
-		} catch (IOException e) {
-			fail("IOException should not be thrown!");
-		}
-	}
-
-
-	@Test(expected = ArrayIndexOutOfBoundsException.class)
-	public void testUpperSizeLimit() {
-		try {
-			imageStorage.writeImage(tooLargeTestImage, "blub", 1);
 		} catch (IOException e) {
 			fail("IOException should not be thrown!");
 		}
@@ -115,9 +106,9 @@ public class DatastoreAdapterTest {
 
 	@Test
 	public void testImageExistence() {
-		boolean exists = false;
+		boolean exists;
 
-		exists = imageStorage.doesImageExist("exists", 1);
+		exists = imageStorage.doesImageExist("doesNotExist", 1);
 		assert !exists;
 
 		try {

@@ -23,7 +23,7 @@ package org.wahlzeit.model;
 import com.google.appengine.api.images.Image;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Work;
-import org.wahlzeit.model.persistance.ImageStorage;
+import org.wahlzeit.model.persistence.ImageStorage;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.ObjectManager;
 import org.wahlzeit.services.Persistent;
@@ -250,7 +250,7 @@ public class PhotoManager extends ObjectManager {
 	/**
 	 * @methodtype command
 	 * <p/>
-	 * Persists all available sizes of the Photo. If one size exceeds the limit of the persistance layer, e.g. > 1MB for
+	 * Persists all available sizes of the Photo. If one size exceeds the limit of the persistence layer, e.g. > 1MB for
 	 * the Datastore, it is simply not persisted.
 	 */
 	protected void saveScaledImages(Photo photo) {

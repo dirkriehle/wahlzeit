@@ -18,7 +18,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.model.persistance;
+package org.wahlzeit.model.persistence;
 
 import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesServiceFactory;

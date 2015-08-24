@@ -18,10 +18,11 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.model.persistance;
+package org.wahlzeit.model.persistence;
 
 import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.tools.cloudstorage.GcsFileMetadata;
 import com.google.appengine.tools.cloudstorage.GcsFileOptions;
 import com.google.appengine.tools.cloudstorage.GcsFilename;
 import com.google.appengine.tools.cloudstorage.GcsInputChannel;
@@ -41,7 +42,7 @@ import java.security.InvalidParameterException;
 import java.util.logging.Logger;
 
 /**
- * Adapter for the Google Cloud Storage. Use {@link org.wahlzeit.model.persistance.GcsAdapter.Builder} to create an
+ * Adapter for the Google Cloud Storage. Use {@link org.wahlzeit.model.persistence.GcsAdapter.Builder} to create an
  * object.
  * <p/>
  * Created by Lukas Hahmann on 28.04.15.
@@ -57,7 +58,7 @@ public class GcsAdapter extends ImageStorage {
 	private GcsService gcsService;
 
 	/**
-	 * Do not use directly, instead use {@link org.wahlzeit.model.persistance.GcsAdapter.Builder} to create an object.
+	 * Do not use directly, instead use {@link org.wahlzeit.model.persistence.GcsAdapter.Builder} to create an object.
 	 */
 	private GcsAdapter(String bucketName, String photoFolderName, String defaultImageMimeTypeName, int bufferLength,
 					   GcsService gcsService) {
@@ -107,8 +108,13 @@ public class GcsAdapter extends ImageStorage {
 
 		GcsInputChannel readChannel = gcsService.openReadChannel(gcsFilename, 0);
 		ByteBuffer bb = ByteBuffer.allocate(bufferLength);
-		readChannel.read(bb);
-		Image result = ImagesServiceFactory.makeImage(bb.array());
+		Image result = null;
+		try {
+			readChannel.read(bb);
+			result = ImagesServiceFactory.makeImage(bb.array());
+		} catch (IOException e) {
+			// when image does not exist, IOException is thrown
+		}
 		if (result == null) {
 			log.warning(LogBuilder.createSystemMessage().addMessage("does not exist!").toString());
 		} else {
@@ -123,7 +129,8 @@ public class GcsAdapter extends ImageStorage {
 		boolean result;
 		try {
 			// will be null if file does not exist
-			result = gcsService.getMetadata(gcsFilename) != null;
+			GcsFileMetadata gcsFileMetadata = gcsService.getMetadata(gcsFilename);
+			result = gcsFileMetadata != null;
 		} catch (IOException e) {
 			result = false;
 		}

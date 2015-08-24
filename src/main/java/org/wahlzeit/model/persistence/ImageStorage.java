@@ -1,4 +1,4 @@
-package org.wahlzeit.model.persistance;
+package org.wahlzeit.model.persistence;
 
 import org.wahlzeit.model.PhotoSize;
 import org.wahlzeit.services.LogBuilder;
