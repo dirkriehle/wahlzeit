@@ -132,7 +132,7 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
 
 		String userMenu = doGetValue("UserMenuPart");
 		userMenu = userMenu.replace("$logoutPageLink$", userService.createLogoutURL("/" + PartUtil.LOGOUT_PAGE_NAME));
-		userMenu = guestMenu + menuDash + userMenu;
+		userMenu = baseMenu + menuDash + userMenu;
 		doSetValue("UserMenu", userMenu);
 
 		String moderatorMenu = userMenu + menuDash + doGetValue("ModeratorMenuPart");
