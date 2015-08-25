@@ -79,7 +79,7 @@ public class DatastoreAdapter extends ImageStorage {
 		});
 
 		if (imageWrapper == null) {
-			log.warning(LogBuilder.createSystemMessage().addMessage("does not exist!").toString());
+			log.info(LogBuilder.createSystemMessage().addMessage("does not exist!").toString());
 		} else {
 			result = imageWrapper.getImage();
 			if (result != null) {

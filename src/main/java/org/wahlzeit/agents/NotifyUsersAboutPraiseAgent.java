@@ -1,7 +1,6 @@
 package org.wahlzeit.agents;
 
 import com.google.apphosting.api.ApiProxy;
-import com.google.common.collect.ArrayListMultimap;
 import org.wahlzeit.model.LanguageConfigs;
 import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.Photo;
@@ -14,7 +13,9 @@ import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.mailing.EmailService;
 import org.wahlzeit.services.mailing.EmailServiceManager;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -40,18 +41,22 @@ public class NotifyUsersAboutPraiseAgent extends Agent {
 		Map<PhotoId, Photo> photoCache = PhotoManager.getInstance().getPhotoCache();
 		Collection<Photo> photos = photoCache.values();
 
-		ArrayListMultimap<String, Photo> ownerIdPhotosMap = ArrayListMultimap.create();
+		ArrayList<Photo> arrayListOfPhotos;
+		HashMap<String, ArrayList<Photo>> ownerIdPhotosMap = new HashMap<String, ArrayList<Photo>>();
 		for (Photo photo : photos) {
 			if (photo != null && photo.isVisible() && photo.hasNewPraise()) {
 				String ownerId = photo.getOwnerId();
 				if (ownerId != null) {
-					if (ownerIdPhotosMap.containsValue(ownerId)) {
-						Collection<Photo> photosOfUser = ownerIdPhotosMap.get(ownerId);
-						photosOfUser.add(photo);
+					log.config(LogBuilder.createSystemMessage().addParameter("ownerId", ownerId).toString());
+					if (ownerIdPhotosMap.containsKey(ownerId)) {
+						log.config(LogBuilder.createSystemMessage().addAction("add to existing owner").toString());
+						arrayListOfPhotos = ownerIdPhotosMap.get(ownerId);
+					} else {
+						log.config(LogBuilder.createSystemMessage().addAction("add to new owner").toString());
+						arrayListOfPhotos = new ArrayList<Photo>();
 					}
-					else {
-						ownerIdPhotosMap.put(ownerId, photo);
-					}
+					arrayListOfPhotos.add(photo);
+					ownerIdPhotosMap.put(ownerId, arrayListOfPhotos);
 					photo.setNoNewPraise();
 					PhotoManager.getInstance().savePhoto(photo);
 				}
@@ -59,9 +64,9 @@ public class NotifyUsersAboutPraiseAgent extends Agent {
 		}
 
 		log.config(LogBuilder.createSystemMessage().addAction("notify owner")
-				.addParameter("number of user to notify", ownerIdPhotosMap.keys().size()).toString());
+				.addParameter("number of user to notify", ownerIdPhotosMap.size()).toString());
 
-		for (String ownerId : ownerIdPhotosMap.keys()) {
+		for (String ownerId : ownerIdPhotosMap.keySet()) {
 			notifyOwner(ownerId, ownerIdPhotosMap.get(ownerId));
 		}
 	}
