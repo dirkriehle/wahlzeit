@@ -54,11 +54,8 @@ Open [http://localhost:8080](http://localhost:8080) to use Wahlzeit on your loca
   2. ```./gradlew appengineUpdate```
   3. a browser window pops up and asks for permission, accept it
   4. copy the code from the following browser window to your gradle console
-  5. as Wahlzeit uses Google Datastore, enable billing/enter the test phase. It will never use that much quota, but it is necessary for Datastore (tip: 4683 4578 2937 6522 ;-) )
-  6. in the https://console.developers.google.com select *Storage - Cloud Storage - Storage Browser*
-  7. create a new bucket with the name *org-wahlzeit-data*, standard setting and location in EU
 
-Open https://*your-project-ID*.appspot.com to use Wahlzeit on Google App Engine.
+When uploaded, open https://*your-project-ID*.appspot.com to use Wahlzeit on Google App Engine. It may take some seconds until it is completely deployed.
 
 Done!
 
