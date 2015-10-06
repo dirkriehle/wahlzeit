@@ -61,7 +61,7 @@ public class Wahlzeit implements ServletContextListener {
 		} catch (Exception ex) {
 			log.warning(LogBuilder.createSystemMessage().
 					addException("Initializing context failed", ex).toString());
-            throw new RuntimeException("End of story!", ex);
+			throw new RuntimeException("End of story!", ex);
 		}
 	}
 
