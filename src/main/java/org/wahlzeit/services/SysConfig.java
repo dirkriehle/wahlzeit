@@ -31,21 +31,25 @@ import java.util.logging.Logger;
 public class SysConfig extends AbstractConfig {
 
 	public static String DATA_PATH = "org-wahlzeit-dirkriehle";
+	
 	/**
 	 *
 	 */
 	protected static SysConfig instance = null;
 	private static Logger log = Logger.getLogger(SysConfig.class.getName());
+	
 	/**
 	 *
 	 */
 	protected String rootDir;
+	
 	/**
 	 *
 	 */
 	protected ConfigDir scriptsDir;
 	protected ConfigDir staticDir;
 	protected ConfigDir templatesDir;
+	
 	/**
 	 *
 	 */
