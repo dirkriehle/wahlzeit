@@ -4,60 +4,57 @@
 
 ## PART I - INTRODUCTION
 
-Wahlzeit is an open source web application that lets users upload photos and rate photos of other users, on a 1..10 scale. Users get to present their best photos and learn what other users thought of their photos. 
+Wahlzeit is an open source web application that lets users upload photos and rate photos of other users on a 1..10 scale. Users get to present their best photos and learn what other users thought of theirs. 
 
-Wahlzeit is used to teach agile methods and open source software development at the Professorship of Open Source Software at the University of Erlangen.
+Wahlzeit is used to teach agile methods and open source software development at the Professorship of Open Source Software at the Friedrich-Alexander-University of Erlangen-Nürnberg.
 
 It is an easy-to-learn yet complete Java web application that is available under the GNU Affero Public License v3 license, see the [LICENSE.txt](/LICENSE.txt) file.
 
-Wahlzeit is a Google App Engine app, that can be used on your local machine or be deployed to Google App Engine to reach it online.
+Starting Wahlzeit 2.0, Wahlzeit is a Google App Engine app. It can be run on your local machine or be deployed to Google App Engine for broader availability.
 
-For more information, see http://github.com/dirkriehle/wahlzeit and http://osr.cs.fau.de.
+For more information, please see http://github.com/dirkriehle/wahlzeit and http://osr.cs.fau.de.
 
 
 
 ## PART II: WAHLZEIT SETUP
 
-**First download repository:**
-  1. Fulfill prerequisites: install **Java JDK**, set **JAVA_HOME**, and install **git**
-  2. open console and select the directory where the directory ```MigrateWahlzeitIntoTheCloud``` containing the sourcecode should be created
-  3. ```git clone https://github.com/tfrdidi/MigrateWahlzeitIntoTheCloud.git```
+### Set-up development for Wahlzeit
+
+  1. Create your own repository by forking Wahlzeit from dirkriehle to yourname
+  2. Install **Java JDK**, set **JAVA_HOME**, and install **git**
+  3. On the command line, create or choose a project directory and go there 
+  4. Run ```git clone https://github.com/yourname/wahlzeit.git```
 
 
 ### Run Wahlzeit on your local machine
-  1. ```cd MigrateWahlzeitIntoTheCloud```
-  2. ```./gradlew appengineRun```
-  3. wait until gradle and project dependencies are downloaded and the local instance is started
-
-Open [http://localhost:8080](http://localhost:8080) to use Wahlzeit on your local machine.
+  1. On the command line, ```cd wahlzeit```
+  2. Run ```./gradlew appengineRun```
+  3. Wait until all gradle and project dependencies have been downloaded and the local instance has been started
+  4. Open [http://localhost:8080](http://localhost:8080) to try out Wahlzeit on your machine
 
 
 ### Debug Wahlzeit on your local machine
-  1. run Wahlzeit on your local machine (see above)
-  2. create a remote java debug configuration in your IDE with host ```localhost``` and port ```8000``` (not 8080)
+  1. Run Wahlzeit on your local machine (see above)
+  2. Create a remote java debug configuration in your IDE with host ```localhost``` and port ```8000``` (not 8080)
 
 
-### Upload Wahlzeit to Google App Engine
+### Deploy Wahlzeit to Google App Engine
 
-**Create an Google App Engine instance:**
-  1. if you don't have already one, create a Google account
-  2. go to https://console.developers.google.com and login with your Google account
-  3. now you are in the developers console, there select "create a project"
-    1. choose a project name, which used later as *your-project-ID*
-    2. accept the terms of service
+**Create a Google App Engine instance:**
+  1. If you don't have one yet, create a Google account (required)
+  2. Go to https://console.developers.google.com and login with your Google account
+  3. In the developers console, select "create a project"
+    1. Choose a project name, called below *your-project-ID*
+    2. Accept the terms of service, for better or worse
 
-**Configure your repository and upload Wahlzeit**
-  1. store your *your-project-ID* in your repository:
-    1. open the file [/MigrateWahlzeitIntoTheCloud/src/main/webapp/WEB-INF/appengine-web.xml](/src/main/webapp/WEB-INF/appengine-web.xml)
-    2. replace the project name with *your-project-ID*: \<application\>*your-project-ID*\</application\>
-    3. save and close the appengine-web.xml
-  2. ```./gradlew appengineUpdate```
-  3. a browser window pops up and asks for permission, accept it
-  4. copy the code from the following browser window to your gradle console
-
-https://*your-project-ID*.appspot.com to use Wahlzeit on Google App Engine.
+**Configure your repository and deploy Wahlzeit**
+  1. Configure your project:
+    1. Open the file [/src/main/webapp/WEB-INF/appengine-web.xml](/src/main/webapp/WEB-INF/appengine-web.xml)
+    2. Replace the project name with *your-project-ID*: \<application\>*your-project-ID*\</application\>
+    3. Save and close the appengine-web.xml
+  2. Run ```./gradlew appengineUpdate```
+  3. If a browser window pops up and asks for permission, accept it
+  4. Copy the code from the browser window to your gradle console
+  5. If everything works out, you will find your project at https://*your-project-ID*.appspot.com
 
 Done!
-
-
-
