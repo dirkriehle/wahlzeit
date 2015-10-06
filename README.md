@@ -1,8 +1,8 @@
-# Wahlzeit - An Open Source Package to create Photo Rating Sites
+# Wahlzeit - An Open Source Package for Photo Rating Sites
 
 
 
-## PART I - INTRODUCTION
+## PART I: INTRODUCTION
 
 Wahlzeit is an open source web application that lets users upload photos and rate photos of other users on a 1..10 scale. Users get to present their best photos and learn what other users thought of theirs. 
 
@@ -20,7 +20,7 @@ For more information, please see http://github.com/dirkriehle/wahlzeit and http:
 
 ### Set-up development for Wahlzeit
 
-  1. Create your own repository by forking Wahlzeit from dirkriehle to yourname
+  1. Create your own repository by forking Wahlzeit from dirkriehle to *yourname*
   2. Install **Java JDK**, set **JAVA_HOME**, and install **git**
   3. On the command line, create or choose a project directory and go there 
   4. Run ```git clone https://github.com/yourname/wahlzeit.git```
@@ -35,7 +35,7 @@ For more information, please see http://github.com/dirkriehle/wahlzeit and http:
 
 ### Debug Wahlzeit on your local machine
   1. Run Wahlzeit on your local machine (see above)
-  2. Create a remote java debug configuration in your IDE with host ```localhost``` and port ```8000``` (not 8080)
+  2. Create a remote java debug configuration in your IDE with host **localhost** and port **8000** (not 8080)
 
 
 ### Deploy Wahlzeit to Google App Engine
@@ -43,18 +43,18 @@ For more information, please see http://github.com/dirkriehle/wahlzeit and http:
 **Create a Google App Engine instance:**
   1. If you don't have one yet, create a Google account (required)
   2. Go to https://console.developers.google.com and login with your Google account
-  3. In the developers console, select "create a project"
-    1. Choose a project name, called below *your-project-ID*
+  3. In the developers console, select ```create a project```
+    1. Choose a project name, called below *yourproj*
     2. Accept the terms of service, for better or worse
 
 **Configure your repository and deploy Wahlzeit**
   1. Configure your project:
     1. Open the file [/src/main/webapp/WEB-INF/appengine-web.xml](/src/main/webapp/WEB-INF/appengine-web.xml)
-    2. Replace the project name with *your-project-ID*: \<application\>*your-project-ID*\</application\>
+    2. Replace the project name with *yourproj*: \<application\>yourproj\</application\>
     3. Save and close the appengine-web.xml
   2. Run ```./gradlew appengineUpdate```
   3. If a browser window pops up and asks for permission, accept it
   4. Copy the code from the browser window to your gradle console
-  5. If everything works out, you will find your project at https://*your-project-ID*.appspot.com
+  5. If everything works out, you will find your project at https://yourproj.appspot.com
 
 Done!
