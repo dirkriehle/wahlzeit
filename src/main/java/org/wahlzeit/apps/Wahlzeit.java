@@ -53,7 +53,8 @@ public class Wahlzeit implements ServletContextListener {
 
 			ServiceMain.getInstance().startUp(false, rootDir);
 		} catch (Exception ex) {
-			SysLog.logThrowable(ex);
+            SysLog.logThrowable(ex);
+            throw new RuntimeException("End of story!", ex);
 		}
 	}	
 	
