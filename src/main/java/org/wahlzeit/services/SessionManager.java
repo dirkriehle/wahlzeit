@@ -21,37 +21,36 @@
 package org.wahlzeit.services;
 
 /**
- * A manager for Session objects (user (web) sessions, agent threads, etc.)
- * Clients can look up the session by thread.
+ * A manager for Session objects (user (web) sessions, agent threads, etc.) Clients can look up the session by thread.
  *
  * @author dirkriehle
  */
 public class SessionManager {
 
-    /**
-     *
-     */
-    protected static ThreadLocal<Session> sessions = new ThreadLocal<Session>();
+	/**
+	 *
+	 */
+	protected static ThreadLocal<Session> sessions = new ThreadLocal<Session>();
 
-    /**
-     *
-     */
-    public static Session getThreadLocalSession() {
-        return sessions.get();
-    }
+	/**
+	 *
+	 */
+	public static Session getThreadLocalSession() {
+		return sessions.get();
+	}
 
-    /**
-     *
-     */
-    public static void setThreadLocalSession(Session ctx) {
-        sessions.set(ctx);
-    }
+	/**
+	 *
+	 */
+	public static void setThreadLocalSession(Session ctx) {
+		sessions.set(ctx);
+	}
 
-    /**
-     *
-     */
-    public static void dropThreadLocalSession() {
-        setThreadLocalSession(null);
-    }
+	/**
+	 *
+	 */
+	public static void dropThreadLocalSession() {
+		setThreadLocalSession(null);
+	}
 
 }

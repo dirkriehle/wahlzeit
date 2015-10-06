@@ -28,50 +28,48 @@ import org.wahlzeit.services.EmailAddress;
 public class EmailServiceTest extends TestCase {
 
 	/**
-	 * 
+	 *
 	 */
 	protected EmailService emailService = null;
 
 	/**
-	 * 
+	 *
 	 */
 	protected EmailAddress validAddress;
-	protected EmailAddress invalidAddress1;
-	protected EmailAddress invalidAddress2;
-	
+
 
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		
+
 		emailService = EmailServiceManager.getDefaultService();
-		
+
 		validAddress = EmailAddress.getFromString("test@test.de");
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public void testSendInvalidEmail() {
-		try	{
-			assertFalse(emailService.sendEmailIgnoreException(null, "lol", "hi"));
-			assertFalse(emailService.sendEmailIgnoreException(validAddress, null, "body"));
-			assertFalse(emailService.sendEmailIgnoreException(null, "hi", "       "));
-		} catch (Exception ex)	{
+		try {
+			assertFalse(emailService.sendEmailIgnoreException(validAddress, null, "lol", "hi"));
+			assertFalse(emailService.sendEmailIgnoreException(null, validAddress, null, "body"));
+			assertFalse(emailService.sendEmailIgnoreException(validAddress, null, "hi", "       "));
+		} catch (Exception ex) {
 			fail("Silent mode does not allow exceptions");
 		}
 	}
 
 	/**
-	 * 
+	 *
 	 */
-	public void testSendValidEmail()	{
-		try	{
+	public void testSendValidEmail() {
+		try {
 			assertTrue(emailService.sendEmailIgnoreException(validAddress, validAddress, "hi", "test"));
-		} catch (Exception ex)	{
+		} catch (Exception ex) {
 			fail("Silent mode does not allow exceptions");
 		}
 	}

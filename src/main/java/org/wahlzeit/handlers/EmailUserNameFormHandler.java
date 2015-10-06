@@ -40,58 +40,59 @@ import java.util.logging.Logger;
  */
 public class EmailUserNameFormHandler extends AbstractWebFormHandler {
 
-    private static final Logger log = Logger.getLogger(EmailUserNameFormHandler.class.getName());
+	private static final Logger log = Logger.getLogger(EmailUserNameFormHandler.class.getName());
 
 
-    /**
-     *
-     */
-    public EmailUserNameFormHandler() {
-        initialize(PartUtil.EMAIL_USER_NAME_FORM_FILE, AccessRights.GUEST);
-    }
+	/**
+	 *
+	 */
+	public EmailUserNameFormHandler() {
+		initialize(PartUtil.EMAIL_USER_NAME_FORM_FILE, AccessRights.GUEST);
+	}
 
-    /**
-     *
-     */
-    protected void doMakeWebPart(UserSession us, WebPart part) {
-        Map<String, Object> savedArgs = us.getSavedArgs();
-        part.addStringFromArgs(savedArgs, UserSession.MESSAGE);
-        part.maskAndAddStringFromArgs(savedArgs, User.EMAIL_ADDRESS);
-    }
+	/**
+	 *
+	 */
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map<String, Object> savedArgs = us.getSavedArgs();
+		part.addStringFromArgs(savedArgs, UserSession.MESSAGE);
+		part.maskAndAddStringFromArgs(savedArgs, User.EMAIL_ADDRESS);
+	}
 
-    /**
-     *
-     */
-    protected String doHandlePost(UserSession us, Map args) {
-        String emailAddress = us.getAndSaveAsString(args, User.EMAIL_ADDRESS);
-        ModelConfig config = us.getClient().getLanguageConfiguration();
-        if (StringUtil.isNullOrEmptyString(emailAddress)) {
-            us.setMessage(config.getFieldIsMissing());
-            return PartUtil.EMAIL_PASSWORD_PAGE_NAME;
-        } else if (!StringUtil.isValidStrictEmailAddress(emailAddress)) {
-            us.setMessage(config.getEmailAddressIsInvalid());
-            return PartUtil.EMAIL_PASSWORD_PAGE_NAME;
-        }
+	/**
+	 *
+	 */
+	protected String doHandlePost(UserSession us, Map args) {
+		String emailAddress = us.getAndSaveAsString(args, User.EMAIL_ADDRESS);
+		ModelConfig config = us.getClient().getLanguageConfiguration();
+		if (StringUtil.isNullOrEmptyString(emailAddress)) {
+			us.setMessage(config.getFieldIsMissing());
+			return PartUtil.EMAIL_PASSWORD_PAGE_NAME;
+		} else if (!StringUtil.isValidStrictEmailAddress(emailAddress)) {
+			us.setMessage(config.getEmailAddressIsInvalid());
+			return PartUtil.EMAIL_PASSWORD_PAGE_NAME;
+		}
 
-        UserManager userManager = UserManager.getInstance();
-        User user = userManager.getUserByEmailAddress(emailAddress);
-        if (user == null) {
-            us.setMessage(config.getUnknownEmailAddress());
-            return PartUtil.EMAIL_PASSWORD_PAGE_NAME;
-        }
+		UserManager userManager = UserManager.getInstance();
+		User user = userManager.getUserByEmailAddress(emailAddress);
+		if (user == null) {
+			us.setMessage(config.getUnknownEmailAddress());
+			return PartUtil.EMAIL_PASSWORD_PAGE_NAME;
+		}
 
-        EmailService emailService = EmailServiceManager.getDefaultService();
+		EmailService emailService = EmailServiceManager.getDefaultService();
 
-        EmailAddress to = user.getEmailAddress();
-        emailService.sendEmailIgnoreException(to, config.getAuditEmailAddress(), config.getSendUserNameEmailSubject(), user.getId());
+		EmailAddress to = user.getEmailAddress();
+		emailService.sendEmailIgnoreException(to, config.getAuditEmailAddress(), config.getSendUserNameEmailSubject(),
+				user.getId());
 
-        log.info(LogBuilder.createUserMessage().
-                addAction("Username send per E-Mail").
-                addParameter("Target address", to.asString()).toString());
+		log.info(LogBuilder.createUserMessage().
+				addAction("Username send per E-Mail").
+				addParameter("Target address", to.asString()).toString());
 
-        us.setTwoLineMessage(config.getUserNameWasEmailed(), config.getContinueWithShowPhoto());
+		us.setTwoLineMessage(config.getUserNameWasEmailed(), config.getContinueWithShowPhoto());
 
-        return PartUtil.SHOW_NOTE_PAGE_NAME;
-    }
+		return PartUtil.SHOW_NOTE_PAGE_NAME;
+	}
 
 }

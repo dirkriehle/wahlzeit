@@ -23,11 +23,20 @@
 
 	<servlet>
 		<servlet-name>persistPhotos</servlet-name>
-		<servlet-class>org.wahlzeit.servlets.PersistPhotoAsynchronousServlet</servlet-class>
+		<servlet-class>org.wahlzeit.agents.PersistPhotoAgent</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>persistPhotos</servlet-name>
 		<url-pattern>/persistPhoto</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>agentManager</servlet-name>
+		<servlet-class>org.wahlzeit.servlets.AgentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>agentManager</servlet-name>
+		<url-pattern>/agents/*</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
@@ -58,6 +67,7 @@
 		<web-resource-collection>
 			<url-pattern>/_ah/sessioncleanup/*</url-pattern>
 			<url-pattern>/cron/*</url-pattern>
+			<url-pattern>/agents/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>admin</role-name>
@@ -93,7 +103,7 @@
 	<!--> Session config </!-->
 	<session-config>
         <!--> make sure to keep it synchronized with schedule of "Cleanup old sessions" cron job in cron.xml </!-->
-        <session-timeout>30</session-timeout>
+        <session-timeout>180</session-timeout>
 	</session-config>
 	<!--> Session config end </!-->
 </web-app>

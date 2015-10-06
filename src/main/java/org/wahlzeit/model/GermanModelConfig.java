@@ -33,55 +33,56 @@ import java.text.SimpleDateFormat;
  */
 public class GermanModelConfig extends AbstractModelConfig {
 
-    /**
-     *
-     */
-    public GermanModelConfig() {
-        DecimalFormat praiseFormatter = new DecimalFormat("##,##");
-        praiseFormatter.setMinimumFractionDigits(2);
+	/**
+	 *
+	 */
+	public GermanModelConfig() {
+		DecimalFormat praiseFormatter = new DecimalFormat("##,##");
+		praiseFormatter.setMinimumFractionDigits(2);
 
-        super.initialize(Language.GERMAN, new SimpleDateFormat("d. MMM yyyy"), praiseFormatter);
-    }
+		super.initialize(Language.GERMAN, new SimpleDateFormat("d. MMM yyyy"), praiseFormatter);
+	}
 
-    /**
-     *
-     */
-    public String getNewPhotoSizeSet(PhotoSize ss) {
-        String size = HtmlUtil.asBold(asValueString(ss));
-        return "Wir haben die Fotogröße auf " + size + " gesetzt.";
-    }
+	/**
+	 *
+	 */
+	public String getNewPhotoSizeSet(PhotoSize ss) {
+		String size = HtmlUtil.asBold(asValueString(ss));
+		return "Wir haben die Fotogröße auf " + size + " gesetzt.";
+	}
 
-    /**
-     *
-     */
-    public String asYesOrNoString(boolean yes) {
-        if (yes) {
-            return "ja";
-        } else {
-            return "nein";
-        }
-    }
+	/**
+	 *
+	 */
+	public String asYesOrNoString(boolean yes) {
+		if (yes) {
+			return "ja";
+		} else {
+			return "nein";
+		}
+	}
 
-    /**
-     *
-     */
-    public String asPhotoSummary(String un) {
-        String result = "Foto";
-        result += " von " + un;
-        return result;
-    }
+	/**
+	 *
+	 */
+	public String asPhotoSummary(String un) {
+		String result = "Foto";
+		result += " von " + un;
+		return result;
+	}
 
-    /**
-     *
-     */
-    public String asPhotoCaption(String un) {
-        return "Photo von " + HtmlUtil.asHref("/filter?userName=" + un, un);
-    }
+	/**
+	 *
+	 */
+	public String asPhotoCaption(String un) {
+		return "Photo von " + HtmlUtil.asHref("/filter?userName=" + un, un);
+	}
 
-    /**
-     *
-     */
-    public String getNickNameExists(String nickName) {
-        return "Benutzername " + nickName + " wird bereits verwendet. Bitte " + HtmlUtil.asHref("/profile.html", "wählen Sie einen anderen.");
-    }
+	/**
+	 *
+	 */
+	public String getNickNameExists(String nickName) {
+		return "Benutzername " + nickName + " wird bereits verwendet. Bitte " +
+				HtmlUtil.asHref("/profile.html", "wählen Sie einen anderen.");
+	}
 }

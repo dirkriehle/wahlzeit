@@ -31,148 +31,148 @@ import com.googlecode.objectify.annotation.Id;
 @Entity
 public class PhotoCase extends Case {
 
-    /**
-     *
-     */
-    public static final String FLAGGER = "flagger";
-    public static final String REASON = "reason";
-    public static final String EXPLANATION = "explanation";
-    public static final String CREATED_ON = "createdOn";
-    public static final String WAS_DECIDED = "wasDecided";
-    public static final String DECIDED_ON = "decidedOn";
-    protected CaseId id = CaseId.NULL_ID; // case id
-    protected int applicationId = 0; // application id (unused on Java level)
-    protected Photo photo = null; // photo id -> photo
-    protected String flagger = "unknown";
-    protected FlagReason reason = FlagReason.OTHER;
-    protected String explanation = "none";
-    protected long createdOn = System.currentTimeMillis();
-    protected boolean wasDecided = false;
-    protected long decidedOn = 0;
-    /**
-     *
-     */
-    @Id
-    Long longId;
+	/**
+	 *
+	 */
+	public static final String FLAGGER = "flagger";
+	public static final String REASON = "reason";
+	public static final String EXPLANATION = "explanation";
+	public static final String CREATED_ON = "createdOn";
+	public static final String WAS_DECIDED = "wasDecided";
+	public static final String DECIDED_ON = "decidedOn";
+	protected CaseId id = CaseId.NULL_ID; // case id
+	protected int applicationId = 0; // application id (unused on Java level)
+	protected Photo photo = null; // photo id -> photo
+	protected String flagger = "unknown";
+	protected FlagReason reason = FlagReason.OTHER;
+	protected String explanation = "none";
+	protected long createdOn = System.currentTimeMillis();
+	protected boolean wasDecided = false;
+	protected long decidedOn = 0;
+	/**
+	 *
+	 */
+	@Id
+	Long longId;
 
-    /**
-     *
-     */
-    public PhotoCase(Photo myPhoto) {
-        id = getNextCaseId();
-        photo = myPhoto;
+	/**
+	 *
+	 */
+	public PhotoCase(Photo myPhoto) {
+		id = getNextCaseId();
+		photo = myPhoto;
 
-        incWriteCount();
-    }
+		incWriteCount();
+	}
 
-    /**
-     *
-     */
-    public String getIdAsString() {
-        return String.valueOf(id);
-    }
+	/**
+	 *
+	 */
+	public String getIdAsString() {
+		return String.valueOf(id);
+	}
 
-    /**
-     *
-     */
-    public CaseId getId() {
-        return id;
-    }
+	/**
+	 *
+	 */
+	public CaseId getId() {
+		return id;
+	}
 
-    /**
-     *
-     */
-    public Photo getPhoto() {
-        return photo;
-    }
+	/**
+	 *
+	 */
+	public Photo getPhoto() {
+		return photo;
+	}
 
-    /**
-     *
-     */
-    public long getCreationTime() {
-        return createdOn;
-    }
+	/**
+	 *
+	 */
+	public long getCreationTime() {
+		return createdOn;
+	}
 
-    /**
-     *
-     */
-    public String getFlagger() {
-        return flagger;
-    }
+	/**
+	 *
+	 */
+	public String getFlagger() {
+		return flagger;
+	}
 
-    /**
-     * =
-     */
-    public void setFlagger(String newFlagger) {
-        flagger = newFlagger;
-        incWriteCount();
-    }
+	/**
+	 * =
+	 */
+	public void setFlagger(String newFlagger) {
+		flagger = newFlagger;
+		incWriteCount();
+	}
 
-    /**
-     *
-     */
-    public FlagReason getReason() {
-        return reason;
-    }
+	/**
+	 *
+	 */
+	public FlagReason getReason() {
+		return reason;
+	}
 
-    /**
-     * =
-     */
-    public void setReason(FlagReason newReason) {
-        reason = newReason;
-        incWriteCount();
-    }
+	/**
+	 * =
+	 */
+	public void setReason(FlagReason newReason) {
+		reason = newReason;
+		incWriteCount();
+	}
 
-    /**
-     *
-     */
-    public String getExplanation() {
-        return explanation;
-    }
+	/**
+	 *
+	 */
+	public String getExplanation() {
+		return explanation;
+	}
 
-    /**
-     * =
-     */
-    public void setExplanation(String newExplanation) {
-        explanation = newExplanation;
-        incWriteCount();
-    }
+	/**
+	 * =
+	 */
+	public void setExplanation(String newExplanation) {
+		explanation = newExplanation;
+		incWriteCount();
+	}
 
-    /**
-     *
-     */
-    public boolean wasDecided() {
-        return wasDecided;
-    }
+	/**
+	 *
+	 */
+	public boolean wasDecided() {
+		return wasDecided;
+	}
 
-    /**
-     *
-     */
-    public void setDecided() {
-        wasDecided = true;
-        decidedOn = System.currentTimeMillis();
-        incWriteCount();
-    }
+	/**
+	 *
+	 */
+	public void setDecided() {
+		wasDecided = true;
+		decidedOn = System.currentTimeMillis();
+		incWriteCount();
+	}
 
-    /**
-     *
-     */
-    public long getDecisionTime() {
-        return decidedOn;
-    }
+	/**
+	 *
+	 */
+	public long getDecisionTime() {
+		return decidedOn;
+	}
 
-    /**
-     *
-     */
-    public String getPhotoOwnerName() {
-        return photo.getOwnerId();
-    }
+	/**
+	 *
+	 */
+	public String getPhotoOwnerName() {
+		return photo.getOwnerId();
+	}
 
-    /**
-     *
-     */
-    public PhotoStatus getPhotoStatus() {
-        return photo.getStatus();
-    }
+	/**
+	 *
+	 */
+	public PhotoStatus getPhotoStatus() {
+		return photo.getStatus();
+	}
 
 }

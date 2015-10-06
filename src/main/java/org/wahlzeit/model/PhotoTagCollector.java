@@ -31,21 +31,21 @@ import java.util.Set;
  */
 public class PhotoTagCollector {
 
-    /**
-     *
-     */
-    public void collect(Set<String> tags, Photo photo) {
-        String ownerName = photo.getOwnerId();
-        if (!StringUtil.isNullOrEmptyString(ownerName)) {
-            String ownerNameAsTag = Tags.asTag(ownerName);
-            tags.add("un:" + ownerNameAsTag);
-            tags.add("tg:" + ownerNameAsTag);
-        }
+	/**
+	 *
+	 */
+	public void collect(Set<String> tags, Photo photo) {
+		String ownerName = photo.getOwnerId();
+		if (!StringUtil.isNullOrEmptyString(ownerName)) {
+			String ownerNameAsTag = Tags.asTag(ownerName);
+			tags.add("un:" + ownerNameAsTag);
+			tags.add("tg:" + ownerNameAsTag);
+		}
 
-        String[] photoTags = photo.getTags().asArray();
-        for (int i = 0; i < photoTags.length; i++) {
-            tags.add("tg:" + photoTags[i]);
-        }
-    }
+		String[] photoTags = photo.getTags().asArray();
+		for (int i = 0; i < photoTags.length; i++) {
+			tags.add("tg:" + photoTags[i]);
+		}
+	}
 
 }

@@ -41,129 +41,131 @@ import java.util.logging.Logger;
  */
 public class UserManager extends ClientManager {
 
-    private static final Logger log = Logger.getLogger(UserManager.class.getName());
-    /**
-     * Reserved names that cannot be registered by regular users
-     *
-     * @FIXME Load from file eventually
-     */
-    public static List<String> reservedNames = Arrays.asList(
-            "admin",
-            "anonymous",
-            "flickr",
-            "guest#"
-    );
+	private static final Logger log = Logger.getLogger(UserManager.class.getName());
+	/**
+	 * Reserved names that cannot be registered by regular users
+	 *
+	 * @FIXME Load from file eventually
+	 */
+	public static List<String> reservedNames = Arrays.asList(
+			"admin",
+			"anonymous",
+			"flickr",
+			"guest#"
+	);
 
 
-    /**
-     *
-     */
-    protected static UserManager instance;
+	/**
+	 *
+	 */
+	protected static UserManager instance;
 
-    /**
-     *
-     */
-    private UserManager() {
-    }
+	/**
+	 *
+	 */
+	private UserManager() {
+	}
 
-    /**
-     *
-     */
-    public static UserManager getInstance() {
-        if (instance == null) {
-            instance = new UserManager();
-        }
-        return instance;
-    }
+	/**
+	 *
+	 */
+	public static UserManager getInstance() {
+		if (instance == null) {
+			instance = new UserManager();
+		}
+		return instance;
+	}
 
-    public void init() {
-        loadExistingUsers();
-    }
+	public void init() {
+		loadExistingUsers();
+	}
 
-    /**
-     *
-     */
-    public void loadExistingUsers() {
-        ObjectifyService.run(new Work<Void>() {
-            @Override
-            public Void run() {
-                Collection<User> existingUser = new ArrayList<User>();
-                readObjects(existingUser, User.class);
+	/**
+	 *
+	 */
+	public void loadExistingUsers() {
+		ObjectifyService.run(new Work<Void>() {
+			@Override
+			public Void run() {
+				Collection<User> existingUser = new ArrayList<User>();
+				readObjects(existingUser, User.class);
 
-                for (User user : existingUser) {
-                    if (!hasClientById(user.getId())) {
-                        doAddClient(user);
-                    } else {
-                        log.config(LogBuilder.createSystemMessage().addParameter("user has been loaded", user.getId()).toString());
-                    }
-                }
-                return null;
-            }
-        });
+				for (User user : existingUser) {
+					if (!hasClientById(user.getId())) {
+						doAddClient(user);
+					} else {
+						log.config(LogBuilder.createSystemMessage().addParameter("user has been loaded", user.getId())
+								.toString());
+					}
+				}
+				return null;
+			}
+		});
 
-        log.info(LogBuilder.createSystemMessage().addMessage("loaded all clients").toString());
-    }
+		log.info(LogBuilder.createSystemMessage().addMessage("loaded all clients").toString());
+	}
 
-    /**
-     *
-     */
-    public boolean isReservedUserName(String userName) {
-        return reservedNames.contains(Tags.asTag(userName));
-    }
+	/**
+	 *
+	 */
+	public boolean isReservedUserName(String userName) {
+		return reservedNames.contains(Tags.asTag(userName));
+	}
 
-    /**
-     *
-     */
-    public void emailWelcomeMessage(UserSession us, User user) {
-        EmailAddress to = user.getEmailAddress();
+	/**
+	 *
+	 */
+	public void emailWelcomeMessage(UserSession us, User user) {
+		ModelConfig config = us.getClient().getLanguageConfiguration();
+		EmailAddress from = config.getAdministratorEmailAddress();
+		EmailAddress to = user.getEmailAddress();
 
-        ModelConfig config = us.getClient().getLanguageConfiguration();
-        String emailSubject = config.getWelcomeEmailSubject();
-        String emailBody = config.getWelcomeEmailBody() + "\n\n";
-        emailBody += config.getWelcomeEmailUserName() + user.getNickName() + "\n\n";
-        emailBody += config.getGeneralEmailRegards() + "\n\n----\n";
-        emailBody += config.getGeneralEmailFooter() + "\n\n";
+		String emailSubject = config.getWelcomeEmailSubject();
+		String emailBody = config.getWelcomeEmailBody() + "\n\n";
+		emailBody += config.getWelcomeEmailUserName() + user.getNickName() + "\n\n";
+		emailBody += config.getGeneralEmailRegards() + "\n\n----\n";
+		emailBody += config.getGeneralEmailFooter() + "\n\n";
 
-        EmailService emailService = EmailServiceManager.getDefaultService();
-        emailService.sendEmailIgnoreException(to, config.getAuditEmailAddress(), emailSubject, emailBody);
-    }
+		EmailService emailService = EmailServiceManager.getDefaultService();
+		emailService.sendEmailIgnoreException(from, to, config.getAuditEmailAddress(), emailSubject, emailBody);
+	}
 
-    /**
-     *
-     */
-    public User getUserByEmailAddress(String emailAddress) {
-        return getUserByEmailAddress(EmailAddress.getFromString(emailAddress));
-    }
+	/**
+	 *
+	 */
+	public User getUserByEmailAddress(String emailAddress) {
+		return getUserByEmailAddress(EmailAddress.getFromString(emailAddress));
+	}
 
-    /**
-     *
-     */
-    public User getUserByEmailAddress(EmailAddress emailAddress) {
-        User result;
-        result = readObject(User.class, User.EMAIL_ADDRESS, emailAddress.asString());
+	/**
+	 *
+	 */
+	public User getUserByEmailAddress(EmailAddress emailAddress) {
+		User result;
+		result = readObject(User.class, User.EMAIL_ADDRESS, emailAddress.asString());
 
-        if (result != null) {
-            User current = getUserById(result.getId());
-            if (current == null) {
-                doAddClient(result);
-            } else {
-                result = current;
-            }
-        }
+		if (result != null) {
+			User current = getUserById(result.getId());
+			if (current == null) {
+				doAddClient(result);
+			} else {
+				result = current;
+			}
+		}
 
-        return result;
-    }
+		return result;
+	}
 
-    /**
-     * @methodtype get
-     */
-    public User getUserById(String name) {
-        Client client = super.getClientById(name);
-        if (client instanceof User) {
-            return (User) client;
-        } else {
-            return null;
-        }
-    }
+	/**
+	 * @methodtype get
+	 */
+	public User getUserById(String name) {
+		Client client = super.getClientById(name);
+		if (client instanceof User) {
+			return (User) client;
+		} else {
+			return null;
+		}
+	}
 
 }

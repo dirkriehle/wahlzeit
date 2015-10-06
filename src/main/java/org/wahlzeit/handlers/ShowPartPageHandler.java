@@ -33,39 +33,39 @@ import java.util.Map;
  */
 public class ShowPartPageHandler extends AbstractWebPageHandler {
 
-    /**
-     *
-     */
-    protected WebPartHandler partHandler = null;
+	/**
+	 *
+	 */
+	protected WebPartHandler partHandler = null;
 
-    /**
-     *
-     */
-    public ShowPartPageHandler(AccessRights myRights, WebPartHandler myPartHandler) {
-        initialize(myRights, myPartHandler);
-    }
+	/**
+	 *
+	 */
+	public ShowPartPageHandler(AccessRights myRights, WebPartHandler myPartHandler) {
+		initialize(myRights, myPartHandler);
+	}
 
-    /**
-     *
-     */
-    protected void initialize(AccessRights myRights, WebPartHandler myPartHandler) {
-        super.initialize(PartUtil.SHOW_PART_PAGE_FILE, myRights);
-        partHandler = myPartHandler;
-    }
+	/**
+	 *
+	 */
+	protected void initialize(AccessRights myRights, WebPartHandler myPartHandler) {
+		super.initialize(PartUtil.SHOW_PART_PAGE_FILE, myRights);
+		partHandler = myPartHandler;
+	}
 
-    /**
-     *
-     */
-    protected String doHandleGet(UserSession us, String link, Map args) {
-        return partHandler.handleGet(us, link, null);
-    }
+	/**
+	 *
+	 */
+	protected String doHandleGet(UserSession us, String link, Map args) {
+		return partHandler.handleGet(us, link, null);
+	}
 
-    /**
-     *
-     */
-    public void makeWebPageBody(UserSession us, WebPart page) {
-        Writable part = partHandler.makeWebPart(us);
-        page.addWritable("part", part);
-    }
+	/**
+	 *
+	 */
+	public void makeWebPageBody(UserSession us, WebPart page) {
+		Writable part = partHandler.makeWebPart(us);
+		page.addWritable("part", part);
+	}
 
 }

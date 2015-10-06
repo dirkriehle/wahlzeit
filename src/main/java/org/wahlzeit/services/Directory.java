@@ -27,39 +27,39 @@ import java.io.File;
  */
 public class Directory {
 
-    /**
-     *
-     */
-    protected String rootDir = "";
-    protected String relativeDir = "";
+	/**
+	 *
+	 */
+	protected String rootDir = "";
+	protected String relativeDir = "";
 
-    /**
-     *
-     */
-    public Directory(String newRootDir, String newRelativeDir) {
-        rootDir = newRootDir;
-        relativeDir = newRelativeDir;
-    }
+	/**
+	 *
+	 */
+	public Directory(String newRootDir, String newRelativeDir) {
+		rootDir = newRootDir;
+		relativeDir = newRelativeDir;
+	}
 
-    /**
-     *
-     */
-    public String asString() {
-        return rootDir + File.separator + relativeDir;
-    }
+	/**
+	 *
+	 */
+	public String asString() {
+		return rootDir + File.separator + relativeDir;
+	}
 
-    /**
-     *
-     */
-    public String getRootDir() {
-        return rootDir;
-    }
+	/**
+	 *
+	 */
+	public String getRootDir() {
+		return rootDir;
+	}
 
-    /**
-     *
-     */
-    public String getRelativeDir() {
-        return relativeDir;
-    }
+	/**
+	 *
+	 */
+	public String getRelativeDir() {
+		return relativeDir;
+	}
 
 }

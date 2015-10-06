@@ -22,21 +22,21 @@ package org.wahlzeit.model;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class PhotoFilterTest {
 
 	private PhotoFilter photoFilter;
-	
+
 	@Before
 	public void initPhotoFilter() {
 		photoFilter = new PhotoFilter();
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Test
 	public void testConstructor() {
@@ -51,18 +51,18 @@ public class PhotoFilterTest {
 	}
 
 	/**
-	 * 
+	 *
 	 */
-    @Test
+	@Test
 	public void testStaticProperties() {
 		assertEquals("userName", PhotoFilter.USER_NAME);
 		assertEquals("tags", PhotoFilter.TAGS);
 	}
 
 	/**
-	 * 
+	 *
 	 */
-    @Test
+	@Test
 	public void testClear() {
 		photoFilter.setUserName("test");
 		assertEquals("test", photoFilter.getUserName());

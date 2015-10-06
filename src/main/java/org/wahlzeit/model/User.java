@@ -44,269 +44,269 @@ import java.util.logging.Logger;
 @Subclass(index = true)
 public class User extends Client {
 
-    /**
-     *
-     */
-    public static final String EMAIL_ADDRESS = "emailAddress";
-    public static final String TERMS = "termsAndConditions";
+	/**
+	 *
+	 */
+	public static final String EMAIL_ADDRESS = "emailAddress";
+	public static final String TERMS = "termsAndConditions";
 
-    /**
-     *
-     */
-    public static final String STATUS = "status";
-    public static final String RIGHTS = "accessRights";
-    public static final String GENDER = "gender";
-    public static final String NOTIFY_ABOUT_PRAISE = "notifyAboutPraise";
-    public static final String MEMBER_SINCE = "memberSince";
-    public static final String NO_PHOTOS = "noPhotos";
+	/**
+	 *
+	 */
+	public static final String STATUS = "status";
+	public static final String RIGHTS = "accessRights";
+	public static final String GENDER = "gender";
+	public static final String NOTIFY_ABOUT_PRAISE = "notifyAboutPraise";
+	public static final String MEMBER_SINCE = "memberSince";
+	public static final String NO_PHOTOS = "noPhotos";
 
-    private static final Logger log = Logger.getLogger(User.class.getName());
+	private static final Logger log = Logger.getLogger(User.class.getName());
 
-    /**
-     *
-     */
-    protected boolean notifyAboutPraise = true;
-    protected Gender gender = Gender.UNDEFINED;
-    protected UserStatus status = UserStatus.CREATED;
+	/**
+	 *
+	 */
+	protected boolean notifyAboutPraise = true;
+	protected Gender gender = Gender.UNDEFINED;
+	protected UserStatus status = UserStatus.CREATED;
 
-    /**
-     *
-     */
-    protected Photo userPhoto = null;
-    protected Set<Photo> photos = new HashSet<Photo>();
-    @Ignore // only used as temporary variable
-    protected Image uploadedImage = null;
+	/**
+	 *
+	 */
+	protected Photo userPhoto = null;
+	protected Set<Photo> photos = new HashSet<Photo>();
+	@Ignore // only used as temporary variable
+	protected Image uploadedImage = null;
 
-    /**
-     *
-     */
-    protected long creationTime = System.currentTimeMillis();
+	/**
+	 *
+	 */
+	protected long creationTime = System.currentTimeMillis();
 
 
-    /**
-     *
-     */
-    public User(String id, String myName, String myEmailAddress) {
-        this(id, myName, EmailAddress.getFromString(myEmailAddress), null);
-    }
+	/**
+	 *
+	 */
+	public User(String id, String myName, String myEmailAddress) {
+		this(id, myName, EmailAddress.getFromString(myEmailAddress), null);
+	}
 
-    /**
-     *
-     */
-    public User(String id, String myName, String myEmailAddress, Client previousClient) {
-        this(id, myName, EmailAddress.getFromString(myEmailAddress), previousClient);
-    }
+	/**
+	 *
+	 */
+	public User(String id, String myName, String myEmailAddress, Client previousClient) {
+		this(id, myName, EmailAddress.getFromString(myEmailAddress), previousClient);
+	}
 
-    /**
-     *
-     */
-    public User(String id, String nickname, EmailAddress emailAddress, Client previousClient) {
-        initialize(id, nickname, emailAddress, AccessRights.USER, previousClient);
-    }
+	/**
+	 *
+	 */
+	public User(String id, String nickname, EmailAddress emailAddress, Client previousClient) {
+		initialize(id, nickname, emailAddress, AccessRights.USER, previousClient);
+	}
 
-    /**
-     * @methodtype initialization
-     */
-    protected void initialize(String id, String nickName, EmailAddress emailAddress, AccessRights accessRights,
-                              Client previousClient) {
-        super.initialize(id, nickName, emailAddress, accessRights, previousClient);
+	/**
+	 * @methodtype initialization
+	 */
+	protected void initialize(String id, String nickName, EmailAddress emailAddress, AccessRights accessRights,
+							  Client previousClient) {
+		super.initialize(id, nickName, emailAddress, accessRights, previousClient);
 
-        log.config(LogBuilder.createSystemMessage().
-                addAction("initialize user").
-                addParameter("id", id).
-                addParameter("name", nickName).
-                addParameter("E-Mail", emailAddress.asString()).toString());
-        incWriteCount();
-    }
+		log.config(LogBuilder.createSystemMessage().
+				addAction("initialize user").
+				addParameter("id", id).
+				addParameter("name", nickName).
+				addParameter("E-Mail", emailAddress.asString()).toString());
+		incWriteCount();
+	}
 
-    /**
-     *
-     */
-    protected User() {
-        // do nothing
-    }
+	/**
+	 *
+	 */
+	protected User() {
+		// do nothing
+	}
 
-    @Override
-    protected void doSetLanguage(Language newLanguage) {
-        for (Iterator<Photo> i = photos.iterator(); i.hasNext(); ) {
-            Photo photo = i.next();
-            photo.setOwnerLanguage(language);
-        }
-    }
+	@Override
+	protected void doSetLanguage(Language newLanguage) {
+		for (Iterator<Photo> i = photos.iterator(); i.hasNext(); ) {
+			Photo photo = i.next();
+			photo.setOwnerLanguage(language);
+		}
+	}
 
-    /**
-     * @methodtype boolean query
-     */
-    public boolean getNotifyAboutPraise() {
-        return notifyAboutPraise;
-    }
+	/**
+	 * @methodtype boolean query
+	 */
+	public boolean getNotifyAboutPraise() {
+		return notifyAboutPraise;
+	}
 
-    /**
-     * @methodtype set
-     */
-    public void setNotifyAboutPraise(boolean notify) {
-        notifyAboutPraise = notify;
+	/**
+	 * @methodtype set
+	 */
+	public void setNotifyAboutPraise(boolean notify) {
+		notifyAboutPraise = notify;
 
-        for (Iterator<Photo> i = photos.iterator(); i.hasNext(); ) {
-            Photo photo = i.next();
-            photo.setOwnerNotifyAboutPraise(notifyAboutPraise);
-        }
+		for (Iterator<Photo> i = photos.iterator(); i.hasNext(); ) {
+			Photo photo = i.next();
+			photo.setOwnerNotifyAboutPraise(notifyAboutPraise);
+		}
 
-        incWriteCount();
-    }
+		incWriteCount();
+	}
 
-    /**
-     * @methodtype get
-     */
-    public Gender getGender() {
-        return gender;
-    }
+	/**
+	 * @methodtype get
+	 */
+	public Gender getGender() {
+		return gender;
+	}
 
-    /**
-     * @methodtype set
-     */
-    public void setGender(Gender newGender) {
-        gender = newGender;
-        incWriteCount();
-    }
+	/**
+	 * @methodtype set
+	 */
+	public void setGender(Gender newGender) {
+		gender = newGender;
+		incWriteCount();
+	}
 
-    /**
-     * @methodtype boolean query
-     */
-    public boolean isConfirmed() {
-        return getStatus().isConfirmed();
-    }
+	/**
+	 * @methodtype boolean query
+	 */
+	public boolean isConfirmed() {
+		return getStatus().isConfirmed();
+	}
 
-    /**
-     * @methodtype get
-     */
-    public UserStatus getStatus() {
-        return status;
-    }
+	/**
+	 * @methodtype get
+	 */
+	public UserStatus getStatus() {
+		return status;
+	}
 
-    /**
-     * @methodtype set
-     */
-    public void setStatus(UserStatus newStatus) {
-        status = newStatus;
-        incWriteCount();
-    }
+	/**
+	 * @methodtype set
+	 */
+	public void setStatus(UserStatus newStatus) {
+		status = newStatus;
+		incWriteCount();
+	}
 
-    /**
-     * @methodtype set
-     */
-    public void setConfirmed() {
-        setStatus(status.asConfirmed());
-        incWriteCount();
-    }
+	/**
+	 * @methodtype set
+	 */
+	public void setConfirmed() {
+		setStatus(status.asConfirmed());
+		incWriteCount();
+	}
 
-    /**
-     * @methodtype boolean query
-     */
-    public boolean hasUserPhoto() {
-        return userPhoto != null;
-    }
+	/**
+	 * @methodtype boolean query
+	 */
+	public boolean hasUserPhoto() {
+		return userPhoto != null;
+	}
 
-    /**
-     * @methodtype get
-     */
-    public Photo getUserPhoto() {
-        return userPhoto;
-    }
+	/**
+	 * @methodtype get
+	 */
+	public Photo getUserPhoto() {
+		return userPhoto;
+	}
 
-    /**
-     * @methodtype set
-     */
-    public void setUserPhoto(Photo newPhoto) {
-        userPhoto = newPhoto;
-        log.info("SetUserPhoto: " + newPhoto.getIdAsString());
-        incWriteCount();
-    }
+	/**
+	 * @methodtype set
+	 */
+	public void setUserPhoto(Photo newPhoto) {
+		userPhoto = newPhoto;
+		log.info("SetUserPhoto: " + newPhoto.getIdAsString());
+		incWriteCount();
+	}
 
-    /**
-     * @methodtype get
-     */
-    public long getCreationTime() {
-        return creationTime;
-    }
+	/**
+	 * @methodtype get
+	 */
+	public long getCreationTime() {
+		return creationTime;
+	}
 
-    /**
-     * @methodtype set
-     */
-    public void addPhoto(Photo newPhoto) {
-        photos.add(newPhoto);
+	/**
+	 * @methodtype set
+	 */
+	public void addPhoto(Photo newPhoto) {
+		photos.add(newPhoto);
 
-        newPhoto.setOwnerId(id);
-        newPhoto.setOwnerNotifyAboutPraise(notifyAboutPraise);
-        newPhoto.setOwnerEmailAddress(emailAddress);
-        newPhoto.setOwnerLanguage(language);
+		newPhoto.setOwnerId(id);
+		newPhoto.setOwnerNotifyAboutPraise(notifyAboutPraise);
+		newPhoto.setOwnerEmailAddress(emailAddress);
+		newPhoto.setOwnerLanguage(language);
 
-        incWriteCount();
-    }
+		incWriteCount();
+	}
 
-    /**
-     * @methodtype set
-     */
-    public void removePhoto(Photo notMyPhoto) {
-        photos.remove(notMyPhoto);
-        incWriteCount();
-    }
+	/**
+	 * @methodtype set
+	 */
+	public void removePhoto(Photo notMyPhoto) {
+		photos.remove(notMyPhoto);
+		incWriteCount();
+	}
 
-    /**
-     * @methodtype get
-     */
-    public int getNoOfPhotos() {
-        return photos.size();
-    }
+	/**
+	 * @methodtype get
+	 */
+	public int getNoOfPhotos() {
+		return photos.size();
+	}
 
-    /**
-     * @methodtype get
-     */
-    public Photo[] getPhotos() {
-        return getPhotosReverseOrderedByPraise();
-    }
+	/**
+	 * @methodtype get
+	 */
+	public Photo[] getPhotos() {
+		return getPhotosReverseOrderedByPraise();
+	}
 
-    /**
-     * @methodtype conversion
-     */
-    public Photo[] getPhotosReverseOrderedByPraise() {
-        Photo[] result = photos.toArray(new Photo[0]);
-        Arrays.sort(result, getPhotoByPraiseReverseComparator());
-        return result;
-    }
+	/**
+	 * @methodtype conversion
+	 */
+	public Photo[] getPhotosReverseOrderedByPraise() {
+		Photo[] result = photos.toArray(new Photo[0]);
+		Arrays.sort(result, getPhotoByPraiseReverseComparator());
+		return result;
+	}
 
-    /**
-     * @methodtype get
-     */
-    public static Comparator<Photo> getPhotoByPraiseReverseComparator() {
-        return new Comparator<Photo>() {
-            public int compare(Photo p1, Photo p2) {
-                double sc1 = p1.getPraise();
-                double sc2 = p2.getPraise();
-                if (sc1 == sc2) {
-                    String id1 = String.valueOf(p1.getId());
-                    String id2 = String.valueOf(p2.getId());
-                    return id1.compareTo(id2);
-                } else if (sc1 < sc2) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }
-        };
-    }
+	/**
+	 * @methodtype get
+	 */
+	public static Comparator<Photo> getPhotoByPraiseReverseComparator() {
+		return new Comparator<Photo>() {
+			public int compare(Photo p1, Photo p2) {
+				double sc1 = p1.getPraise();
+				double sc2 = p2.getPraise();
+				if (sc1 == sc2) {
+					String id1 = String.valueOf(p1.getId());
+					String id2 = String.valueOf(p2.getId());
+					return id1.compareTo(id2);
+				} else if (sc1 < sc2) {
+					return 1;
+				} else {
+					return -1;
+				}
+			}
+		};
+	}
 
-    /**
-     * @methodtype set
-     */
-    public void setUploadedImage(Image image) {
-        uploadedImage = image;
-    }
+	/**
+	 * @methodtype set
+	 */
+	public void setUploadedImage(Image image) {
+		uploadedImage = image;
+	}
 
-    /**
-     * @methodtype get
-     */
-    public Image getUploadedImage() {
-        return uploadedImage;
-    }
+	/**
+	 * @methodtype get
+	 */
+	public Image getUploadedImage() {
+		return uploadedImage;
+	}
 }

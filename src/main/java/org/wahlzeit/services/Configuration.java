@@ -24,38 +24,37 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * An interface that manages a simple key/value store.
- * Clients can get and set individual values; they can also load properties files.
- * Key names are configured during initialization and can't be changed afterwards.
- * Hence, any access using an unknown key leads to an IllegalArgumentException.
+ * An interface that manages a simple key/value store. Clients can get and set individual values; they can also load
+ * properties files. Key names are configured during initialization and can't be changed afterwards. Hence, any access
+ * using an unknown key leads to an IllegalArgumentException.
  *
  * @author dirkriehle
  */
 public interface Configuration {
 
-    /**
-     *
-     */
-    public boolean hasKey(String key);
+	/**
+	 *
+	 */
+	boolean hasKey(String key);
 
-    /**
-     *
-     */
-    public String getValue(String key) throws IllegalArgumentException;
+	/**
+	 *
+	 */
+	String getValue(String key) throws IllegalArgumentException;
 
-    /**
-     *
-     */
-    public void setValue(String key, String value) throws IllegalArgumentException;
+	/**
+	 *
+	 */
+	void setValue(String key, String value) throws IllegalArgumentException;
 
-    /**
-     *
-     */
-    public void loadProperties(String fileName) throws IllegalArgumentException, IOException;
+	/**
+	 *
+	 */
+	void loadProperties(String fileName) throws IllegalArgumentException, IOException;
 
-    /**
-     *
-     */
-    public void loadProperties(File file) throws IOException;
+	/**
+	 *
+	 */
+	void loadProperties(File file) throws IOException;
 
 }

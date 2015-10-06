@@ -45,230 +45,231 @@ import java.util.logging.Logger;
  */
 public abstract class AbstractWebPartHandler implements WebPartHandler {
 
-    private static final Logger log = Logger.getLogger(AbstractWebPartHandler.class.getName());
-    /**
-     *
-     */
-    protected String tmplName;
-    /**
-     *
-     */
-    protected AccessRights neededRights;
+	private static final Logger log = Logger.getLogger(AbstractWebPartHandler.class.getName());
+	/**
+	 *
+	 */
+	protected String tmplName;
+	/**
+	 *
+	 */
+	protected AccessRights neededRights;
 
-    /**
-     *
-     */
-    protected void initialize(String myTmplName, AccessRights myRights) {
-        tmplName = myTmplName;
-        neededRights = myRights;
-    }
+	/**
+	 *
+	 */
+	protected void initialize(String myTmplName, AccessRights myRights) {
+		tmplName = myTmplName;
+		neededRights = myRights;
+	}
 
-    /**
-     * @methodtype factory
-     */
-    protected final WebPart createWebPart(UserSession us) {
-        return createWebPart(us, tmplName);
-    }
+	/**
+	 * @methodtype factory
+	 */
+	protected final WebPart createWebPart(UserSession us) {
+		return createWebPart(us, tmplName);
+	}
 
-    /**
-     * @methodtype factory
-     */
-    protected final WebPart createWebPart(UserSession us, String name) {
-        WebPartTemplateService wpts = WebPartTemplateService.getInstance();
-        WebPartTemplate tmpl = wpts.getTemplate(us.getClient().getLanguageConfiguration().getLanguageCode(), name);
-        return new WebPart(tmpl);
-    }
+	/**
+	 * @methodtype factory
+	 */
+	protected final WebPart createWebPart(UserSession us, String name) {
+		WebPartTemplateService wpts = WebPartTemplateService.getInstance();
+		WebPartTemplate tmpl = wpts.getTemplate(us.getClient().getLanguageConfiguration().getLanguageCode(), name);
+		return new WebPart(tmpl);
+	}
 
-    /**
-     *
-     */
-    protected String getPhotoThumb(UserSession us, Photo photo) {
-        String result = null;
-        if (photo != null) {
-            String imageLink = getPhotoAsRelativeResourcePathString(photo, PhotoSize.THUMB);
-            result = HtmlUtil.asImg(HtmlUtil.asPath(imageLink), photo.getThumbWidth(), photo.getThumbHeight());
-        } else {
-            Language langValue = us.getClient().getLanguage();
-            result = HtmlUtil.asImg(getEmptyImageAsRelativeResourcePathString(langValue));
-        }
-        return result;
-    }
+	/**
+	 *
+	 */
+	protected String getPhotoThumb(UserSession us, Photo photo) {
+		String result = null;
+		if (photo != null) {
+			String imageLink = getPhotoAsRelativeResourcePathString(photo, PhotoSize.THUMB);
+			result = HtmlUtil.asImg(HtmlUtil.asPath(imageLink), photo.getThumbWidth(), photo.getThumbHeight());
+		} else {
+			Language langValue = us.getClient().getLanguage();
+			result = HtmlUtil.asImg(getEmptyImageAsRelativeResourcePathString(langValue));
+		}
+		return result;
+	}
 
-    /**
-     *
-     */
-    protected String getPhotoAsRelativeResourcePathString(Photo photo, PhotoSize size) {
-        return SysConfig.getPhotosDir().getRelativeDir() + "/?type=image&photoId=" + photo.getId().asString() + "&size=" + String.valueOf(size.asInt());
-    }
+	/**
+	 *
+	 */
+	protected String getPhotoAsRelativeResourcePathString(Photo photo, PhotoSize size) {
+		return SysConfig.getPhotosDir().getRelativeDir() + "/?type=image&photoId=" + photo.getId().asString() +
+				"&size=" + String.valueOf(size.asInt());
+	}
 
-    /**
-     *
-     */
-    protected String getEmptyImageAsRelativeResourcePathString(Language lang) {
-        String resName = lang.asIsoCode() + File.separator + "empty.png";
-        return HtmlUtil.asPath(SysConfig.getStaticDir().getRelativeConfigFileName(resName));
-    }
+	/**
+	 *
+	 */
+	protected String getEmptyImageAsRelativeResourcePathString(Language lang) {
+		String resName = lang.asIsoCode() + File.separator + "empty.png";
+		return HtmlUtil.asPath(SysConfig.getStaticDir().getRelativeConfigFileName(resName));
+	}
 
-    /**
-     *
-     */
-    protected String getPhotoSummary(UserSession us, Photo photo) {
-        return photo.getSummary(us.getClient().getLanguageConfiguration());
-    }
+	/**
+	 *
+	 */
+	protected String getPhotoSummary(UserSession us, Photo photo) {
+		return photo.getSummary(us.getClient().getLanguageConfiguration());
+	}
 
-    /**
-     *
-     */
-    protected String getPhotoCaption(UserSession us, Photo photo) {
-        return photo.getCaption(us.getClient().getLanguageConfiguration());
-    }
+	/**
+	 *
+	 */
+	protected String getPhotoCaption(UserSession us, Photo photo) {
+		return photo.getCaption(us.getClient().getLanguageConfiguration());
+	}
 
-    /**
-     *
-     */
-    protected final WebFormHandler getFormHandler(String name) {
-        return WebPartHandlerManager.getWebFormHandler(name);
-    }
+	/**
+	 *
+	 */
+	protected final WebFormHandler getFormHandler(String name) {
+		return WebPartHandlerManager.getWebFormHandler(name);
+	}
 
-    /**
-     *
-     */
-    protected boolean hasSavedPhotoId(UserSession us) {
-        String id = us.getAsString(us.getSavedArgs(), Photo.ID);
-        return !StringUtil.isNullOrEmptyString(id);
-    }
+	/**
+	 *
+	 */
+	protected boolean hasSavedPhotoId(UserSession us) {
+		String id = us.getAsString(us.getSavedArgs(), Photo.ID);
+		return !StringUtil.isNullOrEmptyString(id);
+	}
 
-    /**
-     *
-     */
-    protected boolean isSavedPhotoVisible(UserSession us) {
-        String id = us.getAsString(us.getSavedArgs(), Photo.ID);
-        Photo photo = PhotoManager.getInstance().getPhoto(id);
-        return photo.isVisible();
-    }
+	/**
+	 *
+	 */
+	protected boolean isSavedPhotoVisible(UserSession us) {
+		String id = us.getAsString(us.getSavedArgs(), Photo.ID);
+		Photo photo = PhotoManager.getInstance().getPhoto(id);
+		return photo.isVisible();
+	}
 
-    /**
-     *
-     */
-    protected boolean hasSavedMessage(UserSession us) {
-        return !StringUtil.isNullOrEmptyString(us.getMessage());
-    }
+	/**
+	 *
+	 */
+	protected boolean hasSavedMessage(UserSession us) {
+		return !StringUtil.isNullOrEmptyString(us.getMessage());
+	}
 
-    /**
-     *
-     */
-    public final String handleGet(UserSession us, String link, Map args) {
-        if (!hasAccessRights(us, args)) {
-            log.warning(LogBuilder.createSystemMessage().
-                    addMessage("insufficient rights for GET").toString());
-            return getIllegalAccessErrorPage(us);
-        }
+	/**
+	 *
+	 */
+	public final String handleGet(UserSession us, String link, Map args) {
+		if (!hasAccessRights(us, args)) {
+			log.warning(LogBuilder.createSystemMessage().
+					addMessage("insufficient rights for GET").toString());
+			return getIllegalAccessErrorPage(us);
+		}
 
-        if (!isWellFormedGet(us, link, args)) {
-            log.warning(LogBuilder.createSystemMessage().
-                    addMessage("received ill-formed GET").toString());
-            return getIllegalArgumentErrorPage(us);
-        }
+		if (!isWellFormedGet(us, link, args)) {
+			log.warning(LogBuilder.createSystemMessage().
+					addMessage("received ill-formed GET").toString());
+			return getIllegalArgumentErrorPage(us);
+		}
 
-        try {
-            // may throw Exception
-            return doHandleGet(us, link, args);
-        } catch (Throwable t) {
-            log.warning(LogBuilder.createSystemMessage().addException("Handle get failed", t).toString());
-            return getInternalProcessingErrorPage(us);
-        }
-    }
+		try {
+			// may throw Exception
+			return doHandleGet(us, link, args);
+		} catch (Throwable t) {
+			log.warning(LogBuilder.createSystemMessage().addException("Handle get failed", t).toString());
+			return getInternalProcessingErrorPage(us);
+		}
+	}
 
-    /**
-     *
-     */
-    protected boolean hasAccessRights(UserSession us, Map args) {
-        return us.getClient().hasRights(getNeededRights());
-    }
+	/**
+	 *
+	 */
+	protected boolean hasAccessRights(UserSession us, Map args) {
+		return us.getClient().hasRights(getNeededRights());
+	}
 
-    /**
-     *
-     */
-    protected String getIllegalAccessErrorPage(UserSession us) {
-        ModelConfig config = us.getClient().getLanguageConfiguration();
-        us.setHeading(config.getInformation());
+	/**
+	 *
+	 */
+	protected String getIllegalAccessErrorPage(UserSession us) {
+		ModelConfig config = us.getClient().getLanguageConfiguration();
+		us.setHeading(config.getInformation());
 
-        String msg1 = config.getIllegalAccessError();
-        us.setMessage(msg1);
+		String msg1 = config.getIllegalAccessError();
+		us.setMessage(msg1);
 
-        return PartUtil.SHOW_NOTE_PAGE_NAME;
-    }
+		return PartUtil.SHOW_NOTE_PAGE_NAME;
+	}
 
-    /**
-     *
-     */
-    protected boolean isWellFormedGet(UserSession us, String link, Map args) {
-        return true;
-    }
+	/**
+	 *
+	 */
+	protected boolean isWellFormedGet(UserSession us, String link, Map args) {
+		return true;
+	}
 
-    /**
-     *
-     */
-    protected String getIllegalArgumentErrorPage(UserSession us) {
-        ModelConfig config = us.getClient().getLanguageConfiguration();
-        us.setHeading(config.getInformation());
+	/**
+	 *
+	 */
+	protected String getIllegalArgumentErrorPage(UserSession us) {
+		ModelConfig config = us.getClient().getLanguageConfiguration();
+		us.setHeading(config.getInformation());
 
-        String msg1 = config.getIllegalArgumentError();
-        String msg2 = config.getContinueWithShowPhoto();
-        if (us.getClient() instanceof User) {
-            msg2 = config.getContinueWithShowUserHome();
-        }
+		String msg1 = config.getIllegalArgumentError();
+		String msg2 = config.getContinueWithShowPhoto();
+		if (us.getClient() instanceof User) {
+			msg2 = config.getContinueWithShowUserHome();
+		}
 
-        us.setTwoLineMessage(msg1, msg2);
+		us.setTwoLineMessage(msg1, msg2);
 
-        return PartUtil.SHOW_NOTE_PAGE_NAME;
-    }
+		return PartUtil.SHOW_NOTE_PAGE_NAME;
+	}
 
-    /**
-     * @param args TODO
-     */
-    protected String doHandleGet(UserSession us, String link, Map args) {
-        return link;
-    }
+	/**
+	 * @param args TODO
+	 */
+	protected String doHandleGet(UserSession us, String link, Map args) {
+		return link;
+	}
 
-    /**
-     *
-     */
-    protected String getInternalProcessingErrorPage(UserSession us) {
-        ModelConfig config = us.getClient().getLanguageConfiguration();
-        us.setHeading(config.getInformation());
+	/**
+	 *
+	 */
+	protected String getInternalProcessingErrorPage(UserSession us) {
+		ModelConfig config = us.getClient().getLanguageConfiguration();
+		us.setHeading(config.getInformation());
 
-        String msg1 = config.getInternalProcessingError();
-        String msg2 = config.getContinueWithShowPhoto();
-        if (us.getClient() instanceof User) {
-            msg2 = config.getContinueWithShowUserHome();
-        }
+		String msg1 = config.getInternalProcessingError();
+		String msg2 = config.getContinueWithShowPhoto();
+		if (us.getClient() instanceof User) {
+			msg2 = config.getContinueWithShowUserHome();
+		}
 
-        us.setTwoLineMessage(msg1, msg2);
+		us.setTwoLineMessage(msg1, msg2);
 
-        return PartUtil.SHOW_NOTE_PAGE_NAME;
-    }
+		return PartUtil.SHOW_NOTE_PAGE_NAME;
+	}
 
-    /**
-     *
-     */
-    public final AccessRights getNeededRights() {
-        return neededRights;
-    }
+	/**
+	 *
+	 */
+	public final AccessRights getNeededRights() {
+		return neededRights;
+	}
 
-    /**
-     *
-     */
-    protected String getHeadingImageAsRelativeResourcePathString(Language lang) {
-        String resName = lang.asIsoCode() + File.separator + "heading.png";
-        return HtmlUtil.asPath(SysConfig.getStaticDir().getRelativeConfigFileName(resName));
-    }
+	/**
+	 *
+	 */
+	protected String getHeadingImageAsRelativeResourcePathString(Language lang) {
+		String resName = lang.asIsoCode() + File.separator + "heading.png";
+		return HtmlUtil.asPath(SysConfig.getStaticDir().getRelativeConfigFileName(resName));
+	}
 
-    /**
-     *
-     */
-    protected String getResourceAsRelativeHtmlPathString(String resource) {
-        return resource + ".html";
-    }
+	/**
+	 *
+	 */
+	protected String getResourceAsRelativeHtmlPathString(String resource) {
+		return resource + ".html";
+	}
 
 }

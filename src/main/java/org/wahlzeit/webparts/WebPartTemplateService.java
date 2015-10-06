@@ -32,103 +32,101 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * The WebPartTemplateService creates WebPartTemplates upon request by reading them from disk.
- * It requires configuration with a template directory and uses the following naming convention:
- * tmplDir/language/part-type/part-name.html
+ * The WebPartTemplateService creates WebPartTemplates upon request by reading them from disk. It requires configuration
+ * with a template directory and uses the following naming convention: tmplDir/language/part-type/part-name.html
  *
  * @author dirkriehle
  */
 public class WebPartTemplateService {
 
-    /**
-     *
-     */
-    protected static final WebPartTemplateService instance = new WebPartTemplateService();
-    private static final Logger log = Logger.getLogger(WebPartTemplateService.class.getName());
-    /**
-     *
-     */
-    protected Map<String, WebPartTemplate> templates = new HashMap<String, WebPartTemplate>();
-    /**
-     *
-     */
-    protected ConfigDir templatesDir = null;
+	/**
+	 *
+	 */
+	protected static final WebPartTemplateService instance = new WebPartTemplateService();
+	private static final Logger log = Logger.getLogger(WebPartTemplateService.class.getName());
+	/**
+	 *
+	 */
+	protected Map<String, WebPartTemplate> templates = new HashMap<String, WebPartTemplate>();
+	/**
+	 *
+	 */
+	protected ConfigDir templatesDir = null;
 
-    /**
-     *
-     */
-    protected WebPartTemplateService() {
-        // do nothing
-    }
+	/**
+	 *
+	 */
+	protected WebPartTemplateService() {
+		// do nothing
+	}
 
-    /**
-     * Convenience method...
-     */
-    public static WebPartTemplateService getInstance() {
-        return instance;
-    }
+	/**
+	 * Convenience method...
+	 */
+	public static WebPartTemplateService getInstance() {
+		return instance;
+	}
 
-    /**
-     *
-     */
-    public WebPartTemplate getTemplate(String lang, String name) {
-        String shortName = lang + File.separator + name;
-        WebPartTemplate result = templates.get(shortName);
+	/**
+	 *
+	 */
+	public WebPartTemplate getTemplate(String lang, String name) {
+		String shortName = lang + File.separator + name;
+		WebPartTemplate result = templates.get(shortName);
 
-        if (result == null) {
-            try {
-                loadTemplate(shortName);
-                result = templates.get(shortName);
-            } catch (IOException ioex) {
-                log.warning(LogBuilder.createSystemMessage().
-                        addParameter("template name", shortName).
-                        addException("Problem loading template", ioex).toString());
-            }
-        }
+		if (result == null) {
+			try {
+				loadTemplate(shortName);
+				result = templates.get(shortName);
+			} catch (IOException ioex) {
+				log.warning(LogBuilder.createSystemMessage().
+						addParameter("template name", shortName).
+						addException("Problem loading template", ioex).toString());
+			}
+		}
 
-        return result;
-    }
+		return result;
+	}
 
-    /**
-     *
-     */
-    protected void loadTemplate(String shortName) throws IOException {
-        WebPartTemplate template = new WebPartTemplate(shortName);
-        String fileName = getTemplatesDir().getAbsoluteConfigFileName(shortName + ".html");
-        log.config(LogBuilder.createSystemMessage().
-                addAction("open html template file").
-                addParameter("file name", fileName).toString());
-        File file = new File(fileName);
+	/**
+	 *
+	 */
+	protected void loadTemplate(String shortName) throws IOException {
+		WebPartTemplate template = new WebPartTemplate(shortName);
+		String fileName = getTemplatesDir().getAbsoluteConfigFileName(shortName + ".html");
+		log.config(LogBuilder.createSystemMessage().
+				addAction("open html template file").
+				addParameter("file name", fileName).toString());
+		File file = new File(fileName);
 
-        try {
-            String source = Files.toString(file, Charsets.UTF_8);
-            //String source = Resources.toString(Resources.getResource(fileName), Charsets.UTF_8);
+		try {
+			String source = Files.toString(file, Charsets.UTF_8);
+			//String source = Resources.toString(Resources.getResource(fileName), Charsets.UTF_8);
 
-            if(source != null) {
-                template.initialize(source);
-                log.config(LogBuilder.createSystemMessage().addAction("Initialize template").toString());
-            }
+			if (source != null) {
+				template.initialize(source);
+				log.config(LogBuilder.createSystemMessage().addAction("Initialize template").toString());
+			}
 
-            templates.put(shortName, template);
-        }
-        catch (IOException e) {
-            log.warning(LogBuilder.createSystemMessage().
-                    addException("I/O Error while reading Template file", e).toString());
-        }
-    }
+			templates.put(shortName, template);
+		} catch (IOException e) {
+			log.warning(LogBuilder.createSystemMessage().
+					addException("I/O Error while reading Template file", e).toString());
+		}
+	}
 
-    /**
-     *
-     */
-    public ConfigDir getTemplatesDir() {
-        return templatesDir;
-    }
+	/**
+	 *
+	 */
+	public ConfigDir getTemplatesDir() {
+		return templatesDir;
+	}
 
-    /**
-     *
-     */
-    public void setTemplatesDir(ConfigDir newTemplatesDir) {
-        templatesDir = newTemplatesDir;
-    }
+	/**
+	 *
+	 */
+	public void setTemplatesDir(ConfigDir newTemplatesDir) {
+		templatesDir = newTemplatesDir;
+	}
 
 }

@@ -27,50 +27,50 @@ import org.wahlzeit.main.ScriptMain;
  */
 public class CreateUser extends ScriptMain {
 
-    /**
-     *
-     */
-    protected String userId = "testuser";
-    protected String nickName = "testuser";
-    protected String emailAddress = "info@wahlzeit.org";
-    protected String photoDir = "config/photos";
+	/**
+	 *
+	 */
+	protected String userId = "testuser";
+	protected String nickName = "testuser";
+	protected String emailAddress = "info@wahlzeit.org";
+	protected String photoDir = "config/photos";
 
-    /**
-     *
-     */
-    public static void main(String[] argv) {
-        new CreateUser().run();
-    }
+	/**
+	 *
+	 */
+	public static void main(String[] argv) {
+		new CreateUser().run();
+	}
 
-    /**
-     *
-     */
-    protected void handleArgv(String argv[]) {
-        super.handleArgv(argv);
-    }
+	/**
+	 *
+	 */
+	protected void handleArgv(String argv[]) {
+		super.handleArgv(argv);
+	}
 
-    /**
-     *
-     */
-    protected int handleArg(String arg, int i, String[] argv) {
-        if (arg.equals("--userid")) {
-            userId = argv[++i];
-        } else if (arg.equals("--nickname")) {
-            nickName = argv[++i];
-        } else if (arg.equals("--emailaddress")) {
-            emailAddress = argv[++i];
-        } else if (arg.equals("--photodir")) {
-            photoDir = argv[++i];
-        }
+	/**
+	 *
+	 */
+	protected int handleArg(String arg, int i, String[] argv) {
+		if (arg.equals("--userid")) {
+			userId = argv[++i];
+		} else if (arg.equals("--nickname")) {
+			nickName = argv[++i];
+		} else if (arg.equals("--emailaddress")) {
+			emailAddress = argv[++i];
+		} else if (arg.equals("--photodir")) {
+			photoDir = argv[++i];
+		}
 
-        return i;
-    }
+		return i;
+	}
 
-    /**
-     *
-     */
-    protected void execute() throws Exception {
-        createUser(userId, nickName, emailAddress, photoDir);
-    }
+	/**
+	 *
+	 */
+	protected void execute() throws Exception {
+		createUser(userId, nickName, emailAddress, photoDir);
+	}
 
 }

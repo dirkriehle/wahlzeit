@@ -40,102 +40,103 @@ import java.util.logging.Logger;
  */
 public class SendEmailFormHandler extends AbstractWebFormHandler {
 
-    /**
-     *
-     */
-    public static final String USER = "user";
-    public static final String USER_LANGUAGE = "userLanguage";
-    public static final String EMAIL_SUBJECT = "emailSubject";
-    public static final String EMAIL_BODY = "emailBody";
+	/**
+	 *
+	 */
+	public static final String USER = "user";
+	public static final String USER_LANGUAGE = "userLanguage";
+	public static final String EMAIL_SUBJECT = "emailSubject";
+	public static final String EMAIL_BODY = "emailBody";
 
-    private static final Logger log = Logger.getLogger(SendEmailFormHandler.class.getName());
+	private static final Logger log = Logger.getLogger(SendEmailFormHandler.class.getName());
 
-    /**
-     *
-     */
-    public SendEmailFormHandler() {
-        initialize(PartUtil.SEND_EMAIL_FORM_FILE, AccessRights.GUEST);
-    }
+	/**
+	 *
+	 */
+	public SendEmailFormHandler() {
+		initialize(PartUtil.SEND_EMAIL_FORM_FILE, AccessRights.GUEST);
+	}
 
-    /**
-     *
-     */
-    public boolean isWellFormedGet(UserSession us, String link, Map args) {
-        return hasSavedPhotoId(us);
-    }
+	/**
+	 *
+	 */
+	public boolean isWellFormedGet(UserSession us, String link, Map args) {
+		return hasSavedPhotoId(us);
+	}
 
-    /**
-     *
-     */
-    protected String doHandleGet(UserSession us, String link, Map args) {
-        if (!(us.getClient() instanceof User)) {
-            us.setHeading(us.getClient().getLanguageConfiguration().getInformation());
-            us.setMessage(us.getClient().getLanguageConfiguration().getNeedToSignupFirst());
-            return PartUtil.SHOW_NOTE_PAGE_NAME;
-        }
+	/**
+	 *
+	 */
+	protected String doHandleGet(UserSession us, String link, Map args) {
+		if (!(us.getClient() instanceof User)) {
+			us.setHeading(us.getClient().getLanguageConfiguration().getInformation());
+			us.setMessage(us.getClient().getLanguageConfiguration().getNeedToSignupFirst());
+			return PartUtil.SHOW_NOTE_PAGE_NAME;
+		}
 
-        return super.doHandleGet(us, link, args);
-    }
+		return super.doHandleGet(us, link, args);
+	}
 
-    /**
-     *
-     */
-    protected void doMakeWebPart(UserSession us, WebPart part) {
-        Map args = us.getSavedArgs();
-        part.addStringFromArgs(args, UserSession.MESSAGE);
+	/**
+	 *
+	 */
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map args = us.getSavedArgs();
+		part.addStringFromArgs(args, UserSession.MESSAGE);
 
-        String id = us.getAndSaveAsString(args, Photo.ID);
-        part.addString(Photo.ID, id);
-        Photo photo = PhotoManager.getInstance().getPhoto(id);
-        part.addString(Photo.THUMB, getPhotoThumb(us, photo));
+		String id = us.getAndSaveAsString(args, Photo.ID);
+		part.addString(Photo.ID, id);
+		Photo photo = PhotoManager.getInstance().getPhoto(id);
+		part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 
-        part.maskAndAddString(USER, photo.getOwnerId());
+		part.maskAndAddString(USER, photo.getOwnerId());
 
-        User user = (User) us.getClient();
-        part.addString(USER_LANGUAGE, user.getLanguageConfiguration().asValueString(user.getLanguage()));
+		User user = (User) us.getClient();
+		part.addString(USER_LANGUAGE, user.getLanguageConfiguration().asValueString(user.getLanguage()));
 
-        part.maskAndAddStringFromArgs(args, EMAIL_SUBJECT);
-        part.maskAndAddStringFromArgs(args, EMAIL_BODY);
-    }
+		part.maskAndAddStringFromArgs(args, EMAIL_SUBJECT);
+		part.maskAndAddStringFromArgs(args, EMAIL_BODY);
+	}
 
-    /**
-     *
-     */
-    protected boolean isWellFormedPost(UserSession us, Map args) {
-        return PhotoManager.getInstance().getPhoto(us.getAsString(args, Photo.ID)) != null;
-    }
+	/**
+	 *
+	 */
+	protected boolean isWellFormedPost(UserSession us, Map args) {
+		return PhotoManager.getInstance().getPhoto(us.getAsString(args, Photo.ID)) != null;
+	}
 
-    /**
-     *
-     */
-    protected String doHandlePost(UserSession us, Map args) {
-        String id = us.getAndSaveAsString(args, Photo.ID);
-        Photo photo = PhotoManager.getInstance().getPhoto(id);
+	/**
+	 *
+	 */
+	protected String doHandlePost(UserSession us, Map args) {
+		String id = us.getAndSaveAsString(args, Photo.ID);
+		Photo photo = PhotoManager.getInstance().getPhoto(id);
 
-        String emailSubject = us.getAndSaveAsString(args, EMAIL_SUBJECT);
-        String emailBody = us.getAndSaveAsString(args, EMAIL_BODY);
-        ModelConfig config = us.getClient().getLanguageConfiguration();
-        if ((emailSubject.length() > 128) || (emailBody.length() > 1024)) {
-            us.setMessage(config.getInputIsTooLong());
-            return PartUtil.SEND_EMAIL_PAGE_NAME;
-        }
+		String emailSubject = us.getAndSaveAsString(args, EMAIL_SUBJECT);
+		String emailBody = us.getAndSaveAsString(args, EMAIL_BODY);
+		ModelConfig config = us.getClient().getLanguageConfiguration();
+		if ((emailSubject.length() > 128) || (emailBody.length() > 1024)) {
+			us.setMessage(config.getInputIsTooLong());
+			return PartUtil.SEND_EMAIL_PAGE_NAME;
+		}
 
-        UserManager userManager = UserManager.getInstance();
-        User toUser = userManager.getUserById(photo.getOwnerId());
+		UserManager userManager = UserManager.getInstance();
+		User toUser = userManager.getUserById(photo.getOwnerId());
 
-        emailSubject = config.getSendEmailSubjectPrefix() + emailSubject;
-        emailBody = config.getSendEmailBodyPrefix() + emailBody + config.getSendEmailBodyPostfix();
+		emailSubject = config.getSendEmailSubjectPrefix() + emailSubject;
+		emailBody = config.getSendEmailBodyPrefix() + emailBody + config.getSendEmailBodyPostfix();
 
-        EmailService emailService = EmailServiceManager.getDefaultService();
-        emailService.sendEmailIgnoreException(toUser.getEmailAddress(), config.getAuditEmailAddress(), emailSubject, emailBody);
+		EmailService emailService = EmailServiceManager.getDefaultService();
+		emailService.sendEmailIgnoreException(toUser.getEmailAddress(), config.getAuditEmailAddress(), emailSubject,
+				emailBody);
 
-        log.info(LogBuilder.createUserMessage().
-                addAction("Send E-Mail").
-                addParameter("Recipient", toUser.getNickName()).toString());
+		log.info(LogBuilder.createUserMessage().
+				addAction("Send E-Mail").
+				addParameter("Recipient", toUser.getNickName()).toString());
 
-        us.setMessage(config.getEmailWasSent() + toUser.getNickName() + "!");
+		us.setMessage(config.getEmailWasSent() + toUser.getNickName() + "!");
 
-        return PartUtil.SHOW_NOTE_PAGE_NAME;
-    }
+		return PartUtil.SHOW_NOTE_PAGE_NAME;
+	}
 
 }

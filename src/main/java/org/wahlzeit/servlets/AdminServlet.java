@@ -36,27 +36,27 @@ import java.util.logging.Logger;
  */
 public class AdminServlet extends AbstractServlet {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 42L; // any one does; class never serialized
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 42L; // any one does; class never serialized
 
-    private static final Logger log = Logger.getLogger(AdminServlet.class.getName());
+	private static final Logger log = Logger.getLogger(AdminServlet.class.getName());
 
-    /**
-     *
-     */
-    public void myGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String link = request.getRequestURI();
-        log.info(LogBuilder.createUserMessage().addParameter("requested URI", link).toString());
-        if (isLocalHost(request)) {
-            ServiceMain.getInstance().requestStop();
-            displayNullPage(request, response);
-        } else if (link.length() == "/admin".length()) {
-            redirectRequest(response, PartUtil.DEFAULT_PAGE_NAME);
-        } else {
-            redirectRequest(response, "../" + PartUtil.DEFAULT_PAGE_NAME);
-        }
-    }
+	/**
+	 *
+	 */
+	public void myGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String link = request.getRequestURI();
+		log.info(LogBuilder.createUserMessage().addParameter("requested URI", link).toString());
+		if (isLocalHost(request)) {
+			ServiceMain.getInstance().requestStop();
+			displayNullPage(request, response);
+		} else if (link.length() == "/admin".length()) {
+			redirectRequest(response, PartUtil.DEFAULT_PAGE_NAME);
+		} else {
+			redirectRequest(response, "../" + PartUtil.DEFAULT_PAGE_NAME);
+		}
+	}
 
 }

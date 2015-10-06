@@ -20,7 +20,6 @@
 
 package org.wahlzeit.services.mailing;
 
-import com.google.appengine.api.utils.SystemProperty;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.LogBuilder;
 
@@ -31,11 +30,9 @@ import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -44,94 +41,89 @@ import java.util.logging.Logger;
  */
 public class SmtpEmailService extends AbstractEmailService {
 
-    private static final Logger log = Logger.getLogger(SmtpEmailService.class.getName());
+	private static final Logger log = Logger.getLogger(SmtpEmailService.class.getName());
 
-    /**
-     *
-     */
-    private Session session;
+	/**
+	 *
+	 */
+	private Session session;
 
-    /**
-     *
-     */
-    public SmtpEmailService() {
-        initialize();
-    }
+	/**
+	 * Default constructor for GAE. There is usually no need to change those parameter.
+	 */
+	public SmtpEmailService() {
+		this("smtp.google.com", "smtp", null);
+	}
 
-    /**
-     * @methodtype initialization
-     */
-    protected void initialize() {
-        Properties props = new Properties();
+	/**
+	 *
+	 */
+	public SmtpEmailService(String host, String protocol, Authenticator authenticator) {
+		initialize(host, protocol, authenticator);
+	}
 
-        props.put("mail.host", "smtp.google.com");
-        props.put("mail.transport.protocol", "smtp");
+	/**
+	 * @methodtype initialization
+	 */
+	protected void initialize(String host, String protocol, Authenticator authenticator) {
+		Properties props = new Properties();
 
-        Authenticator auth = null;
+		props.put("mail.host", host);
+		props.put("mail.transport.protocol", protocol);
 
-        session = Session.getDefaultInstance(props, auth);
-    }
+		session = Session.getDefaultInstance(props, authenticator);
+	}
 
-    /**
-     *
-     */
-    @Override
-    protected Message doCreateEmail(EmailAddress to, EmailAddress bcc, String subject, String body)
-            throws MailingException {
-        Message msg = new MimeMessage(session);
+	/**
+	 *
+	 */
+	@Override
+	protected Message doCreateEmail(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body)
+			throws MailingException {
+		Message msg = new MimeMessage(session);
 
-        String appId = SystemProperty.applicationId.get();
+		try {
+			msg.setFrom(from.asInternetAddress());
+			msg.addRecipient(Message.RecipientType.TO, to.asInternetAddress());
+			if (bcc.isValid()) {
+				msg.addRecipient(Message.RecipientType.BCC, bcc.asInternetAddress());
+			}
+			msg.setSubject(subject);
+			msg.setContent(createMultipart(body));
+		} catch (MessagingException e) {
+			log.warning(LogBuilder.createSystemMessage().addException("failed to create email", e).toString());
+			throw new MailingException(e.getMessage());
+		}
+		return msg;
+	}
 
-        try {
-            msg.setFrom(new InternetAddress("admin@" + appId + ".appspotmail.com", "Wahlzeit admin"));
+	/**
+	 * @methodtype factory
+	 * @methodproperties primitive, hook
+	 */
+	protected Multipart createMultipart(String body) throws MessagingException {
+		Multipart mp = new MimeMultipart();
+		BodyPart textPart = new MimeBodyPart();
 
+		textPart.setText(body); // sets type to "text/plain"
+		mp.addBodyPart(textPart);
 
-            msg.addRecipient(Message.RecipientType.TO, to.asInternetAddress());
+		return mp;
+	}
 
-            if (bcc.isValid()) {
-                msg.addRecipient(Message.RecipientType.BCC, bcc.asInternetAddress());
-            }
-
-            msg.setSubject(subject);
-            msg.setContent(createMultipart(body));
-
-        } catch (UnsupportedEncodingException e) {
-            log.warning(LogBuilder.createSystemMessage().addException("failed to create email", e).toString());
-            throw new MailingException(e.getMessage());
-        } catch (MessagingException e) {
-            log.warning(LogBuilder.createSystemMessage().addException("failed to create email", e).toString());
-            throw new MailingException(e.getMessage());
-        }
-        return msg;
-    }
-
-    /**
-     * @methodtype factory
-     * @methodproperties primitive, hook
-     */
-    protected Multipart createMultipart(String body) throws MessagingException {
-        Multipart mp = new MimeMultipart();
-        BodyPart textPart = new MimeBodyPart();
-
-        textPart.setText(body); // sets type to "text/plain"
-        mp.addBodyPart(textPart);
-
-        return mp;
-    }
-
-    /**
-     *
-     */
-    @Override
-    protected void doSendEmail(Message msg) throws MailingException {
-        try {
-            Transport.send(msg);
-            log.config(LogBuilder.createSystemMessage().
-                    addMessage("email send").
-                    addParameter("subject", msg.getSubject()).toString());
-        } catch (MessagingException ex) {
-            throw new MailingException("Sending email failed", ex);
-        }
-    }
+	/**
+	 *
+	 */
+	@Override
+	protected void doSendEmail(Message msg) throws MailingException {
+		try {
+			Transport.send(msg);
+			log.config(LogBuilder.createSystemMessage().
+					addMessage("email send").
+					addParameter("subject", msg.getSubject()).toString());
+		} catch (MessagingException ex) {
+			throw new MailingException("Sending email failed", ex);
+		}
+	}
 
 }

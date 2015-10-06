@@ -27,11 +27,11 @@ package org.wahlzeit.services;
  */
 public class SysSession extends Session {
 
-    /**
-     *
-     */
-    public SysSession(String myName) {
-        initialize(myName);
-    }
+	/**
+	 *
+	 */
+	public SysSession(String myName) {
+		initialize(myName);
+	}
 
 }

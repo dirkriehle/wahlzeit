@@ -36,32 +36,32 @@ import java.util.Map;
  */
 public class LogoutPageHandler extends AbstractWebPageHandler {
 
-    /**
-     *
-     */
-    public LogoutPageHandler() {
-        initialize(PartUtil.SHOW_NOTE_PAGE_FILE, AccessRights.USER);
-    }
+	/**
+	 *
+	 */
+	public LogoutPageHandler() {
+		initialize(PartUtil.SHOW_NOTE_PAGE_FILE, AccessRights.USER);
+	}
 
-    /**
-     *
-     */
-    protected String doHandleGet(UserSession us, String link, Map args) {
-        Client previousClient = us.getClient();
-        us.setClient(new Guest(previousClient));
-        us.clearSavedArgs();
-        return link;
-    }
+	/**
+	 *
+	 */
+	protected String doHandleGet(UserSession us, String link, Map args) {
+		Client previousClient = us.getClient();
+		us.setClient(new Guest(previousClient));
+		us.clearSavedArgs();
+		return link;
+	}
 
-    /**
-     * @methodtype command
-     */
-    protected void makeWebPageBody(UserSession us, WebPart page) {
-        ModelConfig config = us.getClient().getLanguageConfiguration();
-        page.addString("noteHeading", config.getThankYou());
-        String msg1 = config.getLogoutSucceeded();
-        String msg2 = config.getContinueWithTellFriends();
-        page.addString("note", HtmlUtil.asP(msg1) + HtmlUtil.asP(msg2));
-    }
+	/**
+	 * @methodtype command
+	 */
+	protected void makeWebPageBody(UserSession us, WebPart page) {
+		ModelConfig config = us.getClient().getLanguageConfiguration();
+		page.addString("noteHeading", config.getThankYou());
+		String msg1 = config.getLogoutSucceeded();
+		String msg2 = config.getContinueWithTellFriends();
+		page.addString("note", HtmlUtil.asP(msg1) + HtmlUtil.asP(msg2));
+	}
 
 }

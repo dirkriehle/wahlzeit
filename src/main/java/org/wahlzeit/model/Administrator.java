@@ -29,28 +29,28 @@ import org.wahlzeit.services.EmailAddress;
  *
  * @author dirkriehle
  */
-@Subclass(index=true)
+@Subclass(index = true)
 public class Administrator extends Moderator {
 
-    /**
-     *
-     */
-    public Administrator(String userId, String nickName, String myEmailAddress, Client previousClient) {
-        this(userId, nickName, EmailAddress.getFromString(myEmailAddress), previousClient);
-    }
+	/**
+	 *
+	 */
+	public Administrator(String userId, String nickName, String myEmailAddress, Client previousClient) {
+		this(userId, nickName, EmailAddress.getFromString(myEmailAddress), previousClient);
+	}
 
-    /**
-     *
-     */
-    public Administrator(String userId, String nickName, EmailAddress emailAddress, Client previousClient) {
-        initialize(userId, nickName, emailAddress, AccessRights.ADMINISTRATOR, previousClient);
-    }
+	/**
+	 *
+	 */
+	public Administrator(String userId, String nickName, EmailAddress emailAddress, Client previousClient) {
+		initialize(userId, nickName, emailAddress, AccessRights.ADMINISTRATOR, previousClient);
+	}
 
-    /**
-     *
-     */
-    protected Administrator() {
-        // do nothing
-    }
+	/**
+	 *
+	 */
+	protected Administrator() {
+		// do nothing
+	}
 
 }

@@ -30,139 +30,140 @@ import java.util.logging.Logger;
  */
 public class SysConfig extends AbstractConfig {
 
-    public static String DATA_PATH = "org-wahlzeit-data";
-    /**
-     *
-     */
-    protected static SysConfig instance = null;
-    private static Logger log = Logger.getLogger(SysConfig.class.getName());
-    /**
-     *
-     */
-    protected String rootDir;
-    /**
-     *
-     */
-    protected ConfigDir scriptsDir;
-    protected ConfigDir staticDir;
-    protected ConfigDir templatesDir;
-    /**
-     *
-     */
-    protected Directory photosDir;
-    protected Directory backupDir;
-    protected Directory tempDir;
-    /**
-     *
-     */
-    public SysConfig() {
-        this("");
-    }
+	public static String DATA_PATH = "org-wahlzeit-data";
+	/**
+	 *
+	 */
+	protected static SysConfig instance = null;
+	private static Logger log = Logger.getLogger(SysConfig.class.getName());
+	/**
+	 *
+	 */
+	protected String rootDir;
+	/**
+	 *
+	 */
+	protected ConfigDir scriptsDir;
+	protected ConfigDir staticDir;
+	protected ConfigDir templatesDir;
+	/**
+	 *
+	 */
+	protected Directory photosDir;
+	protected Directory backupDir;
+	protected Directory tempDir;
 
-    /**
-     *
-     */
-    public SysConfig(String myRootDir) {
-        // Root directory
-        rootDir = myRootDir;
+	/**
+	 *
+	 */
+	public SysConfig() {
+		this("");
+	}
 
-        // Config directories
-        scriptsDir = new ConfigDir(rootDir, "config" + File.separator + "scripts");
-        staticDir = new ConfigDir(rootDir, "config" + File.separator + "static");
-        templatesDir = new ConfigDir(rootDir, "config" + File.separator + "templates");
+	/**
+	 *
+	 */
+	public SysConfig(String myRootDir) {
+		// Root directory
+		rootDir = myRootDir;
 
-        // Data directories
-        photosDir = new Directory(rootDir, DATA_PATH + File.separator + "photos");
-        backupDir = new Directory(rootDir, DATA_PATH + File.separator + "backup");
-        tempDir = new Directory(rootDir, DATA_PATH + File.separator + "temp");
-    }
+		// Config directories
+		scriptsDir = new ConfigDir(rootDir, "config" + File.separator + "scripts");
+		staticDir = new ConfigDir(rootDir, "config" + File.separator + "static");
+		templatesDir = new ConfigDir(rootDir, "config" + File.separator + "templates");
 
-    /**
-     * Drop singleton instance to cope with repeated startup/shutdown scenarios
-     */
-    public static synchronized void dropInstance() {
-        log.config(LogBuilder.createSystemMessage().addAction("drop SysConfig instance").toString());
-        instance = null;
-    }
+		// Data directories
+		photosDir = new Directory(rootDir, DATA_PATH + File.separator + "photos");
+		backupDir = new Directory(rootDir, DATA_PATH + File.separator + "backup");
+		tempDir = new Directory(rootDir, DATA_PATH + File.separator + "temp");
+	}
 
-    /**
-     *
-     */
-    public static String getRootDirAsString() {
-        return getInstance().rootDir;
-    }
+	/**
+	 * Drop singleton instance to cope with repeated startup/shutdown scenarios
+	 */
+	public static synchronized void dropInstance() {
+		log.config(LogBuilder.createSystemMessage().addAction("drop SysConfig instance").toString());
+		instance = null;
+	}
 
-    /**
-     *
-     */
-    public static SysConfig getInstance() {
-        if (instance == null) {
-            log.config(LogBuilder.createSystemMessage().addAction("create generic SysConfig").toString());
-            setInstance(new SysConfig(""));
-        }
-        return instance;
-    }
+	/**
+	 *
+	 */
+	public static String getRootDirAsString() {
+		return getInstance().rootDir;
+	}
 
-    /**
-     * Sets the singleton instance of SysConfig.
-     *
-     * @methodtype set
-     * @methodproperty composed, class
-     */
-    public static synchronized void setInstance(SysConfig sysConfig) {
-        assertIsUninitialized();
-        instance = sysConfig;
-    }
+	/**
+	 *
+	 */
+	public static SysConfig getInstance() {
+		if (instance == null) {
+			log.config(LogBuilder.createSystemMessage().addAction("create generic SysConfig").toString());
+			setInstance(new SysConfig(""));
+		}
+		return instance;
+	}
 
-    /**
-     * @methodtype assertion
-     * @methodproperty primitive, class
-     */
-    public static synchronized void assertIsUninitialized() {
-        if (instance != null) {
-            throw new IllegalStateException("attempt to initalize SysConfig again");
-        }
-    }
+	/**
+	 * Sets the singleton instance of SysConfig.
+	 *
+	 * @methodtype set
+	 * @methodproperty composed, class
+	 */
+	public static synchronized void setInstance(SysConfig sysConfig) {
+		assertIsUninitialized();
+		instance = sysConfig;
+	}
 
-    /**
-     *
-     */
-    public static ConfigDir getStaticDir() {
-        return getInstance().staticDir;
-    }
+	/**
+	 * @methodtype assertion
+	 * @methodproperty primitive, class
+	 */
+	public static synchronized void assertIsUninitialized() {
+		if (instance != null) {
+			throw new IllegalStateException("attempt to initalize SysConfig again");
+		}
+	}
 
-    /**
-     *
-     */
-    public static ConfigDir getScriptsDir() {
-        return getInstance().scriptsDir;
-    }
+	/**
+	 *
+	 */
+	public static ConfigDir getStaticDir() {
+		return getInstance().staticDir;
+	}
 
-    /**
-     *
-     */
-    public static ConfigDir getTemplatesDir() {
-        return getInstance().templatesDir;
-    }
+	/**
+	 *
+	 */
+	public static ConfigDir getScriptsDir() {
+		return getInstance().scriptsDir;
+	}
 
-    /**
-     *
-     */
-    public static Directory getPhotosDir() {
-        return getInstance().photosDir;
-    }
+	/**
+	 *
+	 */
+	public static ConfigDir getTemplatesDir() {
+		return getInstance().templatesDir;
+	}
 
-    /**
-     *
-     */
-    public static Directory getBackupDir() {
-        return getInstance().backupDir;
-    }
+	/**
+	 *
+	 */
+	public static Directory getPhotosDir() {
+		return getInstance().photosDir;
+	}
 
-    /**
-     *
-     */
-    public static Directory getTempDir() {
-        return getInstance().tempDir;
-    }
+	/**
+	 *
+	 */
+	public static Directory getBackupDir() {
+		return getInstance().backupDir;
+	}
+
+	/**
+	 *
+	 */
+	public static Directory getTempDir() {
+		return getInstance().tempDir;
+	}
 }

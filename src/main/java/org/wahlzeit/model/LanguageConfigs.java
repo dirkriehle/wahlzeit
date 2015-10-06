@@ -26,31 +26,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * LanguageConfigs provides a simple access points to different language-based configurations.
- * For every available language, there is a model configuration, which captures local specific stuff.
+ * LanguageConfigs provides a simple access points to different language-based configurations. For every available
+ * language, there is a model configuration, which captures local specific stuff.
  *
  * @author dirkriehle
  */
 
 public class LanguageConfigs {
 
-    /**
-     *
-     */
-    protected static Map<Language, ModelConfig> configurations = new HashMap<Language, ModelConfig>();
+	/**
+	 *
+	 */
+	protected static Map<Language, ModelConfig> configurations = new HashMap<Language, ModelConfig>();
 
-    /**
-     *
-     */
-    public static ModelConfig get(Language language) {
-        return configurations.get(language);
-    }
+	/**
+	 *
+	 */
+	public static ModelConfig get(Language language) {
+		return configurations.get(language);
+	}
 
-    /**
-     *
-     */
-    public static void put(Language language, ModelConfig config) {
-        configurations.put(language, config);
-    }
+	/**
+	 *
+	 */
+	public static void put(Language language, ModelConfig config) {
+		configurations.put(language, config);
+	}
 
 }

@@ -23,74 +23,78 @@ import java.util.Map;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by Lukas Hahmann on 21.05.15.
+ * Acceptance tests for the TellFriend feature.
+ *
+ * @author dirkriehle
  */
 public class TellFriendTest {
 
-    @ClassRule
-    public static SysConfigProvider sysConfigProvider = new SysConfigProvider();
-    public WebFormHandlerProvider webFormHandlerProvider = new WebFormHandlerProvider();
-    @Rule
-    public TestRule chain = RuleChain.
-            outerRule(new LocalDatastoreServiceTestConfigProvider()).
-            around(new RegisteredOfyEnvironmentProvider()).
-            around(new UserSessionProvider()).
-            around(webFormHandlerProvider);
-    private UserSession session;
-    private WebFormHandler handler;
+	@ClassRule
+	public static SysConfigProvider sysConfigProvider = new SysConfigProvider();
+	@ClassRule
+	public static WebFormHandlerProvider webFormHandlerProvider = new WebFormHandlerProvider();
+
+	@Rule
+	public TestRule chain = RuleChain.
+			outerRule(new LocalDatastoreServiceTestConfigProvider()).
+			around(new RegisteredOfyEnvironmentProvider()).
+			around(new UserSessionProvider());
+
+	private UserSession session;
+	private WebFormHandler handler;
 
 
-    @Before
-    public void setUp() {
-        session = (UserSession) SessionManager.getThreadLocalSession();
-        handler = webFormHandlerProvider.getWebFormHandler();
-    }
+	@Before
+	public void setUp() {
+		session = (UserSession) SessionManager.getThreadLocalSession();
+		handler = webFormHandlerProvider.getWebFormHandler();
+	}
 
 
-    /**
-     *
-     */
-    @Test
-    public void testTellFriendMakeWebPart() {
-        WebPart part = handler.makeWebPart(session);
-        // no failure is good behavior
+	/**
+	 *
+	 */
+	@Test
+	public void testTellFriendMakeWebPart() {
+		WebPart part = handler.makeWebPart(session);
+		// no failure is good behavior
 
-        EmailAddress to = EmailAddress.getFromString("engel@himmel.de");
-        Map<String, String> args = new HashMap<String, String>();
-        args.put(TellFriendFormHandler.EMAIL_TO, to.asString());
-        String expectedSubject = "Oh well...";
-        args.put(TellFriendFormHandler.EMAIL_SUBJECT, expectedSubject);
-        handler.handlePost(session, args);
+		EmailAddress to = EmailAddress.getFromString("engel@himmel.de");
+		Map<String, String> args = new HashMap<String, String>();
+		args.put(TellFriendFormHandler.EMAIL_TO, to.asString());
+		String expectedSubject = "Oh well...";
+		args.put(TellFriendFormHandler.EMAIL_SUBJECT, expectedSubject);
+		handler.handlePost(session, args);
 
-        part = handler.makeWebPart(session);
+		part = handler.makeWebPart(session);
 
-        String expectedRecipient = to.asString();
-        String recipient = part.getValue(TellFriendFormHandler.EMAIL_TO).toString();
-        assertTrue("Recipient not as expected, instead: " + recipient, recipient.equals(expectedRecipient));
+		String expectedRecipient = to.asString();
+		String recipient = part.getValue(TellFriendFormHandler.EMAIL_TO).toString();
+		assertTrue("Recipient not as expected, instead: " + recipient, recipient.equals(expectedRecipient));
 
-        String subject = part.getValue(TellFriendFormHandler.EMAIL_SUBJECT).toString();
-        assertTrue("Subject not as expected, instead: " + subject, expectedSubject.equals(subject));
-    }
+		String subject = part.getValue(TellFriendFormHandler.EMAIL_SUBJECT).toString();
+		assertTrue("Subject not as expected, instead: " + subject, expectedSubject.equals(subject));
+	}
 
-    /**
-     *
-     */
-    @Test
-    public void testTellFriendPost() {
-        EmailAddress from = EmailAddress.getFromString("info@wahlzeit.org");
-        EmailAddress to = EmailAddress.getFromString("fan@yahoo.com");
-        EmailAddress bcc = session.getClient().getLanguageConfiguration().getAuditEmailAddress();
-        String subject = "Coolest website ever!";
-        String body = "You've got to check this out!";
+	/**
+	 *
+	 */
+	@Test
+	public void testTellFriendPost() {
+		EmailAddress from = EmailAddress.getFromString("info@wahlzeit.org");
+		EmailAddress to = EmailAddress.getFromString("fan@yahoo.com");
+		EmailAddress bcc = session.getClient().getLanguageConfiguration().getAuditEmailAddress();
+		String subject = "Coolest website ever!";
+		String body = "You've got to check this out!";
 
-        Map<String, String> args = new HashMap<String, String>();
-        args.put(TellFriendFormHandler.EMAIL_FROM, from.asString());
-        args.put(TellFriendFormHandler.EMAIL_TO, to.asString());
-        args.put(TellFriendFormHandler.EMAIL_SUBJECT, subject);
-        args.put(TellFriendFormHandler.EMAIL_BODY, body);
+		Map<String, String> args = new HashMap<String, String>();
+		args.put(TellFriendFormHandler.EMAIL_FROM, from.asString());
+		args.put(TellFriendFormHandler.EMAIL_TO, to.asString());
+		args.put(TellFriendFormHandler.EMAIL_SUBJECT, subject);
+		args.put(TellFriendFormHandler.EMAIL_BODY, body);
 
-        handler.handlePost(session, args);
+		handler.handlePost(session, args);
 
-        handler.handlePost(session, Collections.EMPTY_MAP); // will fail if email is sent
-    }
+		handler.handlePost(session, Collections.EMPTY_MAP); // will fail if email is sent
+	}
 }

@@ -41,64 +41,64 @@ import java.util.logging.Logger;
  */
 public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 
-    private static Logger log = Logger.getLogger(UploadPhotoFormHandler.class.getName());
+	private static Logger log = Logger.getLogger(UploadPhotoFormHandler.class.getName());
 
-    /**
-     *
-     */
-    public UploadPhotoFormHandler() {
-        initialize(PartUtil.UPLOAD_PHOTO_FORM_FILE, AccessRights.USER);
-    }
+	/**
+	 *
+	 */
+	public UploadPhotoFormHandler() {
+		initialize(PartUtil.UPLOAD_PHOTO_FORM_FILE, AccessRights.USER);
+	}
 
-    /**
-     *
-     */
-    protected void doMakeWebPart(UserSession us, WebPart part) {
-        Map<String, Object> args = us.getSavedArgs();
-        part.addStringFromArgs(args, UserSession.MESSAGE);
+	/**
+	 *
+	 */
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map<String, Object> args = us.getSavedArgs();
+		part.addStringFromArgs(args, UserSession.MESSAGE);
 
-        part.maskAndAddStringFromArgs(args, Photo.TAGS);
-    }
+		part.maskAndAddStringFromArgs(args, Photo.TAGS);
+	}
 
-    /**
-     *
-     */
-    protected String doHandlePost(UserSession us, Map args) {
-        String tags = us.getAndSaveAsString(args, Photo.TAGS);
+	/**
+	 *
+	 */
+	protected String doHandlePost(UserSession us, Map args) {
+		String tags = us.getAndSaveAsString(args, Photo.TAGS);
 
-        ModelConfig config = us.getClient().getLanguageConfiguration();
-        if (!StringUtil.isLegalTagsString(tags)) {
-            us.setMessage(config.getInputIsInvalid());
-            return PartUtil.UPLOAD_PHOTO_PAGE_NAME;
-        }
+		ModelConfig config = us.getClient().getLanguageConfiguration();
+		if (!StringUtil.isLegalTagsString(tags)) {
+			us.setMessage(config.getInputIsInvalid());
+			return PartUtil.UPLOAD_PHOTO_PAGE_NAME;
+		}
 
-        try {
-            PhotoManager pm = PhotoManager.getInstance();
-            String fileName = us.getAsString(args, "fileName");
-            User user = (User) us.getClient();
-            Image uploadedImage = user.getUploadedImage();
-            Photo photo = pm.createPhoto(fileName, uploadedImage);
+		try {
+			PhotoManager pm = PhotoManager.getInstance();
+			String fileName = us.getAsString(args, "fileName");
+			User user = (User) us.getClient();
+			Image uploadedImage = user.getUploadedImage();
+			Photo photo = pm.createPhoto(fileName, uploadedImage);
 
-            user.addPhoto(photo);
+			user.addPhoto(photo);
 
-            photo.setTags(new Tags(tags));
+			photo.setTags(new Tags(tags));
 
-            log.config(LogBuilder.createUserMessage().
-                    addAction("Upload Photo").
-                    addParameter("Photo", photo.getId().asString()).
-                    addParameter("tags", photo.getTags().asString()).toString());
+			log.config(LogBuilder.createUserMessage().
+					addAction("Upload Photo").
+					addParameter("Photo", photo.getId().asString()).
+					addParameter("tags", photo.getTags().asString()).toString());
 
-            us.setTwoLineMessage(config.getPhotoUploadSucceeded(), config.getKeepGoing());
-            log.config(LogBuilder.createSystemMessage().
-                    addAction("Calling async task to save Photo").
-                    addParameter("ID", photo.getId().asString()).toString());
+			us.setTwoLineMessage(config.getPhotoUploadSucceeded(), config.getKeepGoing());
+			log.config(LogBuilder.createSystemMessage().
+					addAction("Calling async task to save Photo").
+					addParameter("ID", photo.getId().asString()).toString());
 
-            AsyncTaskExecutor.savePhotoAsync(photo.getId().asString());
-        } catch (Exception ex) {
-            log.warning(LogBuilder.createSystemMessage().addException("uploading photo failed", ex).toString());
-            us.setMessage(config.getPhotoUploadFailed());
-        }
+			AsyncTaskExecutor.savePhotoAsync(photo.getId().asString());
+		} catch (Exception ex) {
+			log.warning(LogBuilder.createSystemMessage().addException("uploading photo failed", ex).toString());
+			us.setMessage(config.getPhotoUploadFailed());
+		}
 
-        return PartUtil.UPLOAD_PHOTO_PAGE_NAME;
-    }
+		return PartUtil.UPLOAD_PHOTO_PAGE_NAME;
+	}
 }

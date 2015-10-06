@@ -27,14 +27,12 @@ import java.io.File;
 import static org.junit.Assert.assertEquals;
 
 /**
- *
  * @author dirkriehle
- *
  */
 public class StringUtilTest {
 
 	/**
-	 * 
+	 *
 	 */
 	@Test
 	public void testPathAsUrlString() {

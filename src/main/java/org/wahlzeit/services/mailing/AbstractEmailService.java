@@ -32,78 +32,82 @@ import java.util.logging.Logger;
  */
 public abstract class AbstractEmailService implements EmailService {
 
-    private static final Logger log = Logger.getLogger(AbstractEmailService.class.getName());
+	private static final Logger log = Logger.getLogger(AbstractEmailService.class.getName());
 
-    /**
-     *
-     */
-    @Override
-    public void sendEmail(EmailAddress to, String subject, String body) throws MailingException {
-        sendEmail(to, EmailAddress.EMPTY, subject, body);
-    }
+	/**
+	 *
+	 */
+	@Override
+	public void sendEmail(EmailAddress from, EmailAddress to, String subject, String body) throws MailingException {
+		sendEmail(from, to, EmailAddress.EMPTY, subject, body);
+	}
 
-    /**
-     *
-     */
-    @Override
-    public boolean sendEmailIgnoreException(EmailAddress to, String subject, String body) {
-        return sendEmailIgnoreException(to, EmailAddress.EMPTY, subject, body);
-    }
+	/**
+	 *
+	 */
+	@Override
+	public boolean sendEmailIgnoreException(EmailAddress from, EmailAddress to, String subject, String body) {
+		return sendEmailIgnoreException(from, to, EmailAddress.EMPTY, subject, body);
+	}
 
-    /**
-     *
-     */
-    @Override
-    public void sendEmail(EmailAddress to, EmailAddress bcc, String subject, String body) throws MailingException {
-        assertIsValidEmailAddress(to, "to");
-        assertIsValidString(subject, "subject");
-        assertIsValidString(body, "body");
+	/**
+	 *
+	 */
+	@Override
+	public void sendEmail(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body) throws
+			MailingException {
+		assertIsValidEmailAddress(from, "from");
+		assertIsValidEmailAddress(to, "to");
+		assertIsValidString(subject, "subject");
+		assertIsValidString(body, "body");
 
-        Message msg = doCreateEmail(to, bcc, subject, body);
-        doSendEmail(msg);
-    }
+		Message msg = doCreateEmail(from, to, bcc, subject, body);
+		doSendEmail(msg);
+	}
 
-    /**
-     *
-     */
-    @Override
-    public boolean sendEmailIgnoreException(EmailAddress to, EmailAddress bcc, String subject, String body) {
-        try {
-            sendEmail(to, bcc, subject, body);
-            return true;
-        } catch (Exception ex) {
-            log.warning(LogBuilder.createSystemMessage().
-                    addException("Problem sending email", ex).toString());
-            return false;
-        }
-    }
+	/**
+	 *
+	 */
+	@Override
+	public boolean sendEmailIgnoreException(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject,
+											String body) {
+		try {
+			sendEmail(from, to, bcc, subject, body);
+			return true;
+		} catch (Exception ex) {
+			log.warning(LogBuilder.createSystemMessage().
+					addException("Problem sending email", ex).toString());
+			return false;
+		}
+	}
 
-    /**
-     *
-     */
-    protected void assertIsValidEmailAddress(EmailAddress address, String label) throws MailingException {
-        if ((address == null) || !address.isValid()) {
-            throw new MailingException(label + " must be a valid email address");
-        }
-    }
+	/**
+	 *
+	 */
+	protected void assertIsValidEmailAddress(EmailAddress address, String label) throws MailingException {
+		if ((address == null) || !address.isValid()) {
+			throw new MailingException(label + " must be a valid email address");
+		}
+	}
 
-    /**
-     *
-     */
-    protected void assertIsValidString(String toBeChecked, String label) throws MailingException {
-        if (StringUtil.isNullOrEmptyString(toBeChecked)) {
-            throw new MailingException(label + " must neither be null nor empty");
-        }
-    }
+	/**
+	 *
+	 */
+	protected void assertIsValidString(String toBeChecked, String label) throws MailingException {
+		if (StringUtil.isNullOrEmptyString(toBeChecked)) {
+			throw new MailingException(label + " must neither be null nor empty");
+		}
+	}
 
-    /**
-     *
-     */
-    protected abstract Message doCreateEmail(EmailAddress to, EmailAddress bcc, String subject, String body) throws MailingException;
+	/**
+	 *
+	 */
+	protected abstract Message doCreateEmail(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject,
+											 String body) throws MailingException;
 
-    /**
-     *
-     */
-    protected abstract void doSendEmail(Message msg) throws MailingException;
+	/**
+	 *
+	 */
+	protected abstract void doSendEmail(Message msg) throws MailingException;
 
 }

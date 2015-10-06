@@ -26,85 +26,90 @@ import org.wahlzeit.services.LogBuilder;
 import java.util.logging.Logger;
 
 /**
- * A logging mailing service logs email send attempts before sending emails.
- * This is a decorator pattern application.
+ * A logging mailing service logs email send attempts before sending emails. This is a decorator pattern application.
  */
 public class LoggingEmailService implements EmailService {
 
-    private static final Logger log = Logger.getLogger(LoggingEmailService.class.getName());
+	private static final Logger log = Logger.getLogger(LoggingEmailService.class.getName());
 
-    /**
-     *
-     */
-    protected EmailService decorated = null;
+	/**
+	 *
+	 */
+	protected EmailService decorated = null;
 
-    /**
-     *
-     */
-    public LoggingEmailService(EmailService myDecorated) {
-        decorated = myDecorated;
-    }
+	/**
+	 *
+	 */
+	public LoggingEmailService(EmailService myDecorated) {
+		decorated = myDecorated;
+	}
 
-    /**
-     *
-     */
-    @Override
-    public void sendEmail(EmailAddress to, String subject, String body) throws MailingException {
-        String toString = (to == null) ? "null" : to.asString();
-        String subjectString = (subject == null) ? "null" : subject;
+	/**
+	 *
+	 */
+	@Override
+	public void sendEmail(EmailAddress from, EmailAddress to, String subject, String body) throws MailingException {
+		String fromString = (from == null) ? "null" : from.asString();
+		String toString = (to == null) ? "null" : to.asString();
+		String subjectString = (subject == null) ? "null" : subject;
 
-        log.config(LogBuilder.createSystemMessage().
-                addAction("Send E-Mail").
-                addParameter("to", toString).
-                addParameter("subject", subjectString).toString());
+		log.config(LogBuilder.createSystemMessage().
+				addAction("Send E-Mail").
+				addParameter("from", fromString).
+				addParameter("to", toString).
+				addParameter("subject", subjectString).toString());
 
-        decorated.sendEmail(to, subject, body);
-    }
+		decorated.sendEmail(from, to, subject, body);
+	}
 
-    /**
-     *
-     */
-    @Override
-    public boolean sendEmailIgnoreException(EmailAddress to, String subject, String body) {
-        try {
-            sendEmail(to, subject, body);
-            return true;
-        } catch (MailingException ex) {
-            // sendEmail failed
-            return false;
-        }
-    }
+	/**
+	 *
+	 */
+	@Override
+	public boolean sendEmailIgnoreException(EmailAddress from, EmailAddress to, String subject, String body) {
+		try {
+			sendEmail(from, to, subject, body);
+			return true;
+		} catch (MailingException ex) {
+			// sendEmail failed
+			return false;
+		}
+	}
 
-    /**
-     *
-     */
-    @Override
-    public void sendEmail(EmailAddress to, EmailAddress bcc, String subject, String body) throws MailingException {
-        String toString = (to == null) ? "null" : to.asString();
-        String bccString = (bcc == null) ? "null" : bcc.asString();
-        String subjectString = (subject == null) ? "null" : subject;
+	/**
+	 *
+	 */
+	@Override
+	public void sendEmail(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body)
+			throws MailingException {
+		String fromString = (from == null) ? "null" : from.asString();
+		String toString = (to == null) ? "null" : to.asString();
+		String bccString = (bcc == null) ? "null" : bcc.asString();
+		String subjectString = (subject == null) ? "null" : subject;
 
-        log.config(LogBuilder.createSystemMessage().
-                addAction("Send E-Mail").
-                addParameter("to", toString).
-                addParameter("bcc", bccString).
-                addParameter("subject", subjectString).toString());
+		log.config(LogBuilder.createSystemMessage().
+				addAction("Send E-Mail").
+				addParameter("from", fromString).
+				addParameter("to", toString).
+				addParameter("bcc", bccString).
+				addParameter("subject", subjectString).toString());
 
-        decorated.sendEmail(to, bcc, subject, body);
-    }
+		decorated.sendEmail(from, to, bcc, subject, body);
+	}
 
-    /**
-     *
-     */
-    @Override
-    public boolean sendEmailIgnoreException(EmailAddress to, EmailAddress bcc, String subject, String body) {
-        try {
-            sendEmail(to, bcc, subject, body);
-            return true;
-        } catch (MailingException ex) {
-            // sendEmail failed
-            return false;
-        }
-    }
+	/**
+	 *
+	 */
+	@Override
+	public boolean sendEmailIgnoreException(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject,
+											String body) {
+		try {
+			sendEmail(from, to, bcc, subject, body);
+			return true;
+		} catch (MailingException ex) {
+			// sendEmail failed
+			return false;
+		}
+	}
 
 }

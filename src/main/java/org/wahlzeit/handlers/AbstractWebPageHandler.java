@@ -34,88 +34,88 @@ import org.wahlzeit.webparts.WebPart;
  */
 public abstract class AbstractWebPageHandler extends AbstractWebPartHandler implements WebPageHandler {
 
-    /**
-     *
-     */
-    public WebPart makeWebPart(UserSession us) {
-        return makeWebPage(us);
-    }
+	/**
+	 *
+	 */
+	public WebPart makeWebPart(UserSession us) {
+		return makeWebPage(us);
+	}
 
-    /**
-     *
-     */
-    public WebPart makeWebPage(UserSession us) {
-        WebPart result = createWebPart(us);
+	/**
+	 *
+	 */
+	public WebPart makeWebPage(UserSession us) {
+		WebPart result = createWebPart(us);
 
-        ConfigDir staticDir = SysConfig.getStaticDir();
-        String stylesheetUrl = HtmlUtil.asPath(staticDir.getRelativeConfigFileName("wahlzeit.css"));
-        result.addString("stylesheet", stylesheetUrl);
-        String javascriptUrl = HtmlUtil.asPath(staticDir.getRelativeConfigFileName("wahlzeit.js"));
-        result.addString("javascript", javascriptUrl);
+		ConfigDir staticDir = SysConfig.getStaticDir();
+		String stylesheetUrl = HtmlUtil.asPath(staticDir.getRelativeConfigFileName("wahlzeit.css"));
+		result.addString("stylesheet", stylesheetUrl);
+		String javascriptUrl = HtmlUtil.asPath(staticDir.getRelativeConfigFileName("wahlzeit.js"));
+		result.addString("javascript", javascriptUrl);
 
-        makeWebPageFrame(us, result);
-        makeWebPageMenu(us, result);
-        makeWebPageBody(us, result);
+		makeWebPageFrame(us, result);
+		makeWebPageMenu(us, result);
+		makeWebPageBody(us, result);
 
-        return result;
-    }
+		return result;
+	}
 
-    /**
-     *
-     */
-    protected void makeWebPageFrame(UserSession us, WebPart page) {
-        Client client = us.getClient();
-        page.addString("title", client.getLanguageConfiguration().getPageTitle());
+	/**
+	 *
+	 */
+	protected void makeWebPageFrame(UserSession us, WebPart page) {
+		Client client = us.getClient();
+		page.addString("title", client.getLanguageConfiguration().getPageTitle());
 
-        makeWebPageHeading(us, page);
+		makeWebPageHeading(us, page);
 
-        page.addString("footer", client.getLanguageConfiguration().getPageFooter(client.getPhotoSize()));
-        page.addString("mission", client.getLanguageConfiguration().getPageMission());
-    }
+		page.addString("footer", client.getLanguageConfiguration().getPageFooter(client.getPhotoSize()));
+		page.addString("mission", client.getLanguageConfiguration().getPageMission());
+	}
 
-    /**
-     *
-     */
-    protected void makeWebPageHeading(UserSession us, WebPart page) {
-        Language langValue = us.getClient().getLanguage();
-        String heading = HtmlUtil.asImg(getHeadingImageAsRelativeResourcePathString(langValue));
-        heading = HtmlUtil.asHref(us.getSiteUrl(), heading);
-        page.addString("heading", heading);
-    }
+	/**
+	 *
+	 */
+	protected void makeWebPageHeading(UserSession us, WebPart page) {
+		Language langValue = us.getClient().getLanguage();
+		String heading = HtmlUtil.asImg(getHeadingImageAsRelativeResourcePathString(langValue));
+		heading = HtmlUtil.asHref(us.getSiteUrl(), heading);
+		page.addString("heading", heading);
+	}
 
-    /**
-     * @methodtype boolean-query
-     */
-    protected boolean isToShowAds(UserSession us) {
-        return false;
-    }
+	/**
+	 * @methodtype boolean-query
+	 */
+	protected boolean isToShowAds(UserSession us) {
+		return false;
+	}
 
-    /**
-     *
-     */
-    protected void makeWebPageMenu(UserSession us, WebPart page) {
-        Client client = us.getClient();
-        String menu = "";
-        ModelConfig config = client.getLanguageConfiguration();
+	/**
+	 *
+	 */
+	protected void makeWebPageMenu(UserSession us, WebPart page) {
+		Client client = us.getClient();
+		String menu = "";
+		ModelConfig config = client.getLanguageConfiguration();
 
-        if (client.hasAdministratorRights()) {
-            menu = config.getAdministratorMenu();
-        } else if (client.hasModeratorRights()) {
-            menu = config.getModeratorMenu();
-        } else if (client.hasUserRights()) {
-            menu = config.getUserMenu();
-        } else {
-            menu = config.getGuestMenu();
-        }
+		if (client.hasAdministratorRights()) {
+			menu = config.getAdministratorMenu();
+		} else if (client.hasModeratorRights()) {
+			menu = config.getModeratorMenu();
+		} else if (client.hasUserRights()) {
+			menu = config.getUserMenu();
+		} else {
+			menu = config.getGuestMenu();
+		}
 
-        page.addString("menu", menu.toString());
-    }
+		page.addString("menu", menu.toString());
+	}
 
-    /**
-     *
-     */
-    protected void makeWebPageBody(UserSession us, WebPart page) {
-        // do nothing by default
-    }
+	/**
+	 *
+	 */
+	protected void makeWebPageBody(UserSession us, WebPart page) {
+		// do nothing by default
+	}
 
 }

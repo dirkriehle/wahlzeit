@@ -41,78 +41,78 @@ import java.util.logging.Logger;
  */
 public class AdminUserProfileFormHandler extends AbstractWebFormHandler {
 
-    private static final Logger log = Logger.getLogger(AdminUserProfileFormHandler.class.getName());
+	private static final Logger log = Logger.getLogger(AdminUserProfileFormHandler.class.getName());
 
-    /**
-     *
-     */
-    public AdminUserProfileFormHandler() {
-        initialize(PartUtil.ADMIN_USER_PROFILE_FORM_FILE, AccessRights.ADMINISTRATOR);
-    }
+	/**
+	 *
+	 */
+	public AdminUserProfileFormHandler() {
+		initialize(PartUtil.ADMIN_USER_PROFILE_FORM_FILE, AccessRights.ADMINISTRATOR);
+	}
 
-    /**
-     *
-     */
-    protected void doMakeWebPart(UserSession us, WebPart part) {
-        Map<String, Object> args = us.getSavedArgs();
+	/**
+	 *
+	 */
+	protected void doMakeWebPart(UserSession us, WebPart part) {
+		Map<String, Object> args = us.getSavedArgs();
 
-        String userId = us.getAndSaveAsString(args, "userId");
-        User user = UserManager.getInstance().getUserById(userId);
+		String userId = us.getAndSaveAsString(args, "userId");
+		User user = UserManager.getInstance().getUserById(userId);
 
-        Photo photo = user.getUserPhoto();
-        part.addString(Photo.THUMB, getPhotoThumb(us, photo));
+		Photo photo = user.getUserPhoto();
+		part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 
-        part.maskAndAddString(User.ID, user.getId());
-        part.maskAndAddString(User.NICK_NAME, user.getId());
-        part.addSelect(User.STATUS, UserStatus.class, (String) args.get(User.STATUS));
-        part.addSelect(User.RIGHTS, AccessRights.class, (String) args.get(User.RIGHTS));
-        part.addSelect(User.GENDER, Gender.class, (String) args.get(User.GENDER));
-        part.addSelect(User.LANGUAGE, Language.class, (String) args.get(User.LANGUAGE));
-        part.maskAndAddStringFromArgsWithDefault(args, User.EMAIL_ADDRESS, user.getEmailAddress().asString());
+		part.maskAndAddString(User.ID, user.getId());
+		part.maskAndAddString(User.NICK_NAME, user.getId());
+		part.addSelect(User.STATUS, UserStatus.class, (String) args.get(User.STATUS));
+		part.addSelect(User.RIGHTS, AccessRights.class, (String) args.get(User.RIGHTS));
+		part.addSelect(User.GENDER, Gender.class, (String) args.get(User.GENDER));
+		part.addSelect(User.LANGUAGE, Language.class, (String) args.get(User.LANGUAGE));
+		part.maskAndAddStringFromArgsWithDefault(args, User.EMAIL_ADDRESS, user.getEmailAddress().asString());
 
-        if (user.getNotifyAboutPraise()) {
-            part.addString(User.NOTIFY_ABOUT_PRAISE, HtmlUtil.CHECKBOX_CHECK);
-        }
-    }
+		if (user.getNotifyAboutPraise()) {
+			part.addString(User.NOTIFY_ABOUT_PRAISE, HtmlUtil.CHECKBOX_CHECK);
+		}
+	}
 
-    /**
-     *
-     */
-    protected String doHandlePost(UserSession us, Map args) {
-        UserManager um = UserManager.getInstance();
-        String userId = us.getAndSaveAsString(args, "userId");
-        User user = um.getUserById(userId);
+	/**
+	 *
+	 */
+	protected String doHandlePost(UserSession us, Map args) {
+		UserManager um = UserManager.getInstance();
+		String userId = us.getAndSaveAsString(args, "userId");
+		User user = um.getUserById(userId);
 
-        String status = us.getAndSaveAsString(args, User.STATUS);
-        String rights = us.getAndSaveAsString(args, User.RIGHTS);
-        String gender = us.getAndSaveAsString(args, User.GENDER);
-        String language = us.getAndSaveAsString(args, User.LANGUAGE);
-        String emailAddress = us.getAndSaveAsString(args, User.EMAIL_ADDRESS);
-        String notifyAboutPraise = us.getAndSaveAsString(args, User.NOTIFY_ABOUT_PRAISE);
+		String status = us.getAndSaveAsString(args, User.STATUS);
+		String rights = us.getAndSaveAsString(args, User.RIGHTS);
+		String gender = us.getAndSaveAsString(args, User.GENDER);
+		String language = us.getAndSaveAsString(args, User.LANGUAGE);
+		String emailAddress = us.getAndSaveAsString(args, User.EMAIL_ADDRESS);
+		String notifyAboutPraise = us.getAndSaveAsString(args, User.NOTIFY_ABOUT_PRAISE);
 
-        if (!StringUtil.isValidStrictEmailAddress(emailAddress)) {
-            us.setMessage(us.getClient().getLanguageConfiguration().getEmailAddressIsInvalid());
-            return PartUtil.SHOW_ADMIN_PAGE_NAME;
-        }
+		if (!StringUtil.isValidStrictEmailAddress(emailAddress)) {
+			us.setMessage(us.getClient().getLanguageConfiguration().getEmailAddressIsInvalid());
+			return PartUtil.SHOW_ADMIN_PAGE_NAME;
+		}
 
-        user.setStatus(UserStatus.getFromString(status));
-        user.setAccessRights(AccessRights.getFromString(rights));
-        user.setGender(Gender.getFromString(gender));
-        user.setLanguage(Language.getFromString(language));
-        // TODO user.setEmailAddress(EmailAddress.getFromString(emailAddress));
-        user.setNotifyAboutPraise((notifyAboutPraise != null) && notifyAboutPraise.equals("on"));
+		user.setStatus(UserStatus.getFromString(status));
+		user.setAccessRights(AccessRights.getFromString(rights));
+		user.setGender(Gender.getFromString(gender));
+		user.setLanguage(Language.getFromString(language));
+		// TODO user.setEmailAddress(EmailAddress.getFromString(emailAddress));
+		user.setNotifyAboutPraise((notifyAboutPraise != null) && notifyAboutPraise.equals("on"));
 
-        um.removeClient(user);
-        user = um.getUserById(userId);
-        us.setSavedArg("userId", userId);
+		um.removeClient(user);
+		user = um.getUserById(userId);
+		us.setSavedArg("userId", userId);
 
-        log.info(LogBuilder.createUserMessage().
-                addAction("AdminUserProfile").
-                addParameter("User ID", user.getId()).toString());
+		log.info(LogBuilder.createUserMessage().
+				addAction("AdminUserProfile").
+				addParameter("User ID", user.getId()).toString());
 
-        us.setMessage(us.getClient().getLanguageConfiguration().getProfileUpdateSucceeded());
+		us.setMessage(us.getClient().getLanguageConfiguration().getProfileUpdateSucceeded());
 
-        return PartUtil.SHOW_ADMIN_PAGE_NAME;
-    }
+		return PartUtil.SHOW_ADMIN_PAGE_NAME;
+	}
 
 }
