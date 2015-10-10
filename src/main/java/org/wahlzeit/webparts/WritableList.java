@@ -27,8 +27,6 @@ import java.util.LinkedList;
 
 /**
  * A WritableList is a list of Writables.
- *
- * @author dirkriehle
  */
 public class WritableList implements Writable {
 

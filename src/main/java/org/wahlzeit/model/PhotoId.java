@@ -24,10 +24,9 @@ import java.io.Serializable;
 import java.util.Random;
 
 /**
- * A photo id identifies a photo with a unique number. The number has an equivalent string for web access. This class
- * also hands out the ids.
- *
- * @author dirkriehle
+ * A photo id identifies a photo with a unique number.
+ * The number has an equivalent string for web access. 
+ * This class also hands out the ids.
  */
 public class PhotoId implements Serializable {
 

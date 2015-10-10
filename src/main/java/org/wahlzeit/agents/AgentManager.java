@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * @author dirkriehle
+ * The AgentManager singleton manages all Agent instances.
  */
 public class AgentManager {
 

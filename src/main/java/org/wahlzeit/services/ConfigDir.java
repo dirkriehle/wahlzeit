@@ -24,8 +24,6 @@ import java.io.File;
 
 /**
  * A ConfigDir is a Directory that can provides a two-way switch between a default directory and custom directory.
- *
- * @author dirkriehle
  */
 public class ConfigDir extends Directory {
 

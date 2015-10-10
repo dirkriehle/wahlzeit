@@ -24,7 +24,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 /**
- * @author dirk
+ * Test cases for the Gender class.
  */
 public class GenderTest {
 

@@ -27,7 +27,7 @@ import java.io.File;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author dirkriehle
+ * Test cases for the StringUtil class.
  */
 public class StringUtilTest {
 

@@ -5,7 +5,9 @@ import org.wahlzeit.services.SysConfig;
 import org.wahlzeit.webparts.WebPartTemplateService;
 
 /**
- * Created by Lukas Hahmann on 22.05.15.
+ * A test setup class.
+ * 
+ * @review
  */
 public class SysConfigProvider extends ExternalResource {
 

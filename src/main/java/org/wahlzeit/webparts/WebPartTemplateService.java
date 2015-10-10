@@ -32,10 +32,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * The WebPartTemplateService creates WebPartTemplates upon request by reading them from disk. It requires configuration
- * with a template directory and uses the following naming convention: tmplDir/language/part-type/part-name.html
- *
- * @author dirkriehle
+ * The WebPartTemplateService creates WebPartTemplates upon request by reading them from disk.
+ * It requires configuration with a template directory and uses the following naming convention: tmplDir/language/part-type/part-name.html
  */
 public class WebPartTemplateService {
 

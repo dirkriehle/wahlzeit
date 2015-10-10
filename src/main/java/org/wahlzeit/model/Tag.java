@@ -9,7 +9,9 @@ import org.wahlzeit.services.DataObject;
 import org.wahlzeit.services.ObjectManager;
 
 /**
- * Created by Lukas Hahmann on 01.04.15.
+ * A class to hold one tag.
+ * 
+ * @review
  */
 @Entity
 public class Tag extends DataObject {

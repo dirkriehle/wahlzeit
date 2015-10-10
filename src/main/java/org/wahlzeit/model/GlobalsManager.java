@@ -14,8 +14,8 @@ import static org.wahlzeit.services.OfyService.ofy;
  *
  * @see #loadGlobals()
  * @see #saveGlobals()
- *
- * Created by Lukas Hahmann on 08.04.15.
+ * 
+ * @review
  */
 public class GlobalsManager extends ObjectManager {
 

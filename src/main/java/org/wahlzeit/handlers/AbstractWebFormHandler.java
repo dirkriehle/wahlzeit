@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 
 
 /**
- * @author dirkriehle
+ * A superclass for handling forms.
  */
 public abstract class AbstractWebFormHandler extends AbstractWebPartHandler implements WebFormHandler {
 

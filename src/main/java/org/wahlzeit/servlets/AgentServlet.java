@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
- * @author Lukas Hahmann
+ * A servlet class for asynchronous ("agent") tasks.
  */
 public class AgentServlet extends HttpServlet {
 

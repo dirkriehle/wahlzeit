@@ -29,7 +29,7 @@ import org.wahlzeit.webparts.WebPart;
 import java.util.Map;
 
 /**
- * @author dirkriehle
+ * A handler class for a specific web page.
  */
 public class ResetSessionPageHandler extends AbstractWebPageHandler {
 

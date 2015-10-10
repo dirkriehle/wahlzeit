@@ -14,8 +14,8 @@ import static org.junit.Assert.fail;
 
 /**
  * Abstract super class for all Adapter classes that implement the {@link ImageStorage}.
- *
- * Created by Lukas Hahmann on 24.08.15.
+ * 
+ * @review
  */
 public abstract class AbstractAdapterTest {
 

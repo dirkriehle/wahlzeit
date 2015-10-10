@@ -36,8 +36,6 @@ import java.util.logging.Logger;
 
 /**
  * The UserManager provides access to and manages Users (including Moderators and Administrators).
- *
- * @author dirkriehle
  */
 public class UserManager extends ClientManager {
 

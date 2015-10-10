@@ -23,10 +23,9 @@ package org.wahlzeit.model;
 import org.wahlzeit.utils.EnumValue;
 
 /**
- * The UserStatus of a User denotes its state within the system. A user (account) may have been created, confirmed, or
- * disabled. These states are not mutually exclusive.
- *
- * @author dirkriehle
+ * The UserStatus of a User denotes its state within the system.
+ * A user (account) may have been created, confirmed, or disabled.
+ * These states are not mutually exclusive.
  */
 public enum UserStatus implements EnumValue {
 

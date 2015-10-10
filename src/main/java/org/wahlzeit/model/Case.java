@@ -23,10 +23,8 @@ package org.wahlzeit.model;
 import org.wahlzeit.services.DataObject;
 
 /**
- * A case is a user complaint, most notably about an inappropriate photo. Subclasses capture the specifics of different
- * types of cases; here only an id is provided.
- *
- * @author dirkriehle
+ * A case is a user complaint, most notably about an inappropriate photo.
+ * Subclasses capture the specifics of different types of cases; here only an id is provided.
  */
 public abstract class Case extends DataObject {
 

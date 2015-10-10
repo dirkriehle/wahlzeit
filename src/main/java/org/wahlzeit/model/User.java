@@ -35,11 +35,10 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 /**
- * A User is a client that is logged-in, that is, has registered with the system. A user has a fair amount of
- * information associated with it, most notably his/her photos. Also, his/her contact information and whether the
- * account has been confirmed. Users can have a home page which may be elsewhere on the net.
- *
- * @author dirkriehle
+ * A User is a client that is logged-in, that is, has registered with the system.
+ * A user has a fair amount of information associated with it, most notably his/her photos.
+ * Also, his/her contact information and whether the account has been confirmed.
+ * Users can have a home page which may be elsewhere on the web.
  */
 @Subclass(index = true)
 public class User extends Client {

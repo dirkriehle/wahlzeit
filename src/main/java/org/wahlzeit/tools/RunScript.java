@@ -23,7 +23,7 @@ package org.wahlzeit.tools;
 import org.wahlzeit.main.ScriptMain;
 
 /**
- * @author dirkriehle
+ * A superclass for script classes.
  */
 public class RunScript extends ScriptMain {
 

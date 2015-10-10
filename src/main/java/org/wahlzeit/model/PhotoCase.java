@@ -25,8 +25,6 @@ import com.googlecode.objectify.annotation.Id;
 
 /**
  * A photo case is a case where someone flagged a photo as inappropriate.
- *
- * @author dirkriehle
  */
 @Entity
 public class PhotoCase extends Case {

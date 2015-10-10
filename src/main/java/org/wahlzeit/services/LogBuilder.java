@@ -14,8 +14,8 @@ import java.io.StringWriter;
  * <code>Formatter</code> could not be used
  *
  * (see https://stackoverflow.com/questions/30345665/how-to-customize-logging-for-google-app-engine-java).
- *
- * Created by Lukas Hahmann on 26.05.15.
+ * 
+ * @review
  */
 public class LogBuilder {
 

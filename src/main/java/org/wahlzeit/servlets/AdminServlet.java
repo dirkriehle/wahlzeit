@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 
 
 /**
- * @author dirkriehle
+ * The servlet for managing administrative system functions.
  */
 public class AdminServlet extends AbstractServlet {
 

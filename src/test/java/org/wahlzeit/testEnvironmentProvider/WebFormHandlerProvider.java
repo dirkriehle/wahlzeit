@@ -7,7 +7,9 @@ import org.wahlzeit.handlers.WebFormHandler;
 import org.wahlzeit.handlers.WebPartHandlerManager;
 
 /**
- * Created by Lukas Hahmann on 22.05.15.
+ * A test setup class.
+ * 
+ * @review
  */
 public class WebFormHandlerProvider extends ExternalResource {
 

@@ -23,7 +23,7 @@ package org.wahlzeit.services;
 import java.io.File;
 
 /**
- * @author dirkriehle
+ * A class to manage directories.
  */
 public class Directory {
 

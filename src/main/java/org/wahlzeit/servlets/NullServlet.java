@@ -27,7 +27,7 @@ import java.io.IOException;
 
 
 /**
- * @author dirkriehle
+ * A null servlet.
  */
 public class NullServlet extends AbstractServlet {
 

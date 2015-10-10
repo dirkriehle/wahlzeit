@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * @author dirkriehle
+ * A servlet class.
  */
 public abstract class AbstractServlet extends HttpServlet {
 

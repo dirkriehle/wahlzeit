@@ -4,7 +4,9 @@ import org.junit.rules.ExternalResource;
 import org.wahlzeit.services.OfyService;
 
 /**
- * Created by Lukas Hahmann on 29.05.15.
+ * A test setup class.
+ * 
+ * @review
  */
 public class RegisteredOfyEnvironmentProvider extends ExternalResource {
 	@Override

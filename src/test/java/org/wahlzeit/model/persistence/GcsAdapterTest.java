@@ -4,7 +4,8 @@ import com.google.appengine.tools.development.testing.LocalBlobstoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 /**
- * Created by Lukas Hahmann on 24.08.15.
+ * Test cases for the Google Cloud Storage adapter.
+ * @review
  */
 public class GcsAdapterTest extends AbstractAdapterTest {
 

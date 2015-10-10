@@ -25,9 +25,8 @@ import org.wahlzeit.services.LogBuilder;
 import java.util.logging.Logger;
 
 /**
- * @author dirkriehle
+ * An Abstract Factory for creating photos and related objects.
  */
-
 public class PhotoFactory {
 
 	private static final Logger log = Logger.getLogger(PhotoFactory.class.getName());

@@ -24,8 +24,6 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Acceptance tests for the TellFriend feature.
- *
- * @author dirkriehle
  */
 public class TellFriendTest {
 

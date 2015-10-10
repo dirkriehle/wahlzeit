@@ -24,11 +24,10 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * An interface that manages a simple key/value store. Clients can get and set individual values; they can also load
- * properties files. Key names are configured during initialization and can't be changed afterwards. Hence, any access
- * using an unknown key leads to an IllegalArgumentException.
- *
- * @author dirkriehle
+ * An interface that manages a simple key/value store.
+ * Clients can get and set individual values; they can also load properties files.
+ * Key names are configured during initialization and can't be changed afterwards.
+ * Hence, any access using an unknown key leads to an IllegalArgumentException.
  */
 public interface Configuration {
 

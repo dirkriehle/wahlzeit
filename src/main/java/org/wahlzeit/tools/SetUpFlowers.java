@@ -28,8 +28,6 @@ import java.io.File;
 
 /**
  * Sets up a fresh clean Wahlzeit Flowers application database.
- *
- * @author dirkriehle
  */
 public class SetUpFlowers extends ScriptMain {
 

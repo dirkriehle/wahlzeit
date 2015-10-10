@@ -37,7 +37,7 @@ import org.wahlzeit.webparts.WritableList;
 import java.util.Map;
 
 /**
- * @author dirkriehle
+ * A handler class for a specific web page.
  */
 public class ShowPhotoPageHandler extends AbstractWebPageHandler implements WebFormHandler {
 

@@ -37,8 +37,6 @@ import java.util.List;
 /**
  * A Client uses the system. It is an abstract superclass. This package defines guest, user, moderator, and
  * administrator clients.
- *
- * @author dirkriehle
  */
 @Entity
 public abstract class Client implements Serializable, Persistent {

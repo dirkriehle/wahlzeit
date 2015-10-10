@@ -25,8 +25,6 @@ import org.wahlzeit.services.EmailAddress;
 
 /**
  * A Moderator is a system user with moderator privileges.
- *
- * @author dirkriehle
  */
 @Subclass(index = true)
 public class Moderator extends User {

@@ -21,7 +21,7 @@
 package org.wahlzeit.handlers;
 
 /**
- * @author dirkriehle
+ * A utility class for web parts.
  */
 public interface PartUtil {
 

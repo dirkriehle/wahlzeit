@@ -35,8 +35,6 @@ import java.util.logging.Logger;
 
 /**
  * A Main class that runs a Wahlzeit web server.
- *
- * @author dirkriehle
  */
 public class ServiceMain extends ModelMain {
 

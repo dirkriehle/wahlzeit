@@ -24,8 +24,6 @@ import org.wahlzeit.utils.EnumValue;
 
 /**
  * A flag reason denotes why a photo was flagged for a photo case.
- *
- * @author dirkriehle
  */
 public enum FlagReason implements EnumValue {
 

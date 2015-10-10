@@ -31,8 +31,6 @@ import java.util.logging.Logger;
 
 /**
  * A simple ServletContextListener to startup and shutdown the Flowers application.
- *
- * @author dirkriehle
  */
 public class Wahlzeit implements ServletContextListener {
 

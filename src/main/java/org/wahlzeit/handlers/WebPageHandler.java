@@ -25,7 +25,7 @@ import org.wahlzeit.webparts.WebPart;
 
 
 /**
- * @author dirkriehle
+ * The general interface for web pages.
  */
 public interface WebPageHandler extends WebPartHandler {
 

@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * @author dirkriehle
+ * A superclass for handling parts of web pages.
  */
 public abstract class AbstractWebPartHandler implements WebPartHandler {
 

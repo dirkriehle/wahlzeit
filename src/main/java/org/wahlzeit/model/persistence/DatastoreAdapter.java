@@ -37,7 +37,7 @@ import java.util.logging.Logger;
 /**
  * Adapter for the Google Datastore. Use default constructor to create an instance.
  * 
- * Created by Lukas Hahmann on 19.08.15.
+ * @review
  */
 public class DatastoreAdapter extends ImageStorage {
 
@@ -111,8 +111,8 @@ public class DatastoreAdapter extends ImageStorage {
 
 	/**
 	 * Wrapper class to store {@link Image}s in the Google Datastore with Objectify.
-	 *
-	 * Created by Lukas Hahmann on 19.08.15.
+	 * 
+ 	 * @review
 	 */
 	@Entity
 	public static class ImageWrapper {

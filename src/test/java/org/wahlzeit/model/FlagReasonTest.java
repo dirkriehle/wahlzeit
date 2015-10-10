@@ -34,7 +34,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
- * @author student
+ * Test cases for the FlagReason class.
  */
 public class FlagReasonTest {
 

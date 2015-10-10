@@ -25,8 +25,6 @@ import java.io.Writer;
 
 /**
  * A Writable can write a representation of itself to a Writer.
- *
- * @author dirkriehle
  */
 public interface Writable {
 

@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
- * @author dirkriehle
+ * Test cases for the Version class.
  */
 public class VersionTest {
 

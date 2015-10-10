@@ -23,7 +23,7 @@ package org.wahlzeit.services;
 import org.wahlzeit.utils.EnumValue;
 
 /**
- * @author dirkriehle
+ * A value object of capturing the available languages.
  */
 public enum Language implements EnumValue {
 

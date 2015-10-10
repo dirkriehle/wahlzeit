@@ -25,8 +25,6 @@ import org.wahlzeit.services.EmailAddress;
 
 /**
  * A Guest is a client that is not logged in.
- *
- * @author dirkriehle
  */
 @Subclass(index = true)
 public class Guest extends Client {

@@ -29,8 +29,8 @@ import static org.wahlzeit.services.LogBuilder.USER_LEVEL;
 
 /**
  * Test class for {@link LogBuilder}.
- *
- * Created by Lukas Hahmann on 26.05.15.
+ * 
+ * @review
  */
 public class LogBuilderTest {
 

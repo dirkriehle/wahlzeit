@@ -28,8 +28,6 @@ import java.util.regex.Pattern;
 
 /**
  * A set of utility functions for basic string manipulations.
- *
- * @author dirkriehle
  */
 public class StringUtil {
 

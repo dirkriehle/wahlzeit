@@ -50,7 +50,7 @@ import java.util.logging.Logger;
 
 
 /**
- * @author dirkriehle
+ * The main servlet class for handling incoming and outgoing requests.
  */
 public class MainServlet extends AbstractServlet {
 

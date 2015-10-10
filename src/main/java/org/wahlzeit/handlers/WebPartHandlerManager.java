@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 
 /**
- * @author dirkriehle
+ * A manager class for web parts.
  */
 public class WebPartHandlerManager {
 

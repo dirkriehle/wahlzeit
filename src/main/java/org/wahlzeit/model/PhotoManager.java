@@ -42,8 +42,6 @@ import java.util.logging.Logger;
 
 /**
  * A photo manager provides access to and manages photos.
- *
- * @author dirkriehle
  */
 public class PhotoManager extends ObjectManager {
 

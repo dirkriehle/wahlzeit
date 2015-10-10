@@ -42,10 +42,10 @@ import java.security.InvalidParameterException;
 import java.util.logging.Logger;
 
 /**
- * Adapter for the Google Cloud Storage. Use {@link org.wahlzeit.model.persistence.GcsAdapter.Builder} to create an
- * object.
+ * Adapter for the Google Cloud Storage.
+ * Use {@link org.wahlzeit.model.persistence.GcsAdapter.Builder} to create an object.
  * 
- * Created by Lukas Hahmann on 28.04.15.
+ * @review
  */
 public class GcsAdapter extends ImageStorage {
 

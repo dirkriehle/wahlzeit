@@ -25,7 +25,7 @@ import org.wahlzeit.services.LogBuilder;
 import java.util.logging.Logger;
 
 /**
- * @author dirkriehle
+ * An Agent executes background tasks.
  */
 public abstract class Agent {
 

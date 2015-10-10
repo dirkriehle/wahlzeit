@@ -27,9 +27,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * An email address provides a simple email address representation. It is a value object and implemented as immutable.
- *
- * @author dirkriehle
+ * An email address provides a simple email address representation.
+ * It is a value object and implemented as immutable.
  */
 public class EmailAddress implements Serializable {
 

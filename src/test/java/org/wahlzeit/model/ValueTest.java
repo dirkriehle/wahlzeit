@@ -25,7 +25,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 /**
- * @author dirkriehle
+ * Test cases for a variety of value object classes.
  */
 public class ValueTest {
 

@@ -25,8 +25,6 @@ import java.util.logging.Logger;
 
 /**
  * A basic set of system configuration data
- *
- * @author dirkriehle
  */
 public class SysConfig extends AbstractConfig {
 

@@ -23,7 +23,7 @@ package org.wahlzeit.tools;
 import org.wahlzeit.main.ScriptMain;
 
 /**
- * @author dirkriehle
+ * A script to create users.
  */
 public class CreateUser extends ScriptMain {
 

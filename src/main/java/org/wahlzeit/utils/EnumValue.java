@@ -22,8 +22,6 @@ package org.wahlzeit.utils;
 
 /**
  * An EnumValue is a an enum wrapper that makes handling enums easier.
- *
- * @author dirkriehle
  */
 public interface EnumValue {
 

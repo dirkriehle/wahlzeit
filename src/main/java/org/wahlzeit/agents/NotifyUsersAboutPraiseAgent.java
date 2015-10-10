@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * Created by Lukas Hahmann on 12.08.15.
+ * An agent class to notify users about new praise received for their photos.
  */
 public class NotifyUsersAboutPraiseAgent extends Agent {
 

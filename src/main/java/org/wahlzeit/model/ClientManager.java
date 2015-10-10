@@ -11,8 +11,8 @@ import java.util.logging.Logger;
 
 /**
  * Abstract super class for UserManager. Contains all members and methods that can be offered for all Clients.
- *
- * Created by Lukas Hahmann on 29.05.15.
+ * 
+ * @review
  */
 public abstract class ClientManager extends ObjectManager {
 

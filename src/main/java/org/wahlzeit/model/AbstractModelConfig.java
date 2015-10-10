@@ -42,10 +42,8 @@ import java.text.SimpleDateFormat;
 import java.util.logging.Logger;
 
 /**
- * A generic implementation of ModelConfig. Subclasses provide the parameters and language-specific handling of text and
- * data.
- *
- * @author dirkriehle
+ * A generic implementation of ModelConfig.
+ * Subclasses provide the parameters and language-specific handling of text and data.
  */
 public abstract class AbstractModelConfig extends AbstractConfig implements ModelConfig, Serializable {
 

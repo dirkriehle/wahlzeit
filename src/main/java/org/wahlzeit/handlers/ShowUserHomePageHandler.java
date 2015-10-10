@@ -31,7 +31,7 @@ import org.wahlzeit.webparts.Writable;
 import org.wahlzeit.webparts.WritableList;
 
 /**
- * @author dirkriehle
+ * A handler class for a specific web page.
  */
 public class ShowUserHomePageHandler extends AbstractWebPageHandler {
 

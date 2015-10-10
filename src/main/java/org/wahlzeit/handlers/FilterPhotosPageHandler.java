@@ -31,10 +31,9 @@ import org.wahlzeit.webparts.WebPart;
 import java.util.Map;
 
 /**
- * This pages handles incoming get requests for a page. Typically, this means an external link points to the site.
+ * This pages handles incoming get requests for a page. 
+ * Typically, this means an external link points to the site.
  * Example: www.wahlzeit.com/filter?userName=laura
- *
- * @author dirkriehle
  */
 public class FilterPhotosPageHandler extends AbstractWebPageHandler {
 

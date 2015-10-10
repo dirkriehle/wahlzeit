@@ -24,8 +24,6 @@ import java.io.File;
 
 /**
  * A set of utility functions for HTML formatting.
- *
- * @author dirkriehle
  */
 public class HtmlUtil {
 

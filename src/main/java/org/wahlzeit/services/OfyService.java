@@ -15,7 +15,9 @@ import org.wahlzeit.model.User;
 import org.wahlzeit.model.persistence.DatastoreAdapter.ImageWrapper;
 
 /**
- * Created by Lukas Hahmann on 30.03.15.
+ * A badly named class, to be renamed to ObjectifyService first, something better later.
+ * 
+ * @review
  */
 public class OfyService {
 

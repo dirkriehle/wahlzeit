@@ -31,10 +31,8 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * A generic implementation to manage simple key/value store. Clients can get and set individual values; they can also
- * load properties files.
- *
- * @author dirkriehle
+ * A generic implementation to manage simple key/value store.
+ * Clients can get and set individual values; they can also load properties files.
  */
 public abstract class AbstractConfig implements Configuration, Serializable {
 

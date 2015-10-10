@@ -16,8 +16,8 @@ import static org.junit.Assert.fail;
 
 /**
  * Test class for {@link DatastoreAdapter}
- *
- * Created by Lukas Hahmann on 20.08.15.
+ * 
+ * @review
  */
 public class DatastoreAdapterTest extends AbstractAdapterTest {
 

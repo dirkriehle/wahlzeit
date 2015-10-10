@@ -32,7 +32,7 @@ import java.util.Map;
 
 
 /**
- * @author dirkriehle
+ * A handler class for a specific web page.
  */
 public class LogoutPageHandler extends AbstractWebPageHandler {
 

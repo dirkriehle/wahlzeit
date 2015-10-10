@@ -31,8 +31,6 @@ import java.util.Map;
 
 /**
  * The photo case manager provides access to and manages persistent photo cases.
- *
- * @author dirkriehle
  */
 public class PhotoCaseManager extends ObjectManager {
 

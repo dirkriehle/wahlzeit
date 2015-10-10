@@ -29,7 +29,7 @@ import java.util.Map;
 
 
 /**
- * @author dirkriehle
+ * A handler class for a generic web page.
  */
 public class ShowPartPageHandler extends AbstractWebPageHandler {
 

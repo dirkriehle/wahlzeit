@@ -23,7 +23,7 @@ package org.wahlzeit.services;
 import junit.framework.TestCase;
 
 /**
- * @author dirkriehle
+ * Test cases for the EmailAddress class.
  */
 public class EmailAddressTest extends TestCase {
 

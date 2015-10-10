@@ -25,7 +25,7 @@ import org.wahlzeit.services.SysConfig;
 import org.wahlzeit.services.SysSession;
 
 /**
- * @author dirkriehle
+ * A superclass for a Main class for system startup and shutdown.
  */
 public abstract class AbstractMain {
 

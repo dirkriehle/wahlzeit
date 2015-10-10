@@ -24,9 +24,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A WebPartTmpl is a template for a WebPart. It gets initialized once and is read-only after that.
- *
- * @author dirkriehle
+ * A WebPartTmpl is a template for a WebPart.
+ * It gets initialized once and is read-only after that.
  */
 public class WebPartTemplate {
 

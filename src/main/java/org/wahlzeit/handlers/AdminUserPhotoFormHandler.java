@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * @author dirkriehle
+ * A specific web form class.
  */
 public class AdminUserPhotoFormHandler extends AbstractWebFormHandler {
 

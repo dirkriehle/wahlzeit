@@ -19,8 +19,8 @@ import java.util.logging.Logger;
  *
  * As there are several links for each Photo, this can not the handled via the MainServlet, which has a unique link for
  * each Handler. Instead web.xml redirects all static requests to this Servlet.
- *
- * Created by Lukas Hahmann on 29.04.15.
+ * 
+ * @review
  */
 public class StaticDataServlet extends AbstractServlet {
 

@@ -12,8 +12,8 @@ import static com.google.appengine.api.taskqueue.RetryOptions.Builder.withTaskRe
 
 /**
  * Class to combine all calls for async task to use Task API from Google.
- *
- * Created by Lukas Hahmann on 12.05.15.
+ * 
+ * @review
  */
 public class AsyncTaskExecutor {
 

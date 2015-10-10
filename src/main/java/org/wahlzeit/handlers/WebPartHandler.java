@@ -27,7 +27,7 @@ import java.util.Map;
 
 
 /**
- * @author dirkriehle
+ * The general interface for web partgs.
  */
 public interface WebPartHandler {
 

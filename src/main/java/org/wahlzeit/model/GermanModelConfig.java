@@ -28,8 +28,6 @@ import java.text.SimpleDateFormat;
 
 /**
  * A model configuration for the German language.
- *
- * @author dirkriehle
  */
 public class GermanModelConfig extends AbstractModelConfig {
 

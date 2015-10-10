@@ -25,8 +25,6 @@ import java.util.logging.Logger;
 
 /**
  * A Main class that serves to run scripts (and exit afterwards).
- *
- * @author dirkriehle
  */
 public abstract class ScriptMain extends ModelMain {
 

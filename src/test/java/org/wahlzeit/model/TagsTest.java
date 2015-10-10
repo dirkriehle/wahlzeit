@@ -25,7 +25,7 @@ import junit.framework.TestCase;
 import java.util.Set;
 
 /**
- * @author dirkriehle
+ * Test cases for the Tags class.
  */
 public class TagsTest extends TestCase {
 

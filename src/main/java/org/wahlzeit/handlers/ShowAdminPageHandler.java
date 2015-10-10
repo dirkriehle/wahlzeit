@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * @author dirkriehle
+ * A handler class for a specific web page.
  */
 public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebFormHandler {
 
