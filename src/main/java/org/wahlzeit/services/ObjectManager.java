@@ -28,15 +28,15 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * An ObjectManager creates/reads/updates/deletes Persistent (objects) from Google Datastore. It is an abstract
- * superclass that relies an inheritance interface and the Persistent interface.
+ * An ObjectManager creates/reads/updates/deletes Persistent (objects) from Google Datastore.
+ * It is an abstract superclass that relies on an inheritance interface and the Persistent interface.
  *
  * @author dirkriehle
  */
 public abstract class ObjectManager {
 
 	/**
-	 * All objects are now saved under this root key. In case of multitenancy this may change to several keys.
+	 * All objects are now saved under this root key. In case of multi-tenancy this may change to several keys.
 	 */
 	public static final Key applicationRootKey = KeyFactory.createKey("Application", "Wahlzeit");
 

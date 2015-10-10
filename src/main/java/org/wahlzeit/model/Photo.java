@@ -70,50 +70,60 @@ public class Photo extends DataObject {
 	public static final int MAX_THUMB_PHOTO_HEIGHT = 150;
 
 	protected PhotoId id = null;
+	
 	/**
 	 *
 	 */
 	protected String ownerId;
+	
 	/**
-	 * To avoid scaling when accessing a photo, all pictures sizes are stored in an own file. The photo java object is
-	 * stored in the Google Datastore, the Images are stored in the Google Cloud Storage.
+	 * Each photo can be viewed in different sizes (XS, S, M, L, XL)
+	 * Images are pre-computed in these sizes to optimize bandwidth when requested.
 	 */
 	@Ignore
 	transient protected Map<PhotoSize, Image> images = new ArrayMap<PhotoSize, Image>();
+	
 	/**
 	 *
 	 */
 	protected boolean ownerNotifyAboutPraise = false;
 	protected EmailAddress ownerEmailAddress = EmailAddress.EMPTY;
 	protected Language ownerLanguage = Language.ENGLISH;
+	
 	/**
 	 *
 	 */
 	protected int width;
 	protected int height;
 	protected PhotoSize maxPhotoSize = PhotoSize.MEDIUM; // derived
+	
 	/**
 	 *
 	 */
 	protected Tags tags = Tags.EMPTY_TAGS;
+	
 	/**
 	 *
 	 */
 	protected PhotoStatus status = PhotoStatus.VISIBLE;
+	
 	/**
 	 *
 	 */
 	protected int praiseSum = 10;
 	protected int noVotes = 1;
 	protected int noVotesAtLastNotification = 1;
+	
 	/**
 	 *
 	 */
 	protected long creationTime = System.currentTimeMillis();
+	
 	/**
 	 * The default type is jpg
 	 */
 	protected String ending = "jpg";
+	
 	/**
 	 *
 	 */

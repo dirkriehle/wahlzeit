@@ -23,8 +23,8 @@ package org.wahlzeit.services;
 import java.io.Serializable;
 
 /**
- * A simple abstract implementation of Persistent with write count and dirty bit. Also defines (but does not use) the
- * field "ID" for subclass use.
+ * A simple abstract implementation of Persistent with write count and dirty bit.
+ * Also defines (but does not use) the field "ID" for subclass use.
  *
  * @author dirkriehle
  */
