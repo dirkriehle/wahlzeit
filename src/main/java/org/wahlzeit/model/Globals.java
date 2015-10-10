@@ -7,7 +7,7 @@ import org.wahlzeit.services.DataObject;
 /**
  * Class that combines all global wahlzeit variables that need to be stored to the datastore when the system is
  * restarted.
- * <p/>
+ *
  * Created by Lukas Hahmann on 01.04.15.
  */
 @Entity

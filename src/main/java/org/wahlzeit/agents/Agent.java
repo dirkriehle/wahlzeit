@@ -82,8 +82,6 @@ public abstract class Agent {
 
 	/**
 	 * @methodproperty hook
-	 * <p/>
-	 * does the actual work of the agent
 	 */
 	protected void doRun() {
 		// do nothing

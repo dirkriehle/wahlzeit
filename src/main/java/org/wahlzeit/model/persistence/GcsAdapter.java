@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 /**
  * Adapter for the Google Cloud Storage. Use {@link org.wahlzeit.model.persistence.GcsAdapter.Builder} to create an
  * object.
- * <p/>
+ * 
  * Created by Lukas Hahmann on 28.04.15.
  */
 public class GcsAdapter extends ImageStorage {
@@ -141,7 +141,7 @@ public class GcsAdapter extends ImageStorage {
 
 	/**
 	 * Creates a <code>GcsFilename</code> for the photo in the specified size. The name structure is:
-	 * <p/>
+	 *
 	 * BUCKET_NAME - ownerId/fileName/photoIdAsString
 	 *
 	 * @methodtype get

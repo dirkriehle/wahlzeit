@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNotNull;
 
 /**
  * Test class for {@link Guest}.
- * <p/>
+ *
  * Created by Lukas Hahmann on 29.05.15.
  */
 public class GuestTest {

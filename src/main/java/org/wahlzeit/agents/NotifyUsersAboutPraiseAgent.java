@@ -34,7 +34,7 @@ public class NotifyUsersAboutPraiseAgent extends Agent {
 
 	/**
 	 * @methodtype command
-	 * <p/>
+	 * 
 	 * Notifies all users that want to get informed if their photos have been praised.
 	 */
 	protected void doRun() {
@@ -73,7 +73,7 @@ public class NotifyUsersAboutPraiseAgent extends Agent {
 
 	/**
 	 * @methotype command
-	 * <p/>
+	 * 
 	 * Actually notifies one user about the praise of his/her photos.
 	 */
 	protected void notifyOwner(String ownerId, Collection<Photo> allPhotosOfUser) {

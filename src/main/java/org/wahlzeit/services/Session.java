@@ -61,7 +61,7 @@ public class Session {
 
 	/**
 	 * @methodproperty hook
-	 * <p/>
+	 *
 	 * Hook method for subclasses to get to know when name changes.
 	 * @see #initialize(String)
 	 */
@@ -92,7 +92,7 @@ public class Session {
 
 	/**
 	 * @methodproperty hook
-	 * <p/>
+	 *
 	 * Hook method for subclasses to get to know when processing time changes.
 	 * @see #addProcessingTime(long)
 	 * @see #resetProcessingTime()

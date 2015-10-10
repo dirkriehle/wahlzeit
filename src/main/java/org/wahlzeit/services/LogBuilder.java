@@ -9,12 +9,12 @@ import java.io.StringWriter;
 
 /**
  * Builder class for log messages, that ensures that log messages are all formatted equally.
- * <p/>
+ *
  * Google App Engine as a PaaS has certain restrictions depending their services, hence a default Java logging
  * <code>Formatter</code> could not be used
- * <p/>
+ *
  * (see https://stackoverflow.com/questions/30345665/how-to-customize-logging-for-google-app-engine-java).
- * <p/>
+ *
  * Created by Lukas Hahmann on 26.05.15.
  */
 public class LogBuilder {
@@ -43,7 +43,7 @@ public class LogBuilder {
 
 	/**
 	 * @methodtype factory
-	 * <p/>
+	 *
 	 * Creates a LogBuilder Object and adds the Level (user level), the current <code>HttpSession</code>, and the
 	 * clients name.
 	 */
@@ -53,7 +53,7 @@ public class LogBuilder {
 
 	/**
 	 * @methodtype factory
-	 * <p/>
+	 *
 	 * Primitive Method that creates a LogBuilder Object and adds the Level, the current <code>HttpSession</code>, and
 	 * the clients name.
 	 */
@@ -102,7 +102,7 @@ public class LogBuilder {
 
 	/**
 	 * @methodtype factory
-	 * <p/>
+	 *
 	 * Creates a LogBuilder Object and adds the Level (system level), the current <code>HttpSession</code>, and the
 	 * clients name.
 	 */
@@ -112,7 +112,7 @@ public class LogBuilder {
 
 	/**
 	 * @methodtype mutate
-	 * <p/>
+	 *
 	 * Adds the following to the LogMessage: ", <name>=<value>".
 	 */
 	public LogBuilder addParameter(String name, int value) {
@@ -122,7 +122,7 @@ public class LogBuilder {
 
 	/**
 	 * @methodtype mutate
-	 * <p/>
+	 *
 	 * Adds the following to the LogMessage: ", <name>=<value>".
 	 */
 	public LogBuilder addParameter(String name, boolean value) {
@@ -132,7 +132,7 @@ public class LogBuilder {
 
 	/**
 	 * @methodtype mutate
-	 * <p/>
+	 *
 	 * Adds the following to the LogMessage: ", <name>=<value>".
 	 */
 	public LogBuilder addParameter(String name, String value) {
@@ -142,7 +142,7 @@ public class LogBuilder {
 
 	/**
 	 * @methodtype mutate
-	 * <p/>
+	 *
 	 * Adds the following to the LogMessage: ", <name>=<value>.toString()".
 	 */
 	public LogBuilder addParameter(String name, Object value) {
@@ -152,7 +152,7 @@ public class LogBuilder {
 
 	/**
 	 * @methodtype mutate
-	 * <p/>
+	 *
 	 * Adds the message to the LogMessage: ", <message>".
 	 */
 	public LogBuilder addMessage(String message) {
@@ -162,7 +162,7 @@ public class LogBuilder {
 
 	/**
 	 * @methodtype mutate
-	 * <p/>
+	 *
 	 * Adds the stacktrace and the <code>exceptionMessage</code> to the log message.
 	 */
 	public LogBuilder addException(String exceptionMessage, Throwable throwable) {
@@ -178,7 +178,7 @@ public class LogBuilder {
 
 	/**
 	 * @methodtype mutate
-	 * <p/>
+	 *
 	 * Adds the info that the action is performed the log message: "action=<action>".
 	 */
 	public LogBuilder addAction(String action) {
@@ -191,7 +191,7 @@ public class LogBuilder {
 
 	/**
 	 * @methodtype conversion
-	 * <p/>
+	 *
 	 * Puts everything together that has been added to the LogMessage before.
 	 */
 	@Override

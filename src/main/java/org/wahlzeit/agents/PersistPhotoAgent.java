@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 /**
  * Servlet to persist Photos that are only in the Cache. As it has nothing to do with <code>UserSession</code> or UI, it
  * is not implemented as a Handler or a child of <code>AbstractServlet</code>.
- * <p/>
+ *
  * Created by Lukas Hahmann on 12.05.15.
  */
 public class PersistPhotoAgent extends HttpServlet {

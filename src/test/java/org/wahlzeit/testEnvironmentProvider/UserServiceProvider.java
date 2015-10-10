@@ -6,7 +6,7 @@ import org.junit.rules.ExternalResource;
 
 /**
  * Provider for the {@link com.google.appengine.api.users.UserService}.
- * <p/>
+ *
  * Created by Lukas Hahmann on 03.06.15.
  */
 public class UserServiceProvider extends ExternalResource {

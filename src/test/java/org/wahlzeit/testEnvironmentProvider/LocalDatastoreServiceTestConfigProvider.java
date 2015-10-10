@@ -7,7 +7,7 @@ import org.junit.rules.ExternalResource;
 /**
  * Provider for the GAE datastore environment. Necessary for each Unit test that wants to load or store stuff in the
  * datastore.
- * <p/>
+ *
  * Created by Lukas Hahmann on 22.05.15.
  */
 public class LocalDatastoreServiceTestConfigProvider extends ExternalResource {

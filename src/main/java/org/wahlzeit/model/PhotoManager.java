@@ -151,7 +151,7 @@ public class PhotoManager extends ObjectManager {
 
 	/**
 	 * @methodtype command
-	 * <p/>
+	 *
 	 * Load all persisted photos. Executed when Wahlzeit is restarted.
 	 */
 	public void loadPhotos() {
@@ -189,7 +189,7 @@ public class PhotoManager extends ObjectManager {
 
 	/**
 	 * @methodtype command
-	 * <p/>
+	 *
 	 * Loads all scaled Images of this Photo from Google Cloud Storage
 	 */
 	protected void loadScaledImages(Photo photo) {
@@ -249,7 +249,7 @@ public class PhotoManager extends ObjectManager {
 
 	/**
 	 * @methodtype command
-	 * <p/>
+	 *
 	 * Persists all available sizes of the Photo. If one size exceeds the limit of the persistence layer, e.g. > 1MB for
 	 * the Datastore, it is simply not persisted.
 	 */

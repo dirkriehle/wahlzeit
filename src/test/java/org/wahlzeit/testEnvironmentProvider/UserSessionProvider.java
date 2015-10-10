@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 /**
  * Rule that provides a <code>UserSession</code> in the <code>SessionManager</code>
- * <p/>
+ *
  * Created by Lukas Hahmann on 22.05.15.
  */
 public class UserSessionProvider extends ExternalResource {

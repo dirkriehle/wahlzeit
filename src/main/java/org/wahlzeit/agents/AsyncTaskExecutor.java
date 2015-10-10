@@ -12,7 +12,7 @@ import static com.google.appengine.api.taskqueue.RetryOptions.Builder.withTaskRe
 
 /**
  * Class to combine all calls for async task to use Task API from Google.
- * <p/>
+ *
  * Created by Lukas Hahmann on 12.05.15.
  */
 public class AsyncTaskExecutor {
@@ -21,7 +21,7 @@ public class AsyncTaskExecutor {
 
 	/**
 	 * @methodtype command
-	 * <p/>
+	 *
 	 * Starts a task in the default queue to save the photo with the specified ID.
 	 */
 	public static void savePhotoAsync(String photoId) {
