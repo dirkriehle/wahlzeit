@@ -1,0 +1,8 @@
+<queue-entries>
+    <queue>
+        <name>default</name>
+        <rate>10/s</rate>
+        <bucket-size>50</bucket-size>
+        <max-concurrent-requests>10</max-concurrent-requests>
+    </queue>
+</queue-entries>

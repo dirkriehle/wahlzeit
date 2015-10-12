@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2006-2015 by Dirk Riehle, http://dirkriehle.com
+ * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
  *
- * This file is part of the Wahlzeit rating application.
+ * This file is part of the Wahlzeit photo rating application.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,3 +18,27 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+package org.wahlzeit.handlers;
+
+import org.wahlzeit.model.UserSession;
+import org.wahlzeit.webparts.WebPart;
+
+import java.util.Map;
+
+
+/**
+ * The general interface for web partgs.
+ */
+public interface WebPartHandler {
+
+	/**
+	 *
+	 */
+	WebPart makeWebPart(UserSession us);
+
+	/**
+	 *
+	 */
+	String handleGet(UserSession us, String link, Map args);
+
+}

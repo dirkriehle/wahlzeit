@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2006-2015 by Dirk Riehle, http://dirkriehle.com
+ * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
  *
- * This file is part of the Wahlzeit rating application.
+ * This file is part of the Wahlzeit photo rating application.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,3 +18,30 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+package org.wahlzeit.services.mailing;
+
+import org.wahlzeit.services.EmailAddress;
+
+import javax.mail.Message;
+
+/**
+ * Abstract superclass for non-trivial EmailServer implementations.
+ */
+public class MockEmailService extends AbstractEmailService {
+
+	/**
+	 *
+	 */
+	protected Message doCreateEmail(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject,
+									String body) throws MailingException {
+		return null;
+	}
+
+	/**
+	 *
+	 */
+	protected void doSendEmail(Message msg) throws MailingException {
+		// do nothing
+	}
+
+}

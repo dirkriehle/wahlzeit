@@ -1,3 +1,10 @@
+/bin/
 /build
-/web/data/photos
-/web/WEB-INF/classes
+/classes
+/src/main/webapp/WEB-INF/lib/
+/.settings/
+*.iml
+.gradle
+.idea
+.project
+.classpath

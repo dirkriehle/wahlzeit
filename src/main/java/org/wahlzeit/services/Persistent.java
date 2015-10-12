@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2006-2015 by Dirk Riehle, http://dirkriehle.com
+ * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
  *
- * This file is part of the Wahlzeit rating application.
+ * This file is part of the Wahlzeit photo rating application.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,3 +18,27 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+package org.wahlzeit.services;
+
+/**
+ * A Persistent object is an object that can be read from and written to some storage.
+ * Also, it has a write count, which serves as a dirty flag.
+ */
+public interface Persistent {
+
+	/**
+	 *
+	 */
+	boolean isDirty();
+
+	/**
+	 *
+	 */
+	void incWriteCount();
+
+	/**
+	 *
+	 */
+	void resetWriteCount();
+
+}

@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2006-2015 by Dirk Riehle, http://dirkriehle.com
+ * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
  *
- * This file is part of the Wahlzeit rating application.
+ * This file is part of the Wahlzeit photo rating application.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,3 +18,32 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+package org.wahlzeit.services.mailing;
+
+import javax.mail.MessagingException;
+
+/**
+ *
+ */
+public class MailingException extends Exception {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 *
+	 */
+	public MailingException(String reason) {
+		super(reason);
+	}
+
+	/**
+	 *
+	 */
+	public MailingException(String reason, MessagingException other) {
+		super(reason, other);
+	}
+
+}
