@@ -1,4 +1,4 @@
-# Wahlzeit: Open Source Software for Photo Rating Sites
+# Wahlzeit: Open Source Software for Photo Sharing and Rating Sites
 
 
 

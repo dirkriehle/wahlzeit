@@ -100,9 +100,10 @@ public class FlagReasonTest {
 			FlagReason.getFromString(invalidString);
 			fail(".getFromString(" + invalidString + ") should throw IllegalArgumentException.");
 		} catch (IllegalArgumentException expectedException) {
+			// as expected, getFromString threw illegal argument exception, all good
 		} catch (Exception unexpectedException) {
 			fail(".getFromString(" + invalidString + ") should throw IllegalArgumentException not " +
-					unexpectedException.getClass().toString());
+				unexpectedException.getClass().toString());
 		}
 	}
 
