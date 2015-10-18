@@ -4,7 +4,7 @@ apply plugin: 'appengine'
 
 buildscript {
     ext {
-        gaeVersion = '1.9.24'
+        gaeVersion = '1.9.26'
     }
     repositories {
         mavenCentral()
