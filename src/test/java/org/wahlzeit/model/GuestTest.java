@@ -18,9 +18,8 @@ public class GuestTest {
 
 	@ClassRule
 	public static RuleChain ruleChain = RuleChain.
-			outerRule(new LocalDatastoreServiceTestConfigProvider()).
-			around(new RegisteredOfyEnvironmentProvider());
-
+		outerRule(new LocalDatastoreServiceTestConfigProvider()).
+		around(new RegisteredOfyEnvironmentProvider());
 
 	@Test
 	public void testNameGeneration() {
