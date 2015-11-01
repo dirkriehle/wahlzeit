@@ -43,10 +43,9 @@ public class PhotoFactory {
 	}
 
 	/**
-	 * Hidden singleton instance; needs to be initialized from the outside.
 	 */
-	public static void initialize() {
-		getInstance(); // drops result due to getInstance() side-effects
+	public void initialize() {
+		// do nothing
 	}
 
 	/**
@@ -89,6 +88,7 @@ public class PhotoFactory {
 	/**
 	 * Loads a photo. The Java object is loaded from the Google Datastore, the Images in all sizes are loaded from the
 	 * Google Cloud storage.
+	 * @FIXME urgently
 	 */
 	public Photo loadPhoto(PhotoId id) {
 	   /* Photo result =

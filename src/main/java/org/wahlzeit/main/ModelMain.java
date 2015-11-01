@@ -49,23 +49,38 @@ public abstract class ModelMain extends AbstractMain {
 		super.startUp(rootDir);
 		log.info("AbstractMain.startUp completed");
 
-		log.config(LogBuilder.createSystemMessage().addAction("load image storage").toString());
-		//GcsAdapter.Builder gcsAdapterBuilder = new GcsAdapter.Builder();
-		ImageStorage.setInstance(new DatastoreAdapter());
+		log.config(LogBuilder.createSystemMessage().addAction("initializing ImageStore").toString());
+		initImageStore();
 
-		log.config(LogBuilder.createSystemMessage().addAction("load globals").toString());
+		log.config(LogBuilder.createSystemMessage().addAction("loading global variables").toString());
 		GlobalsManager.getInstance().loadGlobals();
 
-		log.config(LogBuilder.createSystemMessage().addAction("load user").toString());
-		UserManager.getInstance().init();
-
-		log.config(LogBuilder.createSystemMessage().addAction("init PhotoFactory").toString());
-		PhotoFactory.initialize();
-
-		log.config(LogBuilder.createSystemMessage().addAction("load Photos").toString());
-		PhotoManager.getInstance().init();
+		log.config(LogBuilder.createSystemMessage().addAction("initializing UserManager").toString());
+		initUserManager();
+		
+		log.config(LogBuilder.createSystemMessage().addAction("initializing PhotoFactory").toString());
+		initPhotoFactory();
+		
+		log.config(LogBuilder.createSystemMessage().addAction("initializing PhotoManager").toString());
+		initPhotoManager();
+	}
+	
+	protected void initImageStore() {
+		//GcsAdapter.Builder gcsAdapterBuilder = new GcsAdapter.Builder();
+		ImageStorage.setInstance(new DatastoreAdapter());
+	}
+	
+	protected void initUserManager() {
+		UserManager.getInstance().initialize();
+	}
+	
+	protected void initPhotoFactory() {
+		PhotoFactory.getInstance().initialize();		
 	}
 
+	protected void initPhotoManager() {
+		PhotoManager.getInstance().initialize();
+	}
 
 	/**
 	 *

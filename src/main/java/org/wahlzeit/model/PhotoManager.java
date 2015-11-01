@@ -143,7 +143,7 @@ public class PhotoManager extends ObjectManager {
 	/**
 	 * @methodtype init Loads all Photos from the Datastore and holds them in the cache
 	 */
-	public void init() {
+	public void initialize() {
 		loadPhotos();
 	}
 

@@ -74,7 +74,7 @@ public class UserManager extends ClientManager {
 		return instance;
 	}
 
-	public void init() {
+	public void initialize() {
 		loadExistingUsers();
 	}
 
