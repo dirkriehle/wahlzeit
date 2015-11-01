@@ -25,6 +25,7 @@ import org.wahlzeit.model.AccessRights;
 import org.wahlzeit.model.EnglishModelConfig;
 import org.wahlzeit.model.GermanModelConfig;
 import org.wahlzeit.model.LanguageConfigs;
+import org.wahlzeit.model.PhotoFactory;
 import org.wahlzeit.services.ConfigDir;
 import org.wahlzeit.services.Language;
 import org.wahlzeit.services.LogBuilder;
@@ -43,7 +44,7 @@ public class ServiceMain extends ModelMain {
 	/**
 	 *
 	 */
-	protected static ServiceMain instance = new ServiceMain();
+	protected static ServiceMain instance = null;
 
 	/**
 	 *
@@ -58,8 +59,22 @@ public class ServiceMain extends ModelMain {
 	/**
 	 *
 	 */
-	public static ServiceMain getInstance() {
+	public static synchronized ServiceMain getInstance() {
+		if (instance == null) {
+			log.config(LogBuilder.createSystemMessage().addAction("setting generic ServiceMain").toString());
+			setInstance(new ServiceMain());
+		}
+
 		return instance;
+	}
+
+	
+	public static synchronized void setInstance(ServiceMain serviceMain) {
+		if (instance != null) {
+			throw new IllegalStateException("attempting to initalize ServiceMain twice");
+		}
+
+		instance = serviceMain;
 	}
 
 	/**

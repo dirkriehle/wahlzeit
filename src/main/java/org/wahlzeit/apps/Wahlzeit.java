@@ -30,7 +30,7 @@ import java.io.File;
 import java.util.logging.Logger;
 
 /**
- * A simple ServletContextListener to startup and shutdown the Flowers application.
+ * A ServletContextListener to startup and shutdown any (stand-alone) Wahlzeit application.
  */
 public class Wahlzeit implements ServletContextListener {
 
@@ -47,20 +47,25 @@ public class Wahlzeit implements ServletContextListener {
 			String contextPath = sc.getContextPath();
 			System.setProperty("contextPath", contextPath);
 			log.config(LogBuilder.createSystemMessage().
-					addParameter("System property context path", contextPath).toString());
+				addParameter("System property context path", contextPath).toString());
 
 			// determines file system root path to resources
 			File dummyFile = new File(sc.getRealPath("dummy.txt"));
 			String rootDir = dummyFile.getParent();
 			log.config(LogBuilder.createSystemMessage().
-					addParameter("Root directory", rootDir).toString());
+				addParameter("Root directory", rootDir).toString());
 
-			ServiceMain.getInstance().startUp(true, rootDir);
+			// starts-up Wahlzeit application
+			initServiceMain(rootDir);
 		} catch (Exception ex) {
 			log.warning(LogBuilder.createSystemMessage().
-					addException("Initializing context failed", ex).toString());
+				addException("Initializing context failed", ex).toString());
 			throw new RuntimeException("End of story!", ex);
 		}
+	}
+	
+	protected void initServiceMain(String rootDir) throws Exception {
+		ServiceMain.getInstance().startUp(true, rootDir);
 	}
 
 	/**
@@ -71,7 +76,7 @@ public class Wahlzeit implements ServletContextListener {
 			ServiceMain.getInstance().shutDown();
 		} catch (Exception ex) {
 			log.warning(LogBuilder.createSystemMessage().
-					addException("Shutting instance down failed", ex).toString());
+				addException("Shutting instance down failed", ex).toString());
 		}
 	}
 
