@@ -1,8 +1,9 @@
-/bin/
+/bin
 /build
 /classes
-/src/main/webapp/WEB-INF/lib/
-/.settings/
+/src/main/webapp/WEB-INF/lib
+/.settings
+/WEB-INF
 *.iml
 .gradle
 .idea
