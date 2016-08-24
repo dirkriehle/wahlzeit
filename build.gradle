@@ -2,9 +2,13 @@ apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'appengine'
 
+// Google App Engine Standard Environment supports Java 7 only (as from August 2016, https://cloud.google.com/appengine/docs)
+sourceCompatibility = 1.7 // Java version compatibility to use when compiling Java source.
+targetCompatibility = 1.7 // Java version to generate classes for.
+
 buildscript {
     ext {
-        gaeVersion = '1.9.26'
+        gaeVersion = '1.9.42'
     }
     repositories {
         mavenCentral()
