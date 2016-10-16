@@ -21,8 +21,8 @@ For more information, please see http://github.com/dirkriehle/wahlzeit and http:
   1. Install **Java JDK**¹
   2. Set ``JAVA_HOME``
   2. Install ``git``
-  3. If you don't have one yet, create a Github account (required)
-  4. Create your own repository by forking Wahlzeit from **dirkriehle** to **&lt;yourname&gt;**
+  3. If you don't have one yet, create a GitHub account (required)
+  4. Create your own repository by forking Wahlzeit from **dirkriehle** to your GitHub-account
   5. On the command line, create or choose a project directory and go there 
   6. Run ```git clone https://github.com/<yourname>/wahlzeit.git```
 
@@ -45,18 +45,18 @@ For more information, please see http://github.com/dirkriehle/wahlzeit and http:
   1. If you don't have one yet, create a Google account (required)
   2. Go to [https://console.developers.google.com](https://console.developers.google.com) and login with your Google account
   3. In the developers console, select **create a project**
-    1. Choose a project name, called below ``<yourproj>``
+    1. Choose a project name, called below ``yourprojectname``. If your ``yourprojectname`` is not unique, a UID will be added: ``yourprojectname = yourprojectname + <some Google UID>`` 
     2. Accept the terms of service, for better or worse
 
 **Configure your repository and deploy Wahlzeit**
   1. Configure your project:
     1. Open the file [``/src/main/webapp/WEB-INF/appengine-web.xml``](/src/main/webapp/WEB-INF/appengine-web.xml)
-    2. Replace ``<application>dirkriehle-wahlzeit</application>`` with `\<application\><yourproj>\</application\>` where `<yourproj>` is your previously choosen project name
-    3. Save and close the `appengine-web.xml`
+    2. Replace ``<application>dirkriehle-wahlzeit</application>`` with `<application>yourprojectname</application>` where `yourprojectname` is your previously choosen project name
+    3. Save and close the ``appengine-web.xml``
   2. Run ```./gradlew appengineUpdate```
   3. If a browser window pops up and asks for permission, accept it
   4. Copy the code from the browser window to your gradle console and hit enter
-  5. If everything works out, you will find your project at [``https://<yourproj>.appspot.com``](https://<yourproj>.appspot.com)
+  5. If everything works out, you will find your project at [``https://yourprojectname.appspot.com``](https://yourprojectname.appspot.com)
 
 Done!
 
