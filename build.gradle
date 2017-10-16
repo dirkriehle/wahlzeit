@@ -52,7 +52,9 @@ dependencies {
 }
 
 test {
-    // adjust this filter to your needs
+    filter {
+        includeTestsMatching "org.wahlzeit.*"
+    }
 }
 
 appengine {
