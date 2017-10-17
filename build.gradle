@@ -1,22 +1,24 @@
-apply plugin: 'java'
-apply plugin: 'war'
-apply plugin: 'appengine'
-
-// Google App Engine Standard Environment supports Java 7 only (as from August 2016, https://cloud.google.com/appengine/docs)
-sourceCompatibility = 1.7 // Java version compatibility to use when compiling Java source.
-targetCompatibility = 1.7 // Java version to generate classes for.
 
 buildscript {
-    ext {
-        gaeVersion = '1.9.42'
-    }
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.google.appengine:gradle-appengine-plugin:' + gaeVersion
+        classpath 'com.google.appengine:gradle-appengine-plugin:+'
     }
 }
+
+repositories {
+    maven {
+        url 'https://maven-central.storage.googleapis.com'
+    }
+    jcenter()
+    mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'appengine'
 
 // check if JAVA_HOME is set, otherwise build tasks will fail
 gradle.taskGraph.whenReady {
@@ -34,21 +36,26 @@ repositories {
 }
 
 dependencies {
-    appengineSdk 'com.google.appengine:appengine-java-sdk:' + gaeVersion
+    // https://cloud.google.com/appengine/docs/standard/java/release-notes
 
-    compile 'com.google.appengine:appengine-api-1.0-sdk:' + gaeVersion
-    compile 'com.google.appengine.tools:appengine-gcs-client:0.6'
-    compile 'com.googlecode.objectify:objectify:5.1.5'
-    compile 'javax.servlet:servlet-api:2.5' // GAE works with only with 2.5
-    compile 'commons-fileupload:commons-fileupload:1.2'
+    providedCompile group: 'javax.servlet', name: 'servlet-api', version:'2.5'
+    compile 'com.google.appengine:appengine:+'
+
+    appengineSdk 'com.google.appengine:appengine-java-sdk:+'
+
+    compile 'com.google.appengine:appengine-api-1.0-sdk:+'
+    compile 'com.google.appengine.tools:appengine-gcs-client:+'
+    compile 'com.googlecode.objectify:objectify:5.1.21'
+    //compile 'javax.servlet:servlet-api:2.5' // GAE works with only with 2.5
+    compile 'commons-fileupload:commons-fileupload:1.3.3'
 
     // testing dependencies
-    testCompile 'com.google.appengine:appengine-testing:' + gaeVersion
-    testCompile 'com.google.appengine:appengine-api-stubs:' + gaeVersion
-    testCompile 'com.google.appengine:appengine-api-labs:' + gaeVersion
-    testCompile 'com.google.appengine:appengine-tools-sdk:' + gaeVersion
+    testCompile 'com.google.appengine:appengine-testing:+'
+    testCompile 'com.google.appengine:appengine-api-stubs:+'
+    testCompile 'com.google.appengine:appengine-api-labs:+'
+    testCompile 'com.google.appengine:appengine-tools-sdk:+'
     testCompile 'junit:junit:4.+'
-    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.mockito:mockito-core:2.11.0'
 }
 
 test {
@@ -67,3 +74,7 @@ appengine {
         noCookies = false
     }
 }
+
+// Google App Engine Standard Environment supports Java 7 only (as from August 2016, https://cloud.google.com/appengine/docs)
+sourceCompatibility = 1.7 // Java version compatibility to use when compiling Java source.
+targetCompatibility = 1.7 // Java version to generate classes for.
