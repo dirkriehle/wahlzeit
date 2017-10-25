@@ -1,16 +1,20 @@
 package org.wahlzeit.model;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runners.model.TestClass;
-import org.wahlzeit.services.DataObject;
 
-public class PhotoTest extends TestCase {
+public class LocationTest {
 
     @Test
-    public void createPhot(){
-        DataObject gurkenPhoto= new GurkenPhoto();
-
+    public void createLocationWithoutCoordinate(){
+        Location noWhere = new Location();
+        Assert.assertNotNull(noWhere.getCoordinate());
     }
 
+    @Test
+    public void createLocationWithCoordinate(){
+        Coordinate noWhereCoordinate = new NoWhereCoordinate();
+        Location noWhere = new Location(noWhereCoordinate);
+        Assert.assertNotNull(noWhere.getCoordinate());
+    }
 }
