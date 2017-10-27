@@ -2,7 +2,7 @@ package org.wahlzeit.model;
 
 public class Location {
 
-    private Coordinate coordinate;
+    public Coordinate coordinate;
 
     public Location(Coordinate coordinate) {
         setCoordinate(coordinate);
