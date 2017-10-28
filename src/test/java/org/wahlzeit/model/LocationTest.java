@@ -24,25 +24,38 @@ public class LocationTest {
     }
 
     @Test
-    public void createLocationWithoutCoordinateIsNotNull(){
+    public void createLocation_withoutCoordinate_isNotNull(){
         Location noWhere = new Location();
         Assert.assertNotNull(noWhere.getCoordinate());
     }
 
     @Test
-    public void createLocationWithCoordinateIsNotNull(){
+    public void createLocation_withCoordinate_isNotNull(){
         Coordinate noWhereCoordinate = new NoWhereCoordinate();
         Location noWhere = new Location(noWhereCoordinate);
         Assert.assertNotNull(noWhere.getCoordinate());
     }
 
     @Test
-    public void locationEqualsIsTrueWhenCoordsEquals(){
+    public void locationEquals_whenCoordsEquals_isTrue(){
         Assert.assertEquals(fooLocation, new Location(fooCoords));
     }
 
     @Test
-    public void locationEqualsFalseWhenCoordsUnequal(){
+    public void locationEquals_whenCoordsNotEquals_isTrue(){
         Assert.assertNotEquals(fooLocation, barLocation);
+    }
+
+    @Test
+    public void distanceOfNowWhere_andNoWhere_isMinus1(){
+        Assert.assertEquals(-1,noWhereLocation.getDistance(noWhereLocation),0);
+    }
+    @Test
+    public void distanceOfFooLocation_andNoWhere_isMinus1(){
+        Assert.assertEquals(-1,fooLocation.getDistance(noWhereLocation),0);
+    }
+    @Test
+    public void distanceOfFooLocation_andBarLocation_isNotMinus1(){
+        Assert.assertNotEquals(-1,fooLocation.getDistance(barLocation),0);
     }
 }
