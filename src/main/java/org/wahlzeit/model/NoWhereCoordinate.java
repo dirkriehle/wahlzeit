@@ -1,5 +1,8 @@
 package org.wahlzeit.model;
 
+/**
+ * Represents a null-coordinate
+ */
 public class NoWhereCoordinate extends Coordinate {
     @Override
     public double getY() {

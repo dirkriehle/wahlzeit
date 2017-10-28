@@ -1,5 +1,8 @@
 package org.wahlzeit.model;
 
+/**
+ * Represents a Cartesian coordinate of a three dimensional Cartesian coordinate system
+ */
 public class Coordinate {
     public static final Double MAX_VALUE = Double.MAX_VALUE - 1E292;
 

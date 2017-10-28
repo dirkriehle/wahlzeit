@@ -1,6 +1,5 @@
 package org.wahlzeit.model;
 
-import com.google.appengine.repackaged.org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
