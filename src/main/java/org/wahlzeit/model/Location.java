@@ -28,4 +28,8 @@ public class Location {
         }
         return false;
     }
+
+    public double getDistance(Location noWhereLocation) {
+        return coordinate.getDistance(noWhereLocation.coordinate);
+    }
 }
