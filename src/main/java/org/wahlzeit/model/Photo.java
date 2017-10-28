@@ -150,12 +150,11 @@ public class Photo extends DataObject {
 		incWriteCount();
 	}
 
+	/**
+	 * @methodtype get
+	 */
 	public Location getLocation() {
 		return location;
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
 	}
 
 	/**
@@ -403,6 +402,13 @@ public class Photo extends DataObject {
 	 */
 	public long getCreationTime() {
 		return creationTime;
+	}
+
+	/**
+	 * @methodtype set
+	 */
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
 

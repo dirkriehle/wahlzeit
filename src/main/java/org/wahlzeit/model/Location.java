@@ -1,5 +1,8 @@
 package org.wahlzeit.model;
 
+/**
+ * Represents a geographical Location
+ */
 public class Location {
 
     public Coordinate coordinate;
@@ -11,7 +14,6 @@ public class Location {
     public Location() {
         setCoordinate(new NoWhereCoordinate());
     }
-
 
     public Coordinate getCoordinate() {
         return coordinate;
