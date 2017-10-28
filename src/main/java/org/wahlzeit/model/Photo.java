@@ -67,70 +67,72 @@ public class Photo extends DataObject {
 	public static final int MAX_THUMB_PHOTO_WIDTH = 105;
 	public static final int MAX_THUMB_PHOTO_HEIGHT = 150;
 
+	public Location location;
+
 	protected PhotoId id = null;
-	
+
 	/**
 	 *
 	 */
 	protected String ownerId;
-	
+
 	/**
 	 * Each photo can be viewed in different sizes (XS, S, M, L, XL)
 	 * Images are pre-computed in these sizes to optimize bandwidth when requested.
 	 */
 	@Ignore
 	transient protected Map<PhotoSize, Image> images = new ArrayMap<PhotoSize, Image>();
-	
+
 	/**
 	 *
 	 */
 	protected boolean ownerNotifyAboutPraise = false;
+
 	protected EmailAddress ownerEmailAddress = EmailAddress.EMPTY;
 	protected Language ownerLanguage = Language.ENGLISH;
-	
 	/**
 	 *
 	 */
 	protected int width;
+
 	protected int height;
 	protected PhotoSize maxPhotoSize = PhotoSize.MEDIUM; // derived
-	
 	/**
 	 *
 	 */
 	protected Tags tags = Tags.EMPTY_TAGS;
-	
+
 	/**
 	 *
 	 */
 	protected PhotoStatus status = PhotoStatus.VISIBLE;
-	
+
 	/**
 	 *
 	 */
 	protected int praiseSum = 10;
+
 	protected int noVotes = 1;
 	protected int noVotesAtLastNotification = 1;
-	
 	/**
 	 *
 	 */
 	protected long creationTime = System.currentTimeMillis();
-	
+
 	/**
 	 * The default type is jpg
 	 */
 	protected String ending = "jpg";
-	
+
 	/**
 	 *
 	 */
 	//TODO: change it to a single long
 	@Id
 	Long idLong;
+
 	@Parent
 	Key parent = ObjectManager.applicationRootKey;
-
 	/**
 	 *
 	 */
@@ -146,6 +148,14 @@ public class Photo extends DataObject {
 		id = myId;
 
 		incWriteCount();
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
 	/**
