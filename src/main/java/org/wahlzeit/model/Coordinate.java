@@ -44,19 +44,19 @@ public class Coordinate {
         this.z = z;
     }
 
-    public double getDistance(Coordinate otherCoordinate) {
-        if(otherCoordinate instanceof NoWhereCoordinate || otherCoordinate == null){
+    public double getDistance(Coordinate otherCoord) {
+        if(otherCoord instanceof NoWhereCoordinate || otherCoord == null){
             return -1;
         }
-        double xDifference= getX()- otherCoordinate.getX();
-        double yDifference= getY()- otherCoordinate.getY();
-        double zDifference= getZ()- otherCoordinate.getZ();
+        double xDifference= getX()- otherCoord.getX();
+        double yDifference= getY()- otherCoord.getY();
+        double zDifference= getZ()- otherCoord.getZ();
         double radicand= square(xDifference)+square(yDifference)+square(zDifference);
         return Math.sqrt(radicand);
     }
 
-    protected boolean isEqual(Coordinate other){
-        return getX()== other.getX() && getY() == other.getY() && getZ() == this.getZ();
+    public boolean isEqual(Coordinate otherCoord){
+        return getX()== otherCoord.getX() && getY() == otherCoord.getY() && getZ() == otherCoord.getZ();
     }
 
     @Override

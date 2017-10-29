@@ -52,21 +52,21 @@ public class NoWhereCoordinate extends Coordinate {
 
     /**
      * Determines the equality between something and nothing
-     * @param other
+     * @param otherCoord
      * @return false, always
      */
     @Override
-    public boolean isEqual(Coordinate other) {
+    public boolean isEqual(Coordinate otherCoord) {
         return false;
     }
 
     /**
      * Determines the distance between something and nothing
-     * @param otherCoordinate
+     * @param otherCoord
      * @return -1, always
      */
     @Override
-    public double getDistance(Coordinate otherCoordinate) {
+    public double getDistance(Coordinate otherCoord) {
         return -1;
     }
 }

@@ -137,6 +137,24 @@ public class CoordinateTest {
         Assert.assertTrue(octantIa.equals(octantVII));
     }
 
+    @Test
+    public void octantIa_andB_withDifferentOrdinateX_areNotEqual(){
+        octantIb.setX(octantIb.getX()+1);
+        Assert.assertNotEquals(octantIa,octantIb);
+    }
+
+    @Test
+    public void octantIa_andB_withDifferentOrdinateY_areNotEqual(){
+        octantIb.setY(octantIb.getY()+1);
+        Assert.assertNotEquals(octantIa,octantIb);
+    }
+
+    @Test
+    public void octantIa_andB_withDifferentOrdinateZ_areNotEqual(){
+        octantIb.setZ(octantIb.getZ()+1);
+        Assert.assertNotEquals(octantIa,octantIb);
+    }
+
     /*DistanceTests*/
     @Test
     public void distanceOfCoordinateA_andB_is0(){
