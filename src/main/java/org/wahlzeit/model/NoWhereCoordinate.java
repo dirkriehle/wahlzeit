@@ -1,12 +1,14 @@
 package org.wahlzeit.model;
 
+import static java.lang.System.identityHashCode;
+
 /**
  * Represents a null-coordinate with defined "do-nothing-behavior" when interacting with it
  */
 public class NoWhereCoordinate extends Coordinate {
 
     /**
-     * @return 0, always
+     * @return 0
      */
     @Override
     public double getY() {
@@ -14,7 +16,7 @@ public class NoWhereCoordinate extends Coordinate {
     }
 
     /**
-     * @return 0, always
+     * @return 0
      */
     @Override
     public double getX() {
@@ -22,7 +24,7 @@ public class NoWhereCoordinate extends Coordinate {
     }
 
     /**
-     * @return 0, always
+     * @return 0
      */
     @Override
     public double getZ() {
@@ -51,9 +53,17 @@ public class NoWhereCoordinate extends Coordinate {
     }
 
     /**
+     * Determines the distance between something and nothing
+     * @return -1
+     */
+    @Override
+    public double getDistance(Coordinate otherCoord) {
+        return -1;
+    }
+
+    /**
      * Determines the equality between something and nothing
-     * @param otherCoord
-     * @return false, always
+     * @return false
      */
     @Override
     public boolean isEqual(Coordinate otherCoord) {
@@ -61,12 +71,10 @@ public class NoWhereCoordinate extends Coordinate {
     }
 
     /**
-     * Determines the distance between something and nothing
-     * @param otherCoord
-     * @return -1, always
+     * @return unique ID in dependency of the object reference
      */
     @Override
-    public double getDistance(Coordinate otherCoord) {
-        return -1;
+    public int hashCode() {
+        return identityHashCode(this);
     }
 }

@@ -19,13 +19,17 @@ public class Location {
         return coordinate;
     }
 
-    public void setCoordinate(Coordinate coordinate){
-        this.coordinate=coordinate;
+    public void setCoordinate(Coordinate coordinate) {
+        if (coordinate == null) {
+            this.coordinate = new NoWhereCoordinate();
+            return;
+        }
+        this.coordinate = coordinate;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof Location){
+        if (obj instanceof Location) {
             return coordinate.equals(((Location) obj).coordinate);
         }
         return false;
