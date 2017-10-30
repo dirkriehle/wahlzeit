@@ -14,47 +14,63 @@ public class LocationTest {
     private Coordinate barCoords;
 
     @Before
-    public void setUp(){
-        noWhereLocation=new Location(new NoWhereCoordinate());
-        fooCoords=new Coordinate(0,1,2);
-        barCoords=new Coordinate(-2,-1,0);
+    public void setUp() {
+        noWhereLocation = new Location(new NoWhereCoordinate());
+        fooCoords = new Coordinate(0, 1, 2);
+        barCoords = new Coordinate(-2, -1, 0);
         fooLocation = new Location(fooCoords);
         barLocation = new Location(barCoords);
     }
 
     @Test
-    public void createLocation_withoutCoordinate_isNotNull(){
+    public void createLocation_withoutCoordinate_isNotNull() {
         Location noWhere = new Location();
         Assert.assertNotNull(noWhere.getCoordinate());
     }
 
+
     @Test
-    public void createLocation_withCoordinate_isNotNull(){
+    public void createLocation_withCoordinate_isNotNull() {
         Coordinate noWhereCoordinate = new NoWhereCoordinate();
         Location noWhere = new Location(noWhereCoordinate);
         Assert.assertNotNull(noWhere.getCoordinate());
     }
 
     @Test
-    public void locationEquals_whenCoordsEquals_isTrue(){
+    public void getCoordinate_afterCreateLocation_withCoordinate_shouldReturnNoWhereCoord() {
+        Location noWhere = new Location();
+        Assert.assertEquals(NoWhereCoordinate.class, noWhere.getCoordinate().getClass());
+    }
+
+    @Test
+    public void getCoordinate_afterSetCoordinateWithNull_shouldReturnNoWhereCoord() {
+        Location noWhere = new Location(null);
+        noWhere.setCoordinate(null);
+        Assert.assertEquals(NoWhereCoordinate.class, noWhere.getCoordinate().getClass());
+    }
+
+    @Test
+    public void locationEquals_whenCoordsEquals_isTrue() {
         Assert.assertEquals(fooLocation, new Location(fooCoords));
     }
 
     @Test
-    public void locationEquals_whenCoordsNotEquals_isTrue(){
+    public void locationEquals_whenCoordsNotEquals_isTrue() {
         Assert.assertNotEquals(fooLocation, barLocation);
     }
 
     @Test
-    public void distanceOfNowWhere_andNoWhere_isMinus1(){
-        Assert.assertEquals(-1,noWhereLocation.getDistance(noWhereLocation),0);
+    public void distanceOfNowWhere_andNoWhere_isMinus1() {
+        Assert.assertEquals(-1, noWhereLocation.getDistance(noWhereLocation), 0);
     }
+
     @Test
-    public void distanceOfFooLocation_andNoWhere_isMinus1(){
-        Assert.assertEquals(-1,fooLocation.getDistance(noWhereLocation),0);
+    public void distanceOfFooLocation_andNoWhere_isMinus1() {
+        Assert.assertEquals(-1, fooLocation.getDistance(noWhereLocation), 0);
     }
+
     @Test
-    public void distanceOfFooLocation_andBarLocation_isNotMinus1(){
-        Assert.assertNotEquals(-1,fooLocation.getDistance(barLocation),0);
+    public void distanceOfFooLocation_andBarLocation_isNotMinus1() {
+        Assert.assertNotEquals(-1, fooLocation.getDistance(barLocation), 0);
     }
 }
