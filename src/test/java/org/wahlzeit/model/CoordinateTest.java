@@ -1,31 +1,11 @@
 package org.wahlzeit.model;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
 
-public class CoordinateTest {
-
-    static final Double VALUE_EXCEEDING_COORD_MAXVALUE = Double.MAX_VALUE - 1E291;
-
-    protected Coordinate noWhere;
-    protected Coordinate octantIa;
-    protected Coordinate octantIb;
-    protected Coordinate octantVII;
-    protected Coordinate layerXYa;
-    protected Coordinate layerXYb;
-
-    @Before
-    public void initTest() {
-        noWhere = new NoWhereCoordinate();
-        octantIa = new Coordinate(1.0, 2.0, 3.0);
-        octantIb = new Coordinate(1.0, 2.0, 3.0);
-        octantVII = new Coordinate(-1.0, -2.0, -3.0);
-        layerXYa = new Coordinate(0, 1, 0);
-        layerXYb = new Coordinate(5, 1, 0);
-    }
+public class CoordinateTest extends NoWhereCoordinateTest {
 
     /*CreationTests*/
     @Test
@@ -201,10 +181,5 @@ public class CoordinateTest {
     @Test
     public void distanceOfCoordinateB_andC_is7_5() {
         CheckDistance(octantIb, octantVII, 7.5, 0.02);
-    }
-
-    protected void CheckDistance(Coordinate first, Coordinate second, double expectedDistance, double tolerance) {
-        double distance = first.getDistance(second);
-        Assert.assertEquals(expectedDistance, distance, tolerance);
     }
 }
