@@ -60,14 +60,5 @@ public class Coordinate {
 		return isEqual(cord);
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

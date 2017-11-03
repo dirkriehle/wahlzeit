@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author mai
  *
  */
 public class LocationTest {
@@ -60,9 +59,9 @@ public class LocationTest {
 	 */
 	@Test
 	public void testXYZCordinateLocation() {
-		assert(l3.cord.getx()==1);
-		assert(l3.cord.gety()==2); 
-		assert(l3.cord.getz()==3);
+		assert(l1.cord.getx()==1);
+		assert(l1.cord.gety()==2); 
+		assert(l1.cord.getz()==3);
 		
 	}
 
@@ -72,9 +71,9 @@ public class LocationTest {
 	@Test
 	public void testLocationCoordinate() {
 		
-		assert(l3.cord.getx()==1);
-		assert(l3.cord.gety()==2); 
-		assert(l3.cord.getz()==3);
+		assert(l5.cord.getx()==10);
+		assert(l5.cord.gety()==15); 
+		assert(l5.cord.getz()==20);
 	}
 	
 	/**
@@ -84,7 +83,7 @@ public class LocationTest {
 	@Test
 	public void TestGetDistanceForTheSameLocation() {
 		
-		assert(l1.cord.getDitacnce(cord) == 0);
+		assert(l1.cord.getDitacnce(l1.cord) == 0);
 
 	}
 	
@@ -94,8 +93,8 @@ public class LocationTest {
 	
 	@Test
 	public void TestGetDistanceForDifferentLocation() {
-		
-		assert(l1.cord.getDitacnce(l5.cord)==23.216374);
+
+		assertEquals(23.2163, l1.cord.getDitacnce(l5.cord), 0.0001);
 
 	}
 	
@@ -105,8 +104,8 @@ public class LocationTest {
 	
 	@Test
 	public void TestGetDistanceForZeroAndMinusLocation() {
-		
-		assert(l3.cord.getDitacnce(l4.cord)==19.209373);
+
+		assertEquals(19.2094, l3.cord.getDitacnce(l4.cord), 0.0001);
 
 	}
 	
@@ -159,7 +158,5 @@ public class LocationTest {
 		assert(l3.cord.isEqual(l5.cord)==false);
 
 	}
-
-
 
 }
