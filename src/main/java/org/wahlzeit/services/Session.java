@@ -29,7 +29,7 @@ public class Session {
 
 	public static final String NAME = "name";
 	public static final String PROCESSING_TIME = "processingTime";
-	public static final String NO_SESSION = "no sessioin";
+	public static final String NO_SESSION = "no session";
 
 	/**
 	 * Session state
