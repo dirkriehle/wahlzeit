@@ -60,7 +60,14 @@ test {
     filter {
         includeTestsMatching "org.wahlzeit.WahlzeitTestSuite"
     }
+    testLogging {
+        exceptionFormat "full"
+        events "skipped", "passed", "failed"
+        showStandardStreams true
+    }
 }
+
+
 
 appengine {
     httpPort = 8080
