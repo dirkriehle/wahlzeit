@@ -1,9 +1,9 @@
 /*
  *  Copyright
  *
+ *  Classname: GurkenDomainTest
  *  Author: Tango1266
- *
- *  Version: 05.11.17 21:39
+ *  Version: 13.11.17 00:16
  *
  *  This file is part of the Wahlzeit photo rating application.
  *
@@ -22,28 +22,19 @@
  *  <http://www.gnu.org/licenses/>
  */
 
-package org.wahlzeit.model;
+package org.wahlzeit.model.gurkenDomain;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.wahlzeit.model.gurkenDomain.GurkenDomainTestSuite;
-import org.wahlzeit.model.persistence.PersistenceTestSuite;
+import org.junit.ClassRule;
+import org.junit.rules.RuleChain;
+import org.wahlzeit.testEnvironmentProvider.LocalDatastoreServiceTestConfigProvider;
+import org.wahlzeit.testEnvironmentProvider.RegisteredOfyEnvironmentProvider;
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses({
-        GurkenDomainTestSuite.class,
-        PersistenceTestSuite.class,
-        AccessRightsTest.class,
-        FlagReasonTest.class,
-        GenderTest.class,
-        GuestTest.class,
-        LocationTest.class,
-        CoordinateTest.class,
-        PhotoFilterTest.class,
-        TagsTest.class,
-        UserStatusTest.class,
-        ValueTest.class
-
-})
-public class ModelTestSuite {
+/**
+ * Test Rules for the Gurken Domain classes using persistence
+ */
+public class GurkenDomainTest {
+    @ClassRule
+    public static RuleChain ruleChain = RuleChain
+            .outerRule(new RegisteredOfyEnvironmentProvider())
+            .around(new LocalDatastoreServiceTestConfigProvider());
 }

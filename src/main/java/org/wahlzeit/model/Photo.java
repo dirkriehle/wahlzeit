@@ -1,9 +1,9 @@
 /*
  *  Copyright
  *
+ *  Classname: Photo
  *  Author: Tango1266
- *
- *  Version: 05.11.17 21:39
+ *  Version: 12.11.17 22:16
  *
  *  This file is part of the Wahlzeit photo rating application.
  *
@@ -136,6 +136,7 @@ public class Photo extends DataObject {
      * @methodtype constructor
      */
     public Photo(PhotoId myId) {
+        assertIdNotNull(myId);
         id = myId;
 
         incWriteCount();
@@ -422,5 +423,11 @@ public class Photo extends DataObject {
     public void setNoNewPraise() {
         noVotesAtLastNotification = noVotes;
         incWriteCount();
+    }
+
+    private void assertIdNotNull(PhotoId myId) {
+        if (myId == null) {
+            throw new IllegalArgumentException("ID should not be null. Please provide a valid ID");
+        }
     }
 }

@@ -1,9 +1,9 @@
 /*
  *  Copyright
  *
+ *  Classname: GurkenDomainTestSuite
  *  Author: Tango1266
- *
- *  Version: 05.11.17 21:39
+ *  Version: 12.11.17 21:56
  *
  *  This file is part of the Wahlzeit photo rating application.
  *
@@ -22,28 +22,16 @@
  *  <http://www.gnu.org/licenses/>
  */
 
-package org.wahlzeit.model;
+package org.wahlzeit.model.gurkenDomain;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.wahlzeit.model.gurkenDomain.GurkenDomainTestSuite;
-import org.wahlzeit.model.persistence.PersistenceTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        GurkenDomainTestSuite.class,
-        PersistenceTestSuite.class,
-        AccessRightsTest.class,
-        FlagReasonTest.class,
-        GenderTest.class,
-        GuestTest.class,
-        LocationTest.class,
-        CoordinateTest.class,
-        PhotoFilterTest.class,
-        TagsTest.class,
-        UserStatusTest.class,
-        ValueTest.class
-
+        GurkenPhotoTest.class,
+        GurkenPhotoFactoryTest.class,
+        GurkenPhotoManagerTest.class,
 })
-public class ModelTestSuite {
+public class GurkenDomainTestSuite {
 }
