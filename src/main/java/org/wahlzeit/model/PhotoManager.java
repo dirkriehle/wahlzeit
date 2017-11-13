@@ -140,7 +140,7 @@ public class PhotoManager extends ObjectManager {
 		return getPhoto(PhotoId.getIdFromString(id));
 	}
 
-	/**
+	/*
 	 * @methodtype init Loads all Photos from the Datastore and holds them in the cache
 	 */
 	public void init() {

@@ -51,6 +51,7 @@ public class PhotoUtil {
 
 		return result;
 	}
+	/**/
 
 	/**
 	 *

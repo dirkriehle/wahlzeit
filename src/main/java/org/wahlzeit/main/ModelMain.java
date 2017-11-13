@@ -68,7 +68,6 @@ public abstract class ModelMain extends AbstractMain {
 		AncientBuildingPhotoManager.getInstance().init();
 	}
 
-
 	/**
 	 *
 	 */

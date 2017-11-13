@@ -46,6 +46,6 @@ public class AncientBuildingPhotoManager extends PhotoManager {
 	}
 	
 	
-	///
+	//
 
 }
