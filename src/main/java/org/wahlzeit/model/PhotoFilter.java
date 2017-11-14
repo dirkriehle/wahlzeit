@@ -24,7 +24,7 @@
 
 package org.wahlzeit.model;
 
-import org.wahlzeit.model.gurkenDomain.GurkenPhotoManager;
+import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.utils.StringUtil;
 
@@ -94,12 +94,12 @@ public class PhotoFilter implements Serializable {
 
         Collection<PhotoId> candidates;
         if (noFilterConditions == 0) {
-            candidates = GurkenPhotoManager.getInstance().getPhotoCache().keySet();
+            candidates = DomainCfg.PhotoManager.getPhotoCache().keySet();
         } else {
             List<Tag> tags = new LinkedList<>();
             candidates = new LinkedList<>();
             for (String condition : getFilterConditions()) {
-                GurkenPhotoManager.getInstance().addTagsThatMatchCondition(tags, condition);
+                DomainCfg.PhotoManager.addTagsThatMatchCondition(tags, condition);
             }
             // get the list of all photo ids that correspond to the tags
             for (Tag tag : tags) {
@@ -109,7 +109,7 @@ public class PhotoFilter implements Serializable {
 
         int newPhotos = 0;
         for (PhotoId candidateId : candidates) {
-            Photo photoCandidate = GurkenPhotoManager.getInstance().getPhoto(candidateId);
+            Photo photoCandidate = DomainCfg.PhotoManager.getPhoto(candidateId);
             if (!processedPhotoIds.contains(candidateId) && !skippedPhotoIds.contains(candidateId) &&
                     photoCandidate.isVisible()) {
                 result.add(candidateId);

@@ -26,7 +26,7 @@ package org.wahlzeit.agents;
 
 import com.google.apphosting.api.ApiProxy;
 import org.wahlzeit.model.*;
-import org.wahlzeit.model.gurkenDomain.GurkenPhotoManager;
+import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.mailing.EmailService;
@@ -56,7 +56,7 @@ public class NotifyUsersAboutPraiseAgent extends Agent {
      */
     @Override
     protected void doRun() {
-        Map<PhotoId, Photo> photoCache = GurkenPhotoManager.getInstance().getPhotoCache();
+        Map<PhotoId, Photo> photoCache = DomainCfg.PhotoManager.getPhotoCache();
         Collection<Photo> photos = photoCache.values();
 
         ArrayList<Photo> arrayListOfPhotos;
@@ -76,7 +76,7 @@ public class NotifyUsersAboutPraiseAgent extends Agent {
                     arrayListOfPhotos.add(photo);
                     ownerIdPhotosMap.put(ownerId, arrayListOfPhotos);
                     photo.setNoNewPraise();
-                    GurkenPhotoManager.getInstance().savePhoto(photo);
+                    DomainCfg.PhotoManager.savePhoto(photo);
                 }
             }
         }

@@ -25,7 +25,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.*;
-import org.wahlzeit.model.gurkenDomain.GurkenPhotoManager;
+import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.utils.HtmlUtil;
 import org.wahlzeit.utils.StringUtil;
@@ -54,7 +54,7 @@ public class ShowUserPhotoFormHandler extends AbstractWebFormHandler {
     @Override
     protected void doMakeWebPart(UserSession us, WebPart part) {
         PhotoId photoId = us.getPhotoId();
-        Photo photo = GurkenPhotoManager.getInstance().getPhoto(photoId);
+        Photo photo = DomainCfg.PhotoManager.getPhoto(photoId);
         String id = photo.getId().asString();
         ModelConfig config = us.getClient().getLanguageConfiguration();
         part.addString(Photo.ID, id);
@@ -79,7 +79,7 @@ public class ShowUserPhotoFormHandler extends AbstractWebFormHandler {
     @Override
     protected boolean isWellFormedPost(UserSession us, Map args) {
         String id = us.getAsString(args, Photo.ID);
-        Photo photo = GurkenPhotoManager.getInstance().getPhoto(id);
+        Photo photo = DomainCfg.PhotoManager.getPhoto(id);
         return (photo != null) && us.isPhotoOwner(photo);
     }
 
@@ -91,7 +91,7 @@ public class ShowUserPhotoFormHandler extends AbstractWebFormHandler {
         String result = PartUtil.SHOW_USER_HOME_PAGE_NAME;
 
         String id = us.getAndSaveAsString(args, Photo.ID);
-        Photo photo = GurkenPhotoManager.getInstance().getPhoto(id);
+        Photo photo = DomainCfg.PhotoManager.getPhoto(id);
 
         UserManager userManager = UserManager.getInstance();
         User user = userManager.getUserById(photo.getOwnerId());
@@ -110,7 +110,7 @@ public class ShowUserPhotoFormHandler extends AbstractWebFormHandler {
                     addParameter("Photo", id).toString());
         } else if (us.isFormType(args, "delete")) {
             photo.setStatus(photo.getStatus().asDeleted(true));
-            GurkenPhotoManager.getInstance().savePhoto(photo);
+            DomainCfg.PhotoManager.savePhoto(photo);
             if (user.getUserPhoto() == photo) {
                 user.setUserPhoto(null);
                 userManager.saveClient(user);

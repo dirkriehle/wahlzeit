@@ -26,7 +26,7 @@ package org.wahlzeit.handlers;
 
 import org.wahlzeit.main.ServiceMain;
 import org.wahlzeit.model.*;
-import org.wahlzeit.model.gurkenDomain.GurkenPhotoManager;
+import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.utils.StringUtil;
 import org.wahlzeit.webparts.WebPart;
@@ -94,7 +94,7 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
         WebFormHandler handler = getFormHandler(PartUtil.NULL_FORM_NAME);
 
         String photoId = us.getSavedArg("photoId").toString();
-        Photo photo = GurkenPhotoManager.getInstance().getPhoto(photoId);
+        Photo photo = DomainCfg.PhotoManager.getPhoto(photoId);
         if (photo != null) {
             handler = getFormHandler(PartUtil.ADMIN_USER_PHOTO_FORM_NAME);
         }
@@ -122,7 +122,7 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
      */
     protected String performAdminUserPhotoRequest(UserSession us, Map args) {
         String photoId = us.getAndSaveAsString(args, "photoId");
-        Photo photo = GurkenPhotoManager.getInstance().getPhoto(photoId);
+        Photo photo = DomainCfg.PhotoManager.getPhoto(photoId);
         if (photo == null) {
             us.setMessage(us.getClient().getLanguageConfiguration().getPhotoIsUnknown());
         }

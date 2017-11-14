@@ -28,7 +28,7 @@ import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.Transform;
-import org.wahlzeit.model.gurkenDomain.GurkenPhotoFactory;
+import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.LogBuilder;
 
 import java.util.logging.Logger;
@@ -45,7 +45,7 @@ public class PhotoUtil {
      * @methodtype creation
      */
     public static Photo createPhoto(String filename, PhotoId id, Image uploadedImage) throws Exception {
-        Photo result = GurkenPhotoFactory.getInstance().createPhoto(id);
+        Photo result = DomainCfg.PhotoFactory.getInstance().createPhoto(id);
         result.setEnding(filename.substring(filename.lastIndexOf(".") + 1));
 
         createImageFiles(uploadedImage, result);

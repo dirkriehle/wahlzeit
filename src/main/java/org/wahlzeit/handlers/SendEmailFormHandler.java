@@ -25,7 +25,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.*;
-import org.wahlzeit.model.gurkenDomain.GurkenPhotoManager;
+import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.mailing.EmailService;
 import org.wahlzeit.services.mailing.EmailServiceManager;
@@ -65,7 +65,7 @@ public class SendEmailFormHandler extends AbstractWebFormHandler {
 
         String id = us.getAndSaveAsString(args, Photo.ID);
         part.addString(Photo.ID, id);
-        Photo photo = GurkenPhotoManager.getInstance().getPhoto(id);
+        Photo photo = DomainCfg.PhotoManager.getPhoto(id);
         part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 
         part.maskAndAddString(USER, photo.getOwnerId());
@@ -82,7 +82,7 @@ public class SendEmailFormHandler extends AbstractWebFormHandler {
      */
     @Override
     protected boolean isWellFormedPost(UserSession us, Map args) {
-        return GurkenPhotoManager.getInstance().getPhoto(us.getAsString(args, Photo.ID)) != null;
+        return DomainCfg.PhotoManager.getPhoto(us.getAsString(args, Photo.ID)) != null;
     }
 
     /**
@@ -91,7 +91,7 @@ public class SendEmailFormHandler extends AbstractWebFormHandler {
     @Override
     protected String doHandlePost(UserSession us, Map args) {
         String id = us.getAndSaveAsString(args, Photo.ID);
-        Photo photo = GurkenPhotoManager.getInstance().getPhoto(id);
+        Photo photo = DomainCfg.PhotoManager.getPhoto(id);
 
         String emailSubject = us.getAndSaveAsString(args, EMAIL_SUBJECT);
         String emailBody = us.getAndSaveAsString(args, EMAIL_BODY);
