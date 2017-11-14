@@ -34,7 +34,6 @@ import java.util.List;
 
 /**
  * Single Access Point to the domain specif Logic. In order to change the entire domain of Wahlzeit,
- * just change here the domain files and types.
  */
 public class DomainCfg {
 
