@@ -60,6 +60,9 @@ public abstract class ModelMain extends AbstractMain {
         log.config(LogBuilder.createSystemMessage().addAction("load user").toString());
         UserManager.getInstance().init();
 
+        log.config(LogBuilder.createSystemMessage().addAction("init " + DomainCfg.class.getName()).toString());
+        DomainCfg.initializeDomain();
+
         log.config(LogBuilder.createSystemMessage().addAction("init domain " + DomainCfg.PhotoFactory.getClass().getName()).toString());
         DomainCfg.PhotoFactory.initialize();
 

@@ -7,6 +7,8 @@ import org.wahlzeit.model.*;
 import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.model.persistence.DatastoreAdapter.ImageWrapper;
 
+import java.util.List;
+
 /**
  * A badly named class, to be renamed to ObjectifyService first, something better later. => Done
  * @review
@@ -17,7 +19,7 @@ public class CloudDataBase {
      * Register all entities at startup
      */
     static {
-        DomainCfg.registerDomainObjects();
+        registerDomainObjects();
         getMgmtActions().register(Photo.class);
         getMgmtActions().register(Globals.class);
         getMgmtActions().register(Tag.class);
@@ -42,5 +44,12 @@ public class CloudDataBase {
      */
     public static ObjectifyFactory getMgmtActions() {
         return ObjectifyService.factory();
+    }
+
+    private static void registerDomainObjects() {
+        List<Class> domainObjects = DomainCfg.getDomainObjectsForRegistration();
+        for (Class domainObject : domainObjects) {
+            getMgmtActions().register(domainObject);
+        }
     }
 }

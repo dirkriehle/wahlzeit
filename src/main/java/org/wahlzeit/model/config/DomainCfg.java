@@ -27,25 +27,54 @@ package org.wahlzeit.model.config;
 import org.wahlzeit.model.gurkenDomain.GurkenPhoto;
 import org.wahlzeit.model.gurkenDomain.GurkenPhotoFactory;
 import org.wahlzeit.model.gurkenDomain.GurkenPhotoManager;
-import org.wahlzeit.services.CloudDataBase;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Single Access Point to the domain specif Logic. In order to change the entire domain of Wahlzeit,
- * just change here the domain files.
+ * just change here the domain files and types.
  */
 public class DomainCfg {
 
-    public static GurkenPhotoManager PhotoManager = GurkenPhotoManager.getInstance();
-    public static GurkenPhotoFactory PhotoFactory = GurkenPhotoFactory.getInstance();
+    public static GurkenPhotoManager PhotoManager;
+    public static GurkenPhotoFactory PhotoFactory;
 
     /**
-     * object registration of google objectify service
+     * objects for the database registration of google objectify service
      */
-    public static void registerDomainObjects() {
-        registerGurkenDomainObjects();
+    public static List<Class> getDomainObjectsForRegistration() {
+        return getGurkenDomainObjects();
     }
 
-    private static void registerGurkenDomainObjects() {
-        CloudDataBase.getMgmtActions().register(GurkenPhoto.class);
+    /**
+     * to evidently show the existence to the reader
+     */
+    public static void initializeDomain() {
+        initializeGurkenDomain();
+        //defaultInitialization()
+    }
+
+    private static void initializeGurkenDomain() {
+        PhotoManager = GurkenPhotoManager.getInstance();
+        PhotoFactory = GurkenPhotoFactory.getInstance();
+    }
+
+    private static List<Class> getGurkenDomainObjects() {
+        return new LinkedList<Class>(Arrays.asList(
+                GurkenPhoto.class
+        ));
+    }
+
+    /**
+     * just to show the handling of different domain scenarios in the current architecture with Singletons.
+     */
+    private static void defaultInitialization() throws ExceptionInInitializerError {
+        throw new ExceptionInInitializerError("Modification needed: Code needs to be uncommented and the types of fields need to be changed");
+    /*
+        PhotoManager = org.wahlzeit.model.PhotoManager.getInstance();
+        PhotoFactory = org.wahlzeit.model.PhotoFactory.getInstance();
+    */
     }
 }
