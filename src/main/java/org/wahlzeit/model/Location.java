@@ -2,28 +2,34 @@ package org.wahlzeit.model;
 
 public class Location {
 
-public Coordinate cord = new Coordinate();
+public SphericCoordinate spherCord = new SphericCoordinate();
+public CartesianCoordinate cartCord = new CartesianCoordinate();
 
 	Location()
 	{
 		
 	}
 	
-	Location (double x, double y)
+	Location (double lat, double lang)
 	{
-		Coordinate cord = new Coordinate(x,y);
-	    this.cord = cord;
+		SphericCoordinate cord = new SphericCoordinate(lat,lang);
+	    this.spherCord = cord;
 		
 	}
-	
-	Location (double x, double y, double z)
+
+	Location (SphericCoordinate newCord)
 	{
-		Coordinate cord = new Coordinate(x,y,z);
-		this.cord =cord;
+		this.spherCord = newCord;
 	}
 	
-	Location (Coordinate newCord)
+	Location (double x, double y,double z)
 	{
-		this.cord = newCord;
+		CartesianCoordinate cord = new CartesianCoordinate(x,y,z);
+	    this.cartCord = cord;
+		
+	}
+	Location (CartesianCoordinate newCord)
+	{
+		this.cartCord = newCord;
 	}
 }

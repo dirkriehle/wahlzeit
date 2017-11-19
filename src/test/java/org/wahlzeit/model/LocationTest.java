@@ -13,150 +13,174 @@ import org.junit.Test;
  */
 public class LocationTest {
 
-	Coordinate cord = null;
-	Location l1,l2,l3,l4,l5 = null;
+	CartesianCoordinate cartCord = null;
+	Location cartlo1,cartlo2,cartlo3,cartlo4,cartlo5, spherloc1, spherloc2= null;
+    SphericCoordinate spherCord = null;	
+   
+	
+	
+	
+	
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-	     cord = new Coordinate(10, 15, 20);	
-	      l1 = new Location (1,2,3);
-	      l2 = new Location (0,0,0);
-	      l3 = new Location (-12,15);
-	      l4 = new Location ();
-	      l5 = new Location (cord);
+		
+		// Add testing data for the Cartesian coordinate
+		cartCord = new CartesianCoordinate(10, 15, 20);	
+	    cartlo1 = new Location (1,2,3);
+	    cartlo2 = new Location (0,0,0);
+	    cartlo3 = new Location (-12,15,0);
+	    cartlo4 = new Location ();
+	    cartlo5 = new Location (cartCord);
 	
-	
+	   // add testing data for the spheric coordinate
+	    
+	    spherCord = new SphericCoordinate (100,200);
+	    spherloc1 = new Location (50,60);
+	    spherloc2 = new Location (spherCord);
 				
 	}
 
 	/**
-	 * 	 * Test method for constructed location with no coordinate
+	 * 	 * test method for constructed location with no coordinate
 	 */
 	@Test
 	public void testNoCordinateLocation() {
 		
-	assert(l4.cord.getx()==0);
-	assert(l4.cord.gety()==0); 
-	assert(l4.cord.getz()==0);
+	assert(cartlo4.cartCord.getx()==0);
+	assert(cartlo4.cartCord.gety()==0); 
+	assert(cartlo4.cartCord.getz()==0);
 	}
 
 	/**
-	 * Test method for constructed location with x and y
+	 * test method for constructed location with x and y
 	 */
 	@Test
 	public void testXYCordinateLocation() {
-		assert(l3.cord.getx()==-12);
-		assert(l3.cord.gety()==15); 
-		assert(l3.cord.getz()==0);
+		assert(cartlo3.cartCord.getx()==-12);
+		assert(cartlo3.cartCord.gety()==15); 
+		assert(cartlo3.cartCord.getz()==0);
 		
 	}
 
 	/**
-	 * Test method for constructed location with x,y and z
+	 * test method for constructed location with x,y and z
 	 */
 	@Test
 	public void testXYZCordinateLocation() {
-		assert(l1.cord.getx()==1);
-		assert(l1.cord.gety()==2); 
-		assert(l1.cord.getz()==3);
+		assert(cartlo1.cartCord.getx()==1);
+		assert(cartlo1.cartCord.gety()==2); 
+		assert(cartlo1.cartCord.getz()==3);
 		
 	}
 
 	/**
-	 * Test method for constructed location with coordinate
+	 * test method for constructed location with coordinate
 	 */
 	@Test
 	public void testLocationCoordinate() {
 		
-		assert(l5.cord.getx()==10);
-		assert(l5.cord.gety()==15); 
-		assert(l5.cord.getz()==20);
+		assert(cartlo5.cartCord.getx()==10);
+		assert(cartlo5.cartCord.gety()==15); 
+		assert(cartlo5.cartCord.getz()==20);
 	}
 	
 	/**
-	 * Test method for get distance between the same location
+	 * test method for get distance between the same location
 	 */
 	
 	@Test
-	public void TestGetDistanceForTheSameLocation() {
+	public void testGetDistanceForTheSameLocation() {
 		
-		assert(l1.cord.getDitacnce(l1.cord) == 0);
+		assert(cartlo1.cartCord.getCartesianDistacnce(cartlo1.cartCord) == 0);
 
 	}
 	
 	/**
-	 * Test method for get distance between two different locations
+	 * test method for get distance between two different locations
 	 */
 	
 	@Test
-	public void TestGetDistanceForDifferentLocation() {
+	public void testGetDistanceForDifferentLocation() {
 
-		assertEquals(23.2163, l1.cord.getDitacnce(l5.cord), 0.0001);
+		assertEquals(23.2163, cartlo1.cartCord.getCartesianDistacnce (cartlo5.cartCord), 0.0001);
 
 	}
 	
 	/**
-	 * Test method for get distance between location in zero origin and location in minus coordinate
+	 * test method for get distance between location in zero origin and location in minus coordinate
 	 */
 	
 	@Test
-	public void TestGetDistanceForZeroAndMinusLocation() {
+	public void testGetDistanceForZeroAndMinusLocation() {
 
-		assertEquals(19.2094, l3.cord.getDitacnce(l4.cord), 0.0001);
+		assertEquals(19.2094, cartlo3.cartCord.getCartesianDistacnce(cartlo4.cartCord), 0.0001);
 
 	}
 	
 	
 	
 	/**
-	 * Test method if the two locations are equal
+	 * test method if the two locations are equal
 	 */
 	
 	@Test
-	public void TestIsEqual() {
+	public void testIsEqual() {
 		
-		assert(l3.cord.isEqual(l3.cord)==true);
+		assert(cartlo3.cartCord.isEqual(cartlo3.cartCord)==true);
 
 	}
 	
 	
 	
 	/**
-	 * Test method if the two locations are not Equal
+	 * test method if the two locations are not Equal
 	 */
 	
 	@Test
-	public void TestIsNotEqual() {
+	public void testIsNotEqual() {
 		
-		assert(l3.cord.isEqual(l5.cord)==false);
+		assert(cartlo3.cartCord.isEqual(cartlo5.cartCord)==false);
 
 	}
 	
 	/**
-	 * Test method if the two locations are equal
+	 * test method if the two locations are equal
 	 */
 	
 	@Test
-	public void TestEquals() {
+	public void testEquals() {
 		
-		assert(l3.cord.isEqual(l3.cord)==true);
+		assert(cartlo3.cartCord.isEqual(cartlo3.cartCord)==true);
 
 	}
+	/**
+	test get  distance between two spherical location 
+	 */
 	
-	
+	@Test
+	public void testGetSphericDistance() {
+		
+		assertEquals(3655,spherloc1.spherCord.getSphericDistacnce(spherloc2.spherCord),0001);
+
+	}
 	
 	/**
-	 * Test method if the two locations are not Equal
+	test is equal between two spherical locations
 	 */
 	
 	@Test
-	public void TestNotEquals() {
+	public void testIsEqualSpheric() {
 		
-		assert(l3.cord.isEqual(l5.cord)==false);
+		assert(spherloc1.spherCord.isEqual(spherloc2.spherCord)==false);
 
-	}
-
+	}	
+	
 }
+
+	
+
+
