@@ -1,9 +1,9 @@
 /*
  *  Copyright
  *
- *  Classname: PhotoFactoryTemp
+ *  Classname: GurkenPhotoFactory
  *  Author: Tango1266
- *  Version: 08.11.17 22:21
+ *  Version: 13.11.17 00:21
  *
  *  This file is part of the Wahlzeit photo rating application.
  *
@@ -22,27 +22,31 @@
  *  <http://www.gnu.org/licenses/>
  */
 
-package org.wahlzeit.model;
+package org.wahlzeit.model.gurkenDomain;
 
+import org.wahlzeit.model.Location;
+import org.wahlzeit.model.Photo;
+import org.wahlzeit.model.PhotoFactory;
+import org.wahlzeit.model.PhotoId;
 import org.wahlzeit.services.LogBuilder;
 
 import java.util.logging.Logger;
 
 /**
- * An Abstract Factory for creating photos and related objects.
+ * An Abstract Factory for creating GurkenPhotos and related objects.
  */
-public class PhotoFactory {
+public class GurkenPhotoFactory extends PhotoFactory {
 
-    private static final Logger log = Logger.getLogger(PhotoFactory.class.getName());
+    private static final Logger log = Logger.getLogger(GurkenPhotoFactory.class.getName());
     /**
      * Hidden singleton instance; needs to be initialized from the outside.
      */
-    private static PhotoFactory instance = null;
+    private static GurkenPhotoFactory instance = null;
 
     /**
      *
      */
-    protected PhotoFactory() {
+    protected GurkenPhotoFactory() {
         // do nothing
     }
 
@@ -56,10 +60,10 @@ public class PhotoFactory {
     /**
      * Public singleton access method.
      */
-    public static synchronized PhotoFactory getInstance() {
+    public static synchronized GurkenPhotoFactory getInstance() {
         if (instance == null) {
             getLogger().config(LogBuilder.createSystemMessage().addAction("setting generic GurkenPhotoFactory").toString());
-            setInstance(new PhotoFactory());
+            setInstance(new GurkenPhotoFactory());
         }
 
         return instance;
@@ -68,60 +72,35 @@ public class PhotoFactory {
     /**
      * @methodtype getMgmtActions
      */
+    @Override
     public Photo createPhoto() {
-        return new Photo();
+        return new GurkenPhoto();
     }
 
     /**
      * Creates a new photo with the specified id
      */
+    @Override
     public Photo createPhoto(PhotoId id) {
-        return new Photo(id);
+        return new GurkenPhoto(id);
     }
 
-    /**
-     * Loads a photo. The Java object is loaded from the Google Datastore, the Images in all sizes are loaded from the
-     * Google Cloud storage.
-     */
-    public Photo loadPhoto(PhotoId id) {
-       /* Photo result =
-                CloudDataBase.getOpActions().load().type(Photo.class).ancestor(KeyFactory.createKey("Application", "Wahlzeit")).filter(Photo.ID, id).first().now();
-        for (PhotoSize size : PhotoSize.values()) {
-            GcsFilename gcsFilename = new GcsFilename("picturebucket", filename);
-
-
-
-        }*/
-        return null;
-    }
-
-    /**
-     *
-     */
-    public PhotoFilter createPhotoFilter() {
-        return new PhotoFilter();
-    }
-
-    /**
-     *
-     */
-    public PhotoTagCollector createPhotoTagCollector() {
-        return new PhotoTagCollector();
-    }
-
-    protected static Logger getLogger() {
-        return log;
+    public GurkenPhoto createGurkenPhoto(PhotoId photoId, String cucumberType, int sizeInMillimeter, Taste taste, Location location) {
+        return new GurkenPhoto(photoId, cucumberType, sizeInMillimeter, taste, location);
     }
 
     /**
      * Method to set the singleton instance of GurkenPhotoFactory.
      */
-    protected static synchronized void setInstance(PhotoFactory photoFactory) {
+    protected static synchronized void setInstance(GurkenPhotoFactory gurkenPhotoFactory) {
         if (instance != null) {
             throw new IllegalStateException("attempt to initalize GurkenPhotoFactory twice");
         }
 
-        instance = photoFactory;
+        instance = gurkenPhotoFactory;
     }
 
+    protected static Logger getLogger() {
+        return log;
+    }
 }

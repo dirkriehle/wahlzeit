@@ -1,21 +1,25 @@
 /*
- * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
+ *  Copyright
  *
- * This file is part of the Wahlzeit photo rating application.
+ *  Classname: PhotoUtil
+ *  Author: Tango1266
+ *  Version: 12.11.17 23:41
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ *  This file is part of the Wahlzeit photo rating application.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this program. If not, see
- * <http://www.gnu.org/licenses/>.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public
+ *  License along with this program. If not, see
+ *  <http://www.gnu.org/licenses/>
  */
 
 package org.wahlzeit.model;
@@ -24,6 +28,7 @@ import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.Transform;
+import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.LogBuilder;
 
 import java.util.logging.Logger;
@@ -34,77 +39,78 @@ import java.util.logging.Logger;
  */
 public class PhotoUtil {
 
-	private static final Logger log = Logger.getLogger(PhotoUtil.class.getName());
+    private static final Logger log = Logger.getLogger(PhotoUtil.class.getName());
 
-	/**
-	 * @methodtype creation
-	 */
-	public static Photo createPhoto(String filename, PhotoId id, Image uploadedImage) throws Exception {
-		Photo result = PhotoFactory.getInstance().createPhoto(id);
-		result.setEnding(filename.substring(filename.lastIndexOf(".") + 1));
+    /**
+     * @methodtype creation
+     */
+    public static Photo createPhoto(String filename, PhotoId id, Image uploadedImage) throws Exception {
+        Photo result = DomainCfg.PhotoFactory.getInstance().createPhoto(id);
+        result.setEnding(filename.substring(filename.lastIndexOf(".") + 1));
 
-		createImageFiles(uploadedImage, result);
+        createImageFiles(uploadedImage, result);
 
-		int sourceWidth = uploadedImage.getWidth();
-		int sourceHeight = uploadedImage.getHeight();
-		result.setWidthAndHeight(sourceWidth, sourceHeight);
+        int sourceWidth = uploadedImage.getWidth();
+        int sourceHeight = uploadedImage.getHeight();
+        result.setWidthAndHeight(sourceWidth, sourceHeight);
 
-		return result;
-	}
+        return result;
+    }
 
-	/**
-	 *
-	 */
-	public static void createImageFiles(Image source, Photo photo) throws Exception {
-		assertIsValidImage(source);
+    /*TODO: Check whether createGurkenPhoto is necessary (if so, then figure out how to handle many parameter)*/
 
-		int sourceWidth = source.getWidth();
-		int sourceHeight = source.getHeight();
-		assertHasValidSize(sourceWidth, sourceHeight);
+    /**
+     *
+     */
+    public static void createImageFiles(Image source, Photo photo) throws Exception {
+        assertIsValidImage(source);
 
-		for (PhotoSize size : PhotoSize.values()) {
-			if (!size.isWiderAndHigher(sourceWidth, sourceHeight)) {
-				scaleImage(ImagesServiceFactory.makeImage(source.getImageData()), size, photo);
-			}
-		}
-	}
+        int sourceWidth = source.getWidth();
+        int sourceHeight = source.getHeight();
+        assertHasValidSize(sourceWidth, sourceHeight);
 
-	/**
-	 * @methodtype assertion
-	 */
-	protected static void assertIsValidImage(Image image) {
-		if (image == null) {
-			throw new IllegalArgumentException("Image = null!");
-		}
-	}
+        for (PhotoSize size : PhotoSize.values()) {
+            if (!size.isWiderAndHigher(sourceWidth, sourceHeight)) {
+                scaleImage(ImagesServiceFactory.makeImage(source.getImageData()), size, photo);
+            }
+        }
+    }
 
-	/**
-	 *
-	 */
-	protected static void assertHasValidSize(int cw, int ch) {
-		if (PhotoSize.THUMB.isWiderAndHigher(cw, ch)) {
-			throw new IllegalArgumentException("Photo too small!");
-		}
-	}
+    /**
+     * @methodtype assertion
+     */
+    protected static void assertIsValidImage(Image image) {
+        if (image == null) {
+            throw new IllegalArgumentException("Image = null!");
+        }
+    }
 
-	/**
-	 * @methodtype command Scale the source picture to the given size, store it in the datastore and reference it in the
-	 * photo.
-	 */
-	protected static void scaleImage(Image source, PhotoSize size, Photo photo) throws Exception {
-		int sourceWidth = source.getWidth();
-		int sourceHeight = source.getHeight();
+    /**
+     *
+     */
+    protected static void assertHasValidSize(int cw, int ch) {
+        if (PhotoSize.THUMB.isWiderAndHigher(cw, ch)) {
+            throw new IllegalArgumentException("Photo too small!");
+        }
+    }
 
-		int targetWidth = size.calcAdjustedWidth(sourceWidth, sourceHeight);
-		int targetHeight = size.calcAdjustedHeight(sourceWidth, sourceHeight);
+    /**
+     * @methodtype command Scale the source picture to the given size, store it in the datastore and reference it in the
+     * photo.
+     */
+    protected static void scaleImage(Image source, PhotoSize size, Photo photo) throws Exception {
+        int sourceWidth = source.getWidth();
+        int sourceHeight = source.getHeight();
 
-		ImagesService imagesService = ImagesServiceFactory.getImagesService();
-		Transform resize = ImagesServiceFactory.makeResize(targetWidth, targetHeight);
-		Image newImage = imagesService.applyTransform(resize, source);
+        int targetWidth = size.calcAdjustedWidth(sourceWidth, sourceHeight);
+        int targetHeight = size.calcAdjustedHeight(sourceWidth, sourceHeight);
 
-		photo.setImage(size, newImage);
+        ImagesService imagesService = ImagesServiceFactory.getImagesService();
+        Transform resize = ImagesServiceFactory.makeResize(targetWidth, targetHeight);
+        Image newImage = imagesService.applyTransform(resize, source);
 
-		log.config(LogBuilder.createSystemMessage().addParameter("Scaled image to size", size.asString()).toString());
-	}
+        photo.setImage(size, newImage);
 
+        log.config(LogBuilder.createSystemMessage().addParameter("Scaled image to size", size.asString()).toString());
+    }
 }

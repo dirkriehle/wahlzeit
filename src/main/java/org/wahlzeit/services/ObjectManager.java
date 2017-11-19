@@ -33,172 +33,170 @@ import java.util.logging.Logger;
  */
 public abstract class ObjectManager {
 
-	/**
-	 * All objects are now saved under this root key. In case of multi-tenancy this may change to several keys.
-	 */
-	public static final Key applicationRootKey = KeyFactory.createKey("Application", "Wahlzeit");
+    private static final Logger log = Logger.getLogger(ObjectManager.class.getName());
+    /**
+     * All objects are now saved under this root key. In case of multi-tenancy this may change to several keys.
+     */
+    public static final Key applicationRootKey = KeyFactory.createKey("Application", "Wahlzeit");
 
-	private static final Logger log = Logger.getLogger(ObjectManager.class.getName());
+    /**
+     * Reads the first Entity with the given key in the Datastore
+     */
+    protected <E> E readObject(Class<E> type, Long id) throws IllegalArgumentException {
+        assertIsNonNullArgument(type, "type");
+        assertIsNonNullArgument(id, "id");
 
+        log.config(LogBuilder.createSystemMessage().
+                addMessage("Load Type " + type.toString() + " with ID " + id + " from datastore.").toString());
+        return CloudDataBase.getOpActions().load().type(type).id(id).now();
+    }
 
-	/**
-	 * Reads the first Entity with the given key in the Datastore
-	 */
-	protected <E> E readObject(Class<E> type, Long id) throws IllegalArgumentException {
-		assertIsNonNullArgument(type, "type");
-		assertIsNonNullArgument(id, "id");
+    /**
+     *
+     */
+    protected void assertIsNonNullArgument(Object arg, String label) {
+        if (arg == null) {
+            throw new IllegalArgumentException(label + " should not be null");
+        }
+    }
 
-		log.config(LogBuilder.createSystemMessage().
-				addMessage("Load Type " + type.toString() + " with ID " + id + " from datastore.").toString());
-		return OfyService.ofy().load().type(type).id(id).now();
-	}
+    /**
+     * Reads the first Entity with the given key in the Datastore
+     */
+    protected <E> E readObject(Class<E> type, String id) throws IllegalArgumentException {
+        assertIsNonNullArgument(type, "type");
+        assertIsNonNullArgument(id, "id");
 
-	/**
-	 *
-	 */
-	protected void assertIsNonNullArgument(Object arg, String label) {
-		if (arg == null) {
-			throw new IllegalArgumentException(label + " should not be null");
-		}
-	}
+        log.config(LogBuilder.createSystemMessage().
+                addMessage("Load Type " + type.toString() + " with ID " + id + " from datastore.").toString());
+        return CloudDataBase.getOpActions().load().type(type).id(id).now();
+    }
 
-	/**
-	 * Reads the first Entity with the given key in the Datastore
-	 */
-	protected <E> E readObject(Class<E> type, String id) throws IllegalArgumentException {
-		assertIsNonNullArgument(type, "type");
-		assertIsNonNullArgument(id, "id");
+    /**
+     * Reads an Entity of the specified type where the wanted parameter has the given name, e.g. readObject(User.class,
+     * "emailAddress", "name@provider.com").
+     */
+    protected <E> E readObject(Class<E> type, String parameterName, Object value) {
+        assertIsNonNullArgument(type, "type");
+        assertIsNonNullArgument(parameterName, "parameterName");
+        assertIsNonNullArgument(value, "value");
 
-		log.config(LogBuilder.createSystemMessage().
-				addMessage("Load Type " + type.toString() + " with ID " + id + " from datastore.").toString());
-		return OfyService.ofy().load().type(type).id(id).now();
-	}
+        log.config(LogBuilder.createSystemMessage().
+                addMessage("Load Type " + type.toString() + " with parameter " +
+                        parameterName + " == " + value + " from datastore.").toString());
 
-	/**
-	 * Reads an Entity of the specified type where the wanted parameter has the given name, e.g. readObject(User.class,
-	 * "emailAddress", "name@provider.com").
-	 */
-	protected <E> E readObject(Class<E> type, String parameterName, Object value) {
-		assertIsNonNullArgument(type, "type");
-		assertIsNonNullArgument(parameterName, "parameterName");
-		assertIsNonNullArgument(value, "value");
+        return CloudDataBase.getOpActions().load().type(type).ancestor(applicationRootKey).filter(parameterName, value).first()
+                .now();
+    }
 
-		log.config(LogBuilder.createSystemMessage().
-				addMessage("Load Type " + type.toString() + " with parameter " +
-						parameterName + " == " + value + " from datastore.").toString());
+    /**
+     * Reads all Entities of the specified type, e.g. readObject(User.class) to get a list of all clients
+     */
+    protected <E> void readObjects(Collection<E> result, Class<E> type) {
+        assertIsNonNullArgument(result, "result");
+        assertIsNonNullArgument(type, "type");
 
-		return OfyService.ofy().load().type(type).ancestor(applicationRootKey).filter(parameterName, value).first()
-				.now();
-	}
+        log.config(LogBuilder.createSystemMessage().
+                addParameter("Datastore: load all entities of type", type.getName()).toString());
+        List<E> objects = CloudDataBase.getOpActions().load().type(type).ancestor(applicationRootKey).list();
+        log.config(LogBuilder.createSystemMessage().
+                addParameter("Datastore: number of loaded objects", objects.size()).toString());
+        result.addAll(objects);
+    }
 
-	/**
-	 * Reads all Entities of the specified type, e.g. readObject(User.class) to get a list of all clients
-	 */
-	protected <E> void readObjects(Collection<E> result, Class<E> type) {
-		assertIsNonNullArgument(result, "result");
-		assertIsNonNullArgument(type, "type");
+    /**
+     * Reads all Entities of the specified type, where the given property matches the wanted value e.g.
+     * readObject(User.class) to get a list of all clients
+     */
+    protected <E> void readObjects(Collection<E> result, Class<E> type, String propertyName, Object value) {
+        assertIsNonNullArgument(result, "result");
+        assertIsNonNullArgument(type, "type");
+        assertIsNonNullArgument(propertyName, "propertyName");
+        assertIsNonNullArgument(value, "value");
 
-		log.config(LogBuilder.createSystemMessage().
-				addParameter("Datastore: load all entities of type", type.getName()).toString());
-		List<E> objects = OfyService.ofy().load().type(type).ancestor(applicationRootKey).list();
-		log.config(LogBuilder.createSystemMessage().
-				addParameter("Datastore: number of loaded objects", objects.size()).toString());
-		result.addAll(objects);
-	}
+        log.info(LogBuilder.createSystemMessage().
+                addMessage("Datastore: Load all Entities of type " + type.toString() + " where parameter "
+                        + propertyName + " = " + value.toString() + " from datastore.").toString());
+        List<E> objects = CloudDataBase.getOpActions().load().type(type).
+                ancestor(applicationRootKey).filter(propertyName, value).list();
+        log.config(LogBuilder.createSystemMessage().
+                addParameter("Datastore: number of loaded objects", objects.size()).toString());
+        result.addAll(objects);
+    }
 
-	/**
-	 * Reads all Entities of the specified type, where the given property matches the wanted value e.g.
-	 * readObject(User.class) to get a list of all clients
-	 */
-	protected <E> void readObjects(Collection<E> result, Class<E> type, String propertyName, Object value) {
-		assertIsNonNullArgument(result, "result");
-		assertIsNonNullArgument(type, "type");
-		assertIsNonNullArgument(propertyName, "propertyName");
-		assertIsNonNullArgument(value, "value");
+    /**
+     * Updates all entities of the given collection in the datastore.
+     */
+    protected void updateObjects(Collection<? extends Persistent> collection) {
+        for (Persistent object : collection) {
+            updateObject(object);
+        }
+    }
 
-		log.info(LogBuilder.createSystemMessage().
-				addMessage("Datastore: Load all Entities of type " + type.toString() + " where parameter "
-						+ propertyName + " = " + value.toString() + " from datastore.").toString());
-		List<E> objects = OfyService.ofy().load().type(type).
-				ancestor(applicationRootKey).filter(propertyName, value).list();
-		log.config(LogBuilder.createSystemMessage().
-				addParameter("Datastore: number of loaded objects", objects.size()).toString());
-		result.addAll(objects);
-	}
+    /**
+     * Updates the given entity in the datastore.
+     */
+    protected void updateObject(Persistent object) {
+        writeObject(object);
+    }
 
-	/**
-	 * Updates all entities of the given collection in the datastore.
-	 */
-	protected void updateObjects(Collection<? extends Persistent> collection) {
-		for (Persistent object : collection) {
-			updateObject(object);
-		}
-	}
+    /**
+     * Writes the given entity to the datastore.
+     */
+    protected void writeObject(Persistent object) {
+        assertIsNonNullArgument(object, "object");
 
-	/**
-	 * Updates the given entity in the datastore.
-	 */
-	protected void updateObject(Persistent object) {
-		writeObject(object);
-	}
+        if (object.isDirty()) {
+            log.info(LogBuilder.createSystemMessage().
+                    addParameter("Datastore: Write object of type", object).toString());
+            CloudDataBase.getOpActions().save().entity(object).now();
+            updateDependents(object);
+            object.resetWriteCount();
+        } else {
+            log.info(LogBuilder.createSystemMessage().
+                    addParameter("Datastore: No need to update object", object).toString());
+        }
+    }
 
-	/**
-	 * Writes the given entity to the datastore.
-	 */
-	protected void writeObject(Persistent object) {
-		assertIsNonNullArgument(object, "object");
+    /**
+     * Updates all dependencies of the object.
+     */
+    protected void updateDependents(Persistent object) {
+        // overwrite if your object has additional dependencies
+    }
 
-		if (object.isDirty()) {
-			log.info(LogBuilder.createSystemMessage().
-					addParameter("Datastore: Write object of type", object).toString());
-			OfyService.ofy().save().entity(object).now();
-			updateDependents(object);
-			object.resetWriteCount();
-		} else {
-			log.info(LogBuilder.createSystemMessage().
-					addParameter("Datastore: No need to update object", object).toString());
-		}
-	}
+    /**
+     * Deletes the given entity from the datastore.
+     */
+    protected <E> void deleteObject(E object) {
+        assertIsNonNullArgument(object, "object");
 
-	/**
-	 * Updates all dependencies of the object.
-	 */
-	protected void updateDependents(Persistent object) {
-		// overwrite if your object has additional dependencies
-	}
+        log.config(LogBuilder.createSystemMessage().addParameter("Datastore: delete entity", object).toString());
+        CloudDataBase.getOpActions().delete().entity(object).now();
+    }
 
-	/**
-	 * Deletes the given entity from the datastore.
-	 */
-	protected <E> void deleteObject(E object) {
-		assertIsNonNullArgument(object, "object");
+    /**
+     * Deletes all entities of the type that have a property with the specified value, e.g.
+     * deleteObjects(PhotoCase.class, "wasDecided", true) to delete all cases that have been decided.
+     */
+    protected <E> void deleteObjects(Class<E> type, String propertyName, Object value) {
+        assertIsNonNullArgument(type, "type");
+        assertIsNonNullArgument(propertyName, "propertyName");
+        assertIsNonNullArgument(value, "value");
 
-		log.config(LogBuilder.createSystemMessage().addParameter("Datastore: delete entity", object).toString());
-		OfyService.ofy().delete().entity(object).now();
-	}
+        log.info(LogBuilder.createSystemMessage().
+                addMessage("Datastore: delete entities of type " + type
+                        + " where property " + propertyName + " == " + value).toString());
+        List<com.googlecode.objectify.Key<E>> keys = CloudDataBase.getOpActions().load().type(type).
+                ancestor(applicationRootKey).filter(propertyName, value).keys().list();
+        CloudDataBase.getOpActions().delete().keys(keys);
+    }
 
-	/**
-	 * Deletes all entities of the type that have a property with the specified value, e.g.
-	 * deleteObjects(PhotoCase.class, "wasDecided", true) to delete all cases that have been decided.
-	 */
-	protected <E> void deleteObjects(Class<E> type, String propertyName, Object value) {
-		assertIsNonNullArgument(type, "type");
-		assertIsNonNullArgument(propertyName, "propertyName");
-		assertIsNonNullArgument(value, "value");
-
-		log.info(LogBuilder.createSystemMessage().
-				addMessage("Datastore: delete entities of type " + type
-						+ " where property " + propertyName + " == " + value).toString());
-		List<com.googlecode.objectify.Key<E>> keys = OfyService.ofy().load().type(type).
-				ancestor(applicationRootKey).filter(propertyName, value).keys().list();
-		OfyService.ofy().delete().keys(keys);
-	}
-
-	/**
-	 *
-	 */
-	protected void assertIsNonNullArgument(Object arg) {
-		assertIsNonNullArgument(arg, "anonymous");
-	}
+    /**
+     *
+     */
+    protected void assertIsNonNullArgument(Object arg) {
+        assertIsNonNullArgument(arg, "anonymous");
+    }
 
 }
