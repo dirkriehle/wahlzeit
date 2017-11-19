@@ -28,7 +28,11 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.wahlzeit.model.*;
+import org.wahlzeit.model.Location;
+import org.wahlzeit.model.Photo;
+import org.wahlzeit.model.PhotoId;
+import org.wahlzeit.model.PhotoManager;
+import org.wahlzeit.model.coordinates.impl.NoWhereCoordinate;
 
 import java.io.IOException;
 

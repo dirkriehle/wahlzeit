@@ -27,6 +27,9 @@ package org.wahlzeit.model;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.wahlzeit.model.coordinates.Coordinate;
+import org.wahlzeit.model.coordinates.impl.CartesianCoordinate;
+import org.wahlzeit.model.coordinates.impl.NoWhereCoordinate;
 
 public class LocationTest {
 
@@ -40,8 +43,8 @@ public class LocationTest {
     @Before
     public void setUp() {
         noWhereLocation = new Location(new NoWhereCoordinate());
-        fooCoords = new Coordinate(0, 1, 2);
-        barCoords = new Coordinate(-2, -1, 0);
+        fooCoords = new CartesianCoordinate(1, 0, 2);
+        barCoords = new CartesianCoordinate(-1, -2, 0);
         fooLocation = new Location(fooCoords);
         barLocation = new Location(barCoords);
     }

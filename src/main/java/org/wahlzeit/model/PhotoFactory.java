@@ -1,9 +1,9 @@
 /*
  *  Copyright
  *
- *  Classname: PhotoFactoryTemp
+ *  Classname: PhotoFactory
  *  Author: Tango1266
- *  Version: 08.11.17 22:21
+ *  Version: 16.11.17 15:19
  *
  *  This file is part of the Wahlzeit photo rating application.
  *
@@ -33,11 +33,11 @@ import java.util.logging.Logger;
  */
 public class PhotoFactory {
 
-    private static final Logger log = Logger.getLogger(PhotoFactory.class.getName());
     /**
      * Hidden singleton instance; needs to be initialized from the outside.
      */
     private static PhotoFactory instance = null;
+    private static final Logger log = Logger.getLogger(PhotoFactory.class.getName());
 
     /**
      *

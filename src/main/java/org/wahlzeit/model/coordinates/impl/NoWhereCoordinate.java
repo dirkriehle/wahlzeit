@@ -1,9 +1,9 @@
 /*
  *  Copyright
  *
+ *  Classname: NoWhereCoordinate
  *  Author: Tango1266
- *
- *  Version: 05.11.17 21:39
+ *  Version: 16.11.17 15:23
  *
  *  This file is part of the Wahlzeit photo rating application.
  *
@@ -22,58 +22,25 @@
  *  <http://www.gnu.org/licenses/>
  */
 
-package org.wahlzeit.model;
+package org.wahlzeit.model.coordinates.impl;
+
+import org.wahlzeit.model.coordinates.Coordinate;
 
 import static java.lang.System.identityHashCode;
 
 /**
  * Represents a null-coordinate with defined "do-nothing-behavior" when interacting with it
  */
-public class NoWhereCoordinate extends Coordinate {
+public class NoWhereCoordinate implements Coordinate {
 
-    /**
-     * @return 0
-     */
     @Override
-    public double getY() {
-        return 0;
+    public CartesianCoordinate asCartesianCoordinate() {
+        return new CartesianCoordinate(0, 0, 0);
     }
 
-    /**
-     * @return 0
-     */
     @Override
-    public double getX() {
-        return 0;
-    }
-
-    /**
-     * @return 0
-     */
-    @Override
-    public double getZ() {
-        return 0;
-    }
-
-    /**
-     * Using this will do nothing
-     */
-    @Override
-    public void setX(double x) {
-    }
-
-    /**
-     * Using this will do nothing
-     */
-    @Override
-    public void setY(double y) {
-    }
-
-    /**
-     * Using this will do nothing
-     */
-    @Override
-    public void setZ(double z) {
+    public SphericCoordinate asSphericCoordinate() {
+        return new SphericCoordinate(0, 0, 0);
     }
 
     /**
@@ -82,6 +49,16 @@ public class NoWhereCoordinate extends Coordinate {
      */
     @Override
     public double getDistance(Coordinate otherCoord) {
+        return -1;
+    }
+
+    @Override
+    public double getCartesianDistance(Coordinate otherCoord) {
+        return -1;
+    }
+
+    @Override
+    public double getSphericDistance(Coordinate otherCoord) {
         return -1;
     }
 

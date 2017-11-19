@@ -1,9 +1,9 @@
 /*
  *  Copyright
  *
+ *  Classname: CoordinatesTestSuite
  *  Author: Tango1266
- *
- *  Version: 05.11.17 21:39
+ *  Version: 16.11.17 16:03
  *
  *  This file is part of the Wahlzeit photo rating application.
  *
@@ -22,29 +22,16 @@
  *  <http://www.gnu.org/licenses/>
  */
 
-package org.wahlzeit.model;
+package org.wahlzeit.model.coordinates;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.wahlzeit.model.coordinates.CoordinatesTestSuite;
-import org.wahlzeit.model.gurkenDomain.GurkenDomainTestSuite;
-import org.wahlzeit.model.persistence.PersistenceTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        GurkenDomainTestSuite.class,
-        PersistenceTestSuite.class,
-        AccessRightsTest.class,
-        FlagReasonTest.class,
-        GenderTest.class,
-        GuestTest.class,
-        LocationTest.class,
-        CoordinatesTestSuite.class,
-        PhotoFilterTest.class,
-        TagsTest.class,
-        UserStatusTest.class,
-        ValueTest.class
-
+        CartesianCoordinateTest.class,
+        NoWhereCoordinateTest.class,
+        SphericCoordinateTest.class
 })
-public class ModelTestSuite {
+public class CoordinatesTestSuite {
 }

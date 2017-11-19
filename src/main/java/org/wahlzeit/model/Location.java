@@ -24,6 +24,9 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.model.coordinates.Coordinate;
+import org.wahlzeit.model.coordinates.impl.NoWhereCoordinate;
+
 /**
  * Represents a geographical Location
  */
