@@ -26,7 +26,7 @@ package org.wahlzeit.handlers;
 
 import org.wahlzeit.agents.AsyncTaskExecutor;
 import org.wahlzeit.model.*;
-import org.wahlzeit.model.gurkenDomain.GurkenPhotoManager;
+import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.webparts.WebPart;
 
@@ -53,7 +53,7 @@ public class AdminUserPhotoFormHandler extends AbstractWebFormHandler {
     @Override
     protected void doMakeWebPart(UserSession us, WebPart part) {
         String photoId = (String) us.getSavedArg("photoId");
-        Photo photo = GurkenPhotoManager.getInstance().getPhoto(photoId);
+        Photo photo = DomainCfg.PhotoManager.getPhoto(photoId);
         part.addString(Photo.THUMB, getPhotoThumb(us, photo));
 
         part.addString("photoId", photoId);
@@ -68,7 +68,7 @@ public class AdminUserPhotoFormHandler extends AbstractWebFormHandler {
     @Override
     protected String doHandlePost(UserSession us, Map args) {
         String id = us.getAndSaveAsString(args, "photoId");
-        Photo photo = GurkenPhotoManager.getInstance().getPhoto(id);
+        Photo photo = DomainCfg.PhotoManager.getPhoto(id);
 
         String tags = us.getAndSaveAsString(args, Photo.TAGS);
         photo.setTags(new Tags(tags));

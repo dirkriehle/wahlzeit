@@ -20,7 +20,7 @@
 
 package org.wahlzeit.model;
 
-import org.wahlzeit.model.gurkenDomain.GurkenPhotoFactory;
+import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.Language;
 import org.wahlzeit.services.Session;
 import org.wahlzeit.utils.HtmlUtil;
@@ -63,7 +63,7 @@ public class UserSession extends Session implements Serializable {
         initialize(myName);
         if (httpSession.getAttribute(INITIALIZED) == null) {
             httpSession.setAttribute(SITE_URL, mySiteUrl);
-            httpSession.setAttribute(PHOTO_FILTER, GurkenPhotoFactory.getInstance().createPhotoFilter());
+            httpSession.setAttribute(PHOTO_FILTER, DomainCfg.PhotoFactory.getInstance().createPhotoFilter());
 
             setClient(new Guest());
             try {

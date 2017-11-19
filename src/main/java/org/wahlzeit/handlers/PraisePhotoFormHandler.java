@@ -25,7 +25,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.*;
-import org.wahlzeit.model.gurkenDomain.GurkenPhotoManager;
+import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.utils.StringUtil;
 import org.wahlzeit.webparts.WebPart;
@@ -64,7 +64,7 @@ public class PraisePhotoFormHandler extends AbstractWebFormHandler {
     @Override
     protected boolean isWellFormedPost(UserSession us, Map args) {
         String photoId = us.getAsString(args, Photo.ID);
-        Photo photo = GurkenPhotoManager.getInstance().getPhoto(photoId);
+        Photo photo = DomainCfg.PhotoManager.getPhoto(photoId);
         return photo != null;
     }
 
@@ -74,7 +74,7 @@ public class PraisePhotoFormHandler extends AbstractWebFormHandler {
     @Override
     protected String doHandlePost(UserSession us, Map args) {
         String photoId = us.getAsString(args, Photo.ID);
-        Photo photo = GurkenPhotoManager.getInstance().getPhoto(photoId);
+        Photo photo = DomainCfg.PhotoManager.getPhoto(photoId);
         String praise = us.getAsString(args, Photo.PRAISE);
         Client client = us.getClient();
 

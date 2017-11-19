@@ -70,7 +70,7 @@ public class GurkenPhotoFactory extends PhotoFactory {
     }
 
     /**
-     * @methodtype factory
+     * @methodtype getMgmtActions
      */
     @Override
     public Photo createPhoto() {

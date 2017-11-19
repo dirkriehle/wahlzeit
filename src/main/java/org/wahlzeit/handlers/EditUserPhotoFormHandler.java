@@ -26,7 +26,7 @@ package org.wahlzeit.handlers;
 
 import org.wahlzeit.agents.AsyncTaskExecutor;
 import org.wahlzeit.model.*;
-import org.wahlzeit.model.gurkenDomain.GurkenPhotoManager;
+import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.utils.HtmlUtil;
 import org.wahlzeit.webparts.WebPart;
@@ -66,7 +66,7 @@ public class EditUserPhotoFormHandler extends AbstractWebFormHandler {
         part.addStringFromArgs(args, UserSession.MESSAGE);
 
         String id = us.getAsString(args, Photo.ID);
-        Photo photo = GurkenPhotoManager.getInstance().getPhoto(id);
+        Photo photo = DomainCfg.PhotoManager.getPhoto(id);
 
         part.addString(Photo.ID, id);
         part.addString(Photo.THUMB, getPhotoThumb(us, photo));
@@ -85,7 +85,7 @@ public class EditUserPhotoFormHandler extends AbstractWebFormHandler {
     @Override
     protected boolean isWellFormedPost(UserSession us, Map args) {
         String id = us.getAsString(args, Photo.ID);
-        Photo photo = GurkenPhotoManager.getInstance().getPhoto(id);
+        Photo photo = DomainCfg.PhotoManager.getPhoto(id);
         return (photo != null) && us.isPhotoOwner(photo);
     }
 
@@ -95,7 +95,7 @@ public class EditUserPhotoFormHandler extends AbstractWebFormHandler {
     @Override
     protected String doHandlePost(UserSession us, Map args) {
         String id = us.getAndSaveAsString(args, Photo.ID);
-        Photo photo = GurkenPhotoManager.getInstance().getPhoto(id);
+        Photo photo = DomainCfg.PhotoManager.getPhoto(id);
 
         String tags = us.getAndSaveAsString(args, Photo.TAGS);
         photo.setTags(new Tags(tags));

@@ -28,7 +28,7 @@ import org.wahlzeit.model.AccessRights;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.User;
 import org.wahlzeit.model.UserSession;
-import org.wahlzeit.model.gurkenDomain.GurkenPhotoManager;
+import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.utils.HtmlUtil;
 import org.wahlzeit.webparts.WebPart;
 import org.wahlzeit.webparts.Writable;
@@ -60,8 +60,8 @@ public class ShowUserHomePageHandler extends AbstractWebPageHandler {
         if (photos.length != 0) {
             WritableList list = new WritableList();
             for (Photo photo : photos) {
-                // load it from the GurkenPhotoManager to make sure the same copy is used
-                photo = GurkenPhotoManager.getInstance().getPhotoFromId(photo.getId());
+                // load it from the DomainCfg.PhotoManager to make sure the same copy is used
+                photo = DomainCfg.PhotoManager.getPhotoFromId(photo.getId());
                 if (!photo.getStatus().isDeleted()) {
                     part = makeUserPhotoForm(us, photo);
                     list.append(part);

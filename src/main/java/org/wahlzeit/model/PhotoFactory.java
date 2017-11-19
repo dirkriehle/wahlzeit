@@ -66,7 +66,7 @@ public class PhotoFactory {
     }
 
     /**
-     * @methodtype factory
+     * @methodtype getMgmtActions
      */
     public Photo createPhoto() {
         return new Photo();
@@ -85,7 +85,7 @@ public class PhotoFactory {
      */
     public Photo loadPhoto(PhotoId id) {
        /* Photo result =
-                OfyService.ofy().load().type(Photo.class).ancestor(KeyFactory.createKey("Application", "Wahlzeit")).filter(Photo.ID, id).first().now();
+                CloudDataBase.getOpActions().load().type(Photo.class).ancestor(KeyFactory.createKey("Application", "Wahlzeit")).filter(Photo.ID, id).first().now();
         for (PhotoSize size : PhotoSize.values()) {
             GcsFilename gcsFilename = new GcsFilename("picturebucket", filename);
 

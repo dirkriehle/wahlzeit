@@ -25,7 +25,7 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.*;
-import org.wahlzeit.model.gurkenDomain.GurkenPhotoManager;
+import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.Language;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.SysConfig;
@@ -63,14 +63,14 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
     }
 
     /**
-     * @methodtype factory
+     * @methodtype getMgmtActions
      */
     protected final WebPart createWebPart(UserSession us) {
         return createWebPart(us, tmplName);
     }
 
     /**
-     * @methodtype factory
+     * @methodtype getMgmtActions
      */
     protected final WebPart createWebPart(UserSession us, String name) {
         WebPartTemplateService wpts = WebPartTemplateService.getInstance();
@@ -143,7 +143,7 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
      */
     protected boolean isSavedPhotoVisible(UserSession us) {
         String id = us.getAsString(us.getSavedArgs(), Photo.ID);
-        Photo photo = GurkenPhotoManager.getInstance().getPhoto(id);
+        Photo photo = DomainCfg.PhotoManager.getPhoto(id);
         return photo.isVisible();
     }
 
