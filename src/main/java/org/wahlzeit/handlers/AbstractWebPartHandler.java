@@ -25,7 +25,6 @@
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.model.*;
-import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.Language;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.SysConfig;
@@ -57,20 +56,27 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
     /**
      *
      */
+    public final AccessRights getNeededRights() {
+        return neededRights;
+    }
+
+    /**
+     *
+     */
     protected void initialize(String myTmplName, AccessRights myRights) {
         tmplName = myTmplName;
         neededRights = myRights;
     }
 
     /**
-     * @methodtype getMgmtActions
+     * @methodtype factory
      */
     protected final WebPart createWebPart(UserSession us) {
         return createWebPart(us, tmplName);
     }
 
     /**
-     * @methodtype getMgmtActions
+     * @methodtype factory
      */
     protected final WebPart createWebPart(UserSession us, String name) {
         WebPartTemplateService wpts = WebPartTemplateService.getInstance();
@@ -143,7 +149,7 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
      */
     protected boolean isSavedPhotoVisible(UserSession us) {
         String id = us.getAsString(us.getSavedArgs(), Photo.ID);
-        Photo photo = DomainCfg.PhotoManager.getPhoto(id);
+        Photo photo = PhotoManager.getInstance().getPhoto(id);
         return photo.isVisible();
     }
 
@@ -263,13 +269,6 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
             log.warning(LogBuilder.createSystemMessage().addException("Handle get failed", t).toString());
             return getInternalProcessingErrorPage(us);
         }
-    }
-
-    /**
-     *
-     */
-    public final AccessRights getNeededRights() {
-        return neededRights;
     }
 
 }

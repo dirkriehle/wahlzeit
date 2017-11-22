@@ -26,7 +26,6 @@ package org.wahlzeit.agents;
 
 import com.google.apphosting.api.ApiProxy;
 import org.wahlzeit.model.*;
-import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.mailing.EmailService;
@@ -48,45 +47,6 @@ public class NotifyUsersAboutPraiseAgent extends Agent {
 
     public NotifyUsersAboutPraiseAgent() {
         initialize(NAME);
-    }
-
-    /**
-     * @methodtype command
-     * Notifies all users that want to get informed if their photos have been praised.
-     */
-    @Override
-    protected void doRun() {
-        Map<PhotoId, Photo> photoCache = DomainCfg.PhotoManager.getPhotoCache();
-        Collection<Photo> photos = photoCache.values();
-
-        ArrayList<Photo> arrayListOfPhotos;
-        HashMap<String, ArrayList<Photo>> ownerIdPhotosMap = new HashMap<>();
-        for (Photo photo : photos) {
-            if (photo != null && photo.isVisible() && photo.hasNewPraise()) {
-                String ownerId = photo.getOwnerId();
-                if (ownerId != null) {
-                    log.config(LogBuilder.createSystemMessage().addParameter("ownerId", ownerId).toString());
-                    if (ownerIdPhotosMap.containsKey(ownerId)) {
-                        log.config(LogBuilder.createSystemMessage().addAction("add to existing owner").toString());
-                        arrayListOfPhotos = ownerIdPhotosMap.get(ownerId);
-                    } else {
-                        log.config(LogBuilder.createSystemMessage().addAction("add to new owner").toString());
-                        arrayListOfPhotos = new ArrayList<>();
-                    }
-                    arrayListOfPhotos.add(photo);
-                    ownerIdPhotosMap.put(ownerId, arrayListOfPhotos);
-                    photo.setNoNewPraise();
-                    DomainCfg.PhotoManager.savePhoto(photo);
-                }
-            }
-        }
-
-        log.config(LogBuilder.createSystemMessage().addAction("notify owner")
-                .addParameter("number of user to notify", ownerIdPhotosMap.size()).toString());
-
-        for (String ownerId : ownerIdPhotosMap.keySet()) {
-            notifyOwner(ownerId, ownerIdPhotosMap.get(ownerId));
-        }
     }
 
     /**
@@ -126,6 +86,45 @@ public class NotifyUsersAboutPraiseAgent extends Agent {
 
         EmailService emailService = EmailServiceManager.getDefaultService();
         emailService.sendEmailIgnoreException(from, to, emailSubject, emailBody);
+    }
+
+    /**
+     * @methodtype command
+     * Notifies all users that want to get informed if their photos have been praised.
+     */
+    @Override
+    protected void doRun() {
+        Map<PhotoId, Photo> photoCache = PhotoManager.getInstance().getPhotoCache();
+        Collection<Photo> photos = photoCache.values();
+
+        ArrayList<Photo> arrayListOfPhotos;
+        HashMap<String, ArrayList<Photo>> ownerIdPhotosMap = new HashMap<>();
+        for (Photo photo : photos) {
+            if (photo != null && photo.isVisible() && photo.hasNewPraise()) {
+                String ownerId = photo.getOwnerId();
+                if (ownerId != null) {
+                    log.config(LogBuilder.createSystemMessage().addParameter("ownerId", ownerId).toString());
+                    if (ownerIdPhotosMap.containsKey(ownerId)) {
+                        log.config(LogBuilder.createSystemMessage().addAction("add to existing owner").toString());
+                        arrayListOfPhotos = ownerIdPhotosMap.get(ownerId);
+                    } else {
+                        log.config(LogBuilder.createSystemMessage().addAction("add to new owner").toString());
+                        arrayListOfPhotos = new ArrayList<>();
+                    }
+                    arrayListOfPhotos.add(photo);
+                    ownerIdPhotosMap.put(ownerId, arrayListOfPhotos);
+                    photo.setNoNewPraise();
+                    PhotoManager.getInstance().savePhoto(photo);
+                }
+            }
+        }
+
+        log.config(LogBuilder.createSystemMessage().addAction("notify owner")
+                .addParameter("number of user to notify", ownerIdPhotosMap.size()).toString());
+
+        for (String ownerId : ownerIdPhotosMap.keySet()) {
+            notifyOwner(ownerId, ownerIdPhotosMap.get(ownerId));
+        }
     }
 
 }

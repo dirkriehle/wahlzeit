@@ -27,8 +27,8 @@ package org.wahlzeit.servlets;
 import com.google.appengine.api.images.Image;
 import org.apache.http.HttpStatus;
 import org.wahlzeit.model.Photo;
+import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.PhotoSize;
-import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.model.persistence.ImageStorage;
 import org.wahlzeit.services.LogBuilder;
 
@@ -84,12 +84,12 @@ public class StaticDataServlet extends AbstractServlet {
 
     /**
      * @methodtype command
-     * Loads image either from the <@link>DomainCfg.PhotoManager</@link> or from the <@link>ImageStorage</@link>. If image does
+     * Loads image either from the <@link>GurkenPhotoManager</@link> or from the <@link>ImageStorage</@link>. If image does
      * not exist, null is returned.
      */
     private Image getImage(String photoId, int size) {
         Image image = null;
-        Photo photo = DomainCfg.PhotoManager.getPhoto(photoId);
+        Photo photo = PhotoManager.getInstance().getPhoto(photoId);
         if (photo != null) {
             PhotoSize photoSize = PhotoSize.getFromInt(size);
             image = photo.getImage(photoSize);

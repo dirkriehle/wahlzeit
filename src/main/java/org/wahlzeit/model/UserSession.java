@@ -20,7 +20,6 @@
 
 package org.wahlzeit.model;
 
-import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.Language;
 import org.wahlzeit.services.Session;
 import org.wahlzeit.utils.HtmlUtil;
@@ -63,7 +62,7 @@ public class UserSession extends Session implements Serializable {
         initialize(myName);
         if (httpSession.getAttribute(INITIALIZED) == null) {
             httpSession.setAttribute(SITE_URL, mySiteUrl);
-            httpSession.setAttribute(PHOTO_FILTER, DomainCfg.PhotoFactory.getInstance().createPhotoFilter());
+            httpSession.setAttribute(PHOTO_FILTER, PhotoFactory.getInstance().createPhotoFilter());
 
             setClient(new Guest());
             try {
@@ -79,24 +78,6 @@ public class UserSession extends Session implements Serializable {
             httpSession.setAttribute(INITIALIZED, INITIALIZED);
 
         }
-    }
-
-    @Override
-    protected void notifyNameChanged() {
-        httpSession.setAttribute(Session.NAME, super.getName());
-    }
-
-    /**
-     * @methodtype convert Returns some signifier of current user
-     */
-    @Override
-    public String getClientId() {
-        return (String) httpSession.getAttribute(CLIENT_ID);
-    }
-
-    @Override
-    protected void notifyProcessingTimeChanged() {
-        httpSession.setAttribute(Session.PROCESSING_TIME, super.getProcessingTime());
     }
 
     /**
@@ -341,6 +322,24 @@ public class UserSession extends Session implements Serializable {
      */
     public Map<String, Object> getSavedArgs() {
         return (Map<String, Object>) httpSession.getAttribute(SAVED_ARGS);
+    }
+
+    @Override
+    protected void notifyNameChanged() {
+        httpSession.setAttribute(Session.NAME, super.getName());
+    }
+
+    /**
+     * @methodtype convert Returns some signifier of current user
+     */
+    @Override
+    public String getClientId() {
+        return (String) httpSession.getAttribute(CLIENT_ID);
+    }
+
+    @Override
+    protected void notifyProcessingTimeChanged() {
+        httpSession.setAttribute(Session.PROCESSING_TIME, super.getProcessingTime());
     }
 
 }

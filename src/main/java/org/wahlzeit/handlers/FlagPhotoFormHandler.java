@@ -26,7 +26,6 @@ package org.wahlzeit.handlers;
 
 import org.wahlzeit.agents.AsyncTaskExecutor;
 import org.wahlzeit.model.*;
-import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.mailing.EmailService;
@@ -68,7 +67,7 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
         part.addStringFromArgs(args, UserSession.MESSAGE);
 
         String id = us.getAsString(args, Photo.ID);
-        Photo photo = DomainCfg.PhotoManager.getPhoto(id);
+        Photo photo = PhotoManager.getInstance().getPhoto(id);
         part.addString(Photo.ID, id);
         part.addString(Photo.THUMB, getPhotoThumb(us, photo));
         part.maskAndAddStringFromArgsWithDefault(args, PhotoCase.FLAGGER, us.getClient().getEmailAddress().asString());
@@ -98,7 +97,7 @@ public class FlagPhotoFormHandler extends AbstractWebFormHandler {
             return PartUtil.FLAG_PHOTO_PAGE_NAME;
         }
 
-        Photo photo = DomainCfg.PhotoManager.getPhoto(id);
+        Photo photo = PhotoManager.getInstance().getPhoto(id);
         photo.setStatus(photo.getStatus().asFlagged(true));
         AsyncTaskExecutor.savePhotoAsync(id);
 

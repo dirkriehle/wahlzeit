@@ -13,7 +13,7 @@ import java.util.List;
  * A badly named class, to be renamed to ObjectifyService first, something better later. => Done
  * @review
  */
-public class CloudDataBase {
+public class CloudDB {
 
     /**
      * Register all entities at startup

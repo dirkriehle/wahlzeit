@@ -5,7 +5,7 @@ import com.google.appengine.api.datastore.Key;
 import org.wahlzeit.model.Client;
 import org.wahlzeit.model.Guest;
 import org.wahlzeit.model.UserManager;
-import org.wahlzeit.services.CloudDataBase;
+import org.wahlzeit.services.CloudDB;
 import org.wahlzeit.services.LogBuilder;
 
 import javax.servlet.http.HttpServlet;
@@ -20,51 +20,51 @@ import java.util.logging.Logger;
  */
 public class SessionCleanupServlet extends HttpServlet {
 
-    private static final String SESSION_ENTITY_TYPE = "_ah_SESSION";
-    private static final String EXPIRES_PROP = "_expires";
+	private static final String SESSION_ENTITY_TYPE = "_ah_SESSION";
+	private static final String EXPIRES_PROP = "_expires";
 
-    private static final Logger log = Logger.getLogger(SessionCleanupServlet.class.getName());
+	private static final Logger log = Logger.getLogger(SessionCleanupServlet.class.getName());
 
-    @Override
-    public void service(HttpServletRequest request, HttpServletResponse response) {
-        if ("clear".equals(request.getQueryString())) {
-            clearAll(response);
-        }
-    }
+	@Override
+	public void service(HttpServletRequest request, HttpServletResponse response) {
+		if ("clear".equals(request.getQueryString())) {
+			clearAll(response);
+		}
+	}
 
-    /**
-     * Clears all {@link HttpSession}s in the datastore that are expired and if they are guest sessions, deletes the
-     * corresponding {@link Guest} object, too.
-     */
-    private void clearAll(HttpServletResponse response) {
+	/**
+	 * Clears all {@link HttpSession}s in the datastore that are expired and if they are guest sessions, deletes the
+	 * corresponding {@link Guest} object, too.
+	 */
+	private void clearAll(HttpServletResponse response) {
 
-        List<Object> killList = CloudDataBase.getOpActions().load().
-                kind(SESSION_ENTITY_TYPE).
-                filter(EXPIRES_PROP + " <", System.currentTimeMillis()).list();
+		List<Object> killList = CloudDB.getOpActions().load().
+				kind(SESSION_ENTITY_TYPE).
+				filter(EXPIRES_PROP + " <", System.currentTimeMillis()).list();
 
-        log.config(LogBuilder.createSystemMessage().
-                addParameter("number of old sessions to delete from datastore", killList.size()).toString());
+		log.config(LogBuilder.createSystemMessage().
+				addParameter("number of old sessions to delete from datastore", killList.size()).toString());
 
-        try {
-            for (Object o : killList) {
-                Entity httpSessionEntity = (Entity) o;
-                Key key = httpSessionEntity.getKey();
-                // GAE does not use session id as key name, instead "_ahs<sessionId>"
-                String sessionId = key.getName().substring(4);
-                log.config(LogBuilder.createSystemMessage().
-                        addAction("delete session").
-                        addParameter("session id", sessionId).toString());
-                Client client = UserManager.getInstance().getClientByHttpSessionId(sessionId);
-                if (client != null && client instanceof Guest) {
-                    UserManager.getInstance().deleteClient(client);
-                }
-                CloudDataBase.getOpActions().delete().entity(httpSessionEntity).now();
-            }
-            response.setStatus(HttpServletResponse.SC_OK);
-        } catch (Exception e) {
-            log.config(LogBuilder.createSystemMessage().
-                    addException("problem when deleting session and guest", e).toString());
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
-    }
+		try {
+			for (Object o : killList) {
+				Entity httpSessionEntity = (Entity) o;
+				Key key = httpSessionEntity.getKey();
+				// GAE does not use session id as key name, instead "_ahs<sessionId>"
+				String sessionId = key.getName().substring(4);
+				log.config(LogBuilder.createSystemMessage().
+						addAction("delete session").
+						addParameter("session id", sessionId).toString());
+				Client client = UserManager.getInstance().getClientByHttpSessionId(sessionId);
+				if (client != null && client instanceof Guest) {
+					UserManager.getInstance().deleteClient(client);
+				}
+				CloudDB.getOpActions().delete().entity(httpSessionEntity).now();
+			}
+			response.setStatus(HttpServletResponse.SC_OK);
+		} catch (Exception e) {
+			log.config(LogBuilder.createSystemMessage().
+					addException("problem when deleting session and guest", e).toString());
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+	}
 }

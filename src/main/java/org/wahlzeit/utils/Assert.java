@@ -55,4 +55,21 @@ public class Assert {
             throw new IllegalArgumentException(errorMessage);
         }
     }
+
+    /**
+     * Checks if an field points to NULL
+     */
+    public static void isNull(Object objectField, String objectSpecification) {
+        if (objectField != null) {
+            String errorMessage = objectSpecification.length() > 0 ? String.format(objectSpecification) : "Field";
+            errorMessage += " is already initialized.";
+            throw new IllegalStateException(errorMessage);
+        }
+    }
+
+    public static void isFalse(boolean bool, String errorMessage) {
+        if (bool != false) {
+            throw new IllegalStateException(errorMessage);
+        }
+    }
 }

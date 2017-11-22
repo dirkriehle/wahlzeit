@@ -28,49 +28,26 @@ import org.wahlzeit.model.Location;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoFactory;
 import org.wahlzeit.model.PhotoId;
-import org.wahlzeit.services.LogBuilder;
-
-import java.util.logging.Logger;
+import org.wahlzeit.utils.Assert;
 
 /**
  * An Abstract Factory for creating GurkenPhotos and related objects.
  */
 public class GurkenPhotoFactory extends PhotoFactory {
 
-    private static final Logger log = Logger.getLogger(GurkenPhotoFactory.class.getName());
-    /**
-     * Hidden singleton instance; needs to be initialized from the outside.
-     */
-    private static GurkenPhotoFactory instance = null;
+    private boolean initialized;
 
-    /**
-     *
-     */
-    protected GurkenPhotoFactory() {
-        // do nothing
+    public GurkenPhotoFactory() {
+        Assert.isFalse(initialized, "GurkenPhotoFactory is already initialized");
+        initialized = true;
+    }
+
+    public GurkenPhoto createGurkenPhoto(PhotoId photoId, String cucumberType, int sizeInMillimeter, Taste taste, Location location) {
+        return new GurkenPhoto(photoId, cucumberType, sizeInMillimeter, taste, location);
     }
 
     /**
-     * Hidden singleton instance; needs to be initialized from the outside.
-     */
-    public static void initialize() {
-        getInstance(); // drops result due to getInstance() side-effects
-    }
-
-    /**
-     * Public singleton access method.
-     */
-    public static synchronized GurkenPhotoFactory getInstance() {
-        if (instance == null) {
-            getLogger().config(LogBuilder.createSystemMessage().addAction("setting generic GurkenPhotoFactory").toString());
-            setInstance(new GurkenPhotoFactory());
-        }
-
-        return instance;
-    }
-
-    /**
-     * @methodtype getMgmtActions
+     * @methodtype factory
      */
     @Override
     public Photo createPhoto() {
@@ -85,22 +62,4 @@ public class GurkenPhotoFactory extends PhotoFactory {
         return new GurkenPhoto(id);
     }
 
-    public GurkenPhoto createGurkenPhoto(PhotoId photoId, String cucumberType, int sizeInMillimeter, Taste taste, Location location) {
-        return new GurkenPhoto(photoId, cucumberType, sizeInMillimeter, taste, location);
-    }
-
-    /**
-     * Method to set the singleton instance of GurkenPhotoFactory.
-     */
-    protected static synchronized void setInstance(GurkenPhotoFactory gurkenPhotoFactory) {
-        if (instance != null) {
-            throw new IllegalStateException("attempt to initalize GurkenPhotoFactory twice");
-        }
-
-        instance = gurkenPhotoFactory;
-    }
-
-    protected static Logger getLogger() {
-        return log;
-    }
 }

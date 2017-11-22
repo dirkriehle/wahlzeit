@@ -45,39 +45,11 @@ public abstract class ModelMain extends AbstractMain {
     /**
      *
      */
-    @Override
-    protected void startUp(String rootDir) throws Exception {
-        super.startUp(rootDir);
-        log.info("AbstractMain.startUp completed");
-
-        log.config(LogBuilder.createSystemMessage().addAction("load image storage").toString());
-        //GcsAdapter.Builder gcsAdapterBuilder = new GcsAdapter.Builder();
-        ImageStorage.setInstance(new DatastoreAdapter());
-
-        log.config(LogBuilder.createSystemMessage().addAction("load globals").toString());
-        GlobalsManager.getInstance().loadGlobals();
-
-        log.config(LogBuilder.createSystemMessage().addAction("load user").toString());
-        UserManager.getInstance().init();
-
-        log.config(LogBuilder.createSystemMessage().addAction("init " + DomainCfg.class.getName()).toString());
-        DomainCfg.initializeDomain();
-
-        log.config(LogBuilder.createSystemMessage().addAction("init domain " + DomainCfg.PhotoFactory.getClass().getName()).toString());
-        DomainCfg.PhotoFactory.initialize();
-
-        log.config(LogBuilder.createSystemMessage().addAction("load Photos").toString());
-        DomainCfg.PhotoManager.init();
-    }
-
-    /**
-     *
-     */
-    @Override
-    protected void shutDown() throws Exception {
-        saveAll();
-
-        super.shutDown();
+    public void saveAll() throws IOException {
+        PhotoCaseManager.getInstance().savePhotoCases();
+        PhotoManager.getInstance().savePhotos();
+        UserManager.getInstance().saveClients();
+        GlobalsManager.getInstance().saveGlobals();
     }
 
     /**
@@ -87,7 +59,7 @@ public abstract class ModelMain extends AbstractMain {
         UserManager userManager = UserManager.getInstance();
         new User(userId, nickName, emailAddress);
 
-        PhotoManager gurkenPhotoManager = DomainCfg.PhotoManager;
+        PhotoManager gurkenPhotoManager = PhotoManager.getInstance();
         File photoDirFile = new File(photoDir);
         FileFilter photoFileFilter = new FileFilter() {
             @Override
@@ -108,10 +80,31 @@ public abstract class ModelMain extends AbstractMain {
     /**
      *
      */
-    public void saveAll() throws IOException {
-        PhotoCaseManager.getInstance().savePhotoCases();
-        DomainCfg.PhotoManager.savePhotos();
-        UserManager.getInstance().saveClients();
-        GlobalsManager.getInstance().saveGlobals();
+    @Override
+    protected void startUp(String rootDir) throws Exception {
+        super.startUp(rootDir);
+        log.info("AbstractMain.startUp completed");
+
+        log.config(LogBuilder.createSystemMessage().addAction("load image storage").toString());
+        //GcsAdapter.Builder gcsAdapterBuilder = new GcsAdapter.Builder();
+        ImageStorage.setInstance(new DatastoreAdapter());
+
+        log.config(LogBuilder.createSystemMessage().addAction("load globals").toString());
+        GlobalsManager.getInstance().loadGlobals();
+
+        log.config(LogBuilder.createSystemMessage().addAction("load user").toString());
+        UserManager.getInstance().init();
+
+        DomainCfg.initializePhotoDomainModel();
+    }
+
+    /**
+     *
+     */
+    @Override
+    protected void shutDown() throws Exception {
+        saveAll();
+
+        super.shutDown();
     }
 }

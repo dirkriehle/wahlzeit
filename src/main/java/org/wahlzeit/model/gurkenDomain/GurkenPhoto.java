@@ -24,6 +24,7 @@
 
 package org.wahlzeit.model.gurkenDomain;
 
+import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Subclass;
 import org.wahlzeit.model.Location;
 import org.wahlzeit.model.Photo;
@@ -34,6 +35,7 @@ import java.util.regex.Pattern;
 /**
  * A gurkenphoto represents a user-provided (uploaded) photo of a cucumber.
  */
+@Entity
 @Subclass
 public class GurkenPhoto extends Photo {
 

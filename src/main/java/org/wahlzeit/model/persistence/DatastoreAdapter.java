@@ -26,7 +26,7 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Work;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import org.wahlzeit.services.CloudDataBase;
+import org.wahlzeit.services.CloudDB;
 import org.wahlzeit.services.LogBuilder;
 
 import java.io.IOException;
@@ -36,115 +36,120 @@ import java.util.logging.Logger;
 
 /**
  * Adapter for the Google Datastore. Use default constructor to create an instance.
+ * 
  * @review
  */
 public class DatastoreAdapter extends ImageStorage {
 
-    private static final Logger log = Logger.getLogger(DatastoreAdapter.class.getName());
+	private static final Logger log = Logger.getLogger(DatastoreAdapter.class.getName());
 
-    @Override
-    protected void doWriteImage(Serializable image, String photoIdAsString, int size)
-            throws IOException, InvalidParameterException {
-        if (image instanceof Image) {
-            final ImageWrapper imageWrapper = new ImageWrapper(photoIdAsString + size);
-            imageWrapper.setImage((Image) image);
 
-            ObjectifyService.run(new Work<Boolean>() {
-                @Override
-                public Boolean run() {
-                    CloudDataBase.getOpActions().save().entity(imageWrapper).now();
-                    return null;
-                }
-            });
+	@Override
+	protected void doWriteImage(Serializable image, String photoIdAsString, int size)
+			throws IOException, InvalidParameterException {
+		if (image instanceof Image) {
+			final ImageWrapper imageWrapper = new ImageWrapper(photoIdAsString + size);
+			imageWrapper.setImage((Image) image);
 
-            log.config(LogBuilder.createSystemMessage().addMessage("image successfully written").toString());
-        } else {
-            log.warning(LogBuilder.createSystemMessage().
-                    addMessage("did not get an Image type to store").
-                    addParameter("image type", image.toString()).toString());
-        }
-    }
+			ObjectifyService.run(new Work<Boolean>() {
+				@Override
+				public Boolean run() {
+					CloudDB.getOpActions().save().entity(imageWrapper).now();
+					return null;
+				}
+			});
 
-    @Override
-    protected Image doReadImage(final String photoIdAsString, final int size) throws IOException {
-        Image result = null;
+			log.config(LogBuilder.createSystemMessage().addMessage("image successfully written").toString());
+		} else {
+			log.warning(LogBuilder.createSystemMessage().
+					addMessage("did not get an Image type to store").
+					addParameter("image type", image.toString()).toString());
+		}
+	}
 
-        ImageWrapper imageWrapper = ObjectifyService.run(new Work<ImageWrapper>() {
-            @Override
-            public ImageWrapper run() {
-                return CloudDataBase.getOpActions().load().type(ImageWrapper.class).id(photoIdAsString + size).now();
-            }
-        });
+	@Override
+	protected Image doReadImage(final String photoIdAsString, final int size) throws IOException {
+		Image result = null;
 
-        if (imageWrapper == null) {
-            log.info(LogBuilder.createSystemMessage().addMessage("does not exist!").toString());
-        } else {
-            result = imageWrapper.getImage();
-            if (result != null) {
-                log.config(LogBuilder.createSystemMessage().addMessage("image successfully read").toString());
-            } else {
-                log.warning(LogBuilder.createSystemMessage().addMessage("ImageWrapper contains no Image").toString());
-            }
-        }
-        return result;
-    }
+		ImageWrapper imageWrapper = ObjectifyService.run(new Work<ImageWrapper>() {
+			@Override
+			public ImageWrapper run() {
+				return CloudDB.getOpActions().load().type(ImageWrapper.class).id(photoIdAsString + size).now();
+			}
+		});
 
-    @Override
-    protected boolean doDoesImageExist(String photoIdAsString, int size) {
-        Image image = null;
-        boolean result = false;
-        try {
-            image = doReadImage(photoIdAsString, size);
-        } catch (IOException e) {
-            log.warning(
-                    LogBuilder.createSystemMessage().addException("IOException when checking for Image existance", e)
-                            .toString());
-        }
-        if (image != null) {
-            result = true;
-        }
-        log.config(LogBuilder.createSystemMessage().addParameter("does image exist", result).toString());
-        return result;
-    }
+		if (imageWrapper == null) {
+			log.info(LogBuilder.createSystemMessage().addMessage("does not exist!").toString());
+		} else {
+			result = imageWrapper.getImage();
+			if (result != null) {
+				log.config(LogBuilder.createSystemMessage().addMessage("image successfully read").toString());
+			} else {
+				log.warning(LogBuilder.createSystemMessage().addMessage("ImageWrapper contains no Image").toString());
+			}
+		}
+		return result;
+	}
 
-    /**
-     * Wrapper class to store {@link Image}s in the Google Datastore with Objectify.
-     * @review
-     */
-    @Entity
-    public static class ImageWrapper {
+	@Override
+	protected boolean doDoesImageExist(String photoIdAsString, int size) {
+		Image image = null;
+		boolean result = false;
+		try {
+			image = doReadImage(photoIdAsString, size);
+		} catch (IOException e) {
+			log.warning(
+					LogBuilder.createSystemMessage().addException("IOException when checking for Image existance", e)
+							.toString());
+		}
+		if (image != null) {
+			result = true;
+		}
+		log.config(LogBuilder.createSystemMessage().addParameter("does image exist", result).toString());
+		return result;
+	}
 
-        @Id
-        private String id;
-        private byte[] imageData;
-        // see https://cloud.google.com/datastore/docs/tools/administration
-        public final int maxEntitySize = 1024 * 1024; // = 1 MB
+	/**
+	 * Wrapper class to store {@link Image}s in the Google Datastore with Objectify.
+	 * 
+ 	 * @review
+	 */
+	@Entity
+	public static class ImageWrapper {
 
-        public ImageWrapper() {
-            // just for Objectify to load it from Datastore
-        }
+		@Id
+		private String id;
+		private byte[] imageData;
+		// see https://cloud.google.com/datastore/docs/tools/administration
+		public final int maxEntitySize = 1024 * 1024; // = 1 MB
 
-        public ImageWrapper(String id) {
-            this.id = id;
-        }
+		public ImageWrapper() {
+			// just for Objectify to load it from Datastore
+		}
 
-        /**
-         * @methodtype get
-         */
-        public Image getImage() {
-            return ImagesServiceFactory.makeImage(imageData);
-        }
+		public ImageWrapper(String id) {
+			this.id = id;
+		}
 
-        /**
-         * @methodtype set
-         * Can not handle images >= 1 MB because this is the upper limit of entities in Google Datastore.
-         */
-        public void setImage(Image image) throws ArrayIndexOutOfBoundsException {
-            if (image.getImageData().length >= maxEntitySize) {
-                throw new ArrayIndexOutOfBoundsException("Can not store images >= 1 MB in the Google Datastore.");
-            } else {
-                imageData = image.getImageData();
-            }
-        }
-    }
+		/**
+		 * @methodtype get
+		 */
+		public Image getImage() {
+			return ImagesServiceFactory.makeImage(imageData);
+		}
+
+		/**
+		 * @methodtype set
+		 *
+		 * Can not handle images >= 1 MB because this is the upper limit of entities in Google Datastore.
+		 */
+		public void setImage(Image image) throws ArrayIndexOutOfBoundsException {
+			if(image.getImageData().length >= maxEntitySize) {
+				throw new ArrayIndexOutOfBoundsException("Can not store images >= 1 MB in the Google Datastore.");
+			}
+			else {
+				imageData = image.getImageData();
+			}
+		}
+	}
 }

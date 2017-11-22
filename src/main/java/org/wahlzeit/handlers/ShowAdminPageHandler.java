@@ -26,7 +26,6 @@ package org.wahlzeit.handlers;
 
 import org.wahlzeit.main.ServiceMain;
 import org.wahlzeit.model.*;
-import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.utils.StringUtil;
 import org.wahlzeit.webparts.WebPart;
@@ -47,27 +46,6 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
      */
     public ShowAdminPageHandler() {
         initialize(PartUtil.SHOW_ADMIN_PAGE_FILE, AccessRights.ADMINISTRATOR);
-    }
-
-    /**
-     *
-     */
-    @Override
-    protected void makeWebPageBody(UserSession us, WebPart page) {
-        Map args = us.getSavedArgs();
-        page.addStringFromArgs(args, UserSession.MESSAGE);
-
-        Object userId = us.getSavedArg("userId");
-        if (!StringUtil.isNullOrEmptyString(userId)) {
-            page.addStringFromArgs(args, "userId");
-            page.addWritable("object", makeAdminUserProfile(us));
-        }
-
-        Object photoId = us.getSavedArg("photoId");
-        if (!StringUtil.isNullOrEmptyString(photoId)) {
-            page.addStringFromArgs(args, "photoId");
-            page.addWritable("object", makeAdminUserPhoto(us));
-        }
     }
 
     /**
@@ -94,7 +72,7 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
         WebFormHandler handler = getFormHandler(PartUtil.NULL_FORM_NAME);
 
         String photoId = us.getSavedArg("photoId").toString();
-        Photo photo = DomainCfg.PhotoManager.getPhoto(photoId);
+        Photo photo = PhotoManager.getInstance().getPhoto(photoId);
         if (photo != null) {
             handler = getFormHandler(PartUtil.ADMIN_USER_PHOTO_FORM_NAME);
         }
@@ -122,7 +100,7 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
      */
     protected String performAdminUserPhotoRequest(UserSession us, Map args) {
         String photoId = us.getAndSaveAsString(args, "photoId");
-        Photo photo = DomainCfg.PhotoManager.getPhoto(photoId);
+        Photo photo = PhotoManager.getInstance().getPhoto(photoId);
         if (photo == null) {
             us.setMessage(us.getClient().getLanguageConfiguration().getPhotoIsUnknown());
         }
@@ -159,6 +137,27 @@ public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebF
 
         us.setMessage("Shutting down...");
         return PartUtil.SHOW_NOTE_PAGE_NAME;
+    }
+
+    /**
+     *
+     */
+    @Override
+    protected void makeWebPageBody(UserSession us, WebPart page) {
+        Map args = us.getSavedArgs();
+        page.addStringFromArgs(args, UserSession.MESSAGE);
+
+        Object userId = us.getSavedArg("userId");
+        if (!StringUtil.isNullOrEmptyString(userId)) {
+            page.addStringFromArgs(args, "userId");
+            page.addWritable("object", makeAdminUserProfile(us));
+        }
+
+        Object photoId = us.getSavedArg("photoId");
+        if (!StringUtil.isNullOrEmptyString(photoId)) {
+            page.addStringFromArgs(args, "photoId");
+            page.addWritable("object", makeAdminUserPhoto(us));
+        }
     }
 
     /**

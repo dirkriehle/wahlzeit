@@ -26,10 +26,13 @@ package org.wahlzeit.model.gurkenDomain;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoFactory;
 import org.wahlzeit.model.PhotoId;
+import org.wahlzeit.testEnvironmentProvider.DependencyInjectionRule;
 
 /**
  * All test cases of the class {@link GurkenPhotoFactory}.
@@ -39,12 +42,13 @@ public class GurkenPhotoFactoryTest extends GurkenDomainTest {
     GurkenPhotoFactory gurkenPhotoFactory;
     PhotoId photoID_one;
 
+    @ClassRule
+    public static TestRule rule = new DependencyInjectionRule();
+
     @Before
-
     public void setUp() {
-        gurkenPhotoFactory = GurkenPhotoFactory.getInstance();
+        gurkenPhotoFactory = (GurkenPhotoFactory) PhotoFactory.getInstance();
         photoID_one = PhotoId.getNextId();
-
     }
 
     @Test

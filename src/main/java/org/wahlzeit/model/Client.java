@@ -29,7 +29,6 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Parent;
-import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.Language;
 import org.wahlzeit.services.ObjectManager;
@@ -75,35 +74,6 @@ public abstract class Client implements Serializable, Persistent {
      */
     Client() {
         // do nothing
-    }
-
-    /**
-     * @methodtype initialization
-     */
-    protected void initialize(String id, String nickName, EmailAddress emailAddress, AccessRights accessRights,
-                              Client previousClient) {
-        this.id = id;
-        this.nickName = nickName;
-        this.accessRights = accessRights;
-        this.emailAddress = emailAddress;
-
-        // use some of the existing properties for the new user
-        if (previousClient != null) {
-            setLanguage(previousClient.getLanguage());
-            setPraisedPhotoIds(previousClient.getPraisedPhotoIds());
-            setPhotoSize(previousClient.getPhotoSize());
-        }
-
-        incWriteCount();
-
-        UserManager.getInstance().addClient(this);
-    }
-
-    /**
-     * @methodtype set
-     * @methodpoperty hook
-     */
-    protected void doSetLanguage(Language newLanguage) {
     }
 
     /**
@@ -184,30 +154,6 @@ public abstract class Client implements Serializable, Persistent {
      */
     public EmailAddress getEmailAddress() {
         return emailAddress;
-    }
-
-    /**
-     *
-     */
-    @Override
-    public boolean isDirty() {
-        return writeCount != 0;
-    }
-
-    /**
-     *
-     */
-    @Override
-    public void incWriteCount() {
-        writeCount++;
-    }
-
-    /**
-     *
-     */
-    @Override
-    public void resetWriteCount() {
-        writeCount = 0;
     }
 
     /**
@@ -297,7 +243,7 @@ public abstract class Client implements Serializable, Persistent {
         Photo result = null;
         while (indexOfLastPraisedPhoto >= 0 && result == null) {
             PhotoId lastPraisedPhotoId = praisedPhotoIds.get(indexOfLastPraisedPhoto);
-            result = DomainCfg.PhotoManager.getPhoto(lastPraisedPhotoId);
+            result = PhotoManager.getInstance().getPhoto(lastPraisedPhotoId);
             if (!result.isVisible()) {
                 result = null;
                 indexOfLastPraisedPhoto--;
@@ -334,5 +280,58 @@ public abstract class Client implements Serializable, Persistent {
         if (!skippedPhotoIds.contains(skippedPhotoId)) {
             skippedPhotoIds.add(skippedPhotoId);
         }
+    }
+
+    /**
+     * @methodtype initialization
+     */
+    protected void initialize(String id, String nickName, EmailAddress emailAddress, AccessRights accessRights,
+                              Client previousClient) {
+        this.id = id;
+        this.nickName = nickName;
+        this.accessRights = accessRights;
+        this.emailAddress = emailAddress;
+
+        // use some of the existing properties for the new user
+        if (previousClient != null) {
+            setLanguage(previousClient.getLanguage());
+            setPraisedPhotoIds(previousClient.getPraisedPhotoIds());
+            setPhotoSize(previousClient.getPhotoSize());
+        }
+
+        incWriteCount();
+
+        UserManager.getInstance().addClient(this);
+    }
+
+    /**
+     * @methodtype set
+     * @methodpoperty hook
+     */
+    protected void doSetLanguage(Language newLanguage) {
+    }
+
+    /**
+     *
+     */
+    @Override
+    public boolean isDirty() {
+        return writeCount != 0;
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void incWriteCount() {
+        writeCount++;
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void resetWriteCount() {
+        writeCount = 0;
     }
 }

@@ -24,7 +24,6 @@
 
 package org.wahlzeit.model;
 
-import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.utils.StringUtil;
 
@@ -65,67 +64,6 @@ public class PhotoFilter implements Serializable {
      */
     public PhotoFilter() {
         resetDisplayablePhotoIds();
-    }
-
-    /**
-     *
-     */
-    protected void collectFilterConditions(List<String> filterConditions) {
-        String un = getUserName();
-        if (!StringUtil.isNullOrEmptyString(un)) {
-            filterConditions.add("un:" + Tags.asTag(un));
-        }
-
-        String[] tags = getTags().asArray();
-        for (int i = 0; i < tags.length; i++) {
-            filterConditions.add("tg:" + tags[i]);
-        }
-    }
-
-    /**
-     *
-     */
-    protected List<PhotoId> getFilteredPhotoIds() {
-        // get all tags that match the filter conditions
-        List<PhotoId> result = new LinkedList<>();
-        int noFilterConditions = getFilterConditions().size();
-        log.config(LogBuilder.createSystemMessage().
-                addParameter("Number of filter conditions", String.valueOf(noFilterConditions)).toString());
-
-        Collection<PhotoId> candidates;
-        if (noFilterConditions == 0) {
-            candidates = DomainCfg.PhotoManager.getPhotoCache().keySet();
-        } else {
-            List<Tag> tags = new LinkedList<>();
-            candidates = new LinkedList<>();
-            for (String condition : getFilterConditions()) {
-                DomainCfg.PhotoManager.addTagsThatMatchCondition(tags, condition);
-            }
-            // get the list of all photo ids that correspond to the tags
-            for (Tag tag : tags) {
-                candidates.add(PhotoId.getIdFromString(tag.getPhotoId()));
-            }
-        }
-
-        int newPhotos = 0;
-        for (PhotoId candidateId : candidates) {
-            Photo photoCandidate = DomainCfg.PhotoManager.getPhoto(candidateId);
-            if (!processedPhotoIds.contains(candidateId) && !skippedPhotoIds.contains(candidateId) &&
-                    photoCandidate.isVisible()) {
-                result.add(candidateId);
-                ++newPhotos;
-            }
-        }
-        int skippedPhotos = skippedPhotoIds.size();
-        if (newPhotos == 0 && skippedPhotos > 0) {
-            result.addAll(skippedPhotoIds);
-            newPhotos = skippedPhotos;
-        }
-
-        log.config(LogBuilder.createSystemMessage().addParameter("Number of photos to show", newPhotos)
-                .toString());
-
-        return result;
     }
 
     /**
@@ -271,5 +209,66 @@ public class PhotoFilter implements Serializable {
         if (!skippedPhotoIds.contains(skippedPhotoId)) {
             skippedPhotoIds.add(skippedPhotoId);
         }
+    }
+
+    /**
+     *
+     */
+    protected void collectFilterConditions(List<String> filterConditions) {
+        String un = getUserName();
+        if (!StringUtil.isNullOrEmptyString(un)) {
+            filterConditions.add("un:" + Tags.asTag(un));
+        }
+
+        String[] tags = getTags().asArray();
+        for (int i = 0; i < tags.length; i++) {
+            filterConditions.add("tg:" + tags[i]);
+        }
+    }
+
+    /**
+     *
+     */
+    protected List<PhotoId> getFilteredPhotoIds() {
+        // get all tags that match the filter conditions
+        List<PhotoId> result = new LinkedList<>();
+        int noFilterConditions = getFilterConditions().size();
+        log.config(LogBuilder.createSystemMessage().
+                addParameter("Number of filter conditions", String.valueOf(noFilterConditions)).toString());
+
+        Collection<PhotoId> candidates;
+        if (noFilterConditions == 0) {
+            candidates = PhotoManager.getInstance().getPhotoCache().keySet();
+        } else {
+            List<Tag> tags = new LinkedList<>();
+            candidates = new LinkedList<>();
+            for (String condition : getFilterConditions()) {
+                PhotoManager.getInstance().addTagsThatMatchCondition(tags, condition);
+            }
+            // get the list of all photo ids that correspond to the tags
+            for (Tag tag : tags) {
+                candidates.add(PhotoId.getIdFromString(tag.getPhotoId()));
+            }
+        }
+
+        int newPhotos = 0;
+        for (PhotoId candidateId : candidates) {
+            Photo photoCandidate = PhotoManager.getInstance().getPhoto(candidateId);
+            if (!processedPhotoIds.contains(candidateId) && !skippedPhotoIds.contains(candidateId) &&
+                    photoCandidate.isVisible()) {
+                result.add(candidateId);
+                ++newPhotos;
+            }
+        }
+        int skippedPhotos = skippedPhotoIds.size();
+        if (newPhotos == 0 && skippedPhotos > 0) {
+            result.addAll(skippedPhotoIds);
+            newPhotos = skippedPhotos;
+        }
+
+        log.config(LogBuilder.createSystemMessage().addParameter("Number of photos to show", newPhotos)
+                .toString());
+
+        return result;
     }
 }

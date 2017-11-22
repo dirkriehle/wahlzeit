@@ -27,7 +27,6 @@ package org.wahlzeit.handlers;
 import com.google.appengine.api.images.Image;
 import org.wahlzeit.agents.AsyncTaskExecutor;
 import org.wahlzeit.model.*;
-import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.utils.StringUtil;
 import org.wahlzeit.webparts.WebPart;
@@ -74,7 +73,7 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
         }
 
         try {
-            PhotoManager pm = DomainCfg.PhotoManager;
+            PhotoManager pm = PhotoManager.getInstance();
             String fileName = us.getAsString(args, "fileName");
             User user = (User) us.getClient();
             Image uploadedImage = user.getUploadedImage();
