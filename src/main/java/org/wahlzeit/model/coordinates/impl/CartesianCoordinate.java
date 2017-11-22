@@ -34,7 +34,7 @@ import static org.wahlzeit.utils.MathUtils.square;
 /**
  * Represents a Cartesian coordinate of a three dimensional Cartesian coordinate system
  */
-public class CartesianCoordinate implements Coordinate {
+public class CartesianCoordinate extends AbstractCoordinate {
     private double y;
     private double x;
     private double z;
@@ -85,6 +85,22 @@ public class CartesianCoordinate implements Coordinate {
         this.z = z;
     }
 
+    /**
+     * @return hashes calculated from all ordinates
+     */
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(y);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(x);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(z);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
         return this;
@@ -97,14 +113,6 @@ public class CartesianCoordinate implements Coordinate {
     public SphericCoordinate asSphericCoordinate() {
         double[] sphericOrdinates = MathUtils.toSphericalOrdinates(getX(), getY(), getZ());
         return new SphericCoordinate(sphericOrdinates[0], sphericOrdinates[1], sphericOrdinates[2]);
-    }
-
-    /**
-     * @return -1, if otherCood is null or NoWhereCoordinate. The direct distance, otherwise.
-     */
-    @Override
-    public double getDistance(Coordinate otherCoord) {
-        return getCartesianDistance(otherCoord);
     }
 
     @Override
@@ -144,36 +152,8 @@ public class CartesianCoordinate implements Coordinate {
         return xOrdinatesAreEqual && yOrdinatesAreEqual && zOrdinatesAreEqual;
     }
 
-    /**
-     * @return hashes calculated from all ordinates
-     */
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        temp = Double.doubleToLongBits(y);
-        result = (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(x);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(z);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
-    }
-
-    /**
-     * {@link #isEqual(Coordinate) isEqual(Coordinate)}
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof CartesianCoordinate) {
-            return isEqual((Coordinate) obj);
-        }
-        return false;
-    }
-
     @Override
     public String toString() {
         return "(" + x + "," + y + "," + z + ")";
     }
-
 }

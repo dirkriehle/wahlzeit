@@ -30,7 +30,7 @@ import org.wahlzeit.utils.MathUtils;
 
 /**
  */
-public class SphericCoordinate implements Coordinate {
+public class SphericCoordinate extends AbstractCoordinate {
     private double longitude;
     private double latitude;
     private double radius;
@@ -81,45 +81,17 @@ public class SphericCoordinate implements Coordinate {
         this.latitude = latitude;
     }
 
-    /**
-     * https://de.wikipedia.org/wiki/Kugelkoordinaten section "Andere Konventionen"
-     */
     @Override
-    public CartesianCoordinate asCartesianCoordinate() {
-        double[] cartesianOrdinates = MathUtils.toCartesianOrdinates(getLatitude(), getLongitude(), getRadius());
-        return new CartesianCoordinate(cartesianOrdinates[0], cartesianOrdinates[1], cartesianOrdinates[2]);
-    }
-
-    @Override
-    public SphericCoordinate asSphericCoordinate() {
-        return this;
-    }
-
-
-    @Override
-    public double getDistance(Coordinate otherCoord) {
-        return asCartesianCoordinate().getDistance(otherCoord);
-    }
-
-    @Override
-    public double getCartesianDistance(Coordinate otherCoord) {
-        return asCartesianCoordinate().getDistance(otherCoord);
-    }
-
-    @Override
-    public double getSphericDistance(Coordinate otherCoord) {
-        SphericCoordinate otherSphCoord = otherCoord.asSphericCoordinate();
-
-        double latitudeAsRad = Math.toRadians(getLatitude());
-        double otherLatitudeAsRad = Math.toRadians(otherSphCoord.getLatitude());
-        double longitudeDiffAsRad = Math.toRadians(otherSphCoord.longitude - getLongitude());
-
-        double sinLatitudeProduct = Math.sin(latitudeAsRad) * Math.sin(otherLatitudeAsRad);
-        double cosLatitudeProduct = Math.cos(latitudeAsRad) * Math.cos(otherLatitudeAsRad);
-        double cosLongitudeDiff = Math.cos(longitudeDiffAsRad);
-        double acosSum = Math.acos(sinLatitudeProduct + (cosLatitudeProduct * cosLongitudeDiff));
-
-        return getRadius() * acosSum;
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(getLongitude());
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(getLatitude());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(getRadius());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 
     @Override
@@ -143,21 +115,38 @@ public class SphericCoordinate implements Coordinate {
     }
 
     @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        temp = Double.doubleToLongBits(getLongitude());
-        result = (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(getLatitude());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(getRadius());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
+    public double getSphericDistance(Coordinate otherCoord) {
+        SphericCoordinate otherSphCoord = otherCoord.asSphericCoordinate();
+
+        double latitudeAsRad = Math.toRadians(getLatitude());
+        double otherLatitudeAsRad = Math.toRadians(otherSphCoord.getLatitude());
+        double longitudeDiffAsRad = Math.toRadians(otherSphCoord.longitude - getLongitude());
+
+        double sinLatitudeProduct = Math.sin(latitudeAsRad) * Math.sin(otherLatitudeAsRad);
+        double cosLatitudeProduct = Math.cos(latitudeAsRad) * Math.cos(otherLatitudeAsRad);
+        double cosLongitudeDiff = Math.cos(longitudeDiffAsRad);
+        double acosSum = Math.acos(sinLatitudeProduct + (cosLatitudeProduct * cosLongitudeDiff));
+
+        return getRadius() * acosSum;
     }
 
     @Override
-    public boolean equals(Object o) {
-        return o instanceof Coordinate && isEqual((Coordinate) o);
+    public double getCartesianDistance(Coordinate otherCoord) {
+        return asCartesianCoordinate().getDistance(otherCoord);
+    }
+
+    @Override
+    public SphericCoordinate asSphericCoordinate() {
+        return this;
+    }
+
+    /**
+     * https://de.wikipedia.org/wiki/Kugelkoordinaten section "Andere Konventionen"
+     */
+    @Override
+    public CartesianCoordinate asCartesianCoordinate() {
+        double[] cartesianOrdinates = MathUtils.toCartesianOrdinates(getLatitude(), getLongitude(), getRadius());
+        return new CartesianCoordinate(cartesianOrdinates[0], cartesianOrdinates[1], cartesianOrdinates[2]);
     }
 
     @Override
