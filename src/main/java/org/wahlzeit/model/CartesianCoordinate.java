@@ -1,7 +1,7 @@
 
 package org.wahlzeit.model;
 
-public class CartesianCoordinate  implements Coordinate{
+public class CartesianCoordinate extends AbstractCoordinate{
 	
 	
 	
@@ -20,17 +20,17 @@ public class CartesianCoordinate  implements Coordinate{
 	     this.z=z;
 	}
 	 
-	public double getx()
+	public double getX()
 	{
 		return x;
 	}
 	
-	public double gety()
+	public double getY()
 	{
 		return y;
 	}
 	
-	public double getz()
+	public double getZ()
 	{
 		return z;
 	}
@@ -39,39 +39,27 @@ public class CartesianCoordinate  implements Coordinate{
 	public CartesianCoordinate asCartesianCoordinate() {
 		return this;
 	}
-
 	@Override
-	public double getCartesianDistacnce(Coordinate cord) {
+	public double getCartesianDistance(Coordinate cord) {
 		CartesianCoordinate cartCord = cord.asCartesianCoordinate();
-		return Math.sqrt(Math.pow(this.x - cartCord.getx(), 2) + Math.pow(this.y - cartCord.gety(), 2) + Math.pow(this.z- cartCord.getz(), 2));
-
+		return Math.sqrt(Math.pow(this.x - cartCord.getX(), 2) 
+				+ Math.pow(this.y - cartCord.getY(), 2) 
+				+ Math.pow(this.z- cartCord.getZ(), 2));
 	}
 
 	@Override
 	public SphericCoordinate asSphericCoordinate() {
-		// TODO Auto-generated method stub
-		return null;
+		 double radius = Math.sqrt(x * x + y * y + z * z);
+		 double latitude = Math.toDegrees(Math.acos(z / radius));
+		 double longitude = Math.toDegrees(Math.atan2(y, x));
+		 return new SphericCoordinate(latitude, longitude, radius);
 	}
-
-	@Override
-	public double getSphericDistacnce(Coordinate cord) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double getDistacnce(Coordinate cord) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	@Override
 	public boolean isEqual(Coordinate cord) {
-
 		CartesianCoordinate cartCord = cord.asCartesianCoordinate();
-		 if (this.x==cartCord.getx() && this.y==cartCord.gety() && this.z==cartCord.getz()) return true;
-		 else return false;
-		
+		 return isEqualOfDouble(this.x,cartCord.getX())
+				 &&isEqualOfDouble(this.y,cartCord.getY())
+				 && isEqualOfDouble(this.z,cartCord.getZ()); 
 	}
 	@Override
 	public int hashCode() {
@@ -96,6 +84,5 @@ public class CartesianCoordinate  implements Coordinate{
 			return false;
 		else return this.isEqual((CartesianCoordinate) obj);
 	}
-	
 
 }

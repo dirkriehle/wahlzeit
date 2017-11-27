@@ -32,6 +32,10 @@ UserStatusTest.class,
 ValueTest.class,
 GenderTest.class,
 GuestTest.class,
+CartesianCoordinateTest.class,
+SphericCoordinateTest.class,
+
+
 
 
 //persistence  package 

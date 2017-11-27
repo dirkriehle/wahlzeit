@@ -1,69 +1,78 @@
 
 package org.wahlzeit.model;
 
-public  class SphericCoordinate implements Coordinate{
+public class SphericCoordinate extends AbstractCoordinate{
 	
 	
 	
 	private double latitude =0;
 	private double longitude=0;
-    private final double radious = 6371; // Radius of the earth
+	private double radius = 0;
+	
+    private final double earthradius = 6371; // radius of the earth
 	
 	SphericCoordinate()
 	{
 		
 	}
-	
 	SphericCoordinate(double latitude, double longitude )
 	{
 	     this.latitude=latitude;	
 	     this.longitude=longitude;
+	     this.radius = earthradius;
+	}
+	SphericCoordinate(double latitude, double longitude,double radius )
+	{
+	     this.latitude=latitude;	
+	     this.longitude=longitude;
+	     this.radius = radius;
 	}
 	 
-	public double getlatitude()
+	public double getLatitude()
 	{
 		return latitude;
 	}
 	
-	public double getlongitude()
+	public double getLongitude()
 	{
 		return longitude;
 	}
 	
-	public double getradious()
+	public double getradius()
 	{
-		return radious;
+		return radius;
 	}
 	
-
-
 	@Override
 	public SphericCoordinate asSphericCoordinate() {
 		return this;
 	}
 
 	@Override
-	public double getSphericDistacnce(Coordinate cord) {
+	public double getSphericDistance(Coordinate cord) {
 
 		 SphericCoordinate sphercord = cord.asSphericCoordinate();
 		 double lat1 = Math.toRadians(this.latitude);
-	     double lat2 = Math.toRadians(sphercord.getlatitude());
-	     double latdist = Math.toRadians(this.latitude - sphercord.getlatitude());
-	     double longdist = Math.toRadians(this.longitude - sphercord.getlongitude());
+	     double lat2 = Math.toRadians(sphercord.getLatitude());
+	     double latdist = Math.toRadians(this.latitude - sphercord.getLatitude());
+	     double longdist = Math.toRadians(this.longitude - sphercord.getLongitude());
 
-	     double a = Math.sin(latdist/2)*Math.sin(latdist/2) + Math.cos(lat1)*Math.cos(lat2)*Math.sin(longdist/2)* Math.sin(longdist/2);
+	     double a = Math.sin(latdist/2)*Math.sin(latdist/2) 
+	    		 + Math.cos(lat1)*Math.cos(lat2)
+	    		 *Math.sin(longdist/2)* Math.sin(longdist/2);
 		
 	     double c = 2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-	     return radious*c;
+	     return radius*c;
 	}
 
-// Radius of earth is constant so it is not in the comparison condition
 	@Override
 	public boolean isEqual(Coordinate cord) {
 		
 		SphericCoordinate sphercord = cord.asSphericCoordinate();
 			
-		return (this.latitude == sphercord.getlatitude() && this.longitude == sphercord.getlongitude() );
+		return isEqualOfDouble(this.latitude ,sphercord.getLatitude())
+				&& isEqualOfDouble(this.longitude ,sphercord.getLongitude())
+				&&isEqualOfDouble(this.radius ,sphercord.getradius());
 	}
 
 	@Override
@@ -92,20 +101,11 @@ public  class SphericCoordinate implements Coordinate{
 
 	@Override
 	public CartesianCoordinate asCartesianCoordinate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		double x = radius * Math.sin(Math.toRadians(longitude)) * Math.cos(Math.toRadians(latitude));
+		double y = radius * Math.sin(Math.toRadians(longitude)) * Math.sin(Math.toRadians(latitude));
+		double z = radius * Math.cos(Math.toRadians(longitude));
+		return new CartesianCoordinate(x, y, z);
 
-	@Override
-	public double getCartesianDistacnce(Coordinate cord) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public double getDistacnce(Coordinate cord) {
-		// TODO Auto-generated method stub
-		return 0;
-	}	
+}
 
 }

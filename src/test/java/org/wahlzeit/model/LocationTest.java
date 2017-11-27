@@ -50,9 +50,9 @@ public class LocationTest {
 	@Test
 	public void testNoCordinateLocation() {
 		
-	assert(cartlo4.cartCord.getx()==0);
-	assert(cartlo4.cartCord.gety()==0); 
-	assert(cartlo4.cartCord.getz()==0);
+	assert(cartlo4.cartCord.getX()==0);
+	assert(cartlo4.cartCord.getY()==0); 
+	assert(cartlo4.cartCord.getZ()==0);
 	}
 
 	/**
@@ -60,9 +60,9 @@ public class LocationTest {
 	 */
 	@Test
 	public void testXYCordinateLocation() {
-		assert(cartlo3.cartCord.getx()==-12);
-		assert(cartlo3.cartCord.gety()==15); 
-		assert(cartlo3.cartCord.getz()==0);
+		assert(cartlo3.cartCord.getX()==-12);
+		assert(cartlo3.cartCord.getY()==15); 
+		assert(cartlo3.cartCord.getZ()==0);
 		
 	}
 
@@ -71,9 +71,9 @@ public class LocationTest {
 	 */
 	@Test
 	public void testXYZCordinateLocation() {
-		assert(cartlo1.cartCord.getx()==1);
-		assert(cartlo1.cartCord.gety()==2); 
-		assert(cartlo1.cartCord.getz()==3);
+		assert(cartlo1.cartCord.getX()==1);
+		assert(cartlo1.cartCord.getY()==2); 
+		assert(cartlo1.cartCord.getZ()==3);
 		
 	}
 
@@ -83,9 +83,17 @@ public class LocationTest {
 	@Test
 	public void testLocationCoordinate() {
 		
-		assert(cartlo5.cartCord.getx()==10);
-		assert(cartlo5.cartCord.gety()==15); 
-		assert(cartlo5.cartCord.getz()==20);
+		assert(cartlo5.cartCord.getX()==10);
+		assert(cartlo5.cartCord.getY()==15); 
+		assert(cartlo5.cartCord.getZ()==20);
+	}
+	
+	@Test
+	public void testLocationSphericalCoordinate() {
+		
+		assert(spherloc2.spherCord.getLatitude() ==100);
+		assert(spherloc2.spherCord.getLongitude()==200); 
+		assert(spherloc2.spherCord.getradius()==6371);
 	}
 	
 	/**
@@ -95,7 +103,7 @@ public class LocationTest {
 	@Test
 	public void testGetDistanceForTheSameLocation() {
 		
-		assert(cartlo1.cartCord.getCartesianDistacnce(cartlo1.cartCord) == 0);
+		assert(cartlo1.cartCord.getCartesianDistance(cartlo1.cartCord) == 0);
 
 	}
 	
@@ -106,7 +114,7 @@ public class LocationTest {
 	@Test
 	public void testGetDistanceForDifferentLocation() {
 
-		assertEquals(23.2163, cartlo1.cartCord.getCartesianDistacnce (cartlo5.cartCord), 0.0001);
+		assertEquals(23.2163, cartlo1.cartCord.getCartesianDistance (cartlo5.cartCord), 0.0001);
 
 	}
 	
@@ -117,7 +125,7 @@ public class LocationTest {
 	@Test
 	public void testGetDistanceForZeroAndMinusLocation() {
 
-		assertEquals(19.2094, cartlo3.cartCord.getCartesianDistacnce(cartlo4.cartCord), 0.0001);
+		assertEquals(19.2094, cartlo3.cartCord.getCartesianDistance(cartlo4.cartCord), 0.0001);
 
 	}
 	
@@ -164,7 +172,7 @@ public class LocationTest {
 	@Test
 	public void testGetSphericDistance() {
 		
-		assertEquals(3655,spherloc1.spherCord.getSphericDistacnce(spherloc2.spherCord),0001);
+		assertEquals(3655,spherloc1.spherCord.getSphericDistance(spherloc2.spherCord),0001);
 
 	}
 	
