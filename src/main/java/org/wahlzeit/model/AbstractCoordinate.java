@@ -1,7 +1,5 @@
 package org.wahlzeit.model;
 
-import org.wahlzeit.model.Coordinate;
-
 public abstract class AbstractCoordinate implements Coordinate{
 	
   
@@ -21,8 +19,16 @@ public abstract class AbstractCoordinate implements Coordinate{
 	  return getSphericDistance(cord);
 		
 	}
+	/**
+	compare between two double with tolerance 0.0001
+	@post validate that the output is not null 
+	@Pre validate that val1 and val2 are not null
+	*/
 	public boolean isEqualOfDouble(double val1, double val2) {
-		return val1 == val2 ? true : Math.abs(val1 - val2) <= 0.0001;
+		assert(val1>=0 && val2>=0);
+		boolean result = val1 == val2 ? true : Math.abs(val1 - val2) <= 0.0001;
+		assert(result ==false || result ==true);
+		return result;
 		
 	}
 	@Override

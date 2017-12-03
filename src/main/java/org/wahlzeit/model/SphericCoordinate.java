@@ -1,6 +1,10 @@
 
 package org.wahlzeit.model;
 
+/**
+@Inv validate that SphericCoordinates is not null by assertClassInvariants
+*/
+
 public class SphericCoordinate extends AbstractCoordinate{
 	
 	
@@ -42,37 +46,62 @@ public class SphericCoordinate extends AbstractCoordinate{
 	{
 		return radius;
 	}
-	
+	/**
+	return Cartesian coordinate 
+	@Pre validate the cord is not null
+	@post validate that Spheric coordinate  is not null; include latitude , longitude and radius 
+	*/
 	@Override
 	public SphericCoordinate asSphericCoordinate() {
+		assertClassInvariants();	
+		assert(this instanceof SphericCoordinate);	
+		assertClassInvariants();	
 		return this;
 	}
-
+	/**
+	return the distance between two Spheric coordinate
+	@post validate that the output is double
+	*/
 	@Override
 	public double getSphericDistance(Coordinate cord) {
-
+	     assertClassInvariants();	
 		 SphericCoordinate sphercord = cord.asSphericCoordinate();
+		 assert(sphercord.latitude>=0 && sphercord.longitude>=0  && sphercord.radius>=0  );
 		 double lat1 = Math.toRadians(this.latitude);
 	     double lat2 = Math.toRadians(sphercord.getLatitude());
 	     double latdist = Math.toRadians(this.latitude - sphercord.getLatitude());
 	     double longdist = Math.toRadians(this.longitude - sphercord.getLongitude());
-
 	     double a = Math.sin(latdist/2)*Math.sin(latdist/2) 
 	    		 + Math.cos(lat1)*Math.cos(lat2)
 	    		 *Math.sin(longdist/2)* Math.sin(longdist/2);
 		
 	     double c = 2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-	     return radius*c;
+	     double result= radius*c;
+	     assert(result>=0);
+	     assertClassInvariants();	
+	     return result;
 	}
 
+	/**
+	check if the two coordinates are equal or not 
+	@post check that return type is boolean
+	@Pre validate the cord is not null
+	*/
 	@Override
 	public boolean isEqual(Coordinate cord) {
 		
-		SphericCoordinate sphercord = cord.asSphericCoordinate();
-			
-		return isEqualOfDouble(this.latitude ,sphercord.getLatitude())
-				&& isEqualOfDouble(this.longitude ,sphercord.getLongitude())
-				&&isEqualOfDouble(this.radius ,sphercord.getradius());
+		 SphericCoordinate sphercord = cord.asSphericCoordinate();
+	     assertClassInvariants();	
+		 assert(sphercord.latitude>=0 && sphercord.longitude>=0  && sphercord.radius>=0  );
+    	 assert(sphercord.latitude>=0 && sphercord.longitude>=0  && sphercord.radius>=0  );	
+    	 boolean result =   isEqualOfDouble(this.latitude ,sphercord.getLatitude())
+ 			            	&& isEqualOfDouble(this.longitude ,sphercord.getLongitude())
+ 			            	&&isEqualOfDouble(this.radius ,sphercord.getradius());
+    	 assert(result ==false || result ==true);
+         assertClassInvariants();	        
+		 return result;
+				
+		 
 	}
 
 	@Override
@@ -98,14 +127,34 @@ public class SphericCoordinate extends AbstractCoordinate{
 		else return this.isEqual((SphericCoordinate) obj);
 			
 	}
-
+	/**
+	return Cartesian coordinate 
+	@post validate that Cartesian coordinate  is not null; include x , y and z 
+	@Inv validate that  coordinates are not null by assertClassInvariants
+	*/
 	@Override
 	public CartesianCoordinate asCartesianCoordinate() {
+        assertClassInvariants();	  
 		double x = radius * Math.sin(Math.toRadians(longitude)) * Math.cos(Math.toRadians(latitude));
 		double y = radius * Math.sin(Math.toRadians(longitude)) * Math.sin(Math.toRadians(latitude));
 		double z = radius * Math.cos(Math.toRadians(longitude));
-		return new CartesianCoordinate(x, y, z);
+		CartesianCoordinate cartCord = new CartesianCoordinate(x, y, z);
+        assert (cartCord.getX()>=0 && cartCord.getY()>=0 && cartCord.getZ()>=0);
+        assertClassInvariants();	  
+		return cartCord;
 
 }
-
+	
+	/**
+	check that the coordinate is always not null
+	 * @return 
+	@Inv
+	*/
+	public void assertClassInvariants()
+	{
+	    assert(this.longitude>=0);
+	    assert(this.latitude>=0);
+	    assert(this.radius>=0);	    
+		
+	}
 }
