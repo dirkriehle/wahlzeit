@@ -51,13 +51,13 @@ public interface Coordinate {
     double getDistance(Coordinate otherCoord);
 
     /**
-     * @return -1 if otherCoord is Null or NoWhereCoord,
+     * @return -1 if otherCoord is NoWhereCoord,
      * else the direct distance between two points within the cartesian system
      */
     double getCartesianDistance(Coordinate otherCoord);
 
     /**
-     * @return -1 if otherCoord is Null or NoWhereCoord,
+     * @return -1 if otherCoord is NoWhereCoord,
      * else the distance between two points on a sphere surface
      * with the default radius {@link SphericCoordinate#EARTH_RADIUS_METER}
      */

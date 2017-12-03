@@ -69,13 +69,11 @@ public class NoWhereCoordinateTest {
     @Test
     public void distanceOfAnyCoord_andNoWhere_isMinus1() {
         CoordinateTest.checkDistance(octantIa, noWhere, -1, 0);
-        CoordinateTest.checkDistance(noWhere, octantIb, -1, 0);
     }
 
-    @Test
-    public void distanceOfAnyCoord_andNull_isMinus1() {
+    @Test(expected = IllegalStateException.class)
+    public void distanceOfAnyCoord_andNull_throwsIllegalStateException() {
         CoordinateTest.checkDistance(octantIa, null, -1, 0);
-        CoordinateTest.checkDistance(noWhere, null, -1, 0);
     }
 
     @Test

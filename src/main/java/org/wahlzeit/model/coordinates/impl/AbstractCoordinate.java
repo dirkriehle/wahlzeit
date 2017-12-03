@@ -25,6 +25,7 @@
 package org.wahlzeit.model.coordinates.impl;
 
 import org.wahlzeit.model.coordinates.Coordinate;
+import org.wahlzeit.utils.Assert;
 import org.wahlzeit.utils.MathUtils;
 
 public abstract class AbstractCoordinate implements Coordinate {
@@ -34,14 +35,18 @@ public abstract class AbstractCoordinate implements Coordinate {
      */
     protected abstract double doCalculateDistance(Coordinate otherCoord);
 
+    protected abstract void assertClassInvariants();
+
     @Override
     public double getDistance(Coordinate otherCoord) {
+        Assert.notNull(otherCoord);
         return getCartesianDistance(otherCoord);
     }
 
     @Override
     public double getCartesianDistance(Coordinate otherCoord) {
-        if (isNullOrNullCoordinate(otherCoord)) {
+        Assert.notNull(otherCoord);
+        if (isNullCoordinate(otherCoord)) {
             return -1;
         }
         return asCartesianCoordinate().doCalculateDistance(otherCoord);
@@ -49,7 +54,8 @@ public abstract class AbstractCoordinate implements Coordinate {
 
     @Override
     public double getSphericDistance(Coordinate otherCoord) {
-        if (isNullOrNullCoordinate(otherCoord)) {
+        Assert.notNull(otherCoord);
+        if (isNullCoordinate(otherCoord)) {
             return -1;
         }
         return asSphericCoordinate().doCalculateDistance(otherCoord);
@@ -60,7 +66,7 @@ public abstract class AbstractCoordinate implements Coordinate {
         if (this == otherCoord) {
             return true;
         }
-        if (isNullOrNullCoordinate(otherCoord)) {
+        if (isNullCoordinate(otherCoord)) {
             return false;
         }
         return getDistance(otherCoord) <= MathUtils.getPrecision();
@@ -91,8 +97,7 @@ public abstract class AbstractCoordinate implements Coordinate {
         return o instanceof Coordinate && isEqual((Coordinate) o);
     }
 
-    private boolean isNullOrNullCoordinate(Coordinate otherCoord) {
-        return otherCoord instanceof NoWhereCoordinate || otherCoord == null;
+    private boolean isNullCoordinate(Coordinate otherCoord) {
+        return otherCoord instanceof NoWhereCoordinate;
     }
-
 }

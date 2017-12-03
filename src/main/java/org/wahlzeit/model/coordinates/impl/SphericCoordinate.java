@@ -42,11 +42,10 @@ public class SphericCoordinate extends AbstractCoordinate {
         setRadius(EARTH_RADIUS_METER);
     }
 
-    public SphericCoordinate(double latitude, double longitude) {
-        this(latitude, longitude, EARTH_RADIUS_METER);
-    }
+    public SphericCoordinate(double latitude, double longitude) { this(latitude, longitude, EARTH_RADIUS_METER); }
 
     public SphericCoordinate(double latitude, double longitude, double radius) {
+        Assert.areValidDoubles(latitude, longitude, radius);
         setLatitude(latitude);
         setLongitude(longitude);
         setRadius(radius);
@@ -65,17 +64,17 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
     public void setLatitude(double latitude) {
-        Assert.inRangeMax(latitude, LATITUDE_MAX_VALUE);
+        assertLatitude(latitude);
         this.latitude = latitude;
     }
 
     public void setLongitude(double longitude) {
-        Assert.inRangeMax(longitude, LONGITUDE_MAX_VALUE, "Longitude");
+        assertLongitude(longitude);
         this.longitude = longitude;
     }
 
     public void setRadius(double radius) {
-        Assert.notNegative(radius);
+        assertRadius(radius);
         this.radius = radius;
     }
 
@@ -84,7 +83,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @return array of doubles in format: [ x , y , z ]
      */
     public static double[] toCartesianOrdinates(double latitudeInDegree, double longitudeInDegree, double radius) {
-        //TODO, Add asserts
+        Assert.areValidDoubles(latitudeInDegree, longitudeInDegree, radius);
         double longitudeRad = Math.toRadians(longitudeInDegree);
         double latitudeRad = Math.toRadians(latitudeInDegree);
         double x = radius * Math.sin(longitudeRad) * Math.cos(latitudeRad);
@@ -109,11 +108,19 @@ public class SphericCoordinate extends AbstractCoordinate {
         return getRadius() * acosSum;
     }
 
+    @Override
+    protected void assertClassInvariants() {
+        assertLatitude(getLatitude());
+        assertLongitude(getLongitude());
+        assertRadius(getRadius());
+    }
+
     /**
      * <a href=https://de.wikipedia.org/wiki/Kugelkoordinaten section "Andere Konventionen">source</a>
      */
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
+        assertClassInvariants();
         double[] cartesianOrdinates = toCartesianOrdinates(getLatitude(), getLongitude(), getRadius());
         return new CartesianCoordinate(cartesianOrdinates[0], cartesianOrdinates[1], cartesianOrdinates[2]);
     }
@@ -126,5 +133,17 @@ public class SphericCoordinate extends AbstractCoordinate {
     @Override
     public String toString() {
         return "(" + latitude + "," + longitude + "), r= " + radius + ")";
+    }
+
+    private void assertLatitude(double latitude) {
+        Assert.inRangeMax(latitude, LATITUDE_MAX_VALUE);
+    }
+
+    private void assertLongitude(double longitude) {
+        Assert.inRangeMax(longitude, LONGITUDE_MAX_VALUE, "Longitude");
+    }
+
+    private void assertRadius(double radius) {
+        Assert.notNegative(radius);
     }
 }

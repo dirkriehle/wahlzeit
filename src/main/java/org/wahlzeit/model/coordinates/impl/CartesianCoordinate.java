@@ -43,6 +43,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     public CartesianCoordinate(double x, double y, double z) {
+        Assert.areValidDoubles(x, y, z);
         setY(y);
         setX(x);
         setZ(z);
@@ -64,7 +65,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * Sets ordinate Value within the range [-Coordinate.MAX_VALUE:Coordinate.MAX_VALUE]
      */
     public void setX(double x) {
-        Assert.inRangeMax(x, MAX_VALUE);
+        assertOrdinate(x);
         this.x = x;
     }
 
@@ -72,7 +73,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * Sets ordinate Value within the range [-Coordinate.MAX_VALUE:Coordinate.MAX_VALUE]
      */
     public void setY(double y) {
-        Assert.inRangeMax(y, MAX_VALUE);
+        assertOrdinate(y);
         this.y = y;
     }
 
@@ -80,7 +81,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * Sets ordinate Value within the range [-Coordinate.MAX_VALUE:Coordinate.MAX_VALUE]
      */
     public void setZ(double z) {
-        Assert.inRangeMax(z, MAX_VALUE);
+        assertOrdinate(z);
         this.z = z;
     }
 
@@ -89,6 +90,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @return array of doubles in format: [ latitude , longitude , radius ]
      */
     public static double[] toSphericalOrdinates(double x, double y, double z) {
+        Assert.areValidDoubles(x, y, z);
         double radius = MathUtils.sqrtOfSum(square(x), square(y), square(z));
         double longitude = radius == 0 ? 0 : Math.toDegrees(Math.acos(z / radius));
         double latitude = x == 0 ? 0 : Math.toDegrees(Math.atan(y / x));
@@ -106,6 +108,13 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     @Override
+    protected void assertClassInvariants() {
+        assertOrdinate(getX());
+        assertOrdinate(getY());
+        assertOrdinate(getZ());
+    }
+
+    @Override
     public CartesianCoordinate asCartesianCoordinate() {
         return this;
     }
@@ -115,6 +124,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      */
     @Override
     public SphericCoordinate asSphericCoordinate() {
+        assertClassInvariants();
         double[] sphericOrdinates = toSphericalOrdinates(getX(), getY(), getZ());
         return new SphericCoordinate(sphericOrdinates[0], sphericOrdinates[1], sphericOrdinates[2]);
     }
@@ -122,5 +132,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
     @Override
     public String toString() {
         return "(" + x + "," + y + "," + z + ")";
+    }
+
+    private void assertOrdinate(double ordinate) {
+        Assert.inRangeMax(ordinate, MAX_VALUE);
     }
 }

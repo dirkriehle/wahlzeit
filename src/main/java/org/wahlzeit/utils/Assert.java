@@ -70,4 +70,21 @@ public class Assert {
             throw new IllegalStateException(errorMessage);
         }
     }
+
+    public static void notNull(Object notNullobject) {
+        if (notNullobject == null) {
+            throw new IllegalStateException("Object must not be null");
+        }
+    }
+
+    /**
+     * checks with asserts that all double params are finite and a number
+     * @param doubleValues one ore multiply double values
+     */
+    public static void areValidDoubles(double... doubleValues) {
+        for (double doubleValue : doubleValues) {
+            assert !Double.isInfinite(doubleValue);
+            assert !Double.isNaN(doubleValue);
+        }
+    }
 }
