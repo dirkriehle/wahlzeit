@@ -38,7 +38,7 @@ public class SphericCoordinateTest extends CoordinateTest {
     private SphericCoordinate ruesselsheimOpelbruecke;
     final double[] RADIANS = {-1.0, 0, 0.1, 1, 123456};
     final double VALUE = 2.22;
-    final double MIN_PRECISION = 0.00000001;
+    final double MIN_PRECISION = 0.0000001;
     final double LATITUDE_MAX = 180.00;
     final double LONGITUDE_MAX = 90.00;
     SphericCoordinate unsettedCoord;
@@ -189,5 +189,27 @@ public class SphericCoordinateTest extends CoordinateTest {
         double expected = 2317722;
         double tolerance = expected * 0.1;
         Assert.assertEquals(expected, berlinBarndBurgSpheric.getCartesianDistance(lissabonBrueckeSpheric), tolerance);
+    }
+
+    /**
+     * http://www.learningaboutelectronics.com/Articles/Spherical-to-cartesian-rectangular-coordinate-converter-calculator.php#answer
+     */
+    @Test
+    public void calculationForConvertingSpheric_toCartFromInternetExample_willHaveSameResult() {
+        double theta = 20.00; //longitude
+        double phi = 60.00; //latitude
+        double r = 12;
+
+        double x = r * Math.sin(Math.toRadians(theta)) * Math.cos(Math.toRadians(phi));
+        double y = r * Math.sin(Math.toRadians(theta)) * Math.sin(Math.toRadians(phi));
+        double z = r * Math.cos(Math.toRadians(theta));
+
+        assertEqual(2.05, x);
+        assertEqual(3.55, y);
+        assertEqual(11.28, z);
+
+        assertEqual(x, SphericCoordinate.toCartesianOrdinates(phi, theta, r)[0]);
+        assertEqual(y, SphericCoordinate.toCartesianOrdinates(phi, theta, r)[1]);
+        assertEqual(z, SphericCoordinate.toCartesianOrdinates(phi, theta, r)[2]);
     }
 }

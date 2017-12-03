@@ -24,8 +24,6 @@
 
 package org.wahlzeit.utils;
 
-import org.wahlzeit.model.coordinates.impl.SphericCoordinate;
-
 public class Assert {
     /**
      * checks whether a value is lesser then zero
@@ -46,7 +44,7 @@ public class Assert {
     }
 
     public static void inRangeMax(double value, double maxValue, String valueSpecification) {
-        if (maxValue - Math.abs(value) < -SphericCoordinate.PRECISION) {
+        if (maxValue - Math.abs(value) < -MathUtils.getPrecision()) {
             String errorMessage = "";
             if (valueSpecification.length() > 0) {
                 errorMessage = String.format(valueSpecification + " exceeded the defined range. ");

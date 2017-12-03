@@ -88,12 +88,13 @@ public class CoordinateTest {
         Assert.assertEquals(expected, berlinSphericConverted.getSphericDistance(lissabonSphericConverted), tolerance);
     }
 
-
-
-
     protected static void checkDistance(Coordinate first, Coordinate second, double expectedDistance, double tolerance) {
         double distance = first.getDistance(second);
         Assert.assertEquals(expectedDistance, distance, tolerance);
+    }
+
+    protected static void assertEqual(double expected, double actual) {
+        Assert.assertEquals(expected, actual, 0.01);
     }
 
     private Coordinate convertToCartesian(Coordinate sphericCoord) {

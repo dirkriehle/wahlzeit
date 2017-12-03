@@ -32,8 +32,9 @@ import org.wahlzeit.model.coordinates.impl.SphericCoordinate;
 
 import java.util.HashMap;
 
-import static org.wahlzeit.model.coordinates.CoordinateTest.VALUE_EXCEEDING_COORD_MAXVALUE;
-import static org.wahlzeit.model.coordinates.CoordinateTest.checkDistance;
+import static org.wahlzeit.model.coordinates.CoordinateTest.*;
+import static org.wahlzeit.utils.MathUtils.sqrtOfSum;
+import static org.wahlzeit.utils.MathUtils.square;
 
 public class CartesianCoordinateTest {
 
@@ -263,4 +264,22 @@ public class CartesianCoordinateTest {
 //        Assert.assertEquals(expected, berlinBarndBurgCartesian.getSphericDistance(lissabonBrueckeCartesian), tolerance);
     }
 
+    /**
+     * <a href=http://www.learningaboutelectronics.com/Articles/Cartesian-rectangular-to-spherical-coordinate-converter-calculator.php#answer>source</a>
+     */
+    @Test
+    public void calculationForConvertingCart_toSphericFromInternetExample_willHaveSameResult() {
+        double x = 2.0, y = 3.0, z = 8.0;
+        double r = sqrtOfSum(square(x), square(y), square(z));
+        double theta = Math.acos(z / r);
+        double phi = Math.atan(y / 2);
+
+        assertEqual(8.77, r);
+        assertEqual(24.26, Math.toDegrees(theta));
+        assertEqual(56.31, Math.toDegrees(phi));
+
+        assertEqual(8.77, CartesianCoordinate.toSphericalOrdinates(x, y, z)[2]);
+        assertEqual(24.26, CartesianCoordinate.toSphericalOrdinates(x, y, z)[1]);
+        assertEqual(56.31, CartesianCoordinate.toSphericalOrdinates(x, y, z)[0]);
+    }
 }

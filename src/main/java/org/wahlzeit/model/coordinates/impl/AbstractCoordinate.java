@@ -25,40 +25,74 @@
 package org.wahlzeit.model.coordinates.impl;
 
 import org.wahlzeit.model.coordinates.Coordinate;
+import org.wahlzeit.utils.MathUtils;
 
 public abstract class AbstractCoordinate implements Coordinate {
 
-    @Override
-    public abstract int hashCode();
-
     /**
-     * {@link #isEqual(Coordinate) isEqual(Coordinate)}
+     * @return distance, defined by its caller
      */
-    @Override
-    public boolean equals(Object o) {
-        return o instanceof Coordinate && isEqual((Coordinate) o);
-    }
+    protected abstract double doCalculateDistance(Coordinate otherCoord);
 
-    @Override
-    public abstract CartesianCoordinate asCartesianCoordinate();
-
-    @Override
-    public abstract SphericCoordinate asSphericCoordinate();
-
-    /**
-     * @return -1, if otherCood is null or NoWhereCoordinate. The direct distance, otherwise.
-     */
     @Override
     public double getDistance(Coordinate otherCoord) {
         return getCartesianDistance(otherCoord);
     }
 
     @Override
-    public abstract double getCartesianDistance(Coordinate otherCoord);
+    public double getCartesianDistance(Coordinate otherCoord) {
+        if (isNullOrNullCoordinate(otherCoord)) {
+            return -1;
+        }
+        return asCartesianCoordinate().doCalculateDistance(otherCoord);
+    }
 
     @Override
-    public abstract double getSphericDistance(Coordinate otherCoord);
+    public double getSphericDistance(Coordinate otherCoord) {
+        if (isNullOrNullCoordinate(otherCoord)) {
+            return -1;
+        }
+        return asSphericCoordinate().doCalculateDistance(otherCoord);
+    }
 
     @Override
-    public abstract boolean isEqual(Coordinate otherCoord);
+    public boolean isEqual(Coordinate otherCoord) {
+        if (this == otherCoord) {
+            return true;
+        }
+        if (isNullOrNullCoordinate(otherCoord)) {
+            return false;
+        }
+        return getDistance(otherCoord) <= MathUtils.getPrecision();
+    }
+
+    /**
+     * @return hashes calculated from cartesian ordinates
+     */
+    @Override
+    public int hashCode() {
+        CartesianCoordinate thisCartCoord = asCartesianCoordinate();
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(thisCartCoord.getY());
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(thisCartCoord.getX());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(thisCartCoord.getZ());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    /**
+     * @see {@link #isEqual(Coordinate) isEqual(Coordinate)}
+     */
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Coordinate && isEqual((Coordinate) o);
+    }
+
+    private boolean isNullOrNullCoordinate(Coordinate otherCoord) {
+        return otherCoord instanceof NoWhereCoordinate || otherCoord == null;
+    }
+
 }
