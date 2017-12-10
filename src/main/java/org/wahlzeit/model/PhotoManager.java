@@ -82,6 +82,7 @@ public abstract class PhotoManager extends ObjectManager {
      *
      */
     public final boolean hasPhoto(String id) {
+        Assert.notNull(id, "ID as String");
         return hasPhoto(PhotoId.getIdFromString(id));
     }
 
@@ -123,6 +124,7 @@ public abstract class PhotoManager extends ObjectManager {
      * @methodtype get
      */
     public final Photo getPhoto(String id) {
+
         return getPhoto(PhotoId.getIdFromString(id));
     }
 
@@ -367,6 +369,9 @@ public abstract class PhotoManager extends ObjectManager {
             Client owner = userManager.getClientById(photo.getOwnerId());
             userManager.saveClient(owner);
         }
+    }
+
+    private void assertClassInvariance() {
     }
 
 }

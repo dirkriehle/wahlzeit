@@ -24,6 +24,7 @@
 
 package org.wahlzeit.model.coordinates.impl;
 
+import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.model.coordinates.Coordinate;
 import org.wahlzeit.utils.Assert;
 import org.wahlzeit.utils.MathUtils;
@@ -43,7 +44,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     public CartesianCoordinate(double x, double y, double z) {
-        Assert.areValidDoubles(x, y, z);
+        assertOrdinates(x, y, z);
         setY(y);
         setX(x);
         setZ(z);
@@ -65,7 +66,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * Sets ordinate Value within the range [-Coordinate.MAX_VALUE:Coordinate.MAX_VALUE]
      */
     public void setX(double x) {
-        assertOrdinate(x);
+        assertOrdinates(x);
         this.x = x;
     }
 
@@ -73,7 +74,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * Sets ordinate Value within the range [-Coordinate.MAX_VALUE:Coordinate.MAX_VALUE]
      */
     public void setY(double y) {
-        assertOrdinate(y);
+        assertOrdinates(y);
         this.y = y;
     }
 
@@ -81,7 +82,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * Sets ordinate Value within the range [-Coordinate.MAX_VALUE:Coordinate.MAX_VALUE]
      */
     public void setZ(double z) {
-        assertOrdinate(z);
+        assertOrdinates(z);
         this.z = z;
     }
 
@@ -90,7 +91,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @return array of doubles in format: [ latitude , longitude , radius ]
      */
     public static double[] toSphericalOrdinates(double x, double y, double z) {
-        Assert.areValidDoubles(x, y, z);
+        assertOrdinates(x, y, z);
         double radius = MathUtils.sqrtOfSum(square(x), square(y), square(z));
         double longitude = radius == 0 ? 0 : Math.toDegrees(Math.acos(z / radius));
         double latitude = x == 0 ? 0 : Math.toDegrees(Math.atan(y / x));
@@ -109,9 +110,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     @Override
     protected void assertClassInvariants() {
-        assertOrdinate(getX());
-        assertOrdinate(getY());
-        assertOrdinate(getZ());
+        assertOrdinates(getX());
+        assertOrdinates(getY());
+        assertOrdinates(getZ());
     }
 
     @Override
@@ -134,7 +135,15 @@ public class CartesianCoordinate extends AbstractCoordinate {
         return "(" + x + "," + y + "," + z + ")";
     }
 
-    private void assertOrdinate(double ordinate) {
-        Assert.inRangeMax(ordinate, MAX_VALUE);
+    private static void assertOrdinates(double... ordinates) {
+        try {
+            Assert.areValidDoubles(ordinates);
+            for (double ordinate : ordinates) {
+                Assert.inRangeMax(ordinate, MAX_VALUE);
+            }
+        } catch (IllegalArgumentException ex) {
+            DomainCfg.logError(CartesianCoordinate.class, ex);
+            throw ex;
+        }
     }
 }

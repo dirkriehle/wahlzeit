@@ -24,14 +24,18 @@
 
 package org.wahlzeit.utils;
 
+import org.wahlzeit.model.config.DomainCfg;
+
 public class Assert {
     /**
      * checks whether a value is lesser then zero
      * @methodtype assert
      */
-    public static void notNegative(double value) {
+    public static void notNegative(double value) throws IllegalArgumentException {
         if (value < 0) {
-            throw new IllegalArgumentException("The radius must be greater then 0 but was actually " + value);
+            RuntimeException exception = new IllegalArgumentException("The radius must be greater then 0 but was actually " + value);
+            DomainCfg.logError(Assert.class, exception);
+            throw exception;
         }
     }
 
@@ -39,25 +43,27 @@ public class Assert {
      * checks whether a value is lesser then |maxValue|
      * @methodtype assert
      */
-    public static void inRangeMax(double value, double maxValue) {
+    public static void inRangeMax(double value, double maxValue) throws IllegalArgumentException {
         inRangeMax(value, maxValue, "");
     }
 
-    public static void inRangeMax(double value, double maxValue, String valueSpecification) {
+    public static void inRangeMax(double value, double maxValue, String valueSpecification) throws IllegalArgumentException {
         if (maxValue - Math.abs(value) < -MathUtils.getPrecision()) {
             String errorMessage = "";
             if (valueSpecification.length() > 0) {
                 errorMessage = String.format(valueSpecification + " exceeded the defined range. ");
             }
             errorMessage = String.format(errorMessage + "The value was \"" + value + "\" but must be in the range of [-" + maxValue + ":" + maxValue + "]");
-            throw new IllegalArgumentException(errorMessage);
+            RuntimeException exception = new IllegalArgumentException(errorMessage);
+            DomainCfg.logError(Assert.class, exception);
+            throw exception;
         }
     }
 
     /**
      * Checks if an field points to NULL
      */
-    public static void isNull(Object objectField, String objectSpecification) {
+    public static void isNull(Object objectField, String objectSpecification) throws IllegalStateException {
         if (objectField != null) {
             String errorMessage = objectSpecification.length() > 0 ? String.format(objectSpecification) : "Field";
             errorMessage += " is already initialized.";
@@ -67,13 +73,18 @@ public class Assert {
 
     public static void isFalse(boolean bool, String errorMessage) {
         if (bool != false) {
-            throw new IllegalStateException(errorMessage);
+            RuntimeException exception = new IllegalStateException(errorMessage);
+            DomainCfg.logError(Assert.class, exception);
+            throw exception;
         }
     }
 
-    public static void notNull(Object notNullobject) {
+    public static void notNull(Object notNullobject, String objectSpecification) throws IllegalStateException {
+        String object = objectSpecification != null && objectSpecification.length() > 0 ? objectSpecification : "Object";
         if (notNullobject == null) {
-            throw new IllegalStateException("Object must not be null");
+            RuntimeException exception = new IllegalStateException(object + " must not be null");
+            DomainCfg.logError(Assert.class, exception);
+            throw exception;
         }
     }
 
@@ -81,14 +92,19 @@ public class Assert {
      * checks with asserts that all double params are finite and a number
      * @param doubleValues one ore multiply double values
      */
-    public static void areValidDoubles(double... doubleValues) {
+    public static void areValidDoubles(double... doubleValues) throws IllegalArgumentException {
         String theProvidedValue = "The provided Value ";
         for (double doubleValue : doubleValues) {
+            RuntimeException exception = null;
             if (Double.isInfinite(doubleValue)) {
-                throw new IllegalArgumentException(theProvidedValue + "must be smaller than " + Double.MAX_VALUE);
+                exception = new IllegalArgumentException(theProvidedValue + "must be smaller than " + Double.MAX_VALUE);
+                DomainCfg.logError(Assert.class, exception);
+                throw exception;
             }
             if (Double.isNaN(doubleValue)) {
-                throw new IllegalArgumentException(theProvidedValue + "is not a number. This may occur during an invalid operation like: a / 0");
+                exception = new IllegalArgumentException(theProvidedValue + "is not a number. This may occur during an invalid operation like: a / 0");
+                DomainCfg.logError(Assert.class, exception);
+                throw exception;
             }
         }
     }

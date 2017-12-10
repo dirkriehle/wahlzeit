@@ -136,8 +136,7 @@ public class Photo extends DataObject {
      * @methodtype constructor
      */
     public Photo(PhotoId myId) {
-        assertIdNotNull(myId);
-        id = myId;
+        setID(myId);
 
         incWriteCount();
     }
@@ -177,6 +176,10 @@ public class Photo extends DataObject {
         return id;
     }
 
+    public void setID(PhotoId id) {
+        assertIdNotNull(id);
+        this.id = id;
+    }
     /**
      * @methodtype get
      */

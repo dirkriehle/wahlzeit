@@ -41,7 +41,7 @@ import java.util.logging.Logger;
  */
 public class DomainCfg {
 
-    private static final Logger log = Logger.getLogger(DomainCfg.class.getName());
+    public static final Logger log = Logger.getLogger(DomainCfg.class.getName());
 
     /**
      * objects for the database registration of google objectify service
@@ -55,6 +55,14 @@ public class DomainCfg {
      */
     public static void initializePhotoDomainModel() {
         initializeGurkenDomain();
+    }
+
+    public static Logger getLogger(Object instance) {
+        return Logger.getLogger(instance.getClass().getName());
+    }
+
+    public static void logError(Object instance, Exception ex) {
+        DomainCfg.getLogger(instance.getClass()).warning(LogBuilder.createSystemMessage().addException(ex.getMessage(), ex).toString());
     }
 
     private static void initializeGurkenDomain() {
