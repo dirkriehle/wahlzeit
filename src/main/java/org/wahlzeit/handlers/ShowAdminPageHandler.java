@@ -1,32 +1,31 @@
 /*
- * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
+ *  Copyright
  *
- * This file is part of the Wahlzeit photo rating application.
+ *  Classname: ShowAdminPageHandler
+ *  Author: Tango1266
+ *  Version: 08.11.17 22:26
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ *  This file is part of the Wahlzeit photo rating application.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this program. If not, see
- * <http://www.gnu.org/licenses/>.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public
+ *  License along with this program. If not, see
+ *  <http://www.gnu.org/licenses/>
  */
 
 package org.wahlzeit.handlers;
 
 import org.wahlzeit.main.ServiceMain;
-import org.wahlzeit.model.AccessRights;
-import org.wahlzeit.model.Photo;
-import org.wahlzeit.model.PhotoManager;
-import org.wahlzeit.model.User;
-import org.wahlzeit.model.UserManager;
-import org.wahlzeit.model.UserSession;
+import org.wahlzeit.model.*;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.utils.StringUtil;
 import org.wahlzeit.webparts.WebPart;
@@ -40,149 +39,151 @@ import java.util.logging.Logger;
  */
 public class ShowAdminPageHandler extends AbstractWebPageHandler implements WebFormHandler {
 
-	private static Logger log = Logger.getLogger(ShowAdminPageHandler.class.getName());
+    private static Logger log = Logger.getLogger(ShowAdminPageHandler.class.getName());
 
-	/**
-	 *
-	 */
-	public ShowAdminPageHandler() {
-		initialize(PartUtil.SHOW_ADMIN_PAGE_FILE, AccessRights.ADMINISTRATOR);
-	}
+    /**
+     *
+     */
+    public ShowAdminPageHandler() {
+        initialize(PartUtil.SHOW_ADMIN_PAGE_FILE, AccessRights.ADMINISTRATOR);
+    }
 
-	/**
-	 *
-	 */
-	protected void makeWebPageBody(UserSession us, WebPart page) {
-		Map args = us.getSavedArgs();
-		page.addStringFromArgs(args, UserSession.MESSAGE);
+    /**
+     *
+     */
+    protected Writable makeAdminUserProfile(UserSession us) {
+        WebFormHandler handler = getFormHandler(PartUtil.NULL_FORM_NAME);
 
-		Object userId = us.getSavedArg("userId");
-		if (!StringUtil.isNullOrEmptyString(userId)) {
-			page.addStringFromArgs(args, "userId");
-			page.addWritable("object", makeAdminUserProfile(us));
-		}
+        String userId = us.getSavedArg("userId").toString();
+        User user = UserManager.getInstance().getUserById(userId);
+        log.config("UserId: " + userId);
+        if (user != null) {
+            log.config("User = null");
+            handler = getFormHandler(PartUtil.ADMIN_USER_PROFILE_FORM_NAME);
+        }
 
-		Object photoId = us.getSavedArg("photoId");
-		if (!StringUtil.isNullOrEmptyString(photoId)) {
-			page.addStringFromArgs(args, "photoId");
-			page.addWritable("object", makeAdminUserPhoto(us));
-		}
-	}
+        return handler.makeWebPart(us);
+    }
 
-	/**
-	 *
-	 */
-	protected Writable makeAdminUserProfile(UserSession us) {
-		WebFormHandler handler = getFormHandler(PartUtil.NULL_FORM_NAME);
+    /**
+     *
+     */
+    protected Writable makeAdminUserPhoto(UserSession us) {
+        WebFormHandler handler = getFormHandler(PartUtil.NULL_FORM_NAME);
 
-		String userId = us.getSavedArg("userId").toString();
-		User user = UserManager.getInstance().getUserById(userId);
-		log.config("UserId: " + userId);
-		if (user != null) {
-			log.config("User = null");
-			handler = getFormHandler(PartUtil.ADMIN_USER_PROFILE_FORM_NAME);
-		}
+        String photoId = us.getSavedArg("photoId").toString();
+        Photo photo = PhotoManager.getInstance().getPhoto(photoId);
+        if (photo != null) {
+            handler = getFormHandler(PartUtil.ADMIN_USER_PHOTO_FORM_NAME);
+        }
 
-		return handler.makeWebPart(us);
-	}
+        return handler.makeWebPart(us);
+    }
 
-	/**
-	 *
-	 */
-	protected Writable makeAdminUserPhoto(UserSession us) {
-		WebFormHandler handler = getFormHandler(PartUtil.NULL_FORM_NAME);
+    /**
+     *
+     */
+    protected String performAdminUserProfileRequest(UserSession us, Map args) {
+        String userId = us.getAndSaveAsString(args, "userId");
+        log.config("UserId: " + userId);
+        User user = UserManager.getInstance().getUserById(userId);
+        if (user == null) {
+            log.config("User = null");
+            us.setMessage(user.getLanguageConfiguration().getUserNameIsUnknown());
+        }
 
-		String photoId = us.getSavedArg("photoId").toString();
-		Photo photo = PhotoManager.getInstance().getPhoto(photoId);
-		if (photo != null) {
-			handler = getFormHandler(PartUtil.ADMIN_USER_PHOTO_FORM_NAME);
-		}
+        return PartUtil.SHOW_ADMIN_PAGE_NAME;
+    }
 
-		return handler.makeWebPart(us);
-	}
+    /**
+     *
+     */
+    protected String performAdminUserPhotoRequest(UserSession us, Map args) {
+        String photoId = us.getAndSaveAsString(args, "photoId");
+        Photo photo = PhotoManager.getInstance().getPhoto(photoId);
+        if (photo == null) {
+            us.setMessage(us.getClient().getLanguageConfiguration().getPhotoIsUnknown());
+        }
 
-	/**
-	 *
-	 */
-	public String handlePost(UserSession us, Map args) {
-		if (!hasAccessRights(us, args)) {
-			log.warning(LogBuilder.createSystemMessage().
-					addMessage("insufficient rights for POST").toString());
-			return getIllegalAccessErrorPage(us);
-		}
+        return PartUtil.SHOW_ADMIN_PAGE_NAME;
+    }
 
-		String result = PartUtil.SHOW_ADMIN_PAGE_NAME;
+    /**
+     *
+     */
+    protected String performSaveAllRequest(UserSession us) {
+        log.info(LogBuilder.createSystemMessage().addAction("save all objects").toString());
 
-		if (us.isFormType(args, "adminUser")) {
-			result = performAdminUserProfileRequest(us, args);
-		} else if (us.isFormType(args, "adminPhoto")) {
-			result = performAdminUserPhotoRequest(us, args);
-		} else if (us.isFormType(args, "saveAll")) {
-			result = performSaveAllRequest(us);
-		} else if (us.isFormType(args, "shutdown")) {
-			result = performShutdownRequest(us);
-		}
+        try {
+            ServiceMain.getInstance().saveAll();
+        } catch (Exception ex) {
+            log.warning(LogBuilder.createSystemMessage().addException("saving all objects failed", ex).toString());
+        }
 
-		return result;
-	}
+        us.setMessage("Saved objects...");
+        return PartUtil.SHOW_NOTE_PAGE_NAME;
+    }
 
-	/**
-	 *
-	 */
-	protected String performAdminUserProfileRequest(UserSession us, Map args) {
-		String userId = us.getAndSaveAsString(args, "userId");
-		log.config("UserId: " + userId);
-		User user = UserManager.getInstance().getUserById(userId);
-		if (user == null) {
-			log.config("User = null");
-			us.setMessage(user.getLanguageConfiguration().getUserNameIsUnknown());
-		}
+    /**
+     *
+     */
+    protected String performShutdownRequest(UserSession us) {
+        log.info(LogBuilder.createSystemMessage().addAction("shutting system down").toString());
+        try {
+            ServiceMain.getInstance().requestStop();
+        } catch (Exception ex) {
+            log.warning(LogBuilder.createSystemMessage().addException("requesting stop failed", ex).toString());
+        }
 
-		return PartUtil.SHOW_ADMIN_PAGE_NAME;
-	}
+        us.setMessage("Shutting down...");
+        return PartUtil.SHOW_NOTE_PAGE_NAME;
+    }
 
-	/**
-	 *
-	 */
-	protected String performAdminUserPhotoRequest(UserSession us, Map args) {
-		String photoId = us.getAndSaveAsString(args, "photoId");
-		Photo photo = PhotoManager.getInstance().getPhoto(photoId);
-		if (photo == null) {
-			us.setMessage(us.getClient().getLanguageConfiguration().getPhotoIsUnknown());
-		}
+    /**
+     *
+     */
+    @Override
+    protected void makeWebPageBody(UserSession us, WebPart page) {
+        Map args = us.getSavedArgs();
+        page.addStringFromArgs(args, UserSession.MESSAGE);
 
-		return PartUtil.SHOW_ADMIN_PAGE_NAME;
-	}
+        Object userId = us.getSavedArg("userId");
+        if (!StringUtil.isNullOrEmptyString(userId)) {
+            page.addStringFromArgs(args, "userId");
+            page.addWritable("object", makeAdminUserProfile(us));
+        }
 
-	/**
-	 *
-	 */
-	protected String performSaveAllRequest(UserSession us) {
-		log.info(LogBuilder.createSystemMessage().addAction("save all objects").toString());
+        Object photoId = us.getSavedArg("photoId");
+        if (!StringUtil.isNullOrEmptyString(photoId)) {
+            page.addStringFromArgs(args, "photoId");
+            page.addWritable("object", makeAdminUserPhoto(us));
+        }
+    }
 
-		try {
-			ServiceMain.getInstance().saveAll();
-		} catch (Exception ex) {
-			log.warning(LogBuilder.createSystemMessage().addException("saving all objects failed", ex).toString());
-		}
+    /**
+     *
+     */
+    @Override
+    public String handlePost(UserSession us, Map args) {
+        if (!hasAccessRights(us, args)) {
+            log.warning(LogBuilder.createSystemMessage().
+                    addMessage("insufficient rights for POST").toString());
+            return getIllegalAccessErrorPage(us);
+        }
 
-		us.setMessage("Saved objects...");
-		return PartUtil.SHOW_NOTE_PAGE_NAME;
-	}
+        String result = PartUtil.SHOW_ADMIN_PAGE_NAME;
 
-	/**
-	 *
-	 */
-	protected String performShutdownRequest(UserSession us) {
-		log.info(LogBuilder.createSystemMessage().addAction("shutting system down").toString());
-		try {
-			ServiceMain.getInstance().requestStop();
-		} catch (Exception ex) {
-			log.warning(LogBuilder.createSystemMessage().addException("requesting stop failed", ex).toString());
-		}
+        if (us.isFormType(args, "adminUser")) {
+            result = performAdminUserProfileRequest(us, args);
+        } else if (us.isFormType(args, "adminPhoto")) {
+            result = performAdminUserPhotoRequest(us, args);
+        } else if (us.isFormType(args, "saveAll")) {
+            result = performSaveAllRequest(us);
+        } else if (us.isFormType(args, "shutdown")) {
+            result = performShutdownRequest(us);
+        }
 
-		us.setMessage("Shutting down...");
-		return PartUtil.SHOW_NOTE_PAGE_NAME;
-	}
+        return result;
+    }
 
 }

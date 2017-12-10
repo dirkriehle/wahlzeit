@@ -1,32 +1,30 @@
 /*
- * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
+ *  Copyright
  *
- * This file is part of the Wahlzeit photo rating application.
+ *  Classname: AbstractWebPartHandler
+ *  Author: Tango1266
+ *  Version: 08.11.17 22:26
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ *  This file is part of the Wahlzeit photo rating application.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this program. If not, see
- * <http://www.gnu.org/licenses/>.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public
+ *  License along with this program. If not, see
+ *  <http://www.gnu.org/licenses/>
  */
 
 package org.wahlzeit.handlers;
 
-import org.wahlzeit.model.AccessRights;
-import org.wahlzeit.model.ModelConfig;
-import org.wahlzeit.model.Photo;
-import org.wahlzeit.model.PhotoManager;
-import org.wahlzeit.model.PhotoSize;
-import org.wahlzeit.model.User;
-import org.wahlzeit.model.UserSession;
+import org.wahlzeit.model.*;
 import org.wahlzeit.services.Language;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.SysConfig;
@@ -45,231 +43,232 @@ import java.util.logging.Logger;
  */
 public abstract class AbstractWebPartHandler implements WebPartHandler {
 
-	private static final Logger log = Logger.getLogger(AbstractWebPartHandler.class.getName());
-	/**
-	 *
-	 */
-	protected String tmplName;
-	/**
-	 *
-	 */
-	protected AccessRights neededRights;
+    private static final Logger log = Logger.getLogger(AbstractWebPartHandler.class.getName());
+    /**
+     *
+     */
+    protected String tmplName;
+    /**
+     *
+     */
+    protected AccessRights neededRights;
 
-	/**
-	 *
-	 */
-	protected void initialize(String myTmplName, AccessRights myRights) {
-		tmplName = myTmplName;
-		neededRights = myRights;
-	}
+    /**
+     *
+     */
+    public final AccessRights getNeededRights() {
+        return neededRights;
+    }
 
-	/**
-	 * @methodtype factory
-	 */
-	protected final WebPart createWebPart(UserSession us) {
-		return createWebPart(us, tmplName);
-	}
+    /**
+     *
+     */
+    protected void initialize(String myTmplName, AccessRights myRights) {
+        tmplName = myTmplName;
+        neededRights = myRights;
+    }
 
-	/**
-	 * @methodtype factory
-	 */
-	protected final WebPart createWebPart(UserSession us, String name) {
-		WebPartTemplateService wpts = WebPartTemplateService.getInstance();
-		WebPartTemplate tmpl = wpts.getTemplate(us.getClient().getLanguageConfiguration().getLanguageCode(), name);
-		return new WebPart(tmpl);
-	}
+    /**
+     * @methodtype factory
+     */
+    protected final WebPart createWebPart(UserSession us) {
+        return createWebPart(us, tmplName);
+    }
 
-	/**
-	 *
-	 */
-	protected String getPhotoThumb(UserSession us, Photo photo) {
-		String result = null;
-		if (photo != null) {
-			String imageLink = getPhotoAsRelativeResourcePathString(photo, PhotoSize.THUMB);
-			result = HtmlUtil.asImg(HtmlUtil.asPath(imageLink), photo.getThumbWidth(), photo.getThumbHeight());
-		} else {
-			Language langValue = us.getClient().getLanguage();
-			result = HtmlUtil.asImg(getEmptyImageAsRelativeResourcePathString(langValue));
-		}
-		return result;
-	}
+    /**
+     * @methodtype factory
+     */
+    protected final WebPart createWebPart(UserSession us, String name) {
+        WebPartTemplateService wpts = WebPartTemplateService.getInstance();
+        WebPartTemplate tmpl = wpts.getTemplate(us.getClient().getLanguageConfiguration().getLanguageCode(), name);
+        return new WebPart(tmpl);
+    }
 
-	/**
-	 *
-	 */
-	protected String getPhotoAsRelativeResourcePathString(Photo photo, PhotoSize size) {
-		return SysConfig.getPhotosDir().getRelativeDir() + "/?type=image&photoId=" + photo.getId().asString() +
-				"&size=" + String.valueOf(size.asInt());
-	}
+    /**
+     *
+     */
+    protected String getPhotoThumb(UserSession us, Photo photo) {
+        String result = null;
+        if (photo != null) {
+            String imageLink = getPhotoAsRelativeResourcePathString(photo, PhotoSize.THUMB);
+            result = HtmlUtil.asImg(HtmlUtil.asPath(imageLink), photo.getThumbWidth(), photo.getThumbHeight());
+        } else {
+            Language langValue = us.getClient().getLanguage();
+            result = HtmlUtil.asImg(getEmptyImageAsRelativeResourcePathString(langValue));
+        }
+        return result;
+    }
 
-	/**
-	 *
-	 */
-	protected String getEmptyImageAsRelativeResourcePathString(Language lang) {
-		String resName = lang.asIsoCode() + File.separator + "empty.png";
-		return HtmlUtil.asPath(SysConfig.getStaticDir().getRelativeConfigFileName(resName));
-	}
+    /**
+     *
+     */
+    protected String getPhotoAsRelativeResourcePathString(Photo photo, PhotoSize size) {
+        return SysConfig.getPhotosDir().getRelativeDir() + "/?type=image&photoId=" + photo.getId().asString() +
+                "&size=" + String.valueOf(size.asInt());
+    }
 
-	/**
-	 *
-	 */
-	protected String getPhotoSummary(UserSession us, Photo photo) {
-		return photo.getSummary(us.getClient().getLanguageConfiguration());
-	}
+    /**
+     *
+     */
+    protected String getEmptyImageAsRelativeResourcePathString(Language lang) {
+        String resName = lang.asIsoCode() + File.separator + "empty.png";
+        return HtmlUtil.asPath(SysConfig.getStaticDir().getRelativeConfigFileName(resName));
+    }
 
-	/**
-	 *
-	 */
-	protected String getPhotoCaption(UserSession us, Photo photo) {
-		return photo.getCaption(us.getClient().getLanguageConfiguration());
-	}
+    /**
+     *
+     */
+    protected String getPhotoSummary(UserSession us, Photo photo) {
+        return photo.getSummary(us.getClient().getLanguageConfiguration());
+    }
 
-	/**
-	 *
-	 */
-	protected final WebFormHandler getFormHandler(String name) {
-		return WebPartHandlerManager.getWebFormHandler(name);
-	}
+    /**
+     *
+     */
+    protected String getPhotoCaption(UserSession us, Photo photo) {
+        return photo.getCaption(us.getClient().getLanguageConfiguration());
+    }
 
-	/**
-	 *
-	 */
-	protected boolean hasSavedPhotoId(UserSession us) {
-		String id = us.getAsString(us.getSavedArgs(), Photo.ID);
-		return !StringUtil.isNullOrEmptyString(id);
-	}
+    /**
+     *
+     */
+    protected final WebFormHandler getFormHandler(String name) {
+        return WebPartHandlerManager.getWebFormHandler(name);
+    }
 
-	/**
-	 *
-	 */
-	protected boolean isSavedPhotoVisible(UserSession us) {
-		String id = us.getAsString(us.getSavedArgs(), Photo.ID);
-		Photo photo = PhotoManager.getInstance().getPhoto(id);
-		return photo.isVisible();
-	}
+    /**
+     *
+     */
+    protected boolean hasSavedPhotoId(UserSession us) {
+        String id = us.getAsString(us.getSavedArgs(), Photo.ID);
+        return !StringUtil.isNullOrEmptyString(id);
+    }
 
-	/**
-	 *
-	 */
-	protected boolean hasSavedMessage(UserSession us) {
-		return !StringUtil.isNullOrEmptyString(us.getMessage());
-	}
+    /**
+     *
+     */
+    protected boolean isSavedPhotoVisible(UserSession us) {
+        String id = us.getAsString(us.getSavedArgs(), Photo.ID);
+        Photo photo = PhotoManager.getInstance().getPhoto(id);
+        return photo.isVisible();
+    }
 
-	/**
-	 *
-	 */
-	public final String handleGet(UserSession us, String link, Map args) {
-		if (!hasAccessRights(us, args)) {
-			log.warning(LogBuilder.createSystemMessage().
-					addMessage("insufficient rights for GET").toString());
-			return getIllegalAccessErrorPage(us);
-		}
+    /**
+     *
+     */
+    protected boolean hasSavedMessage(UserSession us) {
+        return !StringUtil.isNullOrEmptyString(us.getMessage());
+    }
 
-		if (!isWellFormedGet(us, link, args)) {
-			log.warning(LogBuilder.createSystemMessage().
-					addMessage("received ill-formed GET").toString());
-			return getIllegalArgumentErrorPage(us);
-		}
+    /**
+     *
+     */
+    protected boolean hasAccessRights(UserSession us, Map args) {
+        return us.getClient().hasRights(getNeededRights());
+    }
 
-		try {
-			// may throw Exception
-			return doHandleGet(us, link, args);
-		} catch (Throwable t) {
-			log.warning(LogBuilder.createSystemMessage().addException("Handle get failed", t).toString());
-			return getInternalProcessingErrorPage(us);
-		}
-	}
+    /**
+     *
+     */
+    protected String getIllegalAccessErrorPage(UserSession us) {
+        ModelConfig config = us.getClient().getLanguageConfiguration();
+        us.setHeading(config.getInformation());
 
-	/**
-	 *
-	 */
-	protected boolean hasAccessRights(UserSession us, Map args) {
-		return us.getClient().hasRights(getNeededRights());
-	}
+        String msg1 = config.getIllegalAccessError();
+        us.setMessage(msg1);
 
-	/**
-	 *
-	 */
-	protected String getIllegalAccessErrorPage(UserSession us) {
-		ModelConfig config = us.getClient().getLanguageConfiguration();
-		us.setHeading(config.getInformation());
+        return PartUtil.SHOW_NOTE_PAGE_NAME;
+    }
 
-		String msg1 = config.getIllegalAccessError();
-		us.setMessage(msg1);
+    /**
+     *
+     */
+    protected boolean isWellFormedGet(UserSession us, String link, Map args) {
+        return true;
+    }
 
-		return PartUtil.SHOW_NOTE_PAGE_NAME;
-	}
+    /**
+     *
+     */
+    protected String getIllegalArgumentErrorPage(UserSession us) {
+        ModelConfig config = us.getClient().getLanguageConfiguration();
+        us.setHeading(config.getInformation());
 
-	/**
-	 *
-	 */
-	protected boolean isWellFormedGet(UserSession us, String link, Map args) {
-		return true;
-	}
+        String msg1 = config.getIllegalArgumentError();
+        String msg2 = config.getContinueWithShowPhoto();
+        if (us.getClient() instanceof User) {
+            msg2 = config.getContinueWithShowUserHome();
+        }
 
-	/**
-	 *
-	 */
-	protected String getIllegalArgumentErrorPage(UserSession us) {
-		ModelConfig config = us.getClient().getLanguageConfiguration();
-		us.setHeading(config.getInformation());
+        us.setTwoLineMessage(msg1, msg2);
 
-		String msg1 = config.getIllegalArgumentError();
-		String msg2 = config.getContinueWithShowPhoto();
-		if (us.getClient() instanceof User) {
-			msg2 = config.getContinueWithShowUserHome();
-		}
+        return PartUtil.SHOW_NOTE_PAGE_NAME;
+    }
 
-		us.setTwoLineMessage(msg1, msg2);
+    /**
+     * @param args TODO
+     */
+    protected String doHandleGet(UserSession us, String link, Map args) {
+        return link;
+    }
 
-		return PartUtil.SHOW_NOTE_PAGE_NAME;
-	}
+    /**
+     *
+     */
+    protected String getInternalProcessingErrorPage(UserSession us) {
+        ModelConfig config = us.getClient().getLanguageConfiguration();
+        us.setHeading(config.getInformation());
 
-	/**
-	 * @param args TODO
-	 */
-	protected String doHandleGet(UserSession us, String link, Map args) {
-		return link;
-	}
+        String msg1 = config.getInternalProcessingError();
+        String msg2 = config.getContinueWithShowPhoto();
+        if (us.getClient() instanceof User) {
+            msg2 = config.getContinueWithShowUserHome();
+        }
 
-	/**
-	 *
-	 */
-	protected String getInternalProcessingErrorPage(UserSession us) {
-		ModelConfig config = us.getClient().getLanguageConfiguration();
-		us.setHeading(config.getInformation());
+        us.setTwoLineMessage(msg1, msg2);
 
-		String msg1 = config.getInternalProcessingError();
-		String msg2 = config.getContinueWithShowPhoto();
-		if (us.getClient() instanceof User) {
-			msg2 = config.getContinueWithShowUserHome();
-		}
+        return PartUtil.SHOW_NOTE_PAGE_NAME;
+    }
 
-		us.setTwoLineMessage(msg1, msg2);
+    /**
+     *
+     */
+    protected String getHeadingImageAsRelativeResourcePathString(Language lang) {
+        String resName = lang.asIsoCode() + File.separator + "heading.png";
+        return HtmlUtil.asPath(SysConfig.getStaticDir().getRelativeConfigFileName(resName));
+    }
 
-		return PartUtil.SHOW_NOTE_PAGE_NAME;
-	}
+    /**
+     *
+     */
+    protected String getResourceAsRelativeHtmlPathString(String resource) {
+        return resource + ".html";
+    }
 
-	/**
-	 *
-	 */
-	public final AccessRights getNeededRights() {
-		return neededRights;
-	}
+    /**
+     *
+     */
+    @Override
+    public final String handleGet(UserSession us, String link, Map args) {
+        if (!hasAccessRights(us, args)) {
+            log.warning(LogBuilder.createSystemMessage().
+                    addMessage("insufficient rights for GET").toString());
+            return getIllegalAccessErrorPage(us);
+        }
 
-	/**
-	 *
-	 */
-	protected String getHeadingImageAsRelativeResourcePathString(Language lang) {
-		String resName = lang.asIsoCode() + File.separator + "heading.png";
-		return HtmlUtil.asPath(SysConfig.getStaticDir().getRelativeConfigFileName(resName));
-	}
+        if (!isWellFormedGet(us, link, args)) {
+            log.warning(LogBuilder.createSystemMessage().
+                    addMessage("received ill-formed GET").toString());
+            return getIllegalArgumentErrorPage(us);
+        }
 
-	/**
-	 *
-	 */
-	protected String getResourceAsRelativeHtmlPathString(String resource) {
-		return resource + ".html";
-	}
+        try {
+            // may throw Exception
+            return doHandleGet(us, link, args);
+        } catch (Throwable t) {
+            log.warning(LogBuilder.createSystemMessage().addException("Handle get failed", t).toString());
+            return getInternalProcessingErrorPage(us);
+        }
+    }
 
 }
