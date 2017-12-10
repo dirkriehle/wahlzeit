@@ -82,9 +82,14 @@ public class Assert {
      * @param doubleValues one ore multiply double values
      */
     public static void areValidDoubles(double... doubleValues) {
+        String theProvidedValue = "The provided Value ";
         for (double doubleValue : doubleValues) {
-            assert !Double.isInfinite(doubleValue);
-            assert !Double.isNaN(doubleValue);
+            if (Double.isInfinite(doubleValue)) {
+                throw new IllegalArgumentException(theProvidedValue + "must be smaller than " + Double.MAX_VALUE);
+            }
+            if (Double.isNaN(doubleValue)) {
+                throw new IllegalArgumentException(theProvidedValue + "is not a number. This may occur during an invalid operation like: a / 0");
+            }
         }
     }
 }
