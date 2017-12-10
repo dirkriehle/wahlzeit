@@ -8,9 +8,27 @@ input,textarea {
 	font-size: 9pt;
 }
 
+input[type="submit"] {
+	background: #8bde6f;
+}
 body, table, p {
 	margin-top: 0pt;
 	margin-bottom: 6pt;
+}
+
+a {
+	color: #3ea32a;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #c6e9b5;
+	text-decoration: underline;
+}
+
+a:visited {
+	color: #c6e9b5;
+	text-decoration: underline;
 }
 
 p.menu {
@@ -23,7 +41,7 @@ h1 {
 	margin-top: 6pt;
 	margin-bottom: 6pt;
 }
-	
+
 h2 {
 	font-size: 12;
 	margin-top: 18pt;
@@ -47,14 +65,14 @@ h3 {
 }
 
 h3.topbox {
-	border: 1px double #99ccff;
-	background: #ddeeff;
+	border: 1px double #3ea32a;
+	background: #dcedd5;
 	padding: 4px;
 }
 
 h3.inline {
-	border: 1px double #99ccff;
-	background: #ddeeff;
+	border: 1px double #3ea32a;
+	background: #dcedd5;
 	padding: 4px;
 	margin-top: 30pt;
 }
@@ -110,10 +128,10 @@ td.inline {
 td.spacer {
 	border: 0px;
 	padding: 8px;
-}	
+}
 
 td.side {
-	border: 1px solid #99ccff;
+	border: 1px solid #3ea32a;
 	width: 140px;
 	height: 100%;
 	padding: 8px;
@@ -133,7 +151,7 @@ td.label {
 td.thumb {
 	text-align: center;
 	vertical-align: middle;
-	border: 1px solid #99ccff;
+	border: 1px solid #3ea32a;
 	padding: 8px;
 	width: 105px;
 	height: 150px;

@@ -30,6 +30,11 @@ import org.wahlzeit.utils.MathUtils;
 
 public abstract class AbstractCoordinate implements Coordinate {
 
+    public static boolean isNoWhere(Coordinate otherCoord) {
+        Assert.notNull(otherCoord);
+        return otherCoord instanceof NoWhereCoordinate;
+    }
+
     /**
      * @return distance, defined by its caller
      */
@@ -39,14 +44,12 @@ public abstract class AbstractCoordinate implements Coordinate {
 
     @Override
     public double getDistance(Coordinate otherCoord) {
-        Assert.notNull(otherCoord);
         return getCartesianDistance(otherCoord);
     }
 
     @Override
     public double getCartesianDistance(Coordinate otherCoord) {
-        Assert.notNull(otherCoord);
-        if (isNullCoordinate(otherCoord)) {
+        if (isNoWhere(otherCoord)) {
             return -1;
         }
         return asCartesianCoordinate().doCalculateDistance(otherCoord);
@@ -54,8 +57,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 
     @Override
     public double getSphericDistance(Coordinate otherCoord) {
-        Assert.notNull(otherCoord);
-        if (isNullCoordinate(otherCoord)) {
+        if (isNoWhere(otherCoord)) {
             return -1;
         }
         return asSphericCoordinate().doCalculateDistance(otherCoord);
@@ -66,7 +68,7 @@ public abstract class AbstractCoordinate implements Coordinate {
         if (this == otherCoord) {
             return true;
         }
-        if (isNullCoordinate(otherCoord)) {
+        if (isNoWhere(otherCoord)) {
             return false;
         }
         return getDistance(otherCoord) <= MathUtils.getPrecision();
@@ -95,9 +97,5 @@ public abstract class AbstractCoordinate implements Coordinate {
     @Override
     public boolean equals(Object o) {
         return o instanceof Coordinate && isEqual((Coordinate) o);
-    }
-
-    private boolean isNullCoordinate(Coordinate otherCoord) {
-        return otherCoord instanceof NoWhereCoordinate;
     }
 }

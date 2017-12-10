@@ -63,6 +63,7 @@ public class DomainCfg {
 
         log.config(LogBuilder.createSystemMessage().addAction("init PhotoManager").toString());
         PhotoManager.setInstance(new GurkenPhotoManager());
+        PhotoManager.getInstance().init();
     }
 
     private static List<Class> getGurkenDomainObjects() {
