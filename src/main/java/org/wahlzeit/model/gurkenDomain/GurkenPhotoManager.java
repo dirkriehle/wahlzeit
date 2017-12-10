@@ -45,6 +45,7 @@ public class GurkenPhotoManager extends PhotoManager {
     }
 
     public GurkenPhoto getGurkenPhotoFromId(PhotoId id) {
+        Assert.notNull(id, "");
         Photo gurkenPhoto = getInstance().getPhoto(id);
         return gurkenPhoto instanceof GurkenPhoto ? (GurkenPhoto) gurkenPhoto : null;
     }

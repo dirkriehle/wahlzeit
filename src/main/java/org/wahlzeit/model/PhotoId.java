@@ -20,6 +20,8 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.utils.Assert;
+
 import java.io.Serializable;
 import java.util.Random;
 
@@ -34,34 +36,42 @@ public class PhotoId implements Serializable {
 	 * 0 is never returned from nextValue; first value is 1
 	 */
 	protected static int currentId = 0;
-
+	/**
+	 *
+	 */
+	protected static Random randomNumber = new Random(System.currentTimeMillis());
+	/**
+	 *
+	 */
+	protected int value = 0;
+	protected String stringValue = null;
 	/**
 	 *
 	 */
 	public static final int BUFFER_SIZE_INCREMENT = 64;
-
-	/**
-	 *
-	 */
-	public static final PhotoId NULL_ID = new PhotoId(0);
-
 	/**
 	 *
 	 */
 	protected static PhotoId[] ids = new PhotoId[BUFFER_SIZE_INCREMENT];
-
+	/**
+	 *
+	 */
+	public static final PhotoId NULL_ID = new PhotoId(0);
 	/**
 	 * What a hack :-)
 	 */
 	public static final int ID_START = getFromString("x1abz") + 1;
 
+	private PhotoId() {
+		// do nothing, necessary for Objectify to load PhotoIds
+	}
+
 	/**
 	 *
 	 */
-	protected static Random randomNumber = new Random(System.currentTimeMillis());
-
-	private PhotoId() {
-		// do nothing, necessary for Objectify to load PhotoIds
+	protected PhotoId(int myValue) {
+		value = myValue;
+		stringValue = getFromInt(myValue);
 	}
 
 	/**
@@ -144,43 +154,8 @@ public class PhotoId implements Serializable {
 	/**
 	 *
 	 */
-	protected int value = 0;
-	protected String stringValue = null;
-
-	/**
-	 *
-	 */
-	protected PhotoId(int myValue) {
-		value = myValue;
-		stringValue = getFromInt(myValue);
-	}
-
-	/**
-	 *
-	 */
-	public boolean equals(Object o) {
-		// @FIXME
-
-		if (!(o instanceof PhotoId)) {
-			return false;
-		}
-
-		PhotoId pid = (PhotoId) o;
-		return isEqual(pid);
-	}
-
-	/**
-	 *
-	 */
 	public boolean isEqual(PhotoId other) {
 		return other.value == value;
-	}
-
-	/**
-	 * @methodtype get
-	 */
-	public int hashCode() {
-		return value;
 	}
 
 	/**
@@ -230,6 +205,7 @@ public class PhotoId implements Serializable {
 	 *
 	 */
 	public static int getFromString(String value) {
+		Assert.notNull(value, "String for Value");
 		int result = 0;
 		for (int i = 1; i < value.length(); i++) {
 			int temp = 0;
@@ -248,6 +224,27 @@ public class PhotoId implements Serializable {
 		}
 
 		return result;
+	}
+
+	/**
+	 * @methodtype get
+	 */
+	public int hashCode() {
+		return value;
+	}
+
+	/**
+	 *
+	 */
+	public boolean equals(Object o) {
+		// @FIXME
+
+		if (!(o instanceof PhotoId)) {
+			return false;
+		}
+
+		PhotoId pid = (PhotoId) o;
+		return isEqual(pid);
 	}
 
 }

@@ -29,6 +29,7 @@ import com.googlecode.objectify.annotation.Subclass;
 import org.wahlzeit.model.Location;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoId;
+import org.wahlzeit.utils.Assert;
 
 import java.util.regex.Pattern;
 
@@ -56,23 +57,26 @@ public class GurkenPhoto extends Photo {
     }
 
     public GurkenPhoto(PhotoId photoId, String type, int sizeInMillimeter, Taste taste, Location location) {
-        id = photoId;
-        this.type = type;
-        size = sizeInMillimeter;
-        this.taste = taste;
-        this.location = location;
+        setID(photoId);
+        setType(type);
+        setSize(sizeInMillimeter);
+        setTaste(taste);
+        setLocation(location);
     }
 
     public void setType(String type) {
         assertStartsWithLiterals(type);
+        Assert.notNull(type, "");
         this.type = type;
     }
 
     public void setSize(int size) {
+        Assert.areValidDoubles(size);
         this.size = size;
     }
 
     public void setTaste(Taste taste) {
+        Assert.notNull(taste, "");
         this.taste = taste;
     }
 

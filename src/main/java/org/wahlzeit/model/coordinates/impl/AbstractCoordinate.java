@@ -31,7 +31,7 @@ import org.wahlzeit.utils.MathUtils;
 public abstract class AbstractCoordinate implements Coordinate {
 
     public static boolean isNoWhere(Coordinate otherCoord) {
-        Assert.notNull(otherCoord);
+        Assert.notNull(otherCoord, "");
         return otherCoord instanceof NoWhereCoordinate;
     }
 
