@@ -1,4 +1,3 @@
-
 buildscript {
     repositories {
         mavenCentral()
@@ -48,6 +47,7 @@ dependencies {
     compile 'com.googlecode.objectify:objectify:5.1.21'
     //compile 'javax.servlet:servlet-api:2.5' // GAE works with only with 2.5
     compile 'commons-fileupload:commons-fileupload:1.3.3'
+    compile 'junit:junit:4.+'
 
     // testing dependencies
     testCompile 'com.google.appengine:appengine-testing:+'
@@ -59,9 +59,7 @@ dependencies {
 }
 
 test {
-    filter {
-        includeTestsMatching "org.wahlzeit.*"
-    }
+    // adjust this filter to your needs
 }
 
 appengine {

@@ -1,6 +1,7 @@
 
 package org.wahlzeit.model;
 
+import static org.junit.Assert.assertNotNull;
 
 /**
 @Inv validate that CartesianCoordinate  is not null by assertClassInvariants
@@ -46,7 +47,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	@Override
 	public CartesianCoordinate asCartesianCoordinate() {
 		assertClassInvariants();	
-		assert(this instanceof CartesianCoordinate);	
+		assert(this != null);	
 		assertClassInvariants();	
 		return this;
 	}
@@ -59,7 +60,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	public double getCartesianDistance(Coordinate cord) {
 		assertClassInvariants();		
 		CartesianCoordinate cartCord = cord.asCartesianCoordinate();
-		assert (cartCord.x>=0 && cartCord.y>=0 && cartCord.z>=0);
+		assertDoubleNotNull (cartCord.x,cartCord.y, cartCord.z);
 		double result  = Math.sqrt(Math.pow(this.x - cartCord.getX(), 2) 
 				+ Math.pow(this.y - cartCord.getY(), 2) 
 				+ Math.pow(this.z- cartCord.getZ(), 2));
@@ -78,10 +79,17 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	public SphericCoordinate asSphericCoordinate() {
 		 assertClassInvariants();		
 		 double radius = Math.sqrt(x * x + y * y + z * z);
-		 double latitude = Math.toDegrees(Math.acos(z / radius));
+		 double latitude;
+		 try{		
+			 latitude = Math.toDegrees(Math.acos(z / radius));
+		 }	 
+		 catch (ArithmeticException e){
+			 latitude = 0;
+		 }
+		 
 		 double longitude = Math.toDegrees(Math.atan2(y, x));
 		 SphericCoordinate result  = new SphericCoordinate(latitude, longitude, radius);
-		 assert (result.getLatitude()>=0 && result.getLongitude()>=0 && result.getradius()>=0);
+		 assertDoubleNotNull (result.getLatitude(), result.getLongitude(), result.getradius());
 	     assertClassInvariants();	
 		 return result;
 	}
@@ -94,11 +102,11 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	public boolean isEqual(Coordinate cord) {
 		 assertClassInvariants();		
          CartesianCoordinate cartCord = cord.asCartesianCoordinate();
-         assert (cartCord.x>=0 && cartCord.y>=0 && cartCord.z>=0);
+         assertDoubleNotNull (cartCord.x,cartCord.y,cartCord.z);
          boolean result =isEqualOfDouble(this.x,cartCord.getX())
 				 &&isEqualOfDouble(this.y,cartCord.getY())
 				 && isEqualOfDouble(this.z,cartCord.getZ()); 
-         assert(result ==false || result ==true);
+         assertNotNull(result);
 	     assertClassInvariants();	
 		 return result;
 		 
@@ -124,7 +132,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		else return this.isEqual((CartesianCoordinate) obj);
+		return this.isEqual((CartesianCoordinate) obj);
 	}
 	/**
 	check that the coordinate is always not null
@@ -133,10 +141,12 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	*/
 	public void assertClassInvariants()
 	{
-	    assert(this.x>=0);
-	    assert(this.y>=0);
-	    assert(this.z>=0);	    
+	    assertNotNull(this.x);
+	    assertNotNull(this.y);
+	    assertNotNull(this.z);	    
 		
 	}
+	
+	
 
 }

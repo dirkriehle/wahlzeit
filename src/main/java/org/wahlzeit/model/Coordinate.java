@@ -50,4 +50,6 @@ public interface Coordinate {
 	*/
 	public boolean isEqual(Coordinate cord);
 
+	void assertDoubleNotNull(double val1, double val2, double val3);
+
 }

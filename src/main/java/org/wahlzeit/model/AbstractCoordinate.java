@@ -1,5 +1,11 @@
 package org.wahlzeit.model;
 
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Assert;
+
+//import static org.junit.Assert.assertNotNull;
+
 public abstract class AbstractCoordinate implements Coordinate{
 	
   
@@ -9,10 +15,10 @@ public abstract class AbstractCoordinate implements Coordinate{
 	
 	
 	@Override
-	public double getDistance(Coordinate cord) {	
-	  if(cord == null) {
-	     return -Double.MAX_VALUE;
-	}
+	public double getDistance(Coordinate cord) {	 
+
+      if(cord == null) throw new IllegalArgumentException("The coordinate is null");			  
+
 	  if(cord instanceof CartesianCoordinate) {
 	     return getCartesianDistance(cord);
 	}
@@ -27,19 +33,29 @@ public abstract class AbstractCoordinate implements Coordinate{
 	public boolean isEqualOfDouble(double val1, double val2) {
 		assert(val1>=0 && val2>=0);
 		boolean result = val1 == val2 ? true : Math.abs(val1 - val2) <= 0.0001;
-		assert(result ==false || result ==true);
-		return result;
-		
+		assertNotNull(result);
+		return result;	
 	}
 	@Override
 	public double getSphericDistance(Coordinate cord) {
-		
-		return cord.getDistance(cord.asSphericCoordinate());
+		double result = cord.getDistance(cord.asSphericCoordinate());
+		assert(result>=0);
+		return result;
 	}
 	@Override
 	public double getCartesianDistance(Coordinate cord) {
+		double result = cord.getDistance(cord.asCartesianCoordinate());
+		assert(result>=0);
+		return result;
+	}
+	
+   @Override
+	public void assertDoubleNotNull(double val1, double val2, double val3) 
+	{
+	    Assert.assertNotNull(val1);
+	    Assert.assertNotNull(val2);
+	    Assert.assertNotNull(val3);	    
 		
-		return cord.getDistance(cord.asCartesianCoordinate());
 	}
 	
 

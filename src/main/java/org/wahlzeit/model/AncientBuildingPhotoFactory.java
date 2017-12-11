@@ -1,5 +1,8 @@
 package org.wahlzeit.model;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.util.logging.Logger;
 
 import org.wahlzeit.services.LogBuilder;
@@ -19,10 +22,13 @@ public class AncientBuildingPhotoFactory  extends PhotoFactory {
 		return new AncientBuildingPhoto();
 
 	}
-
+	/**
+	 * @pre check the photo d is not null 
+	 */
 	@Override
 	public AncientBuildingPhoto createPhoto(PhotoId id) {
 		
+		assertNotNull(id);
 		return new AncientBuildingPhoto(id);
 	}
 
@@ -55,7 +61,7 @@ public class AncientBuildingPhotoFactory  extends PhotoFactory {
 	            GcsFilename gcsFilename = new GcsFilename("picturebucket", filename);
 
 
-
+\
 	        }*/
 			return null;
 		}
