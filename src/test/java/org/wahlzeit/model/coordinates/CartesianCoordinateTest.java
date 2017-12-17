@@ -50,53 +50,44 @@ public class CartesianCoordinateTest {
     /*CreationTests*/
     @Before
     public void setUp() {
-        octantIa = new CartesianCoordinate(2.0, 1.0, 3.0);
-        octantIb = new CartesianCoordinate(2.0, 1.0, 3.0);
-        octantVII = new CartesianCoordinate(-2.0, -1.0, -3.0);
-        layerXYa = new CartesianCoordinate(1, 0, 0);
-        layerXYb = new CartesianCoordinate(1, 5, 0);
+        octantIa = CartesianCoordinate.getCoordinate(2.0, 1.0, 3.0);
+        octantIb = CartesianCoordinate.getCoordinate(2.0, 1.0, 3.0);
+        octantVII = CartesianCoordinate.getCoordinate(-2.0, -1.0, -3.0);
+        layerXYa = CartesianCoordinate.getCoordinate(1, 0, 0);
+        layerXYb = CartesianCoordinate.getCoordinate(1, 5, 0);
 
-        berlinBarndBurgCartesian = new CartesianCoordinate(897_997.802, 1_170_987.368, 6_204_939.366);
-        lissabonBrueckeCartesian = new CartesianCoordinate(-794_012.0811, -635_956.8219, 6_296_347.174);
-    }
-
-    @Test
-    public void createCoordinate_initThroughSetter_notNull() {
-        CartesianCoordinate foo = new CartesianCoordinate();
-        foo.setX(0.0);
-        foo.setY(0.0);
-        foo.setZ(-1.0);
-        Assert.assertNotNull(foo);
+        berlinBarndBurgCartesian = CartesianCoordinate.getCoordinate(897_997.802, 1_170_987.368, 6_204_939.366);
+        lissabonBrueckeCartesian = CartesianCoordinate.getCoordinate(-794_012.0811, -635_956.8219, 6_296_347.174);
     }
 
     @Test
     public void createCoordinate_initThroughConstructor_notNull() {
-        Coordinate bar = new CartesianCoordinate(0.0, 0.0, -1.0);
+        Coordinate bar = CartesianCoordinate.getCoordinate(0.0, 0.0, -1.0);
         Assert.assertNotNull(bar);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void createCoordinate_withExceedingMaxValueInZ_shouldThroughException() {
-        new CartesianCoordinate(1, 1, VALUE_EXCEEDING_COORD_MAXVALUE);
+        CartesianCoordinate.getCoordinate(1, 1, VALUE_EXCEEDING_COORD_MAXVALUE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void createCoordinate_withExceedingMaxValueInX_shouldThroughException() {
-        new CartesianCoordinate(VALUE_EXCEEDING_COORD_MAXVALUE, 1, 1);
+        CartesianCoordinate.getCoordinate(VALUE_EXCEEDING_COORD_MAXVALUE, 1, 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void createCoordinate_withExceedingMaxValueInY_shouldThroughIllegalArgumentException() {
-        new CartesianCoordinate(1, VALUE_EXCEEDING_COORD_MAXVALUE, 1);
+        CartesianCoordinate.getCoordinate(1, VALUE_EXCEEDING_COORD_MAXVALUE, 1);
     }
 
     @Test
     public void createCoordinate_belowMaxValue_shouldNOTThroughExceptions() {
         Double valueBelowCoordMaxValue = Double.MAX_VALUE - 1E292;
         try {
-            new CartesianCoordinate(1, 1, valueBelowCoordMaxValue);
-            new CartesianCoordinate(valueBelowCoordMaxValue, 1, 1);
-            new CartesianCoordinate(1, valueBelowCoordMaxValue, 1);
+            CartesianCoordinate.getCoordinate(1, 1, valueBelowCoordMaxValue);
+            CartesianCoordinate.getCoordinate(valueBelowCoordMaxValue, 1, 1);
+            CartesianCoordinate.getCoordinate(1, valueBelowCoordMaxValue, 1);
         } catch (Exception ex) {
             Assert.fail("Exception was thrown but shouldn't.");
         }
@@ -105,9 +96,9 @@ public class CartesianCoordinateTest {
     @Test
     public void createCoordinate_withCoordMaxValue_shouldNOTThroughExceptions() {
         try {
-            new CartesianCoordinate(1, 1, CartesianCoordinate.MAX_VALUE);
-            new CartesianCoordinate(CartesianCoordinate.MAX_VALUE, 1, 1);
-            new CartesianCoordinate(1, CartesianCoordinate.MAX_VALUE, 1);
+            CartesianCoordinate.getCoordinate(1, 1, CartesianCoordinate.MAX_VALUE);
+            CartesianCoordinate.getCoordinate(CartesianCoordinate.MAX_VALUE, 1, 1);
+            CartesianCoordinate.getCoordinate(1, CartesianCoordinate.MAX_VALUE, 1);
         } catch (Exception ex) {
             Assert.fail("Exception was thrown but shouldn't.");
         }
@@ -115,15 +106,15 @@ public class CartesianCoordinateTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void createCoordinate_belowCoordMinValues_shouldThroughIllegalArgumentException() {
-        new CartesianCoordinate(1, 1, -VALUE_EXCEEDING_COORD_MAXVALUE);
+        CartesianCoordinate.getCoordinate(1, 1, -VALUE_EXCEEDING_COORD_MAXVALUE);
     }
 
     @Test
     public void createCoordinate_aboveCoordMinValue_shouldNOTThroughExceptions() {
         try {
-            new CartesianCoordinate(1, 1, -CartesianCoordinate.MAX_VALUE);
-            new CartesianCoordinate(-CartesianCoordinate.MAX_VALUE, 1, 1);
-            new CartesianCoordinate(1, -CartesianCoordinate.MAX_VALUE, 1);
+            CartesianCoordinate.getCoordinate(1, 1, -CartesianCoordinate.MAX_VALUE);
+            CartesianCoordinate.getCoordinate(-CartesianCoordinate.MAX_VALUE, 1, 1);
+            CartesianCoordinate.getCoordinate(1, -CartesianCoordinate.MAX_VALUE, 1);
         } catch (Exception ex) {
             Assert.fail("Exception was thrown but shouldn't.");
         }
@@ -152,28 +143,32 @@ public class CartesianCoordinateTest {
 
     @Test
     public void octantIa_multipliedByMinusOne_isOctantVII() {
-        octantIa.setX(octantIa.getX() * (-1));
-        octantIa.setY(octantIa.getY() * (-1));
-        octantIa.setZ(octantIa.getZ() * (-1));
-
+        double x = octantIa.getX() * (-1);
+        double y = octantIa.getY() * (-1);
+        double z = octantIa.getZ() * (-1);
+        octantIa = CartesianCoordinate.getCoordinate(x, y, z);
         Assert.assertTrue(octantIa.equals(octantVII));
     }
 
     @Test
     public void octantIa_andB_withDifferentOrdinateX_areNotEqual() {
-        octantIb.setX(octantIb.getX() + 1);
+        double x = octantIb.getX() + 1;
+        octantIb = CartesianCoordinate.getCoordinate(x, octantIb.getY(), octantIb.getZ());
         Assert.assertNotEquals(octantIa, octantIb);
     }
 
     @Test
     public void octantIa_andB_withDifferentOrdinateY_areNotEqual() {
-        octantIb.setY(octantIb.getY() + 1);
+        double y = octantIb.getY() + 1;
+        octantIb = CartesianCoordinate.getCoordinate(octantIb.getX(), y, octantIb.getZ());
+
         Assert.assertNotEquals(octantIa, octantIb);
     }
 
     @Test
     public void octantIa_andB_withDifferentOrdinateZ_areNotEqual() {
-        octantIb.setZ(octantIb.getZ() + 1);
+        double z = octantIb.getZ() + 1;
+        octantIb = CartesianCoordinate.getCoordinate(octantIb.getX(), octantIb.getY(), z);
         Assert.assertNotEquals(octantIa, octantIb);
     }
 
@@ -181,8 +176,8 @@ public class CartesianCoordinateTest {
     public void someCoordinates_withMarginalDifferentOrdinate_areNotEqual() {
         double smallValueA = 1.0E-6;
         double smallValueB = 1.1E-6;
-        Coordinate coordinateA = new CartesianCoordinate(smallValueA, smallValueA, smallValueA);
-        Coordinate coordinateB = new CartesianCoordinate(smallValueB, smallValueB, smallValueB);
+        Coordinate coordinateA = CartesianCoordinate.getCoordinate(smallValueA, smallValueA, smallValueA);
+        Coordinate coordinateB = CartesianCoordinate.getCoordinate(smallValueB, smallValueB, smallValueB);
         Assert.assertNotEquals(coordinateA, coordinateB);
     }
 
@@ -190,8 +185,8 @@ public class CartesianCoordinateTest {
     public void someCoordinate_withCalculatedOrdinate_areEqual() {
         double smallValueA = 1.0;
         double smallValueB = 1 / 3.0 + 1 / 3.0 + 1 / 3.0;
-        Coordinate coordinateA = new CartesianCoordinate(smallValueA, smallValueA, smallValueA);
-        Coordinate coordinateB = new CartesianCoordinate(smallValueB, smallValueB, smallValueB);
+        Coordinate coordinateA = CartesianCoordinate.getCoordinate(smallValueA, smallValueA, smallValueA);
+        Coordinate coordinateB = CartesianCoordinate.getCoordinate(smallValueB, smallValueB, smallValueB);
         Assert.assertEquals(coordinateA, coordinateB);
     }
 
@@ -237,8 +232,8 @@ public class CartesianCoordinateTest {
 
     @Test
     public void distanceOfCoordinate_withOneCoordinateMaxAndMinOrdinate_is0() {
-        Coordinate minCoordinate = new CartesianCoordinate(0, CartesianCoordinate.MAX_VALUE * (-1), 0);
-        Coordinate maxCoordinate = new CartesianCoordinate(0, CartesianCoordinate.MAX_VALUE, 0);
+        Coordinate minCoordinate = CartesianCoordinate.getCoordinate(0, CartesianCoordinate.MAX_VALUE * (-1), 0);
+        Coordinate maxCoordinate = CartesianCoordinate.getCoordinate(0, CartesianCoordinate.MAX_VALUE, 0);
         double expectedDistance = CartesianCoordinate.MAX_VALUE - CartesianCoordinate.MAX_VALUE * (-1);
         Assert.assertEquals(expectedDistance, minCoordinate.getDistance(maxCoordinate), 0);
     }
@@ -281,5 +276,15 @@ public class CartesianCoordinateTest {
         assertEqual(8.77, CartesianCoordinate.toSphericalOrdinates(x, y, z)[2]);
         assertEqual(24.26, CartesianCoordinate.toSphericalOrdinates(x, y, z)[1]);
         assertEqual(56.31, CartesianCoordinate.toSphericalOrdinates(x, y, z)[0]);
+    }
+
+    @Test
+    public void objectValue_octantantIa_andB_areSameInstance() {
+        Assert.assertTrue(octantIa == octantIb);
+    }
+
+    @Test
+    public void objectValue_octantantIa_andVIII_areNotSameInstance() {
+        Assert.assertFalse(octantIa == octantVII);
     }
 }

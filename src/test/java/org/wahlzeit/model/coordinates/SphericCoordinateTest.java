@@ -29,6 +29,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.wahlzeit.model.coordinates.impl.SphericCoordinate;
 
+import static org.wahlzeit.model.coordinates.impl.SphericCoordinate.*;
+
 /**
  * https://www.kompf.de/gps/distcalc.html
  */
@@ -36,7 +38,6 @@ public class SphericCoordinateTest extends CoordinateTest {
 
     private SphericCoordinate ruesselsheimBhf;
     private SphericCoordinate ruesselsheimOpelbruecke;
-    final double[] RADIANS = {-1.0, 0, 0.1, 1, 123456};
     final double VALUE = 2.22;
     final double MIN_PRECISION = 0.0000001;
     final double LATITUDE_MAX = 180.00;
@@ -47,57 +48,55 @@ public class SphericCoordinateTest extends CoordinateTest {
 
     @Before
     public void setUp() {
-        unsettedCoord = new SphericCoordinate();
+        unsettedCoord = getCoordinate();
 
         //Coords from https://www.kompf.de/gps/distcalc.html
-        ruesselsheimBhf = new SphericCoordinate(49.9917, 8.41321);
-        ruesselsheimOpelbruecke = new SphericCoordinate(50.0049, 8.42182);
+        ruesselsheimBhf = getCoordinate(49.9917, 8.41321);
+        ruesselsheimOpelbruecke = getCoordinate(50.0049, 8.42182);
 
-        berlinBarndBurgSpheric = new SphericCoordinate(52.5164, 13.3777);
-        lissabonBrueckeSpheric = new SphericCoordinate(38.692668, -9.177944);
+        berlinBarndBurgSpheric = getCoordinate(52.5164, 13.3777);
+        lissabonBrueckeSpheric = getCoordinate(38.692668, -9.177944);
     }
 
     @Test
     public void staticMaxValues_forLongitude_is90() {
-        Assert.assertEquals(LATITUDE_MAX, SphericCoordinate.LATITUDE_MAX_VALUE, 0);
-        Assert.assertEquals(LONGITUDE_MAX, SphericCoordinate.LONGITUDE_MAX_VALUE, 0);
+        Assert.assertEquals(LATITUDE_MAX, LATITUDE_MAX_VALUE, 0);
+        Assert.assertEquals(LONGITUDE_MAX, LONGITUDE_MAX_VALUE, 0);
     }
 
     @Test
     public void staticMaxValues_forLatitude_is180() {
-        Assert.assertEquals(LATITUDE_MAX, SphericCoordinate.LATITUDE_MAX_VALUE, 0);
-        Assert.assertEquals(LONGITUDE_MAX, SphericCoordinate.LONGITUDE_MAX_VALUE, 0);
+        Assert.assertEquals(LATITUDE_MAX, LATITUDE_MAX_VALUE, 0);
+        Assert.assertEquals(LONGITUDE_MAX, LONGITUDE_MAX_VALUE, 0);
     }
 
     @Test
     public void createSpericCoordinate_notNull() {
-        Assert.assertNotNull(new SphericCoordinate());
+        Assert.assertNotNull(getCoordinate());
     }
 
     @Test
     public void getLongitude_afterCreatingCoordWithValue_returnsValue() {
-        SphericCoordinate sphCord = new SphericCoordinate(-VALUE, VALUE);
+        SphericCoordinate sphCord = getCoordinate(-VALUE, VALUE);
         Assert.assertEquals(VALUE, sphCord.getLongitude(), 0);
     }
 
     @Test
     public void getLongitude_afterSettingItToValue_returnsValue() {
-        SphericCoordinate sphCord = new SphericCoordinate();
-        sphCord.setLongitude(VALUE);
+        SphericCoordinate sphCord = getCoordinate(0, VALUE);
         Assert.assertEquals(VALUE, sphCord.getLongitude(), 0);
     }
 
     @Test
     public void getLatitude_afterSettingItToValue_returnsValue() {
-        SphericCoordinate sphCord = new SphericCoordinate();
-        sphCord.setLatitude(VALUE);
+        SphericCoordinate sphCord = getCoordinate(VALUE, 0);
+
         Assert.assertEquals(VALUE, sphCord.getLatitude(), 0);
     }
 
     @Test
     public void getRadius_afterSettingItToValue_returnsValue() {
-        SphericCoordinate sphCord = new SphericCoordinate();
-        sphCord.setRadius(VALUE);
+        SphericCoordinate sphCord = getCoordinate(0, 0, VALUE);
         Assert.assertEquals(VALUE, sphCord.getRadius(), 0);
     }
 
@@ -114,8 +113,9 @@ public class SphericCoordinateTest extends CoordinateTest {
     @Test
     public void setLongitude_withinMaxValueRange_shouldNotThrowException() {
         try {
-            unsettedCoord.setLongitude(LONGITUDE_MAX);
-            unsettedCoord.setLongitude(-LONGITUDE_MAX);
+            getCoordinate(0, LONGITUDE_MAX);
+            getCoordinate(0, -LONGITUDE_MAX);
+            unsettedCoord = getCoordinate();
         } catch (Exception ex) {
             Assert.fail();
         }
@@ -124,8 +124,8 @@ public class SphericCoordinateTest extends CoordinateTest {
     @Test
     public void setLatitude_withinMaxValueRange_shouldNotThrowException() {
         try {
-            unsettedCoord.setLatitude(LATITUDE_MAX);
-            unsettedCoord.setLatitude(-LATITUDE_MAX);
+            getCoordinate(LATITUDE_MAX, 0);
+            getCoordinate(-LATITUDE_MAX, 0);
         } catch (Exception ex) {
             Assert.fail();
         }
@@ -133,22 +133,24 @@ public class SphericCoordinateTest extends CoordinateTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void setLongitude_greaterThan90_shouldThrowException() {
-        unsettedCoord.setLongitude(LONGITUDE_MAX + MIN_PRECISION);
+        getCoordinate(0, LONGITUDE_MAX + MIN_PRECISION);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void setLongitude_lessThanMinus90_shouldThrowException() {
-        unsettedCoord.setLongitude(-LONGITUDE_MAX - MIN_PRECISION);
+        getCoordinate(0, -LONGITUDE_MAX - MIN_PRECISION);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void setLatidude_greaterThan180_shouldThrowException() {
-        unsettedCoord.setLatitude(LATITUDE_MAX + MIN_PRECISION);
+        getCoordinate(LATITUDE_MAX + MIN_PRECISION, 0);
+
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void setLatidude_lessThanMinus180_shouldThrowException() {
-        unsettedCoord.setLatitude(-LATITUDE_MAX - MIN_PRECISION);
+        getCoordinate(-LATITUDE_MAX - MIN_PRECISION, 0);
+
     }
 
     @Test
@@ -208,8 +210,21 @@ public class SphericCoordinateTest extends CoordinateTest {
         assertEqual(3.55, y);
         assertEqual(11.28, z);
 
-        assertEqual(x, SphericCoordinate.toCartesianOrdinates(phi, theta, r)[0]);
-        assertEqual(y, SphericCoordinate.toCartesianOrdinates(phi, theta, r)[1]);
-        assertEqual(z, SphericCoordinate.toCartesianOrdinates(phi, theta, r)[2]);
+        assertEqual(x, toCartesianOrdinates(phi, theta, r)[0]);
+        assertEqual(y, toCartesianOrdinates(phi, theta, r)[1]);
+        assertEqual(z, toCartesianOrdinates(phi, theta, r)[2]);
+    }
+
+    @Test
+    public void twoCreatedCoordinates_withSameValues_areSameInstance() {
+        SphericCoordinate sphericCoordinate = SphericCoordinate.getCoordinate(1, 2);
+        Assert.assertTrue(sphericCoordinate == SphericCoordinate.getCoordinate(1, 2));
+    }
+
+    @Test
+    public void twoCreatedCoordinates_withDifferentValues_areDofferentInstance() {
+        SphericCoordinate coordA = SphericCoordinate.getCoordinate(1, 2);
+        SphericCoordinate coordB = SphericCoordinate.getCoordinate(2, 1);
+        Assert.assertFalse(coordA == coordB);
     }
 }

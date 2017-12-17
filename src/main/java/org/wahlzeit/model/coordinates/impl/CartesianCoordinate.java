@@ -29,25 +29,27 @@ import org.wahlzeit.model.coordinates.Coordinate;
 import org.wahlzeit.utils.Assert;
 import org.wahlzeit.utils.MathUtils;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.wahlzeit.utils.MathUtils.square;
 
 /**
  * Represents a Cartesian coordinate of a three dimensional Cartesian coordinate system
  */
 public class CartesianCoordinate extends AbstractCoordinate {
-    private double y;
-    private double x;
-    private double z;
+    private final double y;
+    private final double x;
+    private final double z;
+    protected final static Set<CartesianCoordinate> coordinates = Collections.synchronizedSet(new HashSet<CartesianCoordinate>());
     public static final Double MAX_VALUE = Double.MAX_VALUE - 1E292;
 
-    public CartesianCoordinate() {
-    }
-
-    public CartesianCoordinate(double x, double y, double z) {
+    private CartesianCoordinate(double x, double y, double z) {
         assertOrdinates(x, y, z);
-        setY(y);
-        setX(x);
-        setZ(z);
+        this.y = y;
+        this.x = x;
+        this.z = z;
     }
 
     public double getY() {
@@ -63,30 +65,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     /**
-     * Sets ordinate Value within the range [-Coordinate.MAX_VALUE:Coordinate.MAX_VALUE]
-     */
-    public void setX(double x) {
-        assertOrdinates(x);
-        this.x = x;
-    }
-
-    /**
-     * Sets ordinate Value within the range [-Coordinate.MAX_VALUE:Coordinate.MAX_VALUE]
-     */
-    public void setY(double y) {
-        assertOrdinates(y);
-        this.y = y;
-    }
-
-    /**
-     * Sets ordinate Value within the range [-Coordinate.MAX_VALUE:Coordinate.MAX_VALUE]
-     */
-    public void setZ(double z) {
-        assertOrdinates(z);
-        this.z = z;
-    }
-
-    /**
      * <a href=http://www.learningaboutelectronics.com/Articles/Cartesian-rectangular-to-spherical-coordinate-converter-calculator.php#answer>source</a>
      * @return array of doubles in format: [ latitude , longitude , radius ]
      */
@@ -96,6 +74,15 @@ public class CartesianCoordinate extends AbstractCoordinate {
         double longitude = radius == 0 ? 0 : Math.toDegrees(Math.acos(z / radius));
         double latitude = x == 0 ? 0 : Math.toDegrees(Math.atan(y / x));
         return new double[]{latitude, longitude, radius};
+    }
+
+    public static CartesianCoordinate getCoordinate(double x, double y, double z) {
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(x, y, z);
+        return AbstractCoordinate.getCoordinateFromCache(cartesianCoordinate).asCartesianCoordinate();
+    }
+
+    public static CartesianCoordinate getCartesianCoordinate() {
+        return getCoordinate(0, 0, 0);
     }
 
     @Override
@@ -127,7 +114,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
     public SphericCoordinate asSphericCoordinate() {
         assertClassInvariants();
         double[] sphericOrdinates = toSphericalOrdinates(getX(), getY(), getZ());
-        return new SphericCoordinate(sphericOrdinates[0], sphericOrdinates[1], sphericOrdinates[2]);
+        return SphericCoordinate.getCoordinate(sphericOrdinates[0], sphericOrdinates[1], sphericOrdinates[2]);
     }
 
     @Override

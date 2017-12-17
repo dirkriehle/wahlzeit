@@ -40,11 +40,11 @@ public class CoordinateTest {
 
     @Before
     public void setUpTest() {
-        berlinBarndBurgCartesian = new CartesianCoordinate(897_997.802, 1_170_987.37, 6_204_939.37);
-        lissabonBrueckeCartesian = new CartesianCoordinate(-794_012.08, -635_956.82, 6_296_347.17);
+        berlinBarndBurgCartesian = CartesianCoordinate.getCoordinate(897_997.802, 1_170_987.37, 6_204_939.37);
+        lissabonBrueckeCartesian = CartesianCoordinate.getCoordinate(-794_012.08, -635_956.82, 6_296_347.17);
 
-        berlinBarndBurgSpheric = new SphericCoordinate(52.5164, 13.3777);
-        lissabonBrueckeSpheric = new SphericCoordinate(38.692668, -9.177944);
+        berlinBarndBurgSpheric = SphericCoordinate.getCoordinate(52.5164, 13.3777);
+        lissabonBrueckeSpheric = SphericCoordinate.getCoordinate(38.692668, -9.177944);
     }
 
     @Test
@@ -56,19 +56,19 @@ public class CoordinateTest {
 
     @Test
     public void convertingZeroSpheric_toCartesianAndBack_inIsEqualOut() {
-        Coordinate spheric = new SphericCoordinate(0, 0);
+        Coordinate spheric = SphericCoordinate.getCoordinate(0, 0);
         Assert.assertEquals(spheric, spheric.asCartesianCoordinate().asSphericCoordinate());
     }
 
     @Test
     public void convertingZeroCartesion_toSphericAndBack_inIsEqualOut() {
-        Coordinate cartesian = new CartesianCoordinate(0, 0, 0);
+        Coordinate cartesian = CartesianCoordinate.getCoordinate(0, 0, 0);
         Assert.assertEquals(cartesian, cartesian.asSphericCoordinate().asCartesianCoordinate());
     }
 
     @Test
     public void creatingTwoCartesions_whereOneIsBuildFromSpheric_areEqual() {
-        Coordinate spheric = new SphericCoordinate(10, 12);
+        Coordinate spheric = SphericCoordinate.getCoordinate(10, 12);
         Coordinate cartesian = convertToCartesian(spheric);
         Assert.assertEquals(spheric, (cartesian.asSphericCoordinate()));
     }
@@ -99,6 +99,6 @@ public class CoordinateTest {
 
     private Coordinate convertToCartesian(Coordinate sphericCoord) {
         CartesianCoordinate cartesianConverted = sphericCoord.asCartesianCoordinate();
-        return new CartesianCoordinate(cartesianConverted.getX(), cartesianConverted.getY(), cartesianConverted.getZ());
+        return CartesianCoordinate.getCoordinate(cartesianConverted.getX(), cartesianConverted.getY(), cartesianConverted.getZ());
     }
 }

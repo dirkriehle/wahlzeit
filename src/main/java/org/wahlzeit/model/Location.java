@@ -50,7 +50,7 @@ public class Location {
     }
 
     /**
-     * sets the coordinates to either provided Coordinate or if null to NoWhereCoordinate.
+     * sets the coordinateCache to either provided Coordinate or if null to NoWhereCoordinate.
      */
     public void setCoordinate(Coordinate coordinate) {
         if (coordinate == null) {
@@ -58,6 +58,13 @@ public class Location {
             return;
         }
         this.coordinate = coordinate;
+    }
+
+    /**
+     * {@link Coordinate#getDistance(Coordinate)}  Coordinate#getDistance}
+     */
+    public double getDistance(Location noWhereLocation) {
+        return coordinate.getDistance(noWhereLocation.coordinate);
     }
 
     /**
@@ -69,12 +76,5 @@ public class Location {
             return coordinate.equals(((Location) obj).coordinate);
         }
         return false;
-    }
-
-    /**
-     * {@link Coordinate#getDistance(Coordinate)}  Coordinate#getDistance}
-     */
-    public double getDistance(Location noWhereLocation) {
-        return coordinate.getDistance(noWhereLocation.coordinate);
     }
 }

@@ -70,4 +70,5 @@ public interface Coordinate {
      * @methodtype boolean-query
      */
     boolean isEqual(Coordinate otherCoord);
+
 }

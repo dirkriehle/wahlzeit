@@ -28,7 +28,25 @@ import org.wahlzeit.model.coordinates.Coordinate;
 import org.wahlzeit.utils.Assert;
 import org.wahlzeit.utils.MathUtils;
 
+import java.util.HashMap;
+
 public abstract class AbstractCoordinate implements Coordinate {
+    protected final static HashMap<Integer, Coordinate> coordinateCache = new HashMap<>();
+
+    public static void saveCoordinate(Coordinate coordinate) {
+        if (!isExistingCoordinate(coordinate)) {
+            coordinateCache.put(coordinate.hashCode(), coordinate);
+        }
+    }
+
+    public static boolean isExistingCoordinate(Coordinate coordinate) {
+        return coordinateCache.containsKey(coordinate.hashCode());
+    }
+
+    public static Coordinate getCoordinateFromCache(Coordinate coordinate) {
+        saveCoordinate(coordinate);
+        return coordinateCache.get(coordinate.hashCode());
+    }
 
     public static boolean isNoWhere(Coordinate otherCoord) {
         Assert.notNull(otherCoord, "");
@@ -74,21 +92,9 @@ public abstract class AbstractCoordinate implements Coordinate {
         return getDistance(otherCoord) <= MathUtils.getPrecision();
     }
 
-    /**
-     * @return hashes calculated from cartesian ordinates
-     */
     @Override
     public int hashCode() {
-        CartesianCoordinate thisCartCoord = asCartesianCoordinate();
-        int result;
-        long temp;
-        temp = Double.doubleToLongBits(thisCartCoord.getY());
-        result = (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(thisCartCoord.getX());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(thisCartCoord.getZ());
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
+        return toString().hashCode();
     }
 
     /**
