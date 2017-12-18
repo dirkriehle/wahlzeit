@@ -1,27 +1,26 @@
 
 package org.wahlzeit.model;
 
-import static org.junit.Assert.assertNotNull;
 
 /**
 @Inv validate that CartesianCoordinate  is not null by assertClassInvariants
 */
 
-public class CartesianCoordinate extends AbstractCoordinate{
+public final class CartesianCoordinate extends AbstractCoordinate{
 	
 	
 	
-	private double x =0;
-	private double y=0;
-	private double z=0;
+	private  double x =0;
+	private  double y=0;
+	private  double z=0;
 	
-	CartesianCoordinate()
+	public CartesianCoordinate()
 	{
 		
 	}	
-	CartesianCoordinate(double x, double y , double z)
+	public CartesianCoordinate(double x, double y , double z)
 	{
-	     this.x=x;	
+	     this.x =x;
 	     this.y=y;
 	     this.z=z;
 	}
@@ -40,6 +39,20 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	{
 		return z;
 	}
+	protected void setX(double x)
+	{
+		 this.x = x;
+	}
+	
+	protected void setY(double y)
+	{
+		this.y =  y;
+	}
+	
+	protected void setZ(double z)
+	{
+		this.z =  z;
+	}
 	/**
 	return Cartesian coordinate 
 	@post validate that Cartesian coordinate  is not null; include x , y and z 
@@ -49,7 +62,8 @@ public class CartesianCoordinate extends AbstractCoordinate{
 		assertClassInvariants();	
 		assert(this != null);	
 		assertClassInvariants();	
-		return this;
+		CartesianCoordinate cord = this;
+		return cord;
 	}
 	/**
 	return the distance between two Cartesian 
@@ -67,8 +81,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 		assert(result>=0);
 		assertClassInvariants();	
 		return result;
-		
-		
+				
 	}
 	/**
 	return Cartesian coordinate 
@@ -89,7 +102,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 		 
 		 double longitude = Math.toDegrees(Math.atan2(y, x));
 		 SphericCoordinate result  = new SphericCoordinate(latitude, longitude, radius);
-		 assertDoubleNotNull (result.getLatitude(), result.getLongitude(), result.getradius());
+		 assertDoubleNotNull (result.getLatitude(), result.getLongitude(), result.getRadius());
 	     assertClassInvariants();	
 		 return result;
 	}
@@ -103,13 +116,12 @@ public class CartesianCoordinate extends AbstractCoordinate{
 		 assertClassInvariants();		
          CartesianCoordinate cartCord = cord.asCartesianCoordinate();
          assertDoubleNotNull (cartCord.x,cartCord.y,cartCord.z);
-         boolean result =isEqualOfDouble(this.x,cartCord.getX())
+         Boolean result =isEqualOfDouble(this.x,cartCord.getX())
 				 &&isEqualOfDouble(this.y,cartCord.getY())
 				 && isEqualOfDouble(this.z,cartCord.getZ()); 
-         assertNotNull(result);
+         assert(result!=null);
 	     assertClassInvariants();	
-		 return result;
-		 
+		 return result;		 
 	}
 	@Override
 	public int hashCode() {
@@ -141,10 +153,10 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	*/
 	public void assertClassInvariants()
 	{
-	    assertNotNull(this.x);
-	    assertNotNull(this.y);
-	    assertNotNull(this.z);	    
-		
+	    assert(!Double.isNaN(this.x));
+	    assert(!Double.isNaN(this.y));
+	    assert(!Double.isNaN(this.z));
+
 	}
 	
 	

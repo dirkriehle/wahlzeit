@@ -16,12 +16,7 @@ public class LocationTest {
 	CartesianCoordinate cartCord = null;
 	Location cartlo1,cartlo2,cartlo3,cartlo4,cartlo5, spherloc1, spherloc2= null;
     SphericCoordinate spherCord = null;	
-   
-	
-	
-	
-	
-
+  
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -33,7 +28,7 @@ public class LocationTest {
 	    cartlo1 = new Location (1,2,3);
 	    cartlo2 = new Location (0,0,0);
 	    cartlo3 = new Location (-12,15,0);
-	    cartlo4 = new Location ();
+	    cartlo4 = new Location (0,0,0);
 	    cartlo5 = new Location (cartCord);
 	
 	   // add testing data for the spheric coordinate
@@ -93,7 +88,7 @@ public class LocationTest {
 		
 		assert(((SphericCoordinate) spherloc2.cord).getLatitude() ==100);
 		assert(((SphericCoordinate) spherloc2.cord).getLongitude()==200); 
-		assert(((SphericCoordinate) spherloc2.cord).getradius()==6371);
+		assert(((SphericCoordinate) spherloc2.cord).getRadius()==6371);
 	}
 	
 	/**

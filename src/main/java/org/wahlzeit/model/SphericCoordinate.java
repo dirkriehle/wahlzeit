@@ -1,13 +1,12 @@
 
 package org.wahlzeit.model;
 
-import static org.junit.Assert.assertNotNull;
 
 /**
 @Inv validate that SphericCoordinates is not null by assertClassInvariants
 */
 
-public class SphericCoordinate extends AbstractCoordinate{
+public final class  SphericCoordinate extends AbstractCoordinate{
 	
 	
 	
@@ -21,13 +20,13 @@ public class SphericCoordinate extends AbstractCoordinate{
 	{
 		
 	}
-	SphericCoordinate(double latitude, double longitude )
+	public SphericCoordinate(double latitude, double longitude )
 	{
 	     this.latitude=latitude;	
 	     this.longitude=longitude;
 	     this.radius = earthradius;
 	}
-	SphericCoordinate(double latitude, double longitude,double radius )
+	public SphericCoordinate(double latitude, double longitude,double radius )
 	{
 	     this.latitude=latitude;	
 	     this.longitude=longitude;
@@ -44,9 +43,23 @@ public class SphericCoordinate extends AbstractCoordinate{
 		return longitude;
 	}
 	
-	public double getradius()
+	public double getRadius()
 	{
 		return radius;
+	}
+	protected void setLatitude(double latitude)
+	{
+		 this.latitude = latitude;
+	}
+	
+	protected void setLongitude(double longitude)
+	{
+		this.longitude=  longitude;
+	}
+	
+	protected void setRadius(double radius)
+	{
+		this.radius =  radius;
 	}
 	/**
 	return Cartesian coordinate 
@@ -57,8 +70,9 @@ public class SphericCoordinate extends AbstractCoordinate{
 	public SphericCoordinate asSphericCoordinate() {
 		assertClassInvariants();	
 		assert(this != null);	
-		assertClassInvariants();	
-		return this;
+		assertClassInvariants();
+		SphericCoordinate spherCord = this;
+		return spherCord;
 	}
 	/**
 	return the distance between two Spheric coordinate
@@ -95,10 +109,10 @@ public class SphericCoordinate extends AbstractCoordinate{
 		 SphericCoordinate sphercord = cord.asSphericCoordinate();
 	     assertClassInvariants();	
 	     assertDoubleNotNull(sphercord.latitude,sphercord.longitude,sphercord.radius  );
-    	 boolean result =   isEqualOfDouble(this.latitude ,sphercord.getLatitude())
+    	 Boolean result =   isEqualOfDouble(this.latitude ,sphercord.getLatitude())
  			            	&& isEqualOfDouble(this.longitude ,sphercord.getLongitude())
- 			            	&&isEqualOfDouble(this.radius ,sphercord.getradius());
-    	 assertNotNull(result);
+ 			            	&&isEqualOfDouble(this.radius ,sphercord.getRadius());
+    	 assert(result!=null);
          assertClassInvariants();	        
 		 return result;
 				
@@ -154,9 +168,9 @@ public class SphericCoordinate extends AbstractCoordinate{
 	
 	public void assertClassInvariants()
 	{
-		assertNotNull(this.longitude);
-		assertNotNull(this.latitude);
-		assertNotNull(this.radius);	    
+		 assert(!Double.isNaN(this.longitude));
+		 assert(!Double.isNaN(this.latitude));
+		 assert(!Double.isNaN(this.radius));	    
 		
 	}
 }

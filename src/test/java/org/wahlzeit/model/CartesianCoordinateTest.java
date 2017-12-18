@@ -28,7 +28,7 @@ public class CartesianCoordinateTest {
 		SphericCoordinate spherCord = cartCord4.asSphericCoordinate();
 		double latitude = spherCord.getLatitude();
 		double longitude = spherCord.getLongitude();
-		double radius = spherCord.getradius();
+		double radius = spherCord.getRadius();
 		boolean conversionResult = spherCord.isEqualOfDouble(latitude,0.98279372324733)
 				&&spherCord.isEqualOfDouble(longitude,0.73358132364008)
 				&&spherCord.isEqualOfDouble(radius,26.925824035673);

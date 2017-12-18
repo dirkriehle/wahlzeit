@@ -1,8 +1,5 @@
 package org.wahlzeit.model;
 
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Assert;
 
 //import static org.junit.Assert.assertNotNull;
 
@@ -30,10 +27,10 @@ public abstract class AbstractCoordinate implements Coordinate{
 	@post validate that the output is not null 
 	@Pre validate that val1 and val2 are not null
 	*/
-	public boolean isEqualOfDouble(double val1, double val2) {
-		assert(val1>=0 && val2>=0);
-		boolean result = val1 == val2 ? true : Math.abs(val1 - val2) <= 0.0001;
-		assertNotNull(result);
+	protected static  boolean isEqualOfDouble(double val1, double val2) {
+		assert(Double.isNaN(val1)&& Double.isNaN(val2));
+		Boolean result = val1 == val2 ? true : Math.abs(val1 - val2) <= 0.0001;
+		assert(result!=null);
 		return result;	
 	}
 	@Override
@@ -52,9 +49,10 @@ public abstract class AbstractCoordinate implements Coordinate{
    @Override
 	public void assertDoubleNotNull(double val1, double val2, double val3) 
 	{
-	    Assert.assertNotNull(val1);
-	    Assert.assertNotNull(val2);
-	    Assert.assertNotNull(val3);	    
+	    assert(!Double.isNaN(val1));
+	    assert(!Double.isNaN(val2));
+	    assert(!Double.isNaN(val3));
+    
 		
 	}
 	
