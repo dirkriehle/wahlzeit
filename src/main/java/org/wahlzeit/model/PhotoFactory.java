@@ -24,11 +24,19 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.model.gurkenDomain.GurkenPhotoFactory;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.utils.Assert;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.util.logging.Logger;
 
+@PatternInstance(
+        patternName = "Abstract Factory",
+        participants = {
+                PhotoFactory.class, GurkenPhotoFactory.class
+        }
+)
 /**
  * An Abstract Factory for creating photos and related objects.
  */

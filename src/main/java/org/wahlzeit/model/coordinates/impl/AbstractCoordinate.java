@@ -27,9 +27,16 @@ package org.wahlzeit.model.coordinates.impl;
 import org.wahlzeit.model.coordinates.Coordinate;
 import org.wahlzeit.utils.Assert;
 import org.wahlzeit.utils.MathUtils;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.util.HashMap;
 
+@PatternInstance(
+        patternName = "Value Object",
+        participants = {
+                AbstractCoordinate.class
+        }
+)
 public abstract class AbstractCoordinate implements Coordinate {
     protected final static HashMap<Integer, Coordinate> coordinateCache = new HashMap<>();
 
@@ -102,6 +109,12 @@ public abstract class AbstractCoordinate implements Coordinate {
         return MathUtils.round(value, DECIMALS_DISPLAY);
     }
 
+    @PatternInstance(
+            patternName = "Template Method",
+            participants = {
+                    AbstractCoordinate.class, SphericCoordinate.class, CartesianCoordinate.class, NoWhereCoordinate.class
+            }
+    )
     /**
      * @return distance, defined by its caller
      */

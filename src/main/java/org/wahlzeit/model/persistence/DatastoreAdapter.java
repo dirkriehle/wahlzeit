@@ -28,21 +28,26 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import org.wahlzeit.services.CloudDB;
 import org.wahlzeit.services.LogBuilder;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.logging.Logger;
 
+@PatternInstance(
+		patternName = "Adapter (Inheritance)",
+		participants = {
+				ImageStorage.class, DatastoreAdapter.class, CloudDB.class
+		}
+)
 /**
  * Adapter for the Google Datastore. Use default constructor to create an instance.
- * 
  * @review
  */
 public class DatastoreAdapter extends ImageStorage {
 
 	private static final Logger log = Logger.getLogger(DatastoreAdapter.class.getName());
-
 
 	@Override
 	protected void doWriteImage(Serializable image, String photoIdAsString, int size)
@@ -111,8 +116,8 @@ public class DatastoreAdapter extends ImageStorage {
 
 	/**
 	 * Wrapper class to store {@link Image}s in the Google Datastore with Objectify.
-	 * 
- 	 * @review
+	 *
+	 * @review
 	 */
 	@Entity
 	public static class ImageWrapper {
@@ -146,8 +151,7 @@ public class DatastoreAdapter extends ImageStorage {
 		public void setImage(Image image) throws ArrayIndexOutOfBoundsException {
 			if(image.getImageData().length >= maxEntitySize) {
 				throw new ArrayIndexOutOfBoundsException("Can not store images >= 1 MB in the Google Datastore.");
-			}
-			else {
+			} else {
 				imageData = image.getImageData();
 			}
 		}

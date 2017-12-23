@@ -32,12 +32,19 @@ import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.ObjectManager;
 import org.wahlzeit.services.Persistent;
 import org.wahlzeit.utils.Assert;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 import java.util.logging.Logger;
 
+@PatternInstance(
+        patternName = "Singleton",
+        participants = {
+                PhotoManager.class
+        }
+)
 /**
  * A photo manager provides access to and manages photos.
  */
@@ -243,6 +250,18 @@ public abstract class PhotoManager extends ObjectManager {
         photoCache.remove(photo.id);
     }
 
+    @Override
+    protected void updateDependents(Persistent obj) {
+        if (obj instanceof Photo) {
+            Photo photo = (Photo) obj;
+            saveScaledImages(photo);
+            updateTags(photo);
+            UserManager userManager = UserManager.getInstance();
+            Client owner = userManager.getClientById(photo.getOwnerId());
+            userManager.saveClient(owner);
+        }
+    }
+
     /**
      * @methodtype get
      * @methodproperties primitive
@@ -356,18 +375,6 @@ public abstract class PhotoManager extends ObjectManager {
     protected void assertIsNewPhoto(PhotoId id) {
         if (hasPhoto(id)) {
             throw new IllegalStateException("Photo already exists!");
-        }
-    }
-
-    @Override
-    protected void updateDependents(Persistent obj) {
-        if (obj instanceof Photo) {
-            Photo photo = (Photo) obj;
-            saveScaledImages(photo);
-            updateTags(photo);
-            UserManager userManager = UserManager.getInstance();
-            Client owner = userManager.getClientById(photo.getOwnerId());
-            userManager.saveClient(owner);
         }
     }
 

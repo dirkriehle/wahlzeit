@@ -25,9 +25,16 @@
 package org.wahlzeit.model.coordinates.impl;
 
 import org.wahlzeit.model.coordinates.Coordinate;
+import org.wahlzeit.utils.PatternInstance;
 
 import static java.lang.System.identityHashCode;
 
+@PatternInstance(
+        patternName = "Null Object",
+        participants = {
+                AbstractCoordinate.class, NoWhereCoordinate.class,
+        }
+)
 /**
  * Represents a null-coordinate with defined "do-nothing-behavior" when interacting with it
  */
@@ -51,15 +58,6 @@ public class NoWhereCoordinate extends AbstractCoordinate {
         return SphericCoordinate.getCoordinate(0, 0, 0);
     }
 
-    @Override
-    protected double doCalculateDistance(Coordinate otherCoord) {
-        return -1;
-    }
-
-    @Override
-    protected void assertClassInvariants() {
-    }
-
     /**
      * Determines the equality between something and nothing
      * @return false
@@ -75,5 +73,14 @@ public class NoWhereCoordinate extends AbstractCoordinate {
     @Override
     public int hashCode() {
         return identityHashCode(this);
+    }
+
+    @Override
+    protected double doCalculateDistance(Coordinate otherCoord) {
+        return -1;
+    }
+
+    @Override
+    protected void assertClassInvariants() {
     }
 }
