@@ -29,17 +29,43 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class MathUtilsTest {
+    private final double FIVE_DECIMAL_PRECISION = 0.00001;
     private double valueA;
     private double valueA2;
     private double precision1E_7;
-    //TODO: Add tests
+    private double sixDecimalValueA;
+    private double sixDecimalValueB;
+
+    @Test
+    public void round_sixDecimalValueA_AndB_on5Decimals_resultsAreEqual() {
+        int decimals = 5;
+        String roundToDecimals = "%." + decimals + "f ";
+        System.out.printf(roundToDecimals + "\n" + roundToDecimals, sixDecimalValueA, sixDecimalValueB);
+        double value1 = MathUtils.round(sixDecimalValueA, decimals);
+        double value2 = MathUtils.round(sixDecimalValueB, decimals);
+        System.out.println("\n____________________\n" + value1 + "\n" + value2);
+        Assert.assertEquals(value1, value2, FIVE_DECIMAL_PRECISION);
+    }
+
+    @Test
+    public void round_sixDecimalValueA_AndB_on4Decimals_resultsAreNotEqual() {
+        int decimals = 4;
+        String roundToDecimals = "%." + decimals + "f ";
+        System.out.printf(roundToDecimals + "\n" + roundToDecimals, sixDecimalValueA, sixDecimalValueB);
+        double value1 = MathUtils.round(sixDecimalValueA, decimals);
+        double value2 = MathUtils.round(sixDecimalValueB, decimals);
+        System.out.println("\n____________________\n" + value1 + "\n" + value2);
+        Assert.assertNotEquals(value1, value2, FIVE_DECIMAL_PRECISION);
+    }
 
     @Before
     public void setUp() {
-        MathUtils.setPrecision(MathUtils.DEFAULT_PRECISION);
+        MathUtils.setPrecision(MathUtils.default_precision);
         valueA = 1E-7;
         valueA2 = 2E-7;
         precision1E_7 = 1E-7;
+        sixDecimalValueA = 1.123454;
+        sixDecimalValueB = 1.123449;
     }
 
     @Test

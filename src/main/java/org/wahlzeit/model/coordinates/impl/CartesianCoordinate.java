@@ -119,7 +119,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     @Override
     public String toString() {
-        return "(" + x + "," + y + "," + z + ")";
+        return "(" + getDisplayValue(x) + "," + getDisplayValue(y) + "," + getDisplayValue(z) + ")";
     }
 
     private static void assertOrdinates(double... ordinates) {

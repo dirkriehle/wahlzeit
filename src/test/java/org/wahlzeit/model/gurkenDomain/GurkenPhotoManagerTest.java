@@ -146,7 +146,7 @@ public class GurkenPhotoManagerTest extends GurkenDomainTest {
         gurkenPhotoManager = PhotoManager.getInstance();
         gurkenPhotoFactory = (GurkenPhotoFactory) PhotoFactory.getInstance();
 
-        noWhere = new Location(new NoWhereCoordinate());
+        noWhere = new Location(NoWhereCoordinate.getNoWhereCoordinate());
         oneID = PhotoId.getNextId();
         twoID = PhotoId.getNextId();
         threeID = PhotoId.getNextId();

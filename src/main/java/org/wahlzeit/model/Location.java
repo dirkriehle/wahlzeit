@@ -39,7 +39,7 @@ public class Location {
     }
 
     public Location() {
-        setCoordinate(new NoWhereCoordinate());
+        setCoordinate(NoWhereCoordinate.getNoWhereCoordinate());
     }
 
     /**
@@ -54,7 +54,7 @@ public class Location {
      */
     public void setCoordinate(Coordinate coordinate) {
         if (coordinate == null) {
-            this.coordinate = new NoWhereCoordinate();
+            this.coordinate = NoWhereCoordinate.getNoWhereCoordinate();
             return;
         }
         this.coordinate = coordinate;

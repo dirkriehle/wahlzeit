@@ -127,7 +127,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     @Override
     public String toString() {
-        return "(" + latitude + "," + longitude + "), r= " + radius + ")";
+        return "(" + getDisplayValue(latitude) + "," + getDisplayValue(longitude) + "), r= " + getDisplayValue(radius) + ")";
     }
 
     private void assertLatitude(double latitude) {

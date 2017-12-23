@@ -42,7 +42,7 @@ public class LocationTest {
 
     @Before
     public void setUp() {
-        noWhereLocation = new Location(new NoWhereCoordinate());
+        noWhereLocation = new Location(NoWhereCoordinate.getNoWhereCoordinate());
         fooCoords = CartesianCoordinate.getCoordinate(1, 0, 2);
         barCoords = CartesianCoordinate.getCoordinate(-1, -2, 0);
         fooLocation = new Location(fooCoords);
@@ -57,7 +57,7 @@ public class LocationTest {
 
     @Test
     public void createLocation_withCoordinate_isNotNull() {
-        Coordinate noWhereCoordinate = new NoWhereCoordinate();
+        Coordinate noWhereCoordinate = NoWhereCoordinate.getNoWhereCoordinate();
         Location noWhere = new Location(noWhereCoordinate);
         Assert.assertNotNull(noWhere.getCoordinate());
         noWhere.equals(noWhere);

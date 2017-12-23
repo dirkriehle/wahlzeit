@@ -31,7 +31,15 @@ import static java.lang.System.identityHashCode;
 /**
  * Represents a null-coordinate with defined "do-nothing-behavior" when interacting with it
  */
-public class NoWhereCoordinate implements Coordinate {
+public class NoWhereCoordinate extends AbstractCoordinate {
+    private static final NoWhereCoordinate instance = new NoWhereCoordinate();
+
+    private NoWhereCoordinate() {
+    }
+
+    public static NoWhereCoordinate getNoWhereCoordinate() {
+        return instance;
+    }
 
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
@@ -43,23 +51,13 @@ public class NoWhereCoordinate implements Coordinate {
         return SphericCoordinate.getCoordinate(0, 0, 0);
     }
 
-    /**
-     * Determines the distance between something and nothing
-     * @return -1
-     */
     @Override
-    public double getDistance(Coordinate otherCoord) {
+    protected double doCalculateDistance(Coordinate otherCoord) {
         return -1;
     }
 
     @Override
-    public double getCartesianDistance(Coordinate otherCoord) {
-        return -1;
-    }
-
-    @Override
-    public double getSphericDistance(Coordinate otherCoord) {
-        return -1;
+    protected void assertClassInvariants() {
     }
 
     /**

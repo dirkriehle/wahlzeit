@@ -27,8 +27,9 @@ package org.wahlzeit.utils;
 import com.google.common.math.DoubleMath;
 
 public class MathUtils {
-    static final double DEFAULT_PRECISION = 1.0E-8;
-    private static double precision = DEFAULT_PRECISION;
+    public static final int DEFAULT_DECIMALS = 8;
+    public static double default_precision = Math.pow(10, -DEFAULT_DECIMALS);
+    private static double precision = default_precision;
 
     public static boolean doublesAreNotEqual(double valuaA, double valueB) {
         return !doublesAreEqual(valuaA, valueB);
@@ -46,6 +47,7 @@ public class MathUtils {
      * @return if not other defined, the default precision of 1.0E-10 will be returned
      */
     public static double getPrecision() {
+
         return precision;
     }
 
@@ -65,4 +67,11 @@ public class MathUtils {
         return Math.sqrt(sum);
     }
 
+    /**
+     * http://openbook.rheinwerk-verlag.de/javainsel9/javainsel_12_003.htm
+     */
+    public static double round(double value, int decimals) {
+        double factor = Math.pow(10, decimals);
+        return Math.rint(value * factor) / factor;
+    }
 }

@@ -41,7 +41,7 @@ public class NoWhereCoordinateTest {
 
     @Before
     public void initTest() {
-        noWhere = new NoWhereCoordinate();
+        noWhere = NoWhereCoordinate.getNoWhereCoordinate();
         octantIa = CartesianCoordinate.getCoordinate(2.0, 1.0, 3.0);
         octantIb = CartesianCoordinate.getCoordinate(2.0, 1.0, 3.0);
         octantVII = CartesianCoordinate.getCoordinate(-2.0, -1.0, -3.0);
@@ -51,7 +51,7 @@ public class NoWhereCoordinateTest {
 
     @Test
     public void coordinateNoWhere_andNoWhere_areNotEqual() {
-        Assert.assertFalse(noWhere.equals(new NoWhereCoordinate()));
+        Assert.assertFalse(noWhere.equals(NoWhereCoordinate.getNoWhereCoordinate()));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class NoWhereCoordinateTest {
     }
 
     @Test
-    public void hashCodes_ofNoWhereCoordinates_areNotEqual() {
-        Assert.assertNotEquals(noWhere.hashCode(), new NoWhereCoordinate().hashCode());
+    public void hashCodes_ofNoWhereCoordinates_areEqual() {
+        Assert.assertEquals(noWhere.hashCode(), NoWhereCoordinate.getNoWhereCoordinate().hashCode());
     }
 }

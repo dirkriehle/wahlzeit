@@ -65,7 +65,7 @@ public interface Coordinate {
 
     /**
      * @return TRUE, if the cartesian distance between two {@link Coordinate}
-     * is equal within the failure {@link org.wahlzeit.utils.MathUtils#DEFAULT_PRECISION}.
+     * is equal within the failure {@link org.wahlzeit.utils.MathUtils#default_precision}.
      * @see  {@link Coordinate#getDistance(Coordinate)}
      * @methodtype boolean-query
      */

@@ -33,18 +33,15 @@ import java.util.HashMap;
 public abstract class AbstractCoordinate implements Coordinate {
     protected final static HashMap<Integer, Coordinate> coordinateCache = new HashMap<>();
 
-    public static void saveCoordinate(Coordinate coordinate) {
-        if (!isExistingCoordinate(coordinate)) {
-            coordinateCache.put(coordinate.hashCode(), coordinate);
-        }
-    }
-
-    public static boolean isExistingCoordinate(Coordinate coordinate) {
-        return coordinateCache.containsKey(coordinate.hashCode());
-    }
+    protected final int DECIMALS_DISPLAY = MathUtils.DEFAULT_DECIMALS;
 
     public static Coordinate getCoordinateFromCache(Coordinate coordinate) {
-        saveCoordinate(coordinate);
+        Assert.notNull(coordinate, "Coordinate to get from Cache");
+        if (!isExistingCoordinate(coordinate)) {
+            saveCoordinate(coordinate);
+            return coordinate;
+        }
+        //coordinate gets disposed afterwards
         return coordinateCache.get(coordinate.hashCode());
     }
 
@@ -52,13 +49,6 @@ public abstract class AbstractCoordinate implements Coordinate {
         Assert.notNull(otherCoord, "");
         return otherCoord instanceof NoWhereCoordinate;
     }
-
-    /**
-     * @return distance, defined by its caller
-     */
-    protected abstract double doCalculateDistance(Coordinate otherCoord);
-
-    protected abstract void assertClassInvariants();
 
     @Override
     public double getDistance(Coordinate otherCoord) {
@@ -103,5 +93,29 @@ public abstract class AbstractCoordinate implements Coordinate {
     @Override
     public boolean equals(Object o) {
         return o instanceof Coordinate && isEqual((Coordinate) o);
+    }
+
+    /**
+     * Returns a value with less decimals defined in {@link AbstractCoordinate#DECIMALS_DISPLAY}
+     */
+    protected double getDisplayValue(double value) {
+        return MathUtils.round(value, DECIMALS_DISPLAY);
+    }
+
+    /**
+     * @return distance, defined by its caller
+     */
+    protected abstract double doCalculateDistance(Coordinate otherCoord);
+
+    protected abstract void assertClassInvariants();
+
+    private static void saveCoordinate(Coordinate coordinate) {
+        Assert.notNull(coordinate, "Coordinate to save");
+        coordinateCache.put(coordinate.hashCode(), coordinate);
+    }
+
+    private static boolean isExistingCoordinate(Coordinate coordinate) {
+        Assert.notNull(coordinate, "Coordinate to check existence");
+        return coordinateCache.containsKey(coordinate.hashCode());
     }
 }
