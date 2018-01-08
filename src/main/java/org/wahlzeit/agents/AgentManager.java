@@ -19,16 +19,17 @@
  */
 
 package org.wahlzeit.agents;
-
 import org.wahlzeit.services.LogBuilder;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.wahlzeit.annotation.*;
 
 /**
  * The AgentManager singleton manages all Agent instances.
  */
+@DesignPattern(name = "Singleton", participants = { "Singleton: AgentManager, Client: AgentServlet "}) 
+
 public class AgentManager {
 
 	private static Logger log = Logger.getLogger(AgentManager.class.getName());

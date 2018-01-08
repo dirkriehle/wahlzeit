@@ -3,9 +3,13 @@
  */
 package org.wahlzeit.model;
 
+import org.wahlzeit.annotation.DesignPattern;
+
 /**
  *
  */
+
+@DesignPattern(name = "Facade Design Pattern", participants = { "CartesianCoordinate, SphericCoordinate "}) 
 public interface Coordinate {
 	/**
 	return Cartesian coordinate 

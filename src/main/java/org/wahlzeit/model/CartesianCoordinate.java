@@ -1,10 +1,14 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.annotation.DesignPattern;
 
 /**
 @Inv validate that CartesianCoordinate  is not null by assertClassInvariants
 */
+
+@DesignPattern(name = "Value object", participants = { "CartesianCoordinate"}) 
+
 
 public final class CartesianCoordinate extends AbstractCoordinate{
 	
