@@ -28,6 +28,8 @@ import org.wahlzeit.model.config.DomainCfg;
 import org.wahlzeit.model.coordinates.Coordinate;
 import org.wahlzeit.utils.Assert;
 import org.wahlzeit.utils.MathUtils;
+import org.wahlzeit.utils.Pattern;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -85,6 +87,13 @@ public class CartesianCoordinate extends AbstractCoordinate {
         return getCoordinate(0, 0, 0);
     }
 
+    @PatternInstance(
+            pattern = Pattern.TemplateMethod.class,
+            classRole = "Concrete Class",
+            participants = {
+                    AbstractCoordinate.class, SphericCoordinate.class, CartesianCoordinate.class, NoWhereCoordinate.class
+            }
+    )
     @Override
     protected double doCalculateDistance(Coordinate otherCoord) {
         CartesianCoordinate otherCartCoord = otherCoord.asCartesianCoordinate();

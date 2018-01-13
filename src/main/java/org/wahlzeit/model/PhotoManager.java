@@ -32,6 +32,7 @@ import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.ObjectManager;
 import org.wahlzeit.services.Persistent;
 import org.wahlzeit.utils.Assert;
+import org.wahlzeit.utils.Pattern;
 import org.wahlzeit.utils.PatternInstance;
 
 import java.io.IOException;
@@ -40,7 +41,8 @@ import java.util.*;
 import java.util.logging.Logger;
 
 @PatternInstance(
-        patternName = "Singleton",
+        pattern = Pattern.Singleton.class,
+        classRole = "Singleton",
         participants = {
                 PhotoManager.class
         }

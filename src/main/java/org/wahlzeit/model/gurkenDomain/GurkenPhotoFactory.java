@@ -29,7 +29,16 @@ import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoFactory;
 import org.wahlzeit.model.PhotoId;
 import org.wahlzeit.utils.Assert;
+import org.wahlzeit.utils.Pattern;
+import org.wahlzeit.utils.PatternInstance;
 
+@PatternInstance(
+        pattern = Pattern.AbstractFactory.class,
+        classRole = "Concrete Factory",
+        participants = {
+                PhotoFactory.class, GurkenPhotoFactory.class
+        }
+)
 /**
  * An Abstract Factory for creating GurkenPhotos and related objects.
  */

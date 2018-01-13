@@ -26,6 +26,8 @@ package org.wahlzeit.model.coordinates.impl;
 
 import org.wahlzeit.model.coordinates.Coordinate;
 import org.wahlzeit.utils.Assert;
+import org.wahlzeit.utils.Pattern;
+import org.wahlzeit.utils.PatternInstance;
 
 /**
  */
@@ -87,6 +89,13 @@ public class SphericCoordinate extends AbstractCoordinate {
         return getCoordinate(0, 0);
     }
 
+    @PatternInstance(
+            pattern = Pattern.TemplateMethod.class,
+            classRole = "Concrete Class",
+            participants = {
+                    AbstractCoordinate.class, SphericCoordinate.class, CartesianCoordinate.class, NoWhereCoordinate.class
+            }
+    )
     @Override
     protected double doCalculateDistance(Coordinate otherCoord) {
         SphericCoordinate otherSphCoord = otherCoord.asSphericCoordinate();

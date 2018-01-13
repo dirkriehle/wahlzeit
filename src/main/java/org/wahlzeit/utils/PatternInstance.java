@@ -25,7 +25,10 @@
 package org.wahlzeit.utils;
 
 public @interface PatternInstance {
-    String patternName();
+    Class[] pattern();
 
-    Class[] participants() default {};
+    String[] classRole();
+
+    Class[] participants();
 }
+

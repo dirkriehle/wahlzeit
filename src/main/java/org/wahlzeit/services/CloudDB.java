@@ -5,10 +5,21 @@ import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 import org.wahlzeit.model.*;
 import org.wahlzeit.model.config.DomainCfg;
+import org.wahlzeit.model.persistence.DatastoreAdapter;
 import org.wahlzeit.model.persistence.DatastoreAdapter.ImageWrapper;
+import org.wahlzeit.model.persistence.ImageStorage;
+import org.wahlzeit.utils.Pattern;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.util.List;
 
+@PatternInstance(
+        pattern = Pattern.Adapter.class,
+        classRole = "Adaptee",
+        participants = {
+                ImageStorage.class, DatastoreAdapter.class, CloudDB.class
+        }
+)
 /**
  * A badly named class, to be renamed to ObjectifyService first, something better later. => Done
  * @review

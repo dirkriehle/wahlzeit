@@ -28,6 +28,7 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import org.wahlzeit.services.CloudDB;
 import org.wahlzeit.services.LogBuilder;
+import org.wahlzeit.utils.Pattern;
 import org.wahlzeit.utils.PatternInstance;
 
 import java.io.IOException;
@@ -36,7 +37,8 @@ import java.security.InvalidParameterException;
 import java.util.logging.Logger;
 
 @PatternInstance(
-		patternName = "Adapter (Inheritance)",
+		pattern = Pattern.Adapter.class,
+		classRole = "Concrete Adapter",
 		participants = {
 				ImageStorage.class, DatastoreAdapter.class, CloudDB.class
 		}
