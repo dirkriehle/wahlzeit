@@ -69,4 +69,11 @@ public abstract class Pattern {
             roles = new String[]{"Singleton"};
         }
     }
+
+    public class TypeObject {
+        public TypeObject() {
+            description = "\"Allow the flexible creation of new “classes” by creating a single class, each instance of which represents a different type of object. \" (http://gameprogrammingpatterns.com/type-object.html, 2018)";
+            roles = new String[]{"Object", "Type Object"};
+        }
+    }
 }

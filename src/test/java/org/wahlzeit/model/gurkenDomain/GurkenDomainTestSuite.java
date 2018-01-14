@@ -32,6 +32,9 @@ import org.junit.runners.Suite;
         GurkenPhotoTest.class,
         GurkenPhotoFactoryTest.class,
         GurkenPhotoManagerTest.class,
+        GurkeTest.class,
+        GurkenManagerTest.class,
+        GurkenTypeTest.class
 })
 public class GurkenDomainTestSuite {
 }

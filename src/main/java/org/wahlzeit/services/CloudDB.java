@@ -57,6 +57,10 @@ public class CloudDB {
         return ObjectifyService.factory();
     }
 
+    public static void init() {
+        //just trigger the static part. Do nothing else
+    }
+
     private static void registerDomainObjects() {
         List<Class> domainObjects = DomainCfg.getDomainObjectsForRegistration();
         for (Class domainObject : domainObjects) {

@@ -76,6 +76,9 @@ public class DomainCfg {
 
     private static List<Class> getGurkenDomainObjects() {
         return new LinkedList<Class>(Arrays.asList(
+                //TODO: Prepaire TypeObject hirarchy for objectify service (@ID etc)
+//                Gurke.class,
+//                GurkenType.class
                 GurkenPhoto.class
         ));
     }

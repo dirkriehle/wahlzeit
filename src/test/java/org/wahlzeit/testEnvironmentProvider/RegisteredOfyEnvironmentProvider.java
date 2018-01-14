@@ -10,8 +10,8 @@ import org.wahlzeit.services.CloudDB;
  */
 public class RegisteredOfyEnvironmentProvider extends ExternalResource {
 	@Override
-	protected void before() throws Throwable {
+	protected void before() {
 		// make sure the static register part is done
-		CloudDB.getMgmtActions();
+		CloudDB.init();
 	}
 }
