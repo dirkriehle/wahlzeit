@@ -26,6 +26,8 @@ package org.wahlzeit.utils;
 
 import org.wahlzeit.model.config.DomainCfg;
 
+import java.util.regex.Pattern;
+
 public class Assert {
     /**
      * checks whether a value is lesser then zero
@@ -106,6 +108,21 @@ public class Assert {
                 DomainCfg.logError(Assert.class, exception);
                 throw exception;
             }
+        }
+    }
+
+    public static void stringNotEmpty(String gurkenTypeName) {
+        if (gurkenTypeName.isEmpty()) {
+            RuntimeException exception = new IllegalArgumentException("The provided String " + "must not be empty");
+            DomainCfg.logError(Assert.class, exception);
+            throw exception;
+        }
+    }
+
+    public static void stringStartsWithLiterals(String string, String objectSpecification) {
+        String theProvided = "The provided ";
+        if (Pattern.matches("^(\\d.*)", string)) {
+            throw new IllegalArgumentException(theProvided + objectSpecification + " String should start with literals but is actually" + string);
         }
     }
 }

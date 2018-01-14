@@ -37,7 +37,7 @@ import java.io.IOException;
  */
 public class GurkenPhotoManagerTest extends GurkenDomainTest {
 
-    final String TYPE = "cucumber";
+    final String TYPE = "gurkenTypeHirarchy";
 
     PhotoManager gurkenPhotoManager;
     GurkenPhotoFactory gurkenPhotoFactory;

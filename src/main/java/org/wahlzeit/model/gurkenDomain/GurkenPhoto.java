@@ -25,13 +25,11 @@
 package org.wahlzeit.model.gurkenDomain;
 
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Serialize;
 import com.googlecode.objectify.annotation.Subclass;
 import org.wahlzeit.model.Location;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoId;
-import org.wahlzeit.utils.Assert;
-
-import java.util.regex.Pattern;
 
 /**
  * A gurkenphoto represents a user-provided (uploaded) photo of a cucumber.
@@ -40,10 +38,8 @@ import java.util.regex.Pattern;
 @Subclass
 public class GurkenPhoto extends Photo {
 
-    /*Attributes for a GurkenPhoto*/
-    private Taste taste;
-    private int size;
-    private String type;
+    @Serialize
+    private Gurke gurkenInfo;
 
     /**
      * only for testing
@@ -52,49 +48,22 @@ public class GurkenPhoto extends Photo {
         id = PhotoId.getNextId();
     }
 
-    public GurkenPhoto(PhotoId myId) {
+    public GurkenPhoto(PhotoId myId, Gurke gurke) {
         super(myId);
+        setGurkenInfo(gurke);
     }
 
-    public GurkenPhoto(PhotoId photoId, String type, int sizeInMillimeter, Taste taste, Location location) {
+    public GurkenPhoto(PhotoId photoId, Location location, Gurke gurkenInfo) {
         setID(photoId);
-        setType(type);
-        setSize(sizeInMillimeter);
-        setTaste(taste);
         setLocation(location);
+        setGurkenInfo(gurkenInfo);
     }
 
-    public void setType(String type) {
-        assertStartsWithLiterals(type);
-        Assert.notNull(type, "");
-        this.type = type;
+    public Gurke getGurkenInfo() {
+        return gurkenInfo;
     }
 
-    public void setSize(int size) {
-        Assert.areValidDoubles(size);
-        this.size = size;
-    }
-
-    public void setTaste(Taste taste) {
-        Assert.notNull(taste, "");
-        this.taste = taste;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public int getSize() {
-        return size;
-    }
-
-    public Taste getTaste() {
-        return taste;
-    }
-
-    private void assertStartsWithLiterals(String type) {
-        if (Pattern.matches("^(\\d.*)", type)) {
-            throw new IllegalArgumentException("Type should start with literals but is actually" + type);
-        }
+    public void setGurkenInfo(Gurke gurkenInfo) {
+        this.gurkenInfo = gurkenInfo;
     }
 }

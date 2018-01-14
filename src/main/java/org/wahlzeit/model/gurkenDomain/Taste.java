@@ -39,7 +39,8 @@ public enum Taste implements EnumValue {
     SPICY(2),
     SWEET(3),
     MILD(4),
-    SALTY(5);
+    SALTY(5),
+    UNSPECIFIED(6);
 
     private static Taste[] allValues = {
             TASTELESS,
@@ -48,6 +49,7 @@ public enum Taste implements EnumValue {
             SPICY,
             SWEET,
             MILD,
+            UNSPECIFIED
     };
     private static String[] valueNames = {
             "tasteless",
@@ -56,6 +58,7 @@ public enum Taste implements EnumValue {
             "sweet",
             "mild",
             "salty",
+            "unspecified"
     };
     private int value;
 

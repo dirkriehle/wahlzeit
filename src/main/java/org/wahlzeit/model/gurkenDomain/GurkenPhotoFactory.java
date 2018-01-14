@@ -52,7 +52,8 @@ public class GurkenPhotoFactory extends PhotoFactory {
     }
 
     public GurkenPhoto createGurkenPhoto(PhotoId photoId, String cucumberType, int sizeInMillimeter, Taste taste, Location location) {
-        return new GurkenPhoto(photoId, cucumberType, sizeInMillimeter, taste, location);
+        Gurke gurke = GurkenManager.getInstance().getGurke(cucumberType, taste, sizeInMillimeter);
+        return new GurkenPhoto(photoId, location, gurke);
     }
 
     /**
@@ -68,7 +69,7 @@ public class GurkenPhotoFactory extends PhotoFactory {
      */
     @Override
     public Photo createPhoto(PhotoId id) {
-        return new GurkenPhoto(id);
+        return new GurkenPhoto(id, GurkenManager.getInstance().getGurke("Salatgurke"));
     }
 
 }

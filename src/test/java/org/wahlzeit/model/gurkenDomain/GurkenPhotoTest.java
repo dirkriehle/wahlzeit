@@ -39,12 +39,16 @@ public class GurkenPhotoTest extends GurkenDomainTest {
     public int avgSizeInMillimeter;
     public Location noWhere;
     public String cucumberType;
+    public GurkenType gurkenType;
+    public Gurke cucumber;
 
     @Before
     public void setUp() {
         noWhere = new Location();
         avgSizeInMillimeter = 120;
-        cucumberType = "cucumber";
+        cucumberType = "gurkenTypeHirarchy";
+        gurkenType = GurkenManager.getInstance().getType(cucumberType);
+        cucumber = GurkenManager.getInstance().getGurke(cucumberType, Taste.TASTELESS, avgSizeInMillimeter);
     }
 
     @Test
@@ -57,31 +61,14 @@ public class GurkenPhotoTest extends GurkenDomainTest {
     public void createGurkenPhoto_fullyDefined_attributesNotNull() {
         GurkenPhoto gurkenPhoto = new GurkenPhoto();
         gurkenPhoto.setLocation(noWhere);
-        gurkenPhoto.setType(cucumberType);
-        gurkenPhoto.setSize(avgSizeInMillimeter);
-        gurkenPhoto.setTaste(Taste.TASTELESS);
-
+        gurkenPhoto.setGurkenInfo(cucumber);
         assertAttribuesAreAsExpected(gurkenPhoto);
     }
 
     @Test
     public void createGurkenPhoto_throughConstructucter_attributesNotNull() {
-        GurkenPhoto gurkenPhoto = new GurkenPhoto(PhotoId.getNextId(), cucumberType, avgSizeInMillimeter, Taste.TASTELESS, noWhere);
+        GurkenPhoto gurkenPhoto = new GurkenPhoto(PhotoId.getNextId(), noWhere, cucumber);
         assertAttribuesAreAsExpected(gurkenPhoto);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void createGurkenPhoto_withNumbersAsType_ShouldThrowException() {
-        new GurkenPhoto().setType("1234fu");
-    }
-
-    @Test
-    public void createGurkenPhoto_withLiteralsAsType_ShouldNotThrowException() {
-        try {
-            new GurkenPhoto().setType("bar");
-        } catch (Exception exception) {
-            Assert.fail("Exception was thrown whereas no exception was expected");
-        }
     }
 
     @Test
@@ -91,8 +78,7 @@ public class GurkenPhotoTest extends GurkenDomainTest {
 
     public void assertAttribuesAreAsExpected(GurkenPhoto gurkenPhoto) {
         Assert.assertNotNull(gurkenPhoto.getLocation());
-        Assert.assertEquals(cucumberType, gurkenPhoto.getType());
-        Assert.assertEquals(avgSizeInMillimeter, gurkenPhoto.getSize());
-        Assert.assertEquals(Taste.TASTELESS, gurkenPhoto.getTaste());
+        Assert.assertEquals(cucumberType, gurkenPhoto.getGurkenInfo().getStrain());
+        Assert.assertEquals(avgSizeInMillimeter, gurkenPhoto.getGurkenInfo().getSize());
     }
 }
