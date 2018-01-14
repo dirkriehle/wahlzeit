@@ -26,23 +26,30 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Work;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import org.wahlzeit.services.CloudDB;
 import org.wahlzeit.services.LogBuilder;
-import org.wahlzeit.services.OfyService;
+import org.wahlzeit.utils.Pattern;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.logging.Logger;
 
+@PatternInstance(
+		pattern = Pattern.Adapter.class,
+		classRole = "Concrete Adapter",
+		participants = {
+				ImageStorage.class, DatastoreAdapter.class, CloudDB.class
+		}
+)
 /**
  * Adapter for the Google Datastore. Use default constructor to create an instance.
- * 
  * @review
  */
 public class DatastoreAdapter extends ImageStorage {
 
 	private static final Logger log = Logger.getLogger(DatastoreAdapter.class.getName());
-
 
 	@Override
 	protected void doWriteImage(Serializable image, String photoIdAsString, int size)
@@ -54,7 +61,7 @@ public class DatastoreAdapter extends ImageStorage {
 			ObjectifyService.run(new Work<Boolean>() {
 				@Override
 				public Boolean run() {
-					OfyService.ofy().save().entity(imageWrapper).now();
+					CloudDB.getOpActions().save().entity(imageWrapper).now();
 					return null;
 				}
 			});
@@ -74,7 +81,7 @@ public class DatastoreAdapter extends ImageStorage {
 		ImageWrapper imageWrapper = ObjectifyService.run(new Work<ImageWrapper>() {
 			@Override
 			public ImageWrapper run() {
-				return OfyService.ofy().load().type(ImageWrapper.class).id(photoIdAsString + size).now();
+				return CloudDB.getOpActions().load().type(ImageWrapper.class).id(photoIdAsString + size).now();
 			}
 		});
 
@@ -111,19 +118,17 @@ public class DatastoreAdapter extends ImageStorage {
 
 	/**
 	 * Wrapper class to store {@link Image}s in the Google Datastore with Objectify.
-	 * 
- 	 * @review
+	 *
+	 * @review
 	 */
 	@Entity
 	public static class ImageWrapper {
 
-		// see https://cloud.google.com/datastore/docs/tools/administration
-		public final int maxEntitySize = 1024 * 1024; // = 1 MB
-
 		@Id
 		private String id;
-
 		private byte[] imageData;
+		// see https://cloud.google.com/datastore/docs/tools/administration
+		public final int maxEntitySize = 1024 * 1024; // = 1 MB
 
 		public ImageWrapper() {
 			// just for Objectify to load it from Datastore
@@ -148,8 +153,7 @@ public class DatastoreAdapter extends ImageStorage {
 		public void setImage(Image image) throws ArrayIndexOutOfBoundsException {
 			if(image.getImageData().length >= maxEntitySize) {
 				throw new ArrayIndexOutOfBoundsException("Can not store images >= 1 MB in the Google Datastore.");
-			}
-			else {
+			} else {
 				imageData = image.getImageData();
 			}
 		}

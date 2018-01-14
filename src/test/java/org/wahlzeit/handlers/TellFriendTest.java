@@ -2,18 +2,13 @@ package org.wahlzeit.handlers;
 
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 import org.wahlzeit.model.UserSession;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.SessionManager;
-import org.wahlzeit.testEnvironmentProvider.LocalDatastoreServiceTestConfigProvider;
-import org.wahlzeit.testEnvironmentProvider.RegisteredOfyEnvironmentProvider;
-import org.wahlzeit.testEnvironmentProvider.SysConfigProvider;
-import org.wahlzeit.testEnvironmentProvider.UserSessionProvider;
-import org.wahlzeit.testEnvironmentProvider.WebFormHandlerProvider;
+import org.wahlzeit.testEnvironmentProvider.*;
 import org.wahlzeit.webparts.WebPart;
 
 import java.util.Collections;
@@ -27,20 +22,21 @@ import static org.junit.Assert.assertTrue;
  */
 public class TellFriendTest {
 
-	@ClassRule
-	public static SysConfigProvider sysConfigProvider = new SysConfigProvider();
-	@ClassRule
-	public static WebFormHandlerProvider webFormHandlerProvider = new WebFormHandlerProvider();
-
-	@Rule
-	public TestRule chain = RuleChain.
-			outerRule(new LocalDatastoreServiceTestConfigProvider()).
-			around(new RegisteredOfyEnvironmentProvider()).
-			around(new UserSessionProvider());
-
 	private UserSession session;
 	private WebFormHandler handler;
 
+	public static TestRule dependencyInjections = new DependencyInjectionRule();
+	public static SysConfigProvider sysConfigProvider = new SysConfigProvider();
+	public static WebFormHandlerProvider webFormHandlerProvider = new WebFormHandlerProvider();
+
+	@ClassRule
+	public static TestRule chain = RuleChain.
+			outerRule(sysConfigProvider).
+			around(new LocalDatastoreServiceTestConfigProvider()).
+			around(new RegisteredOfyEnvironmentProvider()).
+			around(new UserSessionProvider()).
+			around(dependencyInjections).
+			around(webFormHandlerProvider);
 
 	@Before
 	public void setUp() {
@@ -58,7 +54,7 @@ public class TellFriendTest {
 		// no failure is good behavior
 
 		EmailAddress to = EmailAddress.getFromString("engel@himmel.de");
-		Map<String, String> args = new HashMap<String, String>();
+		Map<String, String> args = new HashMap<>();
 		args.put(TellFriendFormHandler.EMAIL_TO, to.asString());
 		String expectedSubject = "Oh well...";
 		args.put(TellFriendFormHandler.EMAIL_SUBJECT, expectedSubject);
@@ -85,7 +81,7 @@ public class TellFriendTest {
 		String subject = "Coolest website ever!";
 		String body = "You've got to check this out!";
 
-		Map<String, String> args = new HashMap<String, String>();
+		Map<String, String> args = new HashMap<>();
 		args.put(TellFriendFormHandler.EMAIL_FROM, from.asString());
 		args.put(TellFriendFormHandler.EMAIL_TO, to.asString());
 		args.put(TellFriendFormHandler.EMAIL_SUBJECT, subject);

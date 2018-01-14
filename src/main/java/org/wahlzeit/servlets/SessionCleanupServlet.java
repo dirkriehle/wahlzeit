@@ -5,8 +5,8 @@ import com.google.appengine.api.datastore.Key;
 import org.wahlzeit.model.Client;
 import org.wahlzeit.model.Guest;
 import org.wahlzeit.model.UserManager;
+import org.wahlzeit.services.CloudDB;
 import org.wahlzeit.services.LogBuilder;
-import org.wahlzeit.services.OfyService;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +38,7 @@ public class SessionCleanupServlet extends HttpServlet {
 	 */
 	private void clearAll(HttpServletResponse response) {
 
-		List<Object> killList = OfyService.ofy().load().
+		List<Object> killList = CloudDB.getOpActions().load().
 				kind(SESSION_ENTITY_TYPE).
 				filter(EXPIRES_PROP + " <", System.currentTimeMillis()).list();
 
@@ -58,7 +58,7 @@ public class SessionCleanupServlet extends HttpServlet {
 				if (client != null && client instanceof Guest) {
 					UserManager.getInstance().deleteClient(client);
 				}
-				OfyService.ofy().delete().entity(httpSessionEntity).now();
+				CloudDB.getOpActions().delete().entity(httpSessionEntity).now();
 			}
 			response.setStatus(HttpServletResponse.SC_OK);
 		} catch (Exception e) {

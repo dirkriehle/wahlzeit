@@ -1,97 +1,89 @@
 /*
- * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
+ *  Copyright
  *
- * This file is part of the Wahlzeit photo rating application.
+ *  Classname: PhotoFactory
+ *  Author: Tango1266
+ *  Version: 16.11.17 15:19
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ *  This file is part of the Wahlzeit photo rating application.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this program. If not, see
- * <http://www.gnu.org/licenses/>.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public
+ *  License along with this program. If not, see
+ *  <http://www.gnu.org/licenses/>
  */
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.model.gurkenDomain.GurkenPhotoFactory;
 import org.wahlzeit.services.LogBuilder;
+import org.wahlzeit.utils.Assert;
+import org.wahlzeit.utils.Pattern;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.util.logging.Logger;
 
+@PatternInstance(
+        pattern = Pattern.AbstractFactory.class,
+        classRole = "Abstract Factory",
+        participants = {
+                PhotoFactory.class, GurkenPhotoFactory.class
+        }
+)
 /**
  * An Abstract Factory for creating photos and related objects.
  */
-public class PhotoFactory {
+public abstract class PhotoFactory {
 
-	private static final Logger log = Logger.getLogger(PhotoFactory.class.getName());
-	/**
-	 * Hidden singleton instance; needs to be initialized from the outside.
-	 */
-	private static PhotoFactory instance = null;
+    /**
+     * Hidden singleton instance; needs to be initialized from the outside.
+     */
+    private static PhotoFactory instance;
+    private static final Logger log = Logger.getLogger(getInstance() != null ? getInstance().getClass().getName() : PhotoFactory.class.getName());
 
-	/**
-	 *
-	 */
-	protected PhotoFactory() {
-		// do nothing
-	}
+    /**
+     *
+     */
+    protected PhotoFactory() {
+        // do nothing
+    }
 
-	/**
-	 * Hidden singleton instance; needs to be initialized from the outside.
-	 */
-	public static void initialize() {
-		getInstance(); // drops result due to getInstance() side-effects
-	}
+    /**
+     * Public singleton access method.
+     */
+    public static synchronized PhotoFactory getInstance() {
+        return instance;
+    }
 
-	/**
-	 * Public singleton access method.
-	 */
-	public static synchronized PhotoFactory getInstance() {
-		if (instance == null) {
-			log.config(LogBuilder.createSystemMessage().addAction("setting generic PhotoFactory").toString());
-			setInstance(new PhotoFactory());
-		}
+    /**
+     * @methodtype factory
+     */
+    public Photo createPhoto() {
+        return new Photo();
+    }
 
-		return instance;
-	}
+    /**
+     * Creates a new photo with the specified id
+     */
+    public Photo createPhoto(PhotoId id) {
+        return new Photo(id);
+    }
 
-	/**
-	 * Method to set the singleton instance of PhotoFactory.
-	 */
-	protected static synchronized void setInstance(PhotoFactory photoFactory) {
-		if (instance != null) {
-			throw new IllegalStateException("attempt to initalize PhotoFactory twice");
-		}
-
-		instance = photoFactory;
-	}
-
-	/**
-	 * @methodtype factory
-	 */
-	public Photo createPhoto() {
-		return new Photo();
-	}
-
-	/**
-	 * Creates a new photo with the specified id
-	 */
-	public Photo createPhoto(PhotoId id) {
-		return new Photo(id);
-	}
-
-	/**
-	 * Loads a photo. The Java object is loaded from the Google Datastore, the Images in all sizes are loaded from the
-	 * Google Cloud storage.
-	 */
-	public Photo loadPhoto(PhotoId id) {
-	   /* Photo result =
+    /**
+     * Loads a photo. The Java object is loaded from the Google Datastore, the Images in all sizes are loaded from the
+     * Google Cloud storage.
+     */
+    public Photo loadPhoto(PhotoId id) {
+       /* Photo result =
                 OfyService.ofy().load().type(Photo.class).ancestor(KeyFactory.createKey("Application", "Wahlzeit")).filter(Photo.ID, id).first().now();
         for (PhotoSize size : PhotoSize.values()) {
             GcsFilename gcsFilename = new GcsFilename("picturebucket", filename);
@@ -99,22 +91,30 @@ public class PhotoFactory {
 
 
         }*/
-		return null;
-	}
+        return null;
+    }
 
+    /**
+     *
+     */
+    public PhotoFilter createPhotoFilter() {
+        return new PhotoFilter();
+    }
 
-	/**
-	 *
-	 */
-	public PhotoFilter createPhotoFilter() {
-		return new PhotoFilter();
-	}
+    /**
+     *
+     */
+    public PhotoTagCollector createPhotoTagCollector() {
+        return new PhotoTagCollector();
+    }
 
-	/**
-	 *
-	 */
-	public PhotoTagCollector createPhotoTagCollector() {
-		return new PhotoTagCollector();
-	}
+    /**
+     * Method to set the singleton instance of GurkenPhotoFactory.
+     */
+    public static synchronized void setInstance(PhotoFactory photoFactory) {
+        Assert.isNull(instance, "PhotoFactory");
+        log.config(LogBuilder.createSystemMessage().addAction("setting generic GurkenPhotoFactory").toString());
+        instance = photoFactory;
+    }
 
 }

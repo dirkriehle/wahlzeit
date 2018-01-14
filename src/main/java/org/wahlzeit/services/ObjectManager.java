@@ -33,13 +33,11 @@ import java.util.logging.Logger;
  */
 public abstract class ObjectManager {
 
+	private static final Logger log = Logger.getLogger(ObjectManager.class.getName());
 	/**
 	 * All objects are now saved under this root key. In case of multi-tenancy this may change to several keys.
 	 */
 	public static final Key applicationRootKey = KeyFactory.createKey("Application", "Wahlzeit");
-
-	private static final Logger log = Logger.getLogger(ObjectManager.class.getName());
-
 
 	/**
 	 * Reads the first Entity with the given key in the Datastore
@@ -50,7 +48,7 @@ public abstract class ObjectManager {
 
 		log.config(LogBuilder.createSystemMessage().
 				addMessage("Load Type " + type.toString() + " with ID " + id + " from datastore.").toString());
-		return OfyService.ofy().load().type(type).id(id).now();
+		return CloudDB.getOpActions().load().type(type).id(id).now();
 	}
 
 	/**
@@ -71,7 +69,7 @@ public abstract class ObjectManager {
 
 		log.config(LogBuilder.createSystemMessage().
 				addMessage("Load Type " + type.toString() + " with ID " + id + " from datastore.").toString());
-		return OfyService.ofy().load().type(type).id(id).now();
+		return CloudDB.getOpActions().load().type(type).id(id).now();
 	}
 
 	/**
@@ -87,7 +85,7 @@ public abstract class ObjectManager {
 				addMessage("Load Type " + type.toString() + " with parameter " +
 						parameterName + " == " + value + " from datastore.").toString());
 
-		return OfyService.ofy().load().type(type).ancestor(applicationRootKey).filter(parameterName, value).first()
+		return CloudDB.getOpActions().load().type(type).ancestor(applicationRootKey).filter(parameterName, value).first()
 				.now();
 	}
 
@@ -100,7 +98,7 @@ public abstract class ObjectManager {
 
 		log.config(LogBuilder.createSystemMessage().
 				addParameter("Datastore: load all entities of type", type.getName()).toString());
-		List<E> objects = OfyService.ofy().load().type(type).ancestor(applicationRootKey).list();
+		List<E> objects = CloudDB.getOpActions().load().type(type).ancestor(applicationRootKey).list();
 		log.config(LogBuilder.createSystemMessage().
 				addParameter("Datastore: number of loaded objects", objects.size()).toString());
 		result.addAll(objects);
@@ -119,7 +117,7 @@ public abstract class ObjectManager {
 		log.info(LogBuilder.createSystemMessage().
 				addMessage("Datastore: Load all Entities of type " + type.toString() + " where parameter "
 						+ propertyName + " = " + value.toString() + " from datastore.").toString());
-		List<E> objects = OfyService.ofy().load().type(type).
+		List<E> objects = CloudDB.getOpActions().load().type(type).
 				ancestor(applicationRootKey).filter(propertyName, value).list();
 		log.config(LogBuilder.createSystemMessage().
 				addParameter("Datastore: number of loaded objects", objects.size()).toString());
@@ -151,7 +149,7 @@ public abstract class ObjectManager {
 		if (object.isDirty()) {
 			log.info(LogBuilder.createSystemMessage().
 					addParameter("Datastore: Write object of type", object).toString());
-			OfyService.ofy().save().entity(object).now();
+			CloudDB.getOpActions().save().entity(object).now();
 			updateDependents(object);
 			object.resetWriteCount();
 		} else {
@@ -174,7 +172,7 @@ public abstract class ObjectManager {
 		assertIsNonNullArgument(object, "object");
 
 		log.config(LogBuilder.createSystemMessage().addParameter("Datastore: delete entity", object).toString());
-		OfyService.ofy().delete().entity(object).now();
+		CloudDB.getOpActions().delete().entity(object).now();
 	}
 
 	/**
@@ -189,9 +187,9 @@ public abstract class ObjectManager {
 		log.info(LogBuilder.createSystemMessage().
 				addMessage("Datastore: delete entities of type " + type
 						+ " where property " + propertyName + " == " + value).toString());
-		List<com.googlecode.objectify.Key<E>> keys = OfyService.ofy().load().type(type).
+		List<com.googlecode.objectify.Key<E>> keys = CloudDB.getOpActions().load().type(type).
 				ancestor(applicationRootKey).filter(propertyName, value).keys().list();
-		OfyService.ofy().delete().keys(keys);
+		CloudDB.getOpActions().delete().keys(keys);
 	}
 
 	/**

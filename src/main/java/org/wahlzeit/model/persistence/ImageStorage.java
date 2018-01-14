@@ -1,22 +1,32 @@
 package org.wahlzeit.model.persistence;
 
 import org.wahlzeit.model.PhotoSize;
+import org.wahlzeit.services.CloudDB;
 import org.wahlzeit.services.LogBuilder;
+import org.wahlzeit.utils.Pattern;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.logging.Logger;
 
+@PatternInstance(
+		pattern = Pattern.Adapter.class,
+		classRole = "Adapter",
+		participants = {
+				ImageStorage.class, DatastoreAdapter.class, CloudDB.class
+		}
+)
 /**
  * Abstract super class that offers a convenient interface for all kinds of storage types to store images.
- * 
+ *
  * @review
  */
 public abstract class ImageStorage {
 
-	private static final Logger log = Logger.getLogger(ImageStorage.class.getName());
 	private static ImageStorage instance = null;
+	private static final Logger log = Logger.getLogger(ImageStorage.class.getName());
 
 	/**
 	 * @methodtype get
@@ -39,7 +49,6 @@ public abstract class ImageStorage {
 				addParameter("instance", newInstance).toString());
 		instance = newInstance;
 	}
-
 
 	// write-methods ---------------------------------------------------------------------------------------------------
 
@@ -67,18 +76,6 @@ public abstract class ImageStorage {
 	}
 
 	/**
-	 * Actually writes the image to the storage
-	 *
-	 * @methodtype command
-	 * @methodproperty hook
-	 */
-	protected abstract void doWriteImage(Serializable image, String photoIdAsString, int size)
-			throws IOException, InvalidParameterException;
-
-
-	// read methods ----------------------------------------------------------------------------------------------------
-
-	/**
 	 * Reads an image from storage via photoId and the size. When the image is not found, null is returned.
 	 *
 	 * @methodtype get
@@ -98,17 +95,7 @@ public abstract class ImageStorage {
 		return doReadImage(photoIdAsString, size);
 	}
 
-	/**
-	 * Actually reads the specified file from the storage. When not found, null is returned.
-	 *
-	 * @methodtype get
-	 * @methodproperty hook
-	 */
-	protected abstract Serializable doReadImage(String filename, int size)
-			throws IOException;
-
-
-	// exist method ----------------------------------------------------------------------------------------------------
+	// read methods ----------------------------------------------------------------------------------------------------
 
 	/**
 	 * Checks if the specified image already exists in the storage
@@ -130,18 +117,6 @@ public abstract class ImageStorage {
 		return doDoesImageExist(photoIdAsString, size);
 	}
 
-
-	/**
-	 * Actually checks if the specified image already exists in the storage
-	 *
-	 * @methodtype boolean query
-	 * @methodproperty hook
-	 */
-	protected abstract boolean doDoesImageExist(String photoIdAsString, int size);
-
-
-	// assertion methods -----------------------------------------------------------------------------------------------
-
 	/**
 	 * @methodtype assert
 	 */
@@ -153,6 +128,8 @@ public abstract class ImageStorage {
 		}
 	}
 
+	// exist method ----------------------------------------------------------------------------------------------------
+
 	/**
 	 * @methodtype assert
 	 */
@@ -163,4 +140,29 @@ public abstract class ImageStorage {
 			throw new IllegalArgumentException("Invalid photoId:" + photoId);
 		}
 	}
+
+	/**
+	 * Actually writes the image to the storage
+	 * @methodtype command
+	 * @methodproperty hook
+	 */
+	protected abstract void doWriteImage(Serializable image, String photoIdAsString, int size)
+			throws IOException, InvalidParameterException;
+
+	// assertion methods -----------------------------------------------------------------------------------------------
+
+	/**
+	 * Actually reads the specified file from the storage. When not found, null is returned.
+	 * @methodtype get
+	 * @methodproperty hook
+	 */
+	protected abstract Serializable doReadImage(String filename, int size)
+			throws IOException;
+
+	/**
+	 * Actually checks if the specified image already exists in the storage
+	 * @methodtype boolean query
+	 * @methodproperty hook
+	 */
+	protected abstract boolean doDoesImageExist(String photoIdAsString, int size);
 }
