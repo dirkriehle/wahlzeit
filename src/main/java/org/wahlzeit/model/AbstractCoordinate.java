@@ -28,7 +28,7 @@ public abstract class AbstractCoordinate implements Coordinate{
 	@Pre validate that val1 and val2 are not null
 	*/
 	protected static  boolean isEqualOfDouble(double val1, double val2) {
-		assert(Double.isNaN(val1)&& Double.isNaN(val2));
+		assert(!Double.isNaN(val1) && !Double.isNaN(val2) );
 		Boolean result = val1 == val2 ? true : Math.abs(val1 - val2) <= 0.0001;
 		assert(result!=null);
 		return result;	

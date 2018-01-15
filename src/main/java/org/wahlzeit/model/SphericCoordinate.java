@@ -9,22 +9,21 @@ package org.wahlzeit.model;
 public final class  SphericCoordinate extends AbstractCoordinate{
 	
 	
+	private final double earthradius = 6371; // radius of the earth
+	protected double latitude =0;
+	protected double longitude=0;
+	protected double radius = earthradius;
 	
-	private double latitude =0;
-	private double longitude=0;
-	private double radius = 0;
-	
-    private final double earthradius = 6371; // radius of the earth
+    
 	
 	SphericCoordinate()
 	{
 		
 	}
-	public SphericCoordinate(double latitude, double longitude )
+	protected SphericCoordinate(double latitude, double longitude )
 	{
 	     this.latitude=latitude;	
 	     this.longitude=longitude;
-	     this.radius = earthradius;
 	}
 	public SphericCoordinate(double latitude, double longitude,double radius )
 	{
@@ -47,20 +46,7 @@ public final class  SphericCoordinate extends AbstractCoordinate{
 	{
 		return radius;
 	}
-	protected void setLatitude(double latitude)
-	{
-		 this.latitude = latitude;
-	}
 	
-	protected void setLongitude(double longitude)
-	{
-		this.longitude=  longitude;
-	}
-	
-	protected void setRadius(double radius)
-	{
-		this.radius =  radius;
-	}
 	/**
 	return Cartesian coordinate 
 	@Pre validate the cord is not null

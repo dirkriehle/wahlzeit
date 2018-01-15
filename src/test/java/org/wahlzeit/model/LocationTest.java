@@ -3,6 +3,7 @@
  */
 package org.wahlzeit.model;
 
+
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -16,7 +17,7 @@ public class LocationTest {
 	CartesianCoordinate cartCord = null;
 	Location cartlo1,cartlo2,cartlo3,cartlo4,cartlo5, spherloc1, spherloc2= null;
     SphericCoordinate spherCord = null;	
-  
+ 
 	/**
 	 * @throws java.lang.Exception
 	 */

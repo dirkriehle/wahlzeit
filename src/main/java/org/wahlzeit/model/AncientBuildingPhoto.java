@@ -11,20 +11,24 @@ public class AncientBuildingPhoto extends Photo {
 	
 
 	public static  String BuildingYear = "buildingyear";
+	public Building building;
 	
 	/**
 	 * 
 	 */
-	public AncientBuildingPhoto() {
+	public AncientBuildingPhoto(Building building) {
 		super();
+		this.building = building;
 	}
 
 	/**
 	 * 
 	 */
 	
-	public AncientBuildingPhoto(PhotoId myId) {
+	public AncientBuildingPhoto(PhotoId myId,Building building) {
 		super(myId);
+		this.building = building;
+		
 	}
 
 	/**
@@ -47,6 +51,7 @@ public class AncientBuildingPhoto extends Photo {
 		assertNotNull(buildingyear);
 		BuildingYear = buildingyear;
 	}
+	
 
 
 }

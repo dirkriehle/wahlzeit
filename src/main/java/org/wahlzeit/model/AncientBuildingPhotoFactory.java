@@ -11,6 +11,7 @@ public class AncientBuildingPhotoFactory  extends PhotoFactory {
 
 
 	private static final Logger log = Logger.getLogger(AncientBuildingPhotoFactory.class.getName());
+	public Building building = new Building();
 	public AncientBuildingPhotoFactory() {
 		super();
 	}
@@ -19,7 +20,7 @@ public class AncientBuildingPhotoFactory  extends PhotoFactory {
 
 	@Override
 	public AncientBuildingPhoto createPhoto() {
-		return new AncientBuildingPhoto();
+		return new AncientBuildingPhoto(building);
 
 	}
 	/**
@@ -29,7 +30,7 @@ public class AncientBuildingPhotoFactory  extends PhotoFactory {
 	public AncientBuildingPhoto createPhoto(PhotoId id) {
 		
 		assertNotNull(id);
-		return new AncientBuildingPhoto(id);
+		return new AncientBuildingPhoto(id,building);
 	}
 
 

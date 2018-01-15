@@ -15,7 +15,7 @@ public class SphericCoordinateTest  {
 	//https://www.movable-type.co.uk/scripts/latlong.html
 	public void testGetSphericDistance() {
 	 double result  = spherAlx.getSphericDistance(spherBer);
-	 assertEquals(2819, result, 0.0001);		
+	 assertEquals(2722.20466, result, 0.0001);		
 	}
 	
 	@Test
@@ -27,9 +27,9 @@ public class SphericCoordinateTest  {
 		double y = carCord.getY();
 		double z = carCord.getZ();
 		
-		boolean conversionResult = carCord.isEqualOfDouble(x,-4362.785882)
-				&&carCord.isEqualOfDouble(y,4614.045599)
-				&&carCord.isEqualOfDouble(z,516.0654553);
+		boolean conversionResult = carCord.isEqualOfDouble(x,795.7094)
+				&&carCord.isEqualOfDouble(y,930.08054)
+				&&carCord.isEqualOfDouble(z,6252.3145);
 		assertTrue(conversionResult);				  
 	}
 
@@ -43,7 +43,7 @@ public class SphericCoordinateTest  {
 	public void testGetDistance() {
 		
 		double result  = spherAlx.getDistance(spherBer);
-		assertEquals(2819, result, 0.0001);
+		assertEquals(2722.2046,result, 0.0001);
 		
 	}
 

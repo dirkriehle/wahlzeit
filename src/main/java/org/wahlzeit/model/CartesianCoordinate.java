@@ -14,19 +14,19 @@ public final class CartesianCoordinate extends AbstractCoordinate{
 	
 	
 	
-	private  double x =0;
-	private  double y=0;
-	private  double z=0;
+	protected  double x =0;
+	protected  double y=0;
+	protected  double z=0;
 	
 	public CartesianCoordinate()
 	{
 		
 	}	
-	public CartesianCoordinate(double x, double y , double z)
+	protected CartesianCoordinate(double x, double y , double z)
 	{
-	     this.x =x;
-	     this.y=y;
-	     this.z=z;
+	    this.x =x;
+	    this.y=y;
+	    this.z=z;
 	}
 	 
 	public double getX()
@@ -42,20 +42,6 @@ public final class CartesianCoordinate extends AbstractCoordinate{
 	public double getZ()
 	{
 		return z;
-	}
-	protected void setX(double x)
-	{
-		 this.x = x;
-	}
-	
-	protected void setY(double y)
-	{
-		this.y =  y;
-	}
-	
-	protected void setZ(double z)
-	{
-		this.z =  z;
 	}
 	/**
 	return Cartesian coordinate 
