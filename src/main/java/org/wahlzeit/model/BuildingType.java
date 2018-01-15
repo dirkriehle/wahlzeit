@@ -56,6 +56,10 @@ public class BuildingType {
 		this.subBuildingTypes.remove(buildingType);		
 	}
 	
+	public boolean isSubtype(BuildingType buildingType )  {
+		return (buildingType.superBuildingType!=null);		
+	}
+	
 	
 	
 
