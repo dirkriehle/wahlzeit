@@ -5,27 +5,14 @@ import java.util.Set;
 
 public class BuildingType {	
 	
-    protected BuildingType superBuildingType;
-    
-    // apply the sub type requirement
-	protected Set<BuildingType> subBuildingTypes = new HashSet<BuildingType>();
+	protected static  BuildingType superBuildingType = new BuildingType() ;   
+    //apply the sub type requirement
+	protected static   Set<BuildingType> subBuildingTypes = new HashSet<BuildingType>();
 	
 	private String Name;
     
-	public BuildingType getSuperBuildingType() {
+    public BuildingType getSuperBuildingType() {
 		return superBuildingType;
-	}
-
-	public void setSuperBuildingType(BuildingType superBuildingType) {
-		this.superBuildingType = superBuildingType;
-	}
-
-	public Set<BuildingType> getSubBuildingTypes() {
-		return subBuildingTypes;
-	}
-
-	public void setSubBuildingTypes(Set<BuildingType> subBuildingTypes) {
-		this.subBuildingTypes = subBuildingTypes;
 	}
 
 	public String getName() {
@@ -39,7 +26,10 @@ public class BuildingType {
 	public BuildingType(String type) {
 		Name = type;
 	}
-	
+	public BuildingType() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Building makeBuilding()
 	{
 		return new Building(this);
@@ -48,19 +38,15 @@ public class BuildingType {
 	and then assign it to the subtype*/
 	
 	public void addSubBuildingTypes(BuildingType buildingType )  {
-		buildingType.superBuildingType=this;
+		buildingType.superBuildingType= this;
 		this.subBuildingTypes.add(buildingType);		
 	}
 	
 	public void removeSubBuildingTypes(BuildingType buildingType )  {
 		this.subBuildingTypes.remove(buildingType);		
 	}
-	
-	public boolean isSubtype(BuildingType buildingType )  {
-		return (buildingType.superBuildingType!=null);		
-	}
-	
-	
-	
+	public boolean isSubType(BuildingType buildingType ) {
+		return (buildingType.superBuildingType!=null);
+		}
 
 }

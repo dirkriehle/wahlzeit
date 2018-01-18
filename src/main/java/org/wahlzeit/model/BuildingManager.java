@@ -19,7 +19,7 @@ public class BuildingManager extends ObjectManager{
 		this.buildingType = buildingType;
 	}
 
-	public BuildingManager(){
+	private BuildingManager(){
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -41,7 +41,6 @@ public class BuildingManager extends ObjectManager{
 	/*first assure that this type is not existing to decide either create
 	 *  new type or return this type
 	 */
-	
 	public BuildingType createBuildingType(String type) {
 		
 		if (buildingType.containsKey(type)){
@@ -53,7 +52,5 @@ public class BuildingManager extends ObjectManager{
 	public Building createBuilding(BuildingType type) {
 		return new Building(type);
 	}
-	
-	
 	
 }
