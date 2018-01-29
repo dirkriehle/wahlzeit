@@ -179,8 +179,7 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	 */
 	protected boolean hasAccessRights(UserSession us, Map args) {
 		Client client = us.getClient();
-		if (client == null)
-		{
+		if (client == null) {
 			return false;
 		}
 		return client.hasRights(getNeededRights());
