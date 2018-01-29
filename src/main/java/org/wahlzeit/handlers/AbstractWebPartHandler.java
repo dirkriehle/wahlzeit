@@ -20,13 +20,7 @@
 
 package org.wahlzeit.handlers;
 
-import org.wahlzeit.model.AccessRights;
-import org.wahlzeit.model.ModelConfig;
-import org.wahlzeit.model.Photo;
-import org.wahlzeit.model.PhotoManager;
-import org.wahlzeit.model.PhotoSize;
-import org.wahlzeit.model.User;
-import org.wahlzeit.model.UserSession;
+import org.wahlzeit.model.*;
 import org.wahlzeit.services.Language;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.SysConfig;
@@ -184,7 +178,11 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	 *
 	 */
 	protected boolean hasAccessRights(UserSession us, Map args) {
-		return us.getClient().hasRights(getNeededRights());
+		Client client = us.getClient();
+		if (client == null) {
+			return false;
+		}
+		return client.hasRights(getNeededRights());
 	}
 
 	/**
