@@ -3,7 +3,8 @@
 
     <application>dirkriehle-wahlzeit</application>
     <version>1</version>
-
+    <!-- see https://cloud.google.com/appengine/docs/standard/java/migrating-to-java8-->
+    <runtime>java8</runtime>
     <threadsafe>true</threadsafe>
     <sessions-enabled>true</sessions-enabled>
     <runtime>java8</runtime>
