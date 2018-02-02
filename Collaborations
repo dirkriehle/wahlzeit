@@ -1,0 +1,74 @@
+Collaboration of  AncientBuildingPhoto with Building
+Role types: AncientBuildingPhoto (Client), Building (Service)
+----------------------------------------------------------------------------------------------
+public collaboration ServiceClient {
+
+    public role Service {
+        public Builing getBuilding();
+        public void setBuilding(Building building);
+    }
+
+    public role Client{ }
+}
+ //Bind
+public class AncientBuildingPhoto extends Photo binds ServiceClient.Service {
+
+}
+ 
+********************************************************************************************
+Collaboration of  Building with BuildingType 
+Role types: Client, Building (Base Object), BuildingType (Type Object)
+----------------------------------------------------------------------------------------------
+public collaboration BaseType {
+	
+	public role Type {
+		
+		public BuildingType getSuperType();
+		public BuildingType setSuperType(BuildingType sutype);
+		public BuildingType getSubType();
+		public Set getSubType(BuildingType sutype);
+	}
+	
+	public role Base {
+	
+
+		public getBuildingType(Building building);
+	}
+	
+	public role Client {
+		
+	}
+} 
+
+//Bind
+
+public class BuildingType binds BaseType.Type {
+
+}
+********************************************************************************************
+Collaboration of  AncientBuildingPhotoManager with AncientBuildingPhoto 
+Role types: Client, AncientBuildingPhotoManager (Manager), AncientBuildingPhoto (Element)
+----------------------------------------------------------------------------------------------
+
+public collaboration ManagerElement {
+
+	public role Manager {
+		
+
+		createPhotopublic AncientBuildingPhoto createPhoto(String filename, Image uploadedImage) 
+	}
+	
+	public role Element {
+	
+
+	}
+	
+	public role Client {
+	
+	}
+}
+
+//Bind
+public class AncientBuildingPhotoManager ManagerElement.Manager{
+
+}

@@ -27,7 +27,7 @@ import java.io.File;
  */
 public class HtmlUtil {
 
-	/**
+	/*
 	 *
 	 */
 	public static final String RADIO_BUTTON_CHECK = "CHECKED";

@@ -1,0 +1,19 @@
+Sequence of methods to create Ancientbuildingphoto
+----------------------------------------------------------------------------------------------
+  1. AncienatBuildingManager  class is intialized and object instantiated 
+  2. AncientBuildingFactory  class is intialized and object instantiated 
+  3. createPhtot methos in Photoutil is called
+  4. AncientBuildingPhoto by id and buildingType is called in AncientBuildingFactory
+  4. PhotoManager instantiated and Photo is instantiated for the purpose of saving in "UploadPphotoFormHandler"
+  5. call savePhotoAsync to save the photo in UploadPphotoFormHandler
+  
+  ********************************************************************************************
+  
+ Object creation solution as a point in the solution space
+----------------------------------------------------------------------------------------------
+ Delegation: separate­ object -->  AncientBuildingFactory create  method
+ Selection:	By­ subclassing --> selecting concrete class "AncientBuildingFactory " which is subclass for "PhtotFactory"
+ Configuration: not existing
+ Instantiation:	In­code by calling new ...() "constructors"
+ Initialization: Default by using field assignment inconstructure such as createAncientPhoto(id,type)
+ Building: Default
