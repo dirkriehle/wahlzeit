@@ -18,7 +18,7 @@ For more information, please see http://github.com/dirkriehle/wahlzeit and http:
 
 ### Set-up development for Wahlzeit
 
-  1. Install **Java JDK**¹
+  1. Install **Java JDK**¹ (version 8 or higher)
   2. Set ``JAVA_HOME``
   2. Install ``git``
   3. If you don't have one yet, create a GitHub account (required)
@@ -62,4 +62,4 @@ Done!
 
 --
 
-¹ Gradle compiles automatically to JDK 1.7, because later versions are not yet supported by Google App Engine Standard Environment
+¹ Gradle compiles automatically to JDK 1.8, because later versions are not yet supported by Google App Engine Standard Environment
