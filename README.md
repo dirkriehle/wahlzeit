@@ -51,7 +51,7 @@ For more information, please see http://github.com/dirkriehle/wahlzeit and http:
 **Configure your repository and deploy Wahlzeit**
   1. Configure your project:
     1. Open the file [``/src/main/webapp/WEB-INF/appengine-web.xml``](/src/main/webapp/WEB-INF/appengine-web.xml)
-    2. Replace ``<application>dirkriehle-wahlzeit</application>`` with `<application>yourprojectname</application>` where `yourprojectname` is your previously choosen project name
+    2. Replace ``<application>dirkriehle-wahlzeit</application>`` with `<application>yourprojectname</application>` where `yourprojectname` is your previously chosen project name
     3. Save and close the ``appengine-web.xml``
   2. Run ```./gradlew appengineUpdate```
   3. If a browser window pops up and asks for permission, accept it
