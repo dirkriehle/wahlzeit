@@ -31,10 +31,6 @@ gradle.taskGraph.whenReady {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     // https://cloud.google.com/appengine/docs/standard/java/release-notes
 
