@@ -1,5 +1,6 @@
 /bin/
 /build
+/out
 /classes
 /src/main/webapp/WEB-INF/lib/
 /.settings/

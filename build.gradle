@@ -20,6 +20,10 @@ apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'appengine'
 
+wrapper {
+	gradleVersion = '4.10'
+}
+
 // check if JAVA_HOME is set, otherwise build tasks will fail
 gradle.taskGraph.whenReady {
     graph ->
@@ -29,10 +33,6 @@ gradle.taskGraph.whenReady {
     else {
         println "JAVA_HOME = " + System.env.'JAVA_HOME'
     }
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
@@ -55,13 +55,24 @@ dependencies {
     testCompile 'com.google.appengine:appengine-api-labs:+'
     testCompile 'com.google.appengine:appengine-tools-sdk:+'
     testCompile 'junit:junit:4.+'
-    testCompile 'org.mockito:mockito-core:2.11.0'
+    testCompile 'org.mockito:mockito-core:2.22.0'
 }
 
 test {
     filter {
         includeTestsMatching "org.wahlzeit.*"
     }
+    testLogging {
+            events "passed", "skipped", "failed"
+
+            afterSuite { desc, result ->
+                if (!desc.parent) {
+                    println "Tests run: ${result.testCount}, " +
+                            "Failures: ${result.failedTestCount}, " +
+                            "Skipped: ${result.skippedTestCount}"
+                }
+            }
+        }
 }
 
 appengine {
