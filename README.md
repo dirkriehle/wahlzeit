@@ -40,8 +40,8 @@ For more information, please see http://github.com/dirkriehle/wahlzeit and http:
 
 
 ### Run Wahlzeit inside a Docker container
-  1. Run ```docker/runInDocker.sh appengineRun```
-  2. Or with another Gradle task as argument, e.g. ```docker/runInDocker.sh test```   
+  1. Run ```./runInDocker.sh appengineRun```
+  2. Or with another Gradle task as argument, e.g. ```./runInDocker.sh test```   
   3. Open [``http://localhost:8080``](http://localhost:8080) to try out Wahlzeit inside a Docker container
   
   

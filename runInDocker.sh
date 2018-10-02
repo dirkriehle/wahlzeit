@@ -6,11 +6,6 @@ if [ ! -z "$1" ]; then
     TASK="$1"
 fi
 
-CURRENT_DIR=${PWD##*/}
-if [ "$CURRENT_DIR" = "docker" ]; then
-    cd ..
-fi
-
 docker run -it --rm --name wahlzeitJDK08 \
 -v "$(pwd)":/usr/src/wahlzeit \
 -w /usr/src/wahlzeit \
