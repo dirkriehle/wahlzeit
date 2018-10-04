@@ -20,6 +20,8 @@
 
 package org.wahlzeit.main;
 
+import com.googlecode.objectify.ObjectifyService;
+import com.googlecode.objectify.VoidWork;
 import org.wahlzeit.handlers.*;
 import org.wahlzeit.model.AccessRights;
 import org.wahlzeit.model.EnglishModelConfig;
@@ -31,6 +33,8 @@ import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.SysConfig;
 import org.wahlzeit.webparts.WebPartTemplateService;
 
+import java.io.File;
+import java.net.URL;
 import java.util.logging.Logger;
 
 /**
@@ -39,6 +43,8 @@ import java.util.logging.Logger;
 public class ServiceMain extends ModelMain {
 
 	private static final Logger log = Logger.getLogger(ServiceMain.class.getName());
+
+	private static final String PICTURES_PATH = "pictures";
 
 	/**
 	 *
@@ -102,6 +108,9 @@ public class ServiceMain extends ModelMain {
 
 		log.config(LogBuilder.createSystemMessage().addAction("Configure LanguageModels").toString());
 		configureLanguageModels();
+
+		log.config(LogBuilder.createSystemMessage().addAction("Add default user with pictures").toString());
+		addDefaultUserWithPictures();
 
 		log.config(LogBuilder.createSystemMessage().addMessage("StartUp complete.").toString());
 	}
@@ -211,6 +220,23 @@ public class ServiceMain extends ModelMain {
 	public void configureLanguageModels() {
 		LanguageConfigs.put(Language.ENGLISH, new EnglishModelConfig());
 		LanguageConfigs.put(Language.GERMAN, new GermanModelConfig());
+	}
+
+	/**
+	 *
+	 */
+	public void addDefaultUserWithPictures() {
+		ObjectifyService.run(new VoidWork() {
+			public void vrun() {
+				try {
+					URL url = getClass().getClassLoader().getResource(PICTURES_PATH);
+					File file = new File(url.getPath());
+					createUser("test","Test","test@example.com",file.getAbsolutePath());
+				} catch (NullPointerException e) {
+					log.warning("Unable to create default user");
+				}
+			}
+		});
 	}
 
 	/**
