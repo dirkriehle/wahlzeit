@@ -39,6 +39,12 @@ For more information, please see http://github.com/dirkriehle/wahlzeit and http:
   2. Create a remote java debug configuration in your IDE with host ``localhost`` and port ``8000`` (not ``8080``)
 
 
+### Run Wahlzeit inside a Docker container
+  1. Run ```./runInDocker.sh appengineRun```
+  2. Or with another Gradle task as argument, e.g. ```./runInDocker.sh test```   
+  3. Open [``http://localhost:8080``](http://localhost:8080) to try out Wahlzeit inside a Docker container
+  
+  
 ### Deploy Wahlzeit to Google App Engine
 
 **Create a Google App Engine instance:**
