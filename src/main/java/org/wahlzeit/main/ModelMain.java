@@ -109,6 +109,7 @@ public abstract class ModelMain extends AbstractMain {
 				Image image = getImageFromFile(photo);
 				Photo newPhoto = photoManager.createPhoto(photo.getName(), image);
 				user.addPhoto(newPhoto);
+				userManager.addClient(user);
 			} catch (Exception e) {
 				log.warning("Unable to add photo: " + photo.getAbsoluteFile());
 			}
