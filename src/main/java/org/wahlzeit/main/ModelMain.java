@@ -101,6 +101,8 @@ public abstract class ModelMain extends AbstractMain {
 			return;
 		}
 
+		log.info("Found " + photoFiles.length + " photo(s) in resource folder.");
+
 		for (File photo : photoFiles) {
 			//TODO: change to datastore/cloud storage
 			try {
