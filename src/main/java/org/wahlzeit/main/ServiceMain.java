@@ -231,7 +231,7 @@ public class ServiceMain extends ModelMain {
 				try {
 					URL url = getClass().getClassLoader().getResource(PICTURES_PATH);
 					File file = new File(url.getPath());
-					createUser("test","Test","test@example.com",file.getAbsolutePath());
+					createUser("robot","Mr. Robot","robot@ecorp.com",file.getAbsolutePath());
 				} catch (NullPointerException e) {
 					log.warning("Unable to create default user");
 				}
