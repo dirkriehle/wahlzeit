@@ -1,0 +1,1 @@
+Pictures (jpg) in this folder will be automatically added on application start-up.

@@ -20,7 +20,10 @@
 
 package org.wahlzeit.main;
 
+import com.google.appengine.api.images.Image;
+import com.google.appengine.api.images.ImagesServiceFactory;
 import org.wahlzeit.model.GlobalsManager;
+import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoCaseManager;
 import org.wahlzeit.model.PhotoFactory;
 import org.wahlzeit.model.PhotoManager;
@@ -33,6 +36,8 @@ import org.wahlzeit.services.LogBuilder;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 /**
@@ -89,24 +94,39 @@ public abstract class ModelMain extends AbstractMain {
 	/**
 	 *
 	 */
-	protected void createUser(String userId, String nickName, String emailAddress, String photoDir) throws Exception {
+	protected void createUser(String userId, String nickName, String emailAddress, String photoDir) {
 		UserManager userManager = UserManager.getInstance();
-		new User(userId, nickName, emailAddress);
+		User user = new User(userId, nickName, emailAddress);
 
 		PhotoManager photoManager = PhotoManager.getInstance();
 		File photoDirFile = new File(photoDir);
-		FileFilter photoFileFilter = new FileFilter() {
-			public boolean accept(File file) {
-				//TODO: check and change
-				return file.getName().endsWith(".jpg");
-			}
-		};
-
+		FileFilter photoFileFilter = file -> file.getName().endsWith(".jpg");
 		File[] photoFiles = photoDirFile.listFiles(photoFileFilter);
-		for (int i = 0; i < photoFiles.length; i++) {
-			//TODO: change to datastore/cloud storage
-			//Photo newPhoto = photoManager.createPhoto(photoFiles[i]);
-			//user.addPhoto(newPhoto);
+
+		if (photoFiles == null) {
+			return;
 		}
+
+		log.info("Found " + photoFiles.length + " photo(s) in resource folder.");
+
+		for (File photo : photoFiles) {
+			//TODO: change to datastore/cloud storage
+			try {
+				Image image = getImageFromFile(photo);
+				Photo newPhoto = photoManager.createPhoto(photo.getName(), image);
+				user.addPhoto(newPhoto);
+				userManager.addClient(user);
+			} catch (Exception e) {
+				log.warning("Unable to add photo: " + photo.getAbsoluteFile());
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	private Image getImageFromFile(File file) throws IOException {
+		String photoPath = file.getAbsolutePath();
+		return ImagesServiceFactory.makeImage(Files.readAllBytes(Paths.get(photoPath)));
 	}
 }
