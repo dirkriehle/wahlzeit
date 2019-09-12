@@ -7,9 +7,6 @@ env:
   - IMAGE_NAME=${DOCKERHUB_USER}/wahlzeit
   - IMAGE_NAME_TAGGED=${DOCKERHUB_USER}/wahlzeit:${TRAVIS_TAG}
 
-script:
-  - docker build -t ${IMAGE_NAME} .
-
 before_deploy:
   - docker build -t ${IMAGE_NAME} .
 
