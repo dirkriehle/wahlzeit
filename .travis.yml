@@ -2,7 +2,7 @@ language: bash
 
 stages:
   - build
-  - name: deploy
+  - name: publish
 #    if: branch = master
 
 services:
@@ -12,6 +12,6 @@ jobs:
   include: 
     - stage: build
       script: docker build -t ${DOCKERHUB_USER}/wahlzeit .
-    - stage: deploy
+    - stage: publish
       script: docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PW}
       script: docker push ${DOCKERHUB_USER}/wahlzeit
