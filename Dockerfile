@@ -18,6 +18,9 @@ COPY gradlew /builder/gradlew
 # Build project (downloads Appengine SDK + builds + explode WAR)
 RUN ./gradlew appengineExplodeApp
 
+# Test project
+RUN ./gradlew test
+
 #########################################################
 # Second stage: image to run the application            #
 #########################################################
