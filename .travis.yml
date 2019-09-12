@@ -8,5 +8,5 @@ deploy:
   script: docker build -t ${DOCKERHUB_USER}/wahlzeit .
   script: docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PW}
   script: docker push ${DOCKERHUB_USER}/wahlzeit
-  on:
-    branch: master
+  # on:
+  #   branch: master
