@@ -4,3 +4,6 @@ stages:
   - build
   - name: deploy
     if: branch = master
+
+services:
+  - docker
