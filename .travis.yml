@@ -3,11 +3,20 @@ language: bash
 services:
   - docker
 
-before_script:
-  - docker build -t ${DOCKERHUB_USER}/wahlzeit .
+env:
+  - IMAGE_NAME=${DOCKERHUB_USER}/wahlzeit
+  - IMAGE_NAME_TAGGED=${IMAGE_NAME}:${TRAVIS_TAG}
+
+before_deploy:
+  - docker build -t ${IMAGE_NAME} .
 
 deploy:
-  provider: script
-  script: docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PW} && docker push ${DOCKERHUB_USER}/wahlzeit
-  on:
-    branch: travis-ci
+  - provider: script
+    script: docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PW} && docker push ${IMAGE_NAME}
+    on:
+      branch: travis-ci
+  
+  - provider: script
+    script: docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PW} && docker tag ${IMAGE_NAME} ${IMAGE_NAME_TAGGED} && docker push ${IMAGE_NAME_TAGGED}/
+    on:
+      tags: true
