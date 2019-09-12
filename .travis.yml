@@ -7,3 +7,10 @@ stages:
 
 services:
   - docker
+
+jobs:
+  include: 
+    - stage: build
+      script: docker build -t wahlzeit .
+    - stage: deploy
+      script: echo 'deploy stage stub'
