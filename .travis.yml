@@ -11,9 +11,6 @@ env:
 script:
   - docker build -t ${IMAGE_NAME} .
 
-# before_deploy:
-#   - docker build -t ${IMAGE_NAME} .
-
 deploy:
   - provider: script
     script: 
