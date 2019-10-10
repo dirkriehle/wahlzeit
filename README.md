@@ -44,7 +44,13 @@ For more information, please see http://github.com/dirkriehle/wahlzeit and http:
   2. Run the Docker container ``docker-compose up`` or ``docker run --network=host -p 8080:8080 wahlzeit``
   3. Open [``http://localhost:8080``](http://localhost:8080) to try out Wahlzeit inside a Docker container
   
-  
+### Activate Travis CI
+  1. Sign in to Travis CI
+  2. Activate the repository
+  3. Add the following environment variables: `DOCKERHUB_USER` and `DOCKERHUB_PW` matching your credentials for DockerHub
+
+Every pushed commit on master will publish and overwrite the `wahlzeit:latest` image. Every tagged commit will publish and overwrite the `wahlzeit:{tag-name}` image.
+
 ### Deploy Wahlzeit to Google App Engine
 
 **Create a Google App Engine instance:**
