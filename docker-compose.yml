@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  wahlzeit:
+    image: wahlzeit
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    network_mode: host
