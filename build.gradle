@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_12
+}
+
+version = '3,0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+}
