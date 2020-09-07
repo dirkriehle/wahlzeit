@@ -96,6 +96,13 @@ public abstract class ModelMain extends AbstractMain {
 	 */
 	protected void createUser(String userId, String nickName, String emailAddress, String photoDir) {
 		UserManager userManager = UserManager.getInstance();
+
+		boolean userAlreadyExists = userManager.getUserById(userId) != null;
+		if (userAlreadyExists) {
+			log.info("Default user already exists: " + userId);
+			return;
+		}
+
 		User user = new User(userId, nickName, emailAddress);
 
 		PhotoManager photoManager = PhotoManager.getInstance();
