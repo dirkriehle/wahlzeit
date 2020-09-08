@@ -1,0 +1,34 @@
+plugins {
+    id 'war'
+    id 'org.gretty' version '3.0.3'  
+}
+
+repositories {
+    jcenter()
+}
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+ext {
+    mainSourcesDir = 'src/main/java'
+    generatedSourcesDir = 'target/generated-sources/java'
+}
+sourceSets {
+    main {
+        java {
+            srcDir mainSourcesDir
+            srcDir generatedSourcesDir
+        }
+    }
+}
+
+dependencies {
+    providedCompile 'javax.servlet:javax.servlet-api:4.0.1' 
+    
+    compile 'org.postgresql:postgresql:9.3-1104-jdbc41'    
+    compile 'log4j:log4j:1.2.17'
+    implementation 'com.sun.mail:javax.mail:1.6.2'
+    
+    testCompile 'junit:junit:4.12'
+}

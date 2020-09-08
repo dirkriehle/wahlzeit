@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+
+    <cron>
+        <url>/_ah/sessioncleanup?clear</url>
+        <description>Cleanup old sessions</description>
+        <!--> make sure to keep it synchronized with the <session-timeout> in web.xml!</!-->
+        <schedule>every 3 hours</schedule>
+    </cron>
+
+    <cron>
+        <url>/agents/notifyUsersAboutPraise</url>
+        <description>Sends an email to all users that want to get notified about the praise of her photos</description>
+        <schedule>every day 12:00</schedule>
+    </cron>
+
+</cronentries>

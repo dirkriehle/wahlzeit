@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>{$title}</title>
+		<link href="{$stylesheet}" rel="stylesheet" media="screen">
+		<script type="text/javascript" src="{$javascript}"></script>
+	</head>
+
+	<body>
+		<div align="center">
+			<h1>{$heading}</h1>
+			<p class="menu">{$menu}</p>
+			
+			<form action="showAdminMenuForm.form" method="post" name="showAdminMenuForm">
+						
+				<h2>Administrative functions</h2>
+				<p><b>{$message}</b></p>
+						
+				<table class="form" width="960"><tr width="100%"><td class="spacer"><table>
+					<tr>
+						<td align="left" width="70%">
+							<b>User:</b>&nbsp;
+							<input type="text" size="12" name="userId" value="{$userId}" />
+							<input type="submit" name="adminUser" value="Edit!" />
+							&nbsp;&#8213;&nbsp;
+							<b>Photo:</b>&nbsp;
+							<input type="text" size="12" name="photoId" value="{$photoId}" />
+							<input type="submit" name="adminPhoto" value="Edit!" />
+						</td>
+						<td align="right" width="30%">
+							<input type="submit" name="saveAll" value="Save all!" />&nbsp;
+							<input type="submit" name="shutdown" value="Shutdown!" />
+						</td>
+					</tr>
+				</table></td></tr></table>
+			
+			</form>
+
+			{$object}
+
+			<h2 class="mission">{$mission}</h2>
+			<p class="menu">{$footer}</p>
+			<p style="font-size: smaller;">[&nbsp;processing time: {$processingTime} seconds&nbsp;]</p>
+		</div>
+	</body>
+</html>

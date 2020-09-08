@@ -1,0 +1,49 @@
+<form action="editUserProfileForm.form" method="post" name="editUserProfileForm">
+
+	<h2>Edit my profile!</h2>
+	<p><b>{$message}</b></p>
+
+	<table class="border"><tr><td class="spacer"><table class="form">
+		<tr>
+			<td class="thumb" rowspan="6">{$thumb}</td>
+			<td class="fiveCol2">User name:&nbsp;</td>
+			<td class="fiveCol3x" colspan="3">
+				<input type="text" name="nickName" value="{$nickName}" size="40"/>
+			</td>
+		</tr>
+		<tr>
+			<td class="fiveCol2">Gender:&nbsp;</td>
+			<td class="fiveCol3x" colspan="3">
+				<select name="gender">
+					<option value="male" {$maleGenderSelected}>male</option>
+					<option value="female" {$femaleGenderSelected}>female</option>
+					<option value="other" {$otherGenderSelected}>other</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="fiveCol2">Language:&nbsp;</td>
+			<td class="fiveCol3x" colspan="3">
+				<select name="language">
+					<option value="english" {$englishLanguageSelected}>English</option>
+					<option value="german" {$germanLanguageSelected}>German</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="fiveCol2">Email address:&nbsp;</td>
+			<td class="fiveCol3x" colspan="3"><b>{$emailAddress}</b></td>
+			<td class="inline" align="right">
+				<input type="checkbox" name="notifyAboutPraise" {$notifyAboutPraise} />
+			</td>
+			<td class="fiveCol5">Notify about praise</td>
+		</tr>
+		<tr>
+			<td class="fiveCol2">&nbsp;</td>
+			<td class="fiveCol3x" colspan="3">
+				<input type="submit" name="update" value="Update!" />
+			</td>
+		</tr>
+	</table></td></tr></table>
+
+</form>

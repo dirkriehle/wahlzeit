@@ -1,0 +1,75 @@
+<form action="adminUserProfileForm.form" method="post" name="adminUserProfileForm">
+
+	<h2>Administer user profile</h2>
+	<p><b>{$message}</b></p>
+
+	<table class="border"><tr><td class="spacer"><table class="form">
+		<tr>
+			<td class="thumb" rowspan="6">{$thumb}</td>
+			<td class="fiveCol2">User name:&nbsp;</td>
+			<td class="fiveCol3x" colspan="3"><b>{$name}</b></td>
+		</tr>
+		<tr>
+			<td class="fiveCol2">Status:&nbsp;</td>
+			<td class="fiveCol3">
+				<select name="status">
+					<option value="created" {$createdUserStatusSelected}>created</option>
+					<option value="confirmed" {$confirmedUserStatusSelected}>confirmed</option>
+					<option value="disabled" {$disabledUserStatusSelected}>disabled</option>
+				</select>
+			</td>
+			<td class="inline" align="right">Rights:&nbsp;</td>
+			<td class="fiveCol5">
+				<select name="rights">
+					<option value="guest" {$guestAccessRightsSelected}>Guest</option>
+					<option value="user" {$userAccessRightsSelected}>User</option>
+					<option value="moderator" {$moderatorAccessRightsSelected}>Moderator</option>
+					<option value="administrator" {$administratorAccessRightsSelected}>Administrator</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="fiveCol2">Gender:&nbsp;</td>
+			<td class="fiveCol3">
+				<select name="gender">
+					<option value="male" {$maleGenderSelected}>male</option>
+					<option value="female" {$femaleGenderSelected}>female</option>
+					<option value="other" {$otherGenderSelected}>other</option>
+				</select>
+			</td>
+			<td class="inline" align="right">Language:&nbsp;</td>
+			<td class="fiveCol5">
+				<select name="language">
+					<option value="english" {$englishLanguageSelected}>English</option>
+					<option value="german" {$germanLanguageSelected}>German</option>
+					<option value="spanish" {$spanishLanguageSelected}>Spanish</option>
+					<option value="japanese" {$japaneseLanguageSelected}>Japanese</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="fiveCol2">Email address:&nbsp;</td>
+			<td class="fiveCol3">
+				<input type="text" name="emailAddress" value="{$emailAddress}" size="40" />
+			</td>
+			<td class="inline" align="right">
+				<input type="checkbox" name="notifyAboutPraise" {$notifyAboutPraise} />
+			</td>
+			<td class="fiveCol5">Notify about praise</td>
+		</tr>
+		<tr>
+			<td class="fiveCol2">Home page:&nbsp;</td>
+			<td class="fiveCol3x" colspan="3">
+				<input type="text" name="homePage" value="{$homePage}" size="40" />
+			</td>
+		</tr>
+		<tr>
+			<td class="fiveCol2">&nbsp;</td>
+			<td class="fiveCol3x" colspan="3">
+				<input type="hidden" name="userId" value="{$userId}" />
+				<input type="submit" name="update" value="Update!" />
+			</td>
+		</tr>
+	</table></td></tr></table>
+
+</form>

@@ -1,0 +1,20 @@
+<h3 class="topbox">Praise it!</h3>
+
+<form action="praisePhotoForm.form" method="post" name="praisePhotoForm">
+	
+	<input type="hidden" name="id" value="{$id}">
+	
+	<p><input type="radio" name="praise" align="absmiddle" value="10" onclick="this.form.submit()">10</p>
+	<p><input type="radio" name="praise" align="absmiddle" value="9" onclick="this.form.submit()">&nbsp;9</p>
+	<p><input type="radio" name="praise" align="absmiddle" value="8" onclick="this.form.submit()">&nbsp;8</p>
+	<p><input type="radio" name="praise" align="absmiddle" value="7" onclick="this.form.submit()">&nbsp;7</p>
+	<p><input type="radio" name="praise" align="absmiddle" value="6" onclick="this.form.submit()">&nbsp;6</p>
+	<p><input type="radio" name="praise" align="absmiddle" value="5" onclick="this.form.submit()">&nbsp;5</p>
+	<p><input type="radio" name="praise" align="absmiddle" value="4" onclick="this.form.submit()">&nbsp;4</p>
+	<p><input type="radio" name="praise" align="absmiddle" value="3" onclick="this.form.submit()">&nbsp;3</p>
+	<p><input type="radio" name="praise" align="absmiddle" value="2" onclick="this.form.submit()">&nbsp;2</p>
+	<p><input type="radio" name="praise" align="absmiddle" value="1" onclick="this.form.submit()">&nbsp;1</p>
+
+	<p>Or <a href="index?prior={$id}">skip</a> it.</p>
+
+</form>
