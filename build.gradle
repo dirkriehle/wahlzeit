@@ -23,11 +23,11 @@ sourceSets {
 dependencies {
     providedCompile 'javax.servlet:javax.servlet-api:4.0.1' 
     
-    compile 'org.postgresql:postgresql:9.3-1104-jdbc41'    
-    compile 'log4j:log4j:1.2.17'
+    implementation 'org.postgresql:postgresql:9.3-1104-jdbc41'    
+    implementation 'log4j:log4j:1.2.17'
     implementation 'com.sun.mail:javax.mail:1.6.2'
     
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 }
 
 gradle.taskGraph.whenReady {
