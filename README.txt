@@ -1,70 +1,52 @@
-Wahlzeit - An Open Source Package to create Photo Rating Sites
+# Wahlzeit: Open Source Software for Photo Rating Sites
 
 
+## PART I: INTRODUCTION
 
-PART I - INTRODUCTION
+Wahlzeit is an open source web application that lets users upload photos and rate photos of other users on a 1..10 scale. Users get to present their best photos and learn what other users thought of theirs. 
 
-Wahlzeit is an open source web application that lets users upload photos and rate photos of other users, usually on a 1..10 scale. Users get to present their best photos and learn what other users thought of their photos. 
+Wahlzeit is used to teach agile methods and open source software development at the Professorship of Open Source Software at the Friedrich-Alexander-University of Erlangen-Nürnberg.
 
-Wahlzeit is used to teach agile methods and open source software development at the Professorship of Open Source Software at the University of Erlangen.
+It is an easy-to-learn yet complete Java web application that is available under the GNU Affero Public License v3 license, see the [LICENSE.txt](/LICENSE.txt) file.
 
-It is an easy-to-learn yet complete Java web application that is available under the GNU Affero Public License v3 license, see the LICENSE.txt file.
-
-Wahlzeit requires a servlet engine like Tomcat and a relational database like PostgreSQL.
-
-For more information, see http:/github.com/dirkriehle/wahlzeit and http://osr.cs.fau.de.
+For more information, please see http://github.com/dirkriehle/wahlzeit and http://osr.cs.fau.de.
 
 
+## PART II: WAHLZEIT SETUP
 
-PART II: WAHLZEIT SETUP
+### Set-up development for Wahlzeit
 
-1. Login using your database administrative user, e.g. postgres.
-
-	sudo su - postgres
-
-2. Create a new user for the Wahlzeit application, for example using the PostgreSQL command line tools:
-
-	createuser wahlzeit -SDRP
-	
-	When asked, enter "wahlzeit" (without the quotes) as the password.
-
-	See: http://www.postgresql.org/docs/8.3/static/app-createuser.html
-
-3. Create the database for the application and give it to the new user:
-
-	createdb wahlzeit -O wahlzeit
-
-	See http://www.postgresql.org/docs/8.3/static/app-createdb.html
-
-4. Download and compile Wahlzeit
-
-	Check out the source code from https://github.com/dirkriehle/wahlzeit.git into your Eclipse environment
-	
-5. [Optional] Populate the database from Eclipse:
-
-	Run as Java Application org.wahlzeit.tools.SetUpFlowers
-	
-	Alternatively, export SetUpFlowers as a JAR-file, then run it from within the wahlzeit directory.
-	
-	This is optional, because running Wahlzeit will ensure an empty database setup.
+  1. Install **Java JDK**¹ (version 8 or higher)
+  2. Set ``JAVA_HOME``
+  3. Install ``git``
+  4. Install ``docker`` and ``docker-compose`` (optional, else install local postgres)
+  5. If you don't have one yet, create a GitHub account (required)
+  6. Create your own repository by forking Wahlzeit from **dirkriehle** to your GitHub-account
+  7. On the command line, create or choose a project directory and go there 
+  8. Run ```git clone https://github.com/<yourname>/wahlzeit.git```
 
 
-
-PART III: RUNNING WAHLZEIT
-	
-6. Run Wahlzeit itself from Eclipse Java EE (Tomcat):
-
-	Start-up your Tomcat server, and Wahlzeit should be running at localhost:8080/wahlzeit/
-	
-	Login using admin/admin as the user/password combination.
-	
-	Change the admin password to something safer.
-	
-	Wahlzeit plays nicely with Apache virtual hosts.
-	
-	Alternatively, export the whole project as a WAR-file, then run it in your favorite container.
-
-Done!
+### Run Wahlzeit on your local machine
+  1. On the command line, ```cd wahlzeit```
+  2. Start the database, e.g. with ```docker-compose up db```
+  3. Run ```./gradlew appRun```
+  4. Wait until all gradle and project dependencies have been downloaded and the local instance has been started, which could take some minutes
+  5. Open [``http://localhost:8080/wahlzeit``](http://localhost:8080/wahlzeit) to try out Wahlzeit on your machine
 
 
+### Debug Wahlzeit on your local machine
+  1. Run Wahlzeit on your local machine (see above)
+  2. TODO: Screenshot
 
+### Test Wahlzeit
+  1. Run ```./gradlew test```
+
+### Run Wahlzeit inside a Docker container
+  1. Build the Docker image ``docker-compose build`` or ``docker build -t wahlzeit .``
+  2. Run the Docker container ``docker-compose up`` or ``docker run --network=host -p 8080:8080 wahlzeit``
+  Note: with `docker-compose` the database starts up automatically. The standalone docker command requires a running postgres instance (e.g. like shown above via docker-compose)
+  3. Open [``http://localhost:8080/wahlzeit``](http://localhost:8080/wahlzeit) to try out Wahlzeit inside a Docker container
+  
+--
+
+Gradle compiles automatically to JDK 1.8.
