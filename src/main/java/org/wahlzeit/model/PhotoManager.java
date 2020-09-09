@@ -141,7 +141,9 @@ public class PhotoManager extends ObjectManager {
 	}
 	
 	/**
-	 * 
+	 * @methodtype command
+	 *
+	 * Load all persisted photos. Executed when Wahlzeit is restarted.
 	 */
 	public void addPhoto(Photo photo) {
 		PhotoId id = photo.getId();
@@ -166,7 +168,9 @@ public class PhotoManager extends ObjectManager {
 	}
 
 	/**
-	 * 
+	 * @methodtype command
+	 *
+	 * Loads all scaled Images of this Photo from Google Cloud Storage
 	 */
 	public void loadPhotos(Collection<Photo> result) {
 		try {
@@ -212,7 +216,10 @@ public class PhotoManager extends ObjectManager {
 	}
 	
 	/**
-	 * 
+	 * @methodtype command
+	 *
+	 * Persists all available sizes of the Photo. If one size exceeds the limit of the persistence layer, e.g. > 1MB for
+	 * the Datastore, it is simply not persisted.
 	 */
 	public Set<Photo> findPhotosByOwner(String ownerName) {
 		Set<Photo> result = new HashSet<Photo>();

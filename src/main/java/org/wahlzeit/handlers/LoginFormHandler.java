@@ -33,9 +33,10 @@ import org.wahlzeit.webparts.WebPart;
 
 
 /**
+ * When a user signs in with its Google account, this handler assures that a Wahlzeit user exists for the Google user.
+ * If not {@link LoginFormHandler} creates one.
  * 
- * @author dirkriehle
- *
+ * Created by dirkriehle
  */
 public class LoginFormHandler extends AbstractWebFormHandler {
 	

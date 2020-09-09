@@ -95,7 +95,7 @@ public abstract class Agent implements Runnable {
 	}
 	
 	/**
-	 * 
+	 * @methodproperty hook
 	 */
 	protected void doRun() {
 		// do nothing
