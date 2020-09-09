@@ -153,6 +153,10 @@ public class MainServlet extends AbstractServlet {
 	}
 
 	private void saveImgToDirectory(String filePath, InputStream imgStream) throws IOException {
+		File targetFile = new File(filePath);
+		if(targetFile.exists()) {
+			targetFile.delete();
+		}
 		Files.copy(imgStream, Paths.get(filePath));
 	}
 
