@@ -20,8 +20,6 @@
 
 package org.wahlzeit.main;
 
-import javax.servlet.http.*;
-
 import org.wahlzeit.services.*;
 
 /**

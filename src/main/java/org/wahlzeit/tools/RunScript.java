@@ -20,11 +20,7 @@
 
 package org.wahlzeit.tools;
 
-import java.io.*;
-
-import org.wahlzeit.utils.*;
 import org.wahlzeit.main.*;
-import org.wahlzeit.model.*;
 
 /**
  * A superclass for script classes.

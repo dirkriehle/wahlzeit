@@ -21,11 +21,8 @@
 package org.wahlzeit.services.mailing;
 
 import javax.mail.Message;
-import javax.mail.internet.InternetAddress;
 
 import org.wahlzeit.services.EmailAddress;
-import org.wahlzeit.services.SysLog;
-import org.wahlzeit.utils.StringUtil;
 
 /**
  * Abstract superclass for non-trivial EmailServer implementations.
