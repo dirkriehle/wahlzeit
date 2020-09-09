@@ -20,10 +20,6 @@
 
 package org.wahlzeit.main;
 
-import java.io.*;
-import java.sql.*;
-
-import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
 
 /**

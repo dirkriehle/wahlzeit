@@ -22,8 +22,6 @@ package org.wahlzeit.services;
 
 import java.io.*;
 
-import org.wahlzeit.utils.*;
-
 /**
  * A basic set of system configuration data
  */

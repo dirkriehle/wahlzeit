@@ -27,7 +27,6 @@ import java.sql.*;
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
 import org.wahlzeit.servlets.AbstractServlet;
-import org.wahlzeit.webparts.*;
 
 /**
  * A single-threaded Main class with database connection. Can be used by tools that don't want to start a server.

@@ -22,10 +22,6 @@ package org.wahlzeit.services;
 
 import java.io.File;
 
-import javax.servlet.ServletContext;
-
-import org.wahlzeit.utils.StringUtil;
-
 /**
  * A ConfigDir is a Directory that can provides a two-way switch between a default directory and custom directory.
  */

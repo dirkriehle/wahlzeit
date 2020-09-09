@@ -20,9 +20,6 @@
 
 package org.wahlzeit.main;
 
-import java.io.*;
-import javax.servlet.*;
-
 import org.wahlzeit.agents.AgentManager;
 import org.wahlzeit.handlers.*;
 import org.wahlzeit.model.*;
