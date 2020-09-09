@@ -26,9 +26,6 @@ import org.wahlzeit.utils.*;
  * The UserStatus of a User denotes its state within the system.
  * A user (account) may have been created, confirmed, or disabled.
  * These states are not mutually exclusive.
- *  
- * @author dirkriehle
- *
  */
 public enum UserStatus implements EnumValue {
 

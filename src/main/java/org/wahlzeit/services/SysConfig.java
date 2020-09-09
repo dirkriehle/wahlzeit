@@ -26,9 +26,6 @@ import org.wahlzeit.utils.*;
 
 /**
  * A basic set of system configuration data
- * 
- * @author dirkriehle
- *
  */
 public class SysConfig extends AbstractConfig {
 	

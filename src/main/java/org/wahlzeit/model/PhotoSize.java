@@ -23,12 +23,9 @@ package org.wahlzeit.model;
 import org.wahlzeit.utils.*;
 
 /**
- * The PhotoSize class defines the sizes in which a Photo can come.
- * The defined sizes are: thumb, extra small, small, medium, large, and extra large.
+ * The PhotoSize class defines the sizes in which a Photo can come. 
+ * The defined sizes are: thumb, extra small, small, medium, large, and extra large. 
  * For each size, there is a defined pixel size to which photos are scaled.
- * 
- * @author dirkriehle
- *
  */
 public enum PhotoSize implements EnumValue {
 	

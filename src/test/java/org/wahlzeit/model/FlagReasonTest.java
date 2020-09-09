@@ -25,9 +25,7 @@ import java.util.*;
 import junit.framework.*;
 
 /**
- * 
- * @author student
- * 
+ * Test cases for the FlagReason class.
  */
 public class FlagReasonTest extends TestCase {
 	

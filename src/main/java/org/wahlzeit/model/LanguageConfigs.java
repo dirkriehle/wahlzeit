@@ -25,11 +25,8 @@ import java.util.*;
 import org.wahlzeit.services.*;
 
 /**
- * LanguageConfigs provides a simple access points to different language-based configurations.
- * For every available language, there is a model configuration, which captures local specific stuff.
- *
- * @author dirkriehle
- *
+ * LanguageConfigs provides a simple access points to different language-based configurations. For every available
+ * language, there is a model configuration, which captures local specific stuff.
  */
 
 public class LanguageConfigs {

@@ -27,9 +27,7 @@ import org.wahlzeit.services.*;
 import org.wahlzeit.webparts.*;
 
 /**
- * 
- * @author dirkriehle
- *
+ * A handler class for a specific web form.
  */
 public class SetOptionsFormHandler extends AbstractWebFormHandler {
 	

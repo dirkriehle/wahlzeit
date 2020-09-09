@@ -23,9 +23,7 @@ package org.wahlzeit.agents;
 import org.wahlzeit.services.*;
 
 /**
- * 
- * @author dirkriehle
- *
+ * An Agent executes background tasks.
  */
 public abstract class Agent implements Runnable {
 	

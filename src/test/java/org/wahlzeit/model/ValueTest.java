@@ -23,9 +23,7 @@ package org.wahlzeit.model;
 import junit.framework.*;
 
 /**
- * 
- * @author dirkriehle
- *
+ * Test cases for a variety of value object classes.
  */
 public class ValueTest extends TestCase {
 	

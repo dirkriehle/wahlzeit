@@ -24,9 +24,7 @@ import java.util.*;
 
 
 /**
- * 
- * @author dirkriehle
- *
+ * A manager class for web parts.
  */
 public class WebPartHandlerManager {
 	

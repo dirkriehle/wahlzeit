@@ -36,9 +36,7 @@ import org.wahlzeit.webparts.WebPart;
 
 
 /**
- * 
- * @author dirkriehle
- *
+ * A handler class for a specific web form.
  */
 public class PraisePhotoFormHandler extends AbstractWebFormHandler {
 	

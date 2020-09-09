@@ -22,9 +22,7 @@ package org.wahlzeit.model;
 import junit.framework.*;
 
 /**
- * 
- * @author dirk
- *
+ * Test cases for the Gender class.
  */
 public class GenderTest extends TestCase {
 

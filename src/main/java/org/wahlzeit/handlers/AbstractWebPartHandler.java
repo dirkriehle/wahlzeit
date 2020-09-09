@@ -29,9 +29,7 @@ import org.wahlzeit.utils.*;
 import org.wahlzeit.webparts.*;
 
 /**
- * 
- * @author dirkriehle
- *
+ * A superclass for handling parts of web pages.
  */
 public abstract class AbstractWebPartHandler implements WebPartHandler {
 	

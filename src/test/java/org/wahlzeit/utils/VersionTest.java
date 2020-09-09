@@ -23,9 +23,7 @@ package org.wahlzeit.utils;
 import junit.framework.*;
 
 /**
- * 
- * @author dirkriehle
- * 
+ * Test cases for the Version class.
  */
 public class VersionTest extends TestCase {
 

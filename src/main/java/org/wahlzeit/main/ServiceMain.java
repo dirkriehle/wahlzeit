@@ -31,9 +31,6 @@ import org.wahlzeit.services.*;
 
 /**
  * A Main class that runs a Wahlzeit web server.
- * 
- * @author dirkriehle
- *
  */
 public class ServiceMain extends ModelMain {
 	

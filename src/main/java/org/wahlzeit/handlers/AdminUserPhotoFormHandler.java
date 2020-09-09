@@ -26,9 +26,7 @@ import org.wahlzeit.model.*;
 import org.wahlzeit.webparts.*;
 
 /**
- * 
- * @author dirkriehle
- *
+ * A specific web form class.
  */
 public class AdminUserPhotoFormHandler extends AbstractWebFormHandler {
 

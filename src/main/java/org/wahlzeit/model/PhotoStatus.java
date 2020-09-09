@@ -26,9 +26,6 @@ import org.wahlzeit.utils.*;
  * The PhotoStatus of a Photo captures its state in the system.
  * A photo may be visible or invisible, it may have been flagged, and it may have been deleted.
  * These states are not mutually exclusive, hence the bitset simulation in this class.
- * 
- * @author dirkriehle
- *
  */
 public enum PhotoStatus implements EnumValue {
 

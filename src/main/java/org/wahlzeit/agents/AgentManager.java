@@ -25,9 +25,7 @@ import java.util.*;
 import org.wahlzeit.services.SysLog;
 
 /**
- * 
- * @author dirkriehle
- *
+ * The AgentManager singleton manages all Agent instances.
  */
 public class AgentManager {
 	

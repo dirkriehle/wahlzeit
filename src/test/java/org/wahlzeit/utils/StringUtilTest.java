@@ -25,9 +25,7 @@ import java.io.File;
 import junit.framework.*;
 
 /**
- *
- * @author dirkriehle
- *
+ * Test cases for the StringUtil class.
  */
 public class StringUtilTest extends TestCase {
 

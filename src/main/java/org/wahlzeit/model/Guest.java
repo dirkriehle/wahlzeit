@@ -24,9 +24,6 @@ import org.wahlzeit.services.*;
 
 /**
  * A Guest is a client that is not logged in.
- * 
- * @author dirkriehle
- *
  */
 public class Guest extends Client {
 

@@ -25,9 +25,7 @@ import org.wahlzeit.utils.StringUtil;
 import junit.framework.*;
 
 /**
- * 
- * @author dirkriehle
- * 
+ * Test cases for the EmailAddress class.
  */
 public class EmailAddressTest extends TestCase {
 

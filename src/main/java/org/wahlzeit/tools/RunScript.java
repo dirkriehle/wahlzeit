@@ -27,9 +27,7 @@ import org.wahlzeit.main.*;
 import org.wahlzeit.model.*;
 
 /**
- * 
- * @author dirkriehle
- *
+ * A superclass for script classes.
  */
 public class RunScript extends ScriptMain {
 	

@@ -27,9 +27,6 @@ import java.io.*;
  * Clients can get and set individual values; they can also load properties files.
  * Key names are configured during initialization and can't be changed afterwards.
  * Hence, any access using an unknown key leads to an IllegalArgumentException.
- *
- * @author dirkriehle
- *
  */
 public interface Configuration {
 

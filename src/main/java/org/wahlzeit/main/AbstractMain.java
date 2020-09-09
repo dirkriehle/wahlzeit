@@ -25,9 +25,7 @@ import javax.servlet.http.*;
 import org.wahlzeit.services.*;
 
 /**
- * 
- * @author dirkriehle
- *
+ * A superclass for a Main class for system startup and shutdown.
  */
 public abstract class AbstractMain {
 	

@@ -29,9 +29,6 @@ import org.wahlzeit.services.*;
 
 /**
  * A photo manager provides access to and manages photos.
- * 
- * @author dirkriehle
- * 
  */
 public class PhotoManager extends ObjectManager {
 	

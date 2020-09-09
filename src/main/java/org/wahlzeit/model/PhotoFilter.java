@@ -25,9 +25,8 @@ import java.util.*;
 import org.wahlzeit.utils.StringUtil;
 
 /**
- * 
- * @author dirkriehle
- *
+ * A class to specify a photo filter.
+ * A photo filter captures selection ("filtering") criteria for photos.
  */
 public class PhotoFilter {
 

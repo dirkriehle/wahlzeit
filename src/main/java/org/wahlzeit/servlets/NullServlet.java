@@ -27,9 +27,7 @@ import javax.servlet.http.*;
 
 
 /**
- * 
- * @author dirkriehle
- *
+ * A null servlet.
  */
 public class NullServlet extends AbstractServlet {
 

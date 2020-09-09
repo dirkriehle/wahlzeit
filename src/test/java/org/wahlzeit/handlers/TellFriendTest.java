@@ -31,9 +31,6 @@ import junit.framework.*;
 
 /**
  * Acceptance tests for the TellFriend feature.
- * 
- * @author dirkriehle
- *
  */
 public class TellFriendTest extends HandlerTestCase {
 	

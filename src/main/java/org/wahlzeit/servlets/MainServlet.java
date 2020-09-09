@@ -37,9 +37,7 @@ import org.wahlzeit.webparts.*;
 
 
 /**
- * 
- * @author dirkriehle
- *
+ * The main servlet class for handling incoming and outgoing requests.
  */
 @MultipartConfig // Servlet 3.0 support for file upload
 public class MainServlet extends AbstractServlet {

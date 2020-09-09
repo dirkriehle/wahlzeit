@@ -26,9 +26,6 @@ import java.util.regex.*;
 
 /**
  * A set of utility functions for basic string manipulations.
- * 
- * @author dirkriehle
- *
  */
 public class StringUtil {
 	
