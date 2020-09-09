@@ -19,96 +19,38 @@
  */
 package org.wahlzeit.model;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class AccessRightsTest extends TestCase {
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
-	/**
-	 * 
-	 */
-	public void testGetFromInt() {
+/**
+ * All test cases of the class {@link AccessRights}.
+ */
+public class AccessRightsTest {
+
+	// test cases that cover valid behavior
+
+	@Test
+	public void getFromIntShouldMatchEnums() {
 		assertSame(AccessRights.NONE, AccessRights.getFromInt(0));
 		assertSame(AccessRights.GUEST, AccessRights.getFromInt(1));
 		assertSame(AccessRights.USER, AccessRights.getFromInt(2));
 		assertSame(AccessRights.MODERATOR, AccessRights.getFromInt(3));
 		assertSame(AccessRights.ADMINISTRATOR, AccessRights.getFromInt(4));
-
-		try {
-			AccessRights.getFromInt(-1);
-			fail("getFromString() method did not throw IllegalArgumentException");
-		} catch (Throwable ex) {
-			assertTrue(ex instanceof IllegalArgumentException);
-		}
-
-		try {
-			AccessRights.getFromInt(5);
-			fail("getFromString() method did not throw IllegalArgumentException");
-		} catch (Throwable ex) {
-			assertTrue(ex instanceof IllegalArgumentException);
-		}
 	}
 
-	/**
-	 * 
-	 */
-	public void testGetFromString() {
+	@Test
+	public void getFromStringShouldMatchEnums() {
 		assertSame(AccessRights.NONE, AccessRights.getFromString("none"));
 		assertSame(AccessRights.GUEST, AccessRights.getFromString("guest"));
 		assertSame(AccessRights.USER, AccessRights.getFromString("user"));
 		assertSame(AccessRights.MODERATOR, AccessRights.getFromString("moderator"));
 		assertSame(AccessRights.ADMINISTRATOR, AccessRights.getFromString("administrator"));
-
-		try {
-			AccessRights.getFromString(null);
-			fail("getFromString() method did not throw IllegalArgumentException");
-		} catch (Throwable ex) {
-			assertTrue(ex instanceof IllegalArgumentException);
-		}
-
-		// We specify that the rights description has to be passed as a
-		// lower-case string
-		// TODO change to a separate
-		// @Test(expected=IllegalArgumentException.class) when migrating to
-		// JUnit 4 for readability purpose
-		try {
-			AccessRights.getFromString("None");
-			fail("getFromString() method did not throw IllegalArgumentException");
-		} catch (Throwable ex) {
-			assertTrue(ex instanceof IllegalArgumentException);
-		}
-
-		try {
-			AccessRights.getFromString("Guest");
-			fail("getFromString() method did not throw IllegalArgumentException");
-		} catch (Throwable ex) {
-			assertTrue(ex instanceof IllegalArgumentException);
-		}
-
-		try {
-			AccessRights.getFromString("User");
-			fail("getFromString() method did not throw IllegalArgumentException");
-		} catch (Throwable ex) {
-			assertTrue(ex instanceof IllegalArgumentException);
-		}
-
-		try {
-			AccessRights.getFromString("Moderator");
-			fail("getFromString() method did not throw IllegalArgumentException");
-		} catch (Throwable ex) {
-			assertTrue(ex instanceof IllegalArgumentException);
-		}
-
-		try {
-			AccessRights.getFromString("Administrator");
-			fail("getFromString() method did not throw IllegalArgumentException");
-		} catch (Throwable ex) {
-			assertTrue(ex instanceof IllegalArgumentException);
-		}
 	}
 
-	/**
-	 * 
-	 */
+	@Test
 	public void testHasRights() {
 		assertTrue(AccessRights.hasRights(AccessRights.ADMINISTRATOR, AccessRights.MODERATOR));
 		assertTrue(AccessRights.hasRights(AccessRights.MODERATOR, AccessRights.USER));
@@ -122,4 +64,46 @@ public class AccessRightsTest extends TestCase {
 		assertFalse(AccessRights.hasRights(AccessRights.MODERATOR, AccessRights.ADMINISTRATOR));
 	}
 
+
+	// test cases that cover behavior in case of an error
+
+	@Test(expected = IllegalArgumentException.class)
+	public void negativeIndexShouldThrowException() {
+		AccessRights.getFromInt(-1);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void tooBigIndexShouldThrowException() {
+		AccessRights.getFromInt(5);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void nullStringShouldThrowException() {
+		AccessRights.getFromString(null);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void noneStringShouldThrowException() {
+		AccessRights.getFromString("NonE");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void CapitalGuestShouldThrowException() {
+		AccessRights.getFromString("Guest");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void CapitalUserShouldThrowException() {
+		AccessRights.getFromString("User");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void CapitalModeratorShouldThrowException() {
+		AccessRights.getFromString("Moderator");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void CapitalAdministratorShouldThrowException() {
+		AccessRights.getFromString("Administrator");
+	}
 }

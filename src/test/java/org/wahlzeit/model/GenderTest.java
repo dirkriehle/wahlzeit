@@ -19,26 +19,19 @@
  */
 package org.wahlzeit.model;
 
-import junit.framework.*;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 /**
- * 
- * @author dirk
- *
+ * Test cases for the Gender class.
  */
-public class GenderTest extends TestCase {
+public class GenderTest {
 
 	/**
-	 * 
-	 * @param name
+	 *
 	 */
-	public GenderTest(String name) {
-		super(name);
-	}
-
-	/**
-	 * 
-	 */
+	@Test
 	public void testGetFromInt() {
 		assertTrue(Gender.getFromInt(Gender.UNDEFINED.asInt()) == Gender.UNDEFINED);
 		assertTrue(Gender.getFromInt(Gender.MALE.asInt()) == Gender.MALE);
@@ -47,31 +40,29 @@ public class GenderTest extends TestCase {
 	}
 
 	/**
-	 * 
+	 *
 	 */
+	@Test
 	public void testGetFromString() {
 		assertTrue(Gender.getFromString(Gender.UNDEFINED.asString()).equals(Gender.UNDEFINED));
 		assertTrue(Gender.getFromString(Gender.MALE.asString()).equals(Gender.MALE));
 		assertTrue(Gender.getFromString(Gender.FEMALE.asString()).equals(Gender.FEMALE));
 		assertTrue(Gender.getFromString(Gender.OTHER.asString()).equals(Gender.OTHER));
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
-	public void testNonValidValues() {
-		try {
-			Gender.getFromInt(-1);
-			assertTrue(false);
-		} catch (IllegalArgumentException e) {
-			assertTrue(true);
-		}
-		
-		try {
-			Gender.getFromInt(4);
-			assertTrue(false);
-		} catch (IllegalArgumentException e) {
-			assertTrue(true);
-		}
+	@Test(expected = IllegalArgumentException.class)
+	public void negativeValueShouldThrowException() {
+		Gender.getFromInt(-1);
+	}
+
+	/**
+	 *
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void tooBigValueShouldThrowException() {
+		Gender.getFromInt(4);
 	}
 }

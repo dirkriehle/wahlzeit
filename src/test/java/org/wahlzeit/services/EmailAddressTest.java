@@ -20,42 +20,34 @@
 
 package org.wahlzeit.services;
 
-import org.wahlzeit.utils.StringUtil;
-
-import junit.framework.*;
+import junit.framework.TestCase;
 
 /**
- * 
- * @author dirkriehle
- * 
+ * Test cases for the EmailAddress class.
  */
 public class EmailAddressTest extends TestCase {
 
 	/**
-	 * 
+	 *
 	 */
 	public EmailAddressTest(String name) {
 		super(name);
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void testGetEmailAddressFromString() {
-		assertFalse(createEmailAddressIgnoreException("bingo"));
-		assertFalse(createEmailAddressIgnoreException("bingo@bongo@bingo"));
-		assertFalse(createEmailAddressIgnoreException("bingo.bongo"));
-		assertFalse(createEmailAddressIgnoreException("..."));
-		assertFalse(createEmailAddressIgnoreException("@45@!52"));
+		// invalid email addresses are allowed for local testing and online avoided by Google
 
 		assertTrue(createEmailAddressIgnoreException("bingo@bongo"));
 		assertTrue(createEmailAddressIgnoreException("bingo@bongo.com"));
 		assertTrue(createEmailAddressIgnoreException("bingo.bongo@bongo.com"));
-		assertTrue(createEmailAddressIgnoreException("bingo+bongo@bango"));		
+		assertTrue(createEmailAddressIgnoreException("bingo+bongo@bango"));
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	protected boolean createEmailAddressIgnoreException(String ea) {
 		try {
@@ -68,7 +60,7 @@ public class EmailAddressTest extends TestCase {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void testEmptyEmailAddress() {
 		assertFalse(EmailAddress.EMPTY.isValid());

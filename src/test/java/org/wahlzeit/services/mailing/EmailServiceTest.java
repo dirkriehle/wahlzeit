@@ -19,61 +19,42 @@
  */
 package org.wahlzeit.services.mailing;
 
-import junit.framework.*;
-import org.wahlzeit.services.*;
-import org.wahlzeit.services.mailing.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.wahlzeit.services.EmailAddress;
 
-/**
- *
- */
-public class EmailServiceTest extends TestCase {
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-	/**
-	 * 
-	 */
-	protected EmailService emailService = null;
+public class EmailServiceTest {
 
-	/**
-	 * 
-	 */
-	protected EmailAddress validAddress;
-	protected EmailAddress invalidAddress1;
-	protected EmailAddress invalidAddress2;
-	
+	EmailService emailService = null;
+	EmailAddress validAddress = null;
 
-	/**
-	 * 
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		
+	@Before
+	public void setup() throws Exception {
 		emailService = EmailServiceManager.getDefaultService();
-		
 		validAddress = EmailAddress.getFromString("test@test.de");
 	}
-	
-	/**
-	 * 
-	 */
+
+	@Test
 	public void testSendInvalidEmail() {
-		try	{
-			assertFalse(emailService.sendEmailIgnoreException(null, null, "lol", "hi"));
-			assertFalse(emailService.sendEmailIgnoreException(validAddress, validAddress, null, "body"));	
+		try {
+			assertFalse(emailService.sendEmailIgnoreException(validAddress, null, "lol", "hi"));
+			assertFalse(emailService.sendEmailIgnoreException(null, validAddress, null, "body"));
 			assertFalse(emailService.sendEmailIgnoreException(validAddress, null, "hi", "       "));
-		} catch (Exception ex)	{
-			fail("Silent mode does not allow exceptions");
+		} catch (Exception ex) {
+			Assert.fail("Silent mode does not allow exceptions");
 		}
 	}
 
-	/**
-	 * 
-	 */
-	public void testSendValidEmail()	{
-		try	{
+	@Test
+	public void testSendValidEmail() {
+		try {
 			assertTrue(emailService.sendEmailIgnoreException(validAddress, validAddress, "hi", "test"));
-		} catch (Exception ex)	{
-			fail("Silent mode does not allow exceptions");
+		} catch (Exception ex) {
+			Assert.fail("Silent mode does not allow exceptions");
 		}
 	}
 }
