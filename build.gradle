@@ -10,14 +10,12 @@ repositories {
 
 ext {
     mainSourcesDir = 'src/main/java'
-    generatedSourcesDir = 'target/generated-sources/java'
 }
 
 sourceSets {
     main {
         java {
             srcDir mainSourcesDir
-            srcDir generatedSourcesDir
         }
     }
 }
