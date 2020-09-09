@@ -21,6 +21,8 @@
 package org.wahlzeit.servlets;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 import javax.servlet.*;
@@ -140,7 +142,7 @@ public class MainServlet extends AbstractServlet {
 			String key = part.getName();
 			if (key.equals("file")) {
 				String tempFileName = SysConfig.getTempDir().asString() + Thread.currentThread().getId();
-				part.write(tempFileName);
+				saveImgToDirectory(tempFileName, part.getInputStream());
 				result.put("fileName", tempFileName);
 			} else {
 				result.put(key, request.getParameter(key));
@@ -148,6 +150,10 @@ public class MainServlet extends AbstractServlet {
 		}
 		
 		return result;
+	}
+
+	private void saveImgToDirectory(String filePath, InputStream imgStream) throws IOException {
+		Files.copy(imgStream, Paths.get(filePath));
 	}
 
 }
