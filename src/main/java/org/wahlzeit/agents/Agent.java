@@ -23,9 +23,7 @@ package org.wahlzeit.agents;
 import org.wahlzeit.services.*;
 
 /**
- * 
- * @author dirkriehle
- *
+ * An Agent executes background tasks.
  */
 public abstract class Agent implements Runnable {
 	
@@ -95,7 +93,7 @@ public abstract class Agent implements Runnable {
 	}
 	
 	/**
-	 * 
+	 * @methodproperty hook
 	 */
 	protected void doRun() {
 		// do nothing

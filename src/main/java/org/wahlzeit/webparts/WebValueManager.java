@@ -25,9 +25,6 @@ import java.util.*;
 /**
  * The WebValueManager provides (and creates on-demand) WebValues.
  * It constructs the data for a WebValue from the provided arguments.
- * 
- * @author dirkriehle
- *
  */
 public class WebValueManager {
 

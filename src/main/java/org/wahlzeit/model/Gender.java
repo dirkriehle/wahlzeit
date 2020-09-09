@@ -23,11 +23,8 @@ package org.wahlzeit.model;
 import org.wahlzeit.utils.*;
 
 /**
- * The gender denotes some user's/person's/character's/whatever gender.
- * The undefined value denotes that no value was provided or the entity is not human.
- * 
- * @author dirkriehle
- * 
+ * The gender denotes some user's/person's/character's/whatever gender. The undefined value denotes that no value was
+ * provided or the entity is not human.
  */
 public enum Gender implements EnumValue {
 	

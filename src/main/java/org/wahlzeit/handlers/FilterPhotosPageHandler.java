@@ -27,12 +27,9 @@ import org.wahlzeit.utils.*;
 import org.wahlzeit.webparts.*;
 
 /**
- * This pages handles incoming get requests for a page.
+ * This pages handles incoming get requests for a page. 
  * Typically, this means an external link points to the site.
  * Example: www.wahlzeit.com/filter?userName=laura
- * 
- * @author dirkriehle
- *
  */
 public class FilterPhotosPageHandler extends AbstractWebPageHandler {
 	

@@ -23,13 +23,9 @@ package org.wahlzeit.model;
 import org.wahlzeit.utils.*;
 
 /**
- * An AccessRight is an enum value that represents a defined level of access.
- * Possible access levels are none, guest, user, moderator, and administrator.
- * However, higher levels of access subsume lower levels of access rights.
- * How they are handled depends on the application.
- * 
- * @author dirkriehle
- *
+ * An AccessRight is an enum value that represents a defined level of access. Possible access levels are none, guest,
+ * user, moderator, and administrator. However, higher levels of access subsume lower levels of access rights. How they
+ * are handled depends on the application.
  */
 public enum AccessRights implements EnumValue {
 

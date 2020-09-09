@@ -27,9 +27,6 @@ import org.wahlzeit.services.*;
 
 /**
  * The photo case manager provides access to and manages persistent photo cases.
- *  
- * @author dirkriehle
- *
  */
 public class PhotoCaseManager extends ObjectManager {
 	

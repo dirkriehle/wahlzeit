@@ -26,9 +26,9 @@ import org.wahlzeit.services.*;
 import org.wahlzeit.utils.*;
 
 /**
- * 
- * @author dirkriehle
+ * Wrapper class for {@link HttpSession} to provide a readable interface for Wahlzeit.
  *
+ * {@link HttpSession}s are managed automatically by Google App Engine.
  */
 public class UserSession extends Session {
 

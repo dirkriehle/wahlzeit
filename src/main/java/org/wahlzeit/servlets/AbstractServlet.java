@@ -34,9 +34,7 @@ import org.wahlzeit.utils.*;
 import org.wahlzeit.webparts.*;
 
 /**
- * 
- * @author dirkriehle
- *
+ * A servlet class.
  */
 public abstract class AbstractServlet extends HttpServlet {
 	

@@ -24,7 +24,9 @@ import java.util.*;
 
 import org.wahlzeit.model.UserSession;
 
-
+/**
+ * The general interface for web forms
+ */
 public interface WebFormHandler extends WebPartHandler {
 	
 	/**

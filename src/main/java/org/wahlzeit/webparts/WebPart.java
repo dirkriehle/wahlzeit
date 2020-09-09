@@ -29,9 +29,6 @@ import org.wahlzeit.utils.*;
  * A WebPart is a Writable formatted as HTML, working off a template.
  * A WebPart has its data set from a client using key/value pairs.
  * A WebPart has a recursive structure; it may contain further WebParts.
- * 
- * @author dirkriehle
- *
  */
 public class WebPart implements Writable {
 

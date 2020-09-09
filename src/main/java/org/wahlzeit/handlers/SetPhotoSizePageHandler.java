@@ -31,9 +31,7 @@ import org.wahlzeit.webparts.WebPart;
 
 
 /**
- * 
- * @author dirkriehle
- *
+ * A handler class for a specific web page.
  */
 public class SetPhotoSizePageHandler extends AbstractWebPageHandler {
 	

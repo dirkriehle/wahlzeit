@@ -26,9 +26,7 @@ import org.wahlzeit.webparts.WebPart;
 
 
 /**
- * 
- * @author dirkriehle
- *
+ * A handler class for a null web form.
  */
 public class NullFormHandler extends AbstractWebFormHandler {
 	
