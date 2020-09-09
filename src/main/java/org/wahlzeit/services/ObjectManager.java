@@ -24,17 +24,13 @@ import java.sql.*;
 import java.util.*;
 
 /**
- * An ObjectManager creates/reads/updates/deletes Persistent (objects) from a (relational) Database.
- * It is an abstract superclass that relies an inheritance interface and the Persistent interface.
- * Subclasses for specific types of object need to implement createObject and provide Statements.
- * 
- * @author dirkriehle
- *
+ * An ObjectManager creates/reads/updates/deletes Persistent (objects) from Google Datastore.
+ * It is an abstract superclass that relies on an inheritance interface and the Persistent interface.
  */
 public abstract class ObjectManager {
 	
 	/**
-	 * 
+	 * All objects are now saved under this root key. In case of multi-tenancy this may change to several keys.
 	 */
 	public DatabaseConnection getDatabaseConnection() throws SQLException {
 		return SessionManager.getDatabaseConnection();

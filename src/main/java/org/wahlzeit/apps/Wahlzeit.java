@@ -28,9 +28,6 @@ import org.wahlzeit.services.*;
 
 /**
  * A simple ServletContextListener to startup and shutdown the Flowers application.
- * 
- * @author dirkriehle
- *
  */
 public class Wahlzeit implements ServletContextListener {
 	
@@ -53,7 +50,8 @@ public class Wahlzeit implements ServletContextListener {
 
 			ServiceMain.getInstance().startUp(false, rootDir);
 		} catch (Exception ex) {
-			SysLog.logThrowable(ex);
+            SysLog.logThrowable(ex);
+            throw new RuntimeException("End of story!", ex);
 		}
 	}	
 	

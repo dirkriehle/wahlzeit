@@ -29,9 +29,7 @@ import org.wahlzeit.utils.*;
 import org.wahlzeit.webparts.*;
 
 /**
- * 
- * @author dirkriehle
- *
+ * A handler class for a specific web form.
  */
 public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 	

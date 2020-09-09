@@ -29,9 +29,7 @@ import org.wahlzeit.utils.StringUtil;
 import org.wahlzeit.webparts.WebPart;
 
 /**
- * 
- * @author dirkriehle
- *
+ * A handler class for a specific web form.
  */
 public class EmailUserNameFormHandler extends AbstractWebFormHandler {
 	

@@ -28,9 +28,6 @@ import org.wahlzeit.utils.StringUtil;
 
 /**
  * A ConfigDir is a Directory that can provides a two-way switch between a default directory and custom directory.
- * 
- * @author dirkriehle
- *
  */
 public class ConfigDir extends Directory {
 	

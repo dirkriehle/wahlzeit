@@ -28,9 +28,6 @@ import org.wahlzeit.utils.*;
 /**
  * An email address provides a simple email address representation.
  * It is a value object and implemented as immutable.
- * 
- * @author dirkriehle
- *
  */
 public class EmailAddress {
 	

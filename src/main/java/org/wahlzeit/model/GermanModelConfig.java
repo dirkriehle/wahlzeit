@@ -28,9 +28,6 @@ import org.wahlzeit.utils.*;
 
 /**
  * A model configuration for the German language.
- * 
- * @author dirkriehle 
- *
  */
 public class GermanModelConfig extends AbstractModelConfig {
 

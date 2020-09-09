@@ -30,9 +30,6 @@ import org.wahlzeit.services.*;
 /**
  * PhotoUtil provides a set of utility functions to create defined images.
  * Images are created from a source in different sizes as needed by the app.
- * 
- * @author dirkriehle
- *
  */
 public class PhotoUtil {
 	

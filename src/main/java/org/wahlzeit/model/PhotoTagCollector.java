@@ -26,9 +26,6 @@ import org.wahlzeit.utils.*;
 
 /**
  * A PhotoTagCollector provides a method to collect all tags for a given photo.
- * 
- * @author dirkriehle
- *
  */
 public class PhotoTagCollector {
 

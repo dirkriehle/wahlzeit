@@ -28,9 +28,7 @@ import org.wahlzeit.webparts.*;
 
 
 /**
- * 
- * @author dirkriehle
- *
+ * A superclass for handling forms.
  */
 public abstract class AbstractWebFormHandler extends AbstractWebPartHandler implements WebFormHandler {
 

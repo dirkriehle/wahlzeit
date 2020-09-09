@@ -26,9 +26,6 @@ import java.io.*;
 /**
  * A generic implementation to manage simple key/value store.
  * Clients can get and set individual values; they can also load properties files.
- *
- * @author dirkriehle
- *
  */
 public abstract class AbstractConfig implements Configuration {
 

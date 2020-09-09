@@ -25,11 +25,8 @@ import java.sql.*;
 import org.wahlzeit.services.*;
 
 /**
- * 
- * @author dirkriehle
- *
+ * An Abstract Factory for creating photos and related objects.
  */
-
 public class PhotoFactory {
 	
 	/**

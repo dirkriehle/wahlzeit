@@ -28,9 +28,6 @@ import org.wahlzeit.utils.*;
 
 /**
  * A configuration that provide easy access to Wahlzeit model configuration data.
- * 
- * @author dirkriehle
- *
  */
 public interface ModelConfig extends Configuration {
 		

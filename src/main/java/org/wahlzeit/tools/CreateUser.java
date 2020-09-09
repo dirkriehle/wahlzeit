@@ -27,9 +27,7 @@ import org.wahlzeit.main.*;
 import org.wahlzeit.model.*;
 
 /**
- * 
- * @author dirkriehle
- *
+ * A script to create users.
  */
 public class CreateUser extends ScriptMain {
 	

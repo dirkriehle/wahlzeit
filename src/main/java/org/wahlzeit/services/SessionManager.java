@@ -21,11 +21,7 @@
 package org.wahlzeit.services;
 
 /**
- * A manager for Session objects (user (web) sessions, agent threads, etc.)
- * Clients can look up the session by thread.
- * 
- * @author dirkriehle
- *
+ * A manager for Session objects (user (web) sessions, agent threads, etc.) Clients can look up the session by thread.
  */
 public class SessionManager {
 	
