@@ -44,6 +44,7 @@ public class SysConfig extends AbstractConfig {
 	 * 
 	 */
 	protected static SysConfig instance = null;
+
 	
 	/**
 	 * 
@@ -54,8 +55,8 @@ public class SysConfig extends AbstractConfig {
 			setInstance(new SysConfig(""));
 		}
 		return instance;
-	}
-	
+	}	
+
 	/**
 	 * Sets the singleton instance of SysConfig.
 	 *
@@ -96,7 +97,7 @@ public class SysConfig extends AbstractConfig {
 	protected ConfigDir scriptsDir;
 	protected ConfigDir staticDir;
 	protected ConfigDir templatesDir;
-
+	
 	/**
 	 * 
 	 */
