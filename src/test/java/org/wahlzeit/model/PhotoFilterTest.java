@@ -19,65 +19,69 @@
  */
 package org.wahlzeit.model;
 
-import junit.framework.*;
+import org.junit.Before;
+import org.junit.Test;
 
-public class PhotoFilterTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-	/**
-	 * 
-	 * @param name
-	 */
-	public PhotoFilterTest(String name) {
-		super(name);
+public class PhotoFilterTest {
+
+	private PhotoFilter photoFilter;
+
+	@Before
+	public void initPhotoFilter() {
+		photoFilter = new PhotoFilter();
 	}
 
 	/**
-	 * 
+	 *
 	 */
+	@Test
 	public void testConstructor() {
-		PhotoFilter pf = new PhotoFilter();
-		assertNotNull(pf);
+		assertNotNull(photoFilter);
 
 		// Check properties after creation
-		assertEquals("", pf.userName);
-		assertEquals(Tags.EMPTY_TAGS, pf.tags);
+		assertEquals("", photoFilter.userName);
+		assertEquals(Tags.EMPTY_TAGS, photoFilter.tags);
 
-		assertEquals(0, pf.processedPhotoIds.size());
-		assertEquals(0, pf.displayablePhotoIds.size());
+		assertEquals(0, photoFilter.processedPhotoIds.size());
+		assertEquals(0, photoFilter.displayablePhotoIds.size());
 	}
 
 	/**
-	 * 
+	 *
 	 */
+	@Test
 	public void testStaticProperties() {
 		assertEquals("userName", PhotoFilter.USER_NAME);
 		assertEquals("tags", PhotoFilter.TAGS);
 	}
 
 	/**
-	 * 
+	 *
 	 */
+	@Test
 	public void testClear() {
-		PhotoFilter pf = new PhotoFilter();
-		pf.setUserName("test");
-		assertEquals("test", pf.getUserName());
+		photoFilter.setUserName("test");
+		assertEquals("test", photoFilter.getUserName());
 
-		pf.setTags(new Tags("test"));
-		assertEquals("test", pf.getTags().asString());
+		photoFilter.setTags(new Tags("test"));
+		assertEquals("test", photoFilter.getTags().asString());
 
-		// @FIXME
-		// pf.displayablePhotoIds.add(new PhotoId(3));
-		// assertTrue(pf.displayablePhotoIds.size() == 1);
+		photoFilter.displayablePhotoIds.add(new PhotoId(3));
+		assertTrue(photoFilter.displayablePhotoIds.size() == 1);
 
-		pf.processedPhotoIds.add(new PhotoId(2));
-		assertTrue(pf.processedPhotoIds.size() == 1);
+		photoFilter.processedPhotoIds.add(new PhotoId(2));
+		assertTrue(photoFilter.processedPhotoIds.size() == 1);
 
-		pf.clear();
+		photoFilter.clear();
 
-		assertEquals("", pf.getUserName());
-		assertEquals(Tags.EMPTY_TAGS, pf.getTags());
-		assertTrue(pf.displayablePhotoIds.isEmpty());
-		assertTrue(pf.processedPhotoIds.isEmpty());
+		assertEquals("", photoFilter.getUserName());
+		assertEquals(Tags.EMPTY_TAGS, photoFilter.getTags());
+		assertTrue(photoFilter.displayablePhotoIds.isEmpty());
+		assertTrue(photoFilter.processedPhotoIds.isEmpty());
 	}
 
 }

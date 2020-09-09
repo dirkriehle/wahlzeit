@@ -1,20 +1,16 @@
 package org.wahlzeit.model;
 
-import junit.framework.*;
+import org.junit.Test;
 
-public class UserStatusTest extends TestCase {
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-	/**
-	 * 
-	 * @param name
-	 */
-	public UserStatusTest(String name) {
-		super(name);
-	}
+public class UserStatusTest {
 
 	/**
-	 * 
+	 *
 	 */
+	@Test
 	public void testGetFromInt() {
 		assertTrue(UserStatus.getFromInt(UserStatus.CREATED.asInt()) == UserStatus.CREATED);
 		assertTrue(UserStatus.getFromInt(UserStatus.CONFIRMED.asInt()) == UserStatus.CONFIRMED);
@@ -23,8 +19,9 @@ public class UserStatusTest extends TestCase {
 	}
 
 	/**
-	 * 
+	 *
 	 */
+	@Test
 	public void testGetFromString() {
 		assertTrue(UserStatus.getFromString(UserStatus.CREATED.asString()).equals(UserStatus.CREATED));
 		assertTrue(UserStatus.getFromString(UserStatus.CONFIRMED.asString()).equals(UserStatus.CONFIRMED));
@@ -35,8 +32,9 @@ public class UserStatusTest extends TestCase {
 	}
 
 	/**
-	 * 
+	 *
 	 */
+	@Test
 	public void testIsConfirmed() {
 		assertFalse(UserStatus.CREATED.isConfirmed());
 		assertTrue(UserStatus.CONFIRMED.isConfirmed());
@@ -45,8 +43,9 @@ public class UserStatusTest extends TestCase {
 	}
 
 	/**
-	 * 
+	 *
 	 */
+	@Test
 	public void testIsDisabled() {
 		assertFalse(UserStatus.CREATED.isDisabled());
 		assertFalse(UserStatus.CONFIRMED.isDisabled());
@@ -55,8 +54,9 @@ public class UserStatusTest extends TestCase {
 	}
 
 	/**
-	 * 
+	 *
 	 */
+	@Test
 	public void testAsDisabled() {
 		assertTrue(UserStatus.CREATED.asDisabled().isDisabled());
 		assertTrue(UserStatus.CONFIRMED.asDisabled().isDisabled());
@@ -70,8 +70,9 @@ public class UserStatusTest extends TestCase {
 	}
 
 	/**
-	 * 
+	 *
 	 */
+	@Test
 	public void testAsConfirmed() {
 		assertTrue(UserStatus.CREATED.asConfirmed().isConfirmed());
 		assertTrue(UserStatus.CONFIRMED.asConfirmed().isConfirmed());
@@ -85,8 +86,9 @@ public class UserStatusTest extends TestCase {
 	}
 
 	/**
-	 * 
+	 *
 	 */
+	@Test
 	public void testAsEnabled() {
 		assertFalse(UserStatus.CREATED.asEnabled().isDisabled());
 		assertFalse(UserStatus.CONFIRMED.asEnabled().isDisabled());

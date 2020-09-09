@@ -45,7 +45,7 @@ public class PhotoFilter {
 	/**
 	 * 
 	 */
-	protected List<PhotoId> displayablePhotoIds = Collections.EMPTY_LIST;
+	protected List<PhotoId> displayablePhotoIds = new LinkedList<PhotoId>();
 	protected List<PhotoId> processedPhotoIds = new LinkedList<PhotoId>();
 	
 	/**
@@ -156,7 +156,7 @@ public class PhotoFilter {
 	 * 
 	 */
 	public void resetDisplayablePhotoIds() {
-		displayablePhotoIds = Collections.EMPTY_LIST;
+		displayablePhotoIds = new LinkedList<PhotoId>();
 	}
 	
 	/**
