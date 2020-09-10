@@ -51,7 +51,7 @@ public class PhotoFactory {
 	 */
 	protected static synchronized void setInstance(PhotoFactory photoFactory) {
 		if (instance != null) {
-			throw new IllegalStateException("attempt to initalize PhotoFactory twice");
+			throw new IllegalStateException("attempt to initialize PhotoFactory twice");
 		}
 		
 		instance = photoFactory;
