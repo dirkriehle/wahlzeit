@@ -57,6 +57,41 @@ public class DatabaseConnection {
 		
 		return result;
 	}
+
+	/**
+	 * Wait until a database connection can be established or the max retry counter is reached.
+	 * 
+	 * @param retries amount of retries until fail.
+	 * @param sleepTimeBetweenRetries time to wait until next retry in milliseconds.
+	 * @return true if connection could be established, otherwise return false.
+	 */
+	public static synchronized boolean waitForDatabaseIsReady(final int retries, final int sleepTimeBetweenRetries) {
+		int retryCounter = retries;
+		String dbUrl = SysConfig.getDbConnectionAsString();
+		do {
+			try {
+				DatabaseConnection.ensureDatabaseConnection();
+				SysLog.logSysInfo("[success] Service check for URL " + dbUrl);
+				return true;
+			} catch (final SQLException e) {
+				final String msg = String.format("[%d/%d] Retry service check for URL %s", retryCounter, retries, dbUrl);
+				SysLog.logSysInfo(msg);
+				doSleep(sleepTimeBetweenRetries);
+			}   
+
+			retryCounter--;
+		} while (retryCounter > 0);
+
+		SysLog.logSysError("[failure] Service check for URL  " + dbUrl);
+		return false;
+	}
+
+	private static void doSleep(final int sleepTime) {
+		try {
+			Thread.sleep(sleepTime);
+		} catch (final InterruptedException e) {
+		}
+	}
 	
 	/**
 	 * 
