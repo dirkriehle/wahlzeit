@@ -20,12 +20,16 @@
 
 package org.wahlzeit.main;
 
+import java.util.Optional;
+
 import org.wahlzeit.services.*;
 
 /**
  * A superclass for a Main class for system startup and shutdown.
  */
 public abstract class AbstractMain {
+	
+	private static final String DB_HOST = Optional.ofNullable(System.getenv("WAHLZEIT_DB_HOST")).orElse("localhost");
 	
 	/**
 	 * 
@@ -43,30 +47,15 @@ public abstract class AbstractMain {
 	 * 
 	 */
 	protected void startUp(String rootDir) throws Exception {
-		SysConfig.setInstance(createSysConfig(rootDir));
+		SysConfig.setInstance(new SysConfig(rootDir, DB_HOST));
 		
+		boolean dbAvailable = DatabaseConnection.waitForDatabaseIsReady(30, 1000);
+		if (!dbAvailable) {
+			throw new RuntimeException("Unable to proceed with wahlzeit app. DB connection could not be established.");
+		}		
+
 		mainSession = new SysSession("system");
 		SessionManager.setThreadLocalSession(mainSession);
-	}
-	
-	/**
-	 * 
-	 */
-	protected SysConfig createSysConfig(String rootDir) {
-		return createDevSysConfig(rootDir);
-	}
-	/**
-	 * 
-	 */
-	protected SysConfig createProdSysConfig(String rootDir) {
-		return new SysConfig(rootDir); 
-	}
-	
-	/**
-	 * 
-	 */
-	protected SysConfig createDevSysConfig(String rootDir) {
-		return new SysConfig(rootDir);
 	}
 	
 	/**

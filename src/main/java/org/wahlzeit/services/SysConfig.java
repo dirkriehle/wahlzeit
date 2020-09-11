@@ -47,7 +47,7 @@ public class SysConfig extends AbstractConfig {
 	public static SysConfig getInstance() {
 		if (instance == null) {
 			SysLog.logSysInfo("creating generic SysConfig");
-			setInstance(new SysConfig(""));
+			setInstance(new SysConfig());
 		}
 		return instance;
 	}	
@@ -104,13 +104,13 @@ public class SysConfig extends AbstractConfig {
 	 * 
 	 */
 	public SysConfig() {
-		this("");
+		this("", "localhost");
 	}
 	
 	/**
 	 *
 	 */
-	public SysConfig(String myRootDir) {
+	public SysConfig(String myRootDir, String dbHostName) {
 		// Root directory
 		rootDir = myRootDir;
 		
@@ -126,7 +126,7 @@ public class SysConfig extends AbstractConfig {
 		
 		// Database connection
 		doSetValue(SysConfig.DB_DRIVER, "org.postgresql.Driver");
-		doSetValue(SysConfig.DB_CONNECTION, "jdbc:postgresql://localhost:5432/wahlzeit");
+		doSetValue(SysConfig.DB_CONNECTION, "jdbc:postgresql://" + dbHostName + ":5432/wahlzeit");
 		doSetValue(SysConfig.DB_USER, "wahlzeit");
 		doSetValue(SysConfig.DB_PASSWORD, "wahlzeit");
 	}
