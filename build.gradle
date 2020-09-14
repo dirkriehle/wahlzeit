@@ -3,15 +3,15 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_12
+    sourceCompatibility = JavaVersion.VERSION_1_8
 }
 
-version = '3,0'
+version = '3.0'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-
+    implementation 'javax.servlet:javax.servlet-api:3.0.1'
 }
