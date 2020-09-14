@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2006-2020 by Dirk Riehle, http://dirkriehle.com
+ * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
  *
- * This file is part of the Wahlzeit rating application.
+ * This file is part of the Wahlzeit photo rating application.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,3 +18,21 @@
  * <http://www.gnu.org/licenses/>.
  */
 
+package org.wahlzeit.handlers;
+
+import org.wahlzeit.model.*;
+import org.wahlzeit.webparts.*;
+
+
+/**
+ * The general interface for web pages.
+ */
+public interface WebPageHandler extends WebPartHandler {
+
+	/**
+	 * 
+	 */
+	public WebPart makeWebPart(UserSession us);
+	
+	
+}
