@@ -166,8 +166,6 @@ public class PhotoManager extends ObjectManager {
 
 	/**
 	 * @methodtype command
-	 *
-	 * Loads all scaled Images of this Photo from Google Cloud Storage
 	 */
 	public void loadPhotos(Collection<Photo> result) {
 		try {
