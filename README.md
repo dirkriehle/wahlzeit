@@ -17,7 +17,7 @@ For more information, please see http://github.com/dirkriehle/wahlzeit and http:
 - Install **Java JDK** 8 or higher. We recommended you to use Java JDK 11.
 - An easy way to manage Java JDKs and JREs is by using [SDKMAN](https://sdkman.io/). With SDKMAN you can install the Java SDK with the following command:
  `sdk install java 11.0.8.j9-adpt`
-- Ensure `JAVA_HOME` environment variable is set.
+- Ensure `java -version` can be executed from the command line.
 - [optional] Install [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) to use the container deployment option.
 - Create your own repository by forking Wahlzeit from **dirkriehle** to your GitHub-account.
 
