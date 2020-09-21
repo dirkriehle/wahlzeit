@@ -20,7 +20,11 @@ For more information, please see http://github.com/dirkriehle/wahlzeit and http:
 - Ensure `JAVA_HOME` environment variable is set.
 - [optional] Install [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) to use the container deployment option.
 - Create your own repository by forking Wahlzeit from **dirkriehle** to your GitHub-account.
- 
+
+**Windows user have to clone the repository with the following command; otherwise it will cause problems during the Docker build:**
+
+`git clone YOUR_URL --config core.autocrlf=input`
+
 ### PostgreSQL Database
 
 Wahlzeit stores its data in a PostgreSQL database. Therefore, an PostgreSQL instance need to be reachable if you start Wahlzeit.
