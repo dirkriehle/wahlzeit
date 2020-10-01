@@ -3,7 +3,7 @@
 
 ## Introduction
 
-Wahlzeit is an open source web application that lets users upload photos and rate photos of other users on a 1..10 scale. Users get to present their best photos and learn what other users thought of theirs. 
+Wahlzeit is an open source web application that lets users upload photos and rate photos of other users on a 1 to 10 scale. Users get to present their best photos and learn what other users thought of theirs. 
 
 Wahlzeit is used to teach agile methods and open source software development at the Professorship of Open Source Software at the Friedrich-Alexander-University of Erlangen-Nürnberg.
 
@@ -34,7 +34,7 @@ The easiest way to run a PostgreSQL instance is via `Docker` and `Docker Compose
 With `docker-compose up db adminer` you can start PostgreSQL as Docker container. It will also start Adminer which is a simple database management ui. It allows you to query the database and alter tables within the database. You can access the ui via 
 [http://localhost:8090/](http://localhost:8090/).
 
-If you run a PostgreSQL without the preset Docker image ensure that the your instance has the following settings: 
+If you run a PostgreSQL without the preset Docker image then ensure that the your instance has the following settings: 
 ```
 POSTGRES_DB: wahlzeit
 POSTGRES_USER: wahlzeit
@@ -60,7 +60,7 @@ If the app is successfully built you can reach the ui under [``http://localhost:
 
 ### Test
 
-To run all unit test use `./gradlew test` (on Windows: `gradlew.bat test`). 
+To run all the unit test use `./gradlew test` (on Windows: `gradlew.bat test`). 
 It will list all test with an indicator if a test failed or succeed.
 
 ### Debug
