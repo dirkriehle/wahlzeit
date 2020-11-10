@@ -2,9 +2,9 @@ name: Docker
 
 on:
   push:
-    # Publish `adap-cw*` tags as releases.
+    # Publish `adap-hw*` tags as releases.
     tags:
-        - adap-cw*
+        - adap-hw*
 
 env:
   IMAGE_NAME: wahlzeit
