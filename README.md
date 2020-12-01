@@ -71,12 +71,11 @@ We provided a remote debugging configuration for Visual Studio Code and Intellij
 
 In Visual Studio Code:
 
-<img src="vscode-debug.png" width="256" title="VSCode Debugging">
+![VSCode Debugging](vscode-debug.png)
 
 In IntelliJ IDEA:
 
-<img src="intellij-debug.png" width="256" title="Intellij Debugging">
-
+![Intellij Debugging](intelliJ-debug.png)
 
 ### Run Wahlzeit inside a Docker container
   1. Build the Docker image ``docker-compose build`` or ``docker build -t wahlzeit .``
