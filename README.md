@@ -80,7 +80,7 @@ In IntelliJ IDEA:
 ### Run Wahlzeit inside a Docker container
   1. Build the Docker image ``docker-compose build`` or ``docker build -t wahlzeit .``
   2. Run the Docker container ``docker-compose up`` or ``docker run -p 8080:8080 wahlzeit``
-  3. Open [``http://localhost:8080``](http://localhost:8080) to try out Wahlzeit inside a Docker container
+  3. Open [``http://localhost:8080/wahlzeit``](http://localhost:8080/wahlzeit) to try out Wahlzeit inside a Docker container
 
 ### Activate GitHub Actions (CI)
 
