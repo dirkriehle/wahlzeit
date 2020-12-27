@@ -11,7 +11,6 @@ It is an easy-to-learn yet complete Java web application that is available under
 
 For more information, please see http://github.com/dirkriehle/wahlzeit and http://osr.cs.fau.de.
 
-
 ## Wahlzeit Setup
 
 - Install **Java JDK** 8 or higher. We recommended you to use Java JDK 11.
@@ -56,8 +55,6 @@ If the app is successfully built you can reach the ui under [``http://localhost:
 - Run the Docker container `docker-compose up` to start the app and the database.
 - Open [`http://localhost:8080/wahlzeit`](http://localhost:8080/wahlzeit) to try out Wahlzeit inside a Docker container
 
-
-
 ### Test
 
 To run all unit test use `./gradlew test` (on Windows: `gradlew.bat test`). 
@@ -67,7 +64,7 @@ It will list all test with an indicator if a test failed or succeed.
 
 To debug the app you have to start the app in debug mode with `./gradlew appRunDebug` and use remote debugging in your IDE of choice. The debug port is `5005`.
 
-We provided a remote debugging configuration for Visual Studio Code and Intellij named `Debug Local App`. These configuration will automatically be visible in these two IDEs.
+We provided a remote debugging configuration for Visual Studio Code and IntelliJ named `Debug Local App`. These configuration will automatically be visible in these two IDEs.
 
 In Visual Studio Code:
 
@@ -75,7 +72,7 @@ In Visual Studio Code:
 
 In IntelliJ IDEA:
 
-<img src="intellij-debug.png" width="256" title="Intellij Debugging">
+<img src="intellij-debug.png" width="256" title="IntelliJ Debugging">
 
 
 ### Run Wahlzeit inside a Docker container
