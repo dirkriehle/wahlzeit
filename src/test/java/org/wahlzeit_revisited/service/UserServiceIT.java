@@ -34,25 +34,25 @@ public class UserServiceIT extends BaseModelTest {
 
     @Test
     public void test_getUsers() throws SQLException {
-        // execute
+        // act
         Response response = service.getUsers();
 
-        // validate
+        // assert
         List<UserDto> userDtos = assertSuccessfulResponse(response);
         Assert.assertNotNull(userDtos);
     }
 
     @Test
     public void test_createUser() throws SQLException {
-        // prepare
+        // arrange
         String expectedUsername = "TestUser";
         String expectedEmail = buildUniqueEmail("create");
         String expectedPassword = "TestPassword123";
 
-        // execute
+        // act
         Response response = service.createUser(expectedUsername, expectedEmail, expectedPassword);
 
-        // validate
+        // assert
         UserDto actualUserDto = assertSuccessfulResponse(response);
         Assert.assertEquals(expectedEmail, actualUserDto.getEmail());
         Assert.assertEquals(expectedUsername, actualUserDto.getName());
@@ -61,14 +61,14 @@ public class UserServiceIT extends BaseModelTest {
 
     @Test
     public void test_deleteUser() throws SQLException {
-        // prepare
+        // arrange
         User deleteUser = new UserFactory().createUser();
         deleteUser = userRepository.insert(deleteUser);
 
-        // execute
+        // act
         Response response = service.deleteUser(deleteUser);
 
-        // validate
+        // assert
         UserDto actualUserDto = assertSuccessfulResponse(response);
         Response loginResponse = service.login(deleteUser.getEmail(), deleteUser.getPassword());
         Assert.assertNotEquals(Response.Status.OK.getStatusCode(), loginResponse.getStatus());
@@ -80,14 +80,14 @@ public class UserServiceIT extends BaseModelTest {
 
     @Test
     public void test_login() throws SQLException {
-        // prepare
+        // arrange
         User expectedUser = new UserFactory().createUser();
         expectedUser = userRepository.insert(expectedUser);
 
-        // execute
+        // act
         Response response = service.login(expectedUser.getEmail(), expectedUser.getPassword());
 
-        // validate
+        // assert
         UserDto actualUserDto = assertSuccessfulResponse(response);
         Assert.assertEquals(expectedUser.getId(), actualUserDto.getId());
         Assert.assertEquals(expectedUser.getName(), actualUserDto.getName());
