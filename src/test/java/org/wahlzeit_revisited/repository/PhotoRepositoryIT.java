@@ -24,27 +24,27 @@ public class PhotoRepositoryIT extends BaseModelTest {
 
     @Test
     public void test_insertPhoto() throws SQLException {
-        // prepare
+        // arrange
         Photo expectedPhoto = factory.createPhoto();
 
-        // execute
+        // act
         repository.insert(expectedPhoto);
 
-        // validate
+        // assert
         Assert.assertNotNull(expectedPhoto.getId());
         Assert.assertNotNull(expectedPhoto.getStatus());
     }
 
     @Test
     public void test_getPhotoById() throws SQLException {
-        // prepare
+        // arrange
         Photo expectedPhoto = factory.createPhoto();
         expectedPhoto = repository.insert(expectedPhoto);
 
-        // execute
+        // act
         Optional<Photo> actualPhotoOpt = repository.findById(expectedPhoto.getId());
 
-        // validate
+        // assert
         Assert.assertTrue(actualPhotoOpt.isPresent());
         Assert.assertEquals(expectedPhoto.getId(), actualPhotoOpt.get().getId());
         Assert.assertEquals(expectedPhoto.getCreationTime(), actualPhotoOpt.get().getCreationTime());
@@ -55,15 +55,15 @@ public class PhotoRepositoryIT extends BaseModelTest {
 
     @Test
     public void test_updatePhoto() throws SQLException {
-        // prepare
+        // arrange
         Photo expectedPhoto = factory.createPhoto();
         expectedPhoto = repository.insert(expectedPhoto);
         expectedPhoto.setStatus(PhotoStatus.DELETED);
 
-        // execute
+        // act
         Photo actualPhoto = repository.update(expectedPhoto);
 
-        // validate
+        // assert
         Optional<Photo> actualDbPhotoOpt = repository.findById(expectedPhoto.getId());
         Assert.assertTrue(actualDbPhotoOpt.isPresent());
         Assert.assertEquals(expectedPhoto.getStatus(), actualPhoto.getStatus());
@@ -72,14 +72,14 @@ public class PhotoRepositoryIT extends BaseModelTest {
 
     @Test
     public void test_deletePhoto() throws SQLException {
-        // prepare
+        // arrange
         Photo expectedPhoto = factory.createPhoto();
         expectedPhoto = repository.insert(expectedPhoto);
 
-        // execute
+        // act
         Photo actualPhoto = repository.delete(expectedPhoto);
 
-        // validate
+        // assert
         Optional<Photo> actualDbPhoto = repository.doFindById(expectedPhoto.getId());
         Assert.assertNotNull(actualPhoto);
         Assert.assertTrue(actualDbPhoto.isEmpty());
@@ -87,21 +87,21 @@ public class PhotoRepositoryIT extends BaseModelTest {
 
     @Test
     public void test_getPhotos() throws SQLException {
-        // prepare
+        // arrange
         Photo expectedPhoto = factory.createPhoto();
         repository.insert(expectedPhoto);
 
-        // execute
+        // act
         List<Photo> actualPhotos = repository.findAll();
 
-        // validate
+        // assert
         Assert.assertNotNull(actualPhotos);
         Assert.assertFalse(actualPhotos.isEmpty());
     }
 
     @Test
     public void test_getPhotoForUser() throws SQLException {
-        // prepare
+        // arrange
         UserFactory userFactory = new UserFactory();
         UserRepository userRepository = new UserRepository();
         userRepository.factory = userFactory;
@@ -112,10 +112,10 @@ public class PhotoRepositoryIT extends BaseModelTest {
         Photo expectedPhoto = factory.createPhoto(user.getId());
         expectedPhoto = repository.insert(expectedPhoto);
 
-        // execute
+        // act
         List<Photo> actualPhotos = repository.findForUser(user);
 
-        // validate
+        // assert
         Assert.assertNotNull(actualPhotos);
         Assert.assertEquals(1, actualPhotos.size());
         Assert.assertEquals(expectedPhoto.getId(), actualPhotos.get(0).getId());
