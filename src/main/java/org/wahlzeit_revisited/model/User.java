@@ -37,11 +37,6 @@ public class User extends Client implements Persistent {
      */
 
     @Override
-    public boolean isDirty() {
-        return true;
-    }
-
-    @Override
     public Long getId() {
         return id;
     }

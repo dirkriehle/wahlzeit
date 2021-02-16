@@ -1,11 +1,11 @@
 package org.wahlzeit_revisited.model;
 
-import org.wahlzeit_revisited.repository.DataObject;
+import org.wahlzeit_revisited.repository.Persistent;
 
 /**
  * A photo represents a user-provided (uploaded) photo.
  */
-public class Photo extends DataObject {
+public class Photo implements Persistent {
 
     /*
      * global constraints
@@ -16,10 +16,11 @@ public class Photo extends DataObject {
     public static final int MAX_THUMB_PHOTO_WIDTH = 105;
     public static final int MAX_THUMB_PHOTO_HEIGHT = 150;
 
+    private Long id;
+
     /*
      * coupled classes
      */
-
     protected PhotoStatus status;
     protected Long ownerId;
 
@@ -56,6 +57,15 @@ public class Photo extends DataObject {
         this.status = status;
         this.width = width;
         this.height = height;
+    }
+
+    /*
+     * Persistent contract
+     */
+
+    @Override
+    public Long getId() {
+        return id;
     }
 
     /*
@@ -165,4 +175,10 @@ public class Photo extends DataObject {
         return creationTime;
     }
 
+    /**
+     * @methodtype set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

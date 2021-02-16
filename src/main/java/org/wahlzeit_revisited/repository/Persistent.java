@@ -29,8 +29,6 @@ public interface Persistent {
     /**
      *
      */
-    boolean isDirty();
-
     Long getId();
 
 }
