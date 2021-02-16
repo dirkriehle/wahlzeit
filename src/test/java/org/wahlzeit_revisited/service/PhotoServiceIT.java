@@ -38,39 +38,39 @@ public class PhotoServiceIT extends BaseModelTest {
 
     @Test
     public void test_getPhotos() throws SQLException {
-        // execute
+        // act
         Response response = service.getPhotos();
 
-        // validate
+        // assert
         List<PhotoDto> photoDtos = assertSuccessfulResponse(response);
         Assert.assertNotNull(photoDtos);
     }
 
     @Test
     public void test_addPhoto() throws SQLException {
-        // prepare
+        // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
 
-        // execute
+        // act
         Response response = service.addPhoto(user, new byte[]{});
 
-        // validate
+        // assert
         PhotoDto responseDto = assertSuccessfulResponse(response);
         Assert.assertNotNull(responseDto);
     }
 
     @Test
     public void test_getPhoto() throws SQLException {
-        // prepare
+        // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
         PhotoDto expectedDto = assertSuccessfulResponse(service.addPhoto(user, new byte[]{}));
 
-        // execute
+        // act
         Response response = service.getPhoto(expectedDto.getId());
 
-        // validate
+        // assert
         PhotoDto actualDto = assertSuccessfulResponse(response);
         Assert.assertEquals(expectedDto.getId(), actualDto.getId());
         Assert.assertEquals(expectedDto.getPath(), actualDto.getPath());
@@ -80,15 +80,15 @@ public class PhotoServiceIT extends BaseModelTest {
 
     @Test
     public void test_getUserPhotos() throws SQLException {
-        // prepare
+        // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
         PhotoDto expectedDto = assertSuccessfulResponse(service.addPhoto(user, new byte[]{}));
 
-        // execute
+        // act
         Response response = service.getUserPhotos(user.getId());
 
-        // validate
+        // assert
         List<PhotoDto> responseDto = assertSuccessfulResponse(response);
         Assert.assertEquals(1, responseDto.size());
         Assert.assertEquals(expectedDto.getId(), responseDto.get(0).getId());
@@ -99,15 +99,15 @@ public class PhotoServiceIT extends BaseModelTest {
 
     @Test
     public void test_removePhoto() throws SQLException {
-        // prepare
+        // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
         PhotoDto expectedDto = assertSuccessfulResponse(service.addPhoto(user, new byte[]{}));
 
-        // execute
+        // act
         Response response = service.removePhoto(user, expectedDto.getId());
 
-        // validate
+        // assert
         PhotoDto responseDto = assertSuccessfulResponse(response);
         Assert.assertNotEquals(Response.Status.OK.getStatusCode(), service.getPhoto(expectedDto.getId()).getStatus());
         Assert.assertEquals(expectedDto.getId(), responseDto.getId());

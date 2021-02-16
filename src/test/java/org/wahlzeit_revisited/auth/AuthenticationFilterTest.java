@@ -38,15 +38,15 @@ public class AuthenticationFilterTest extends BaseModelTest {
     @Test
     @PermitAll
     public void test_PermitAll() throws NoSuchMethodException {
-        // prepare
+        // arrange
         Method mockMethod = AuthenticationFilterTest.class.getMethod("test_PermitAll");
         filter.resourceInfo = new MockResourceInfo(mockMethod);
         MockRequest mockRequest = new MockRequest();
 
-        // execute
+        // act
         filter.filter(mockRequest);
 
-        // validate
+        // assert
         Assert.assertNull(mockRequest.getAbortResponse());
         Assert.assertNull(mockRequest.getSecurityContext());
     }
@@ -54,15 +54,15 @@ public class AuthenticationFilterTest extends BaseModelTest {
     @Test
     @DenyAll
     public void test_DenyAll() throws NoSuchMethodException {
-        // prepare
+        // arrange
         Method mockMethod = AuthenticationFilterTest.class.getMethod("test_DenyAll");
         filter.resourceInfo = new MockResourceInfo(mockMethod);
         MockRequest mockRequest = new MockRequest();
 
-        // execute
+        // act
         filter.filter(mockRequest);
 
-        // validate
+        // assert
         Assert.assertNotNull(mockRequest.getAbortResponse());
         Assert.assertNull(mockRequest.getSecurityContext());
     }
@@ -70,7 +70,7 @@ public class AuthenticationFilterTest extends BaseModelTest {
     @Test
     @RolesAllowed(AccessRights.USER_ROLE)
     public void test_SufficientRights() throws NoSuchMethodException, SQLException {
-        // prepare
+        // arrange
         Method mockMethod = AuthenticationFilterTest.class.getMethod("test_SufficientRights");
         filter.resourceInfo = new MockResourceInfo(mockMethod);
 
@@ -86,10 +86,10 @@ public class AuthenticationFilterTest extends BaseModelTest {
         Map<String, String> authHeader = Map.of(HttpHeaders.AUTHORIZATION, "Bearer " + encodedCredentials);
         MockRequest mockRequest = new MockRequest(authHeader);
 
-        // execute
+        // act
         filter.filter(mockRequest);
 
-        // validate
+        // assert
         Assert.assertNull(mockRequest.getAbortResponse());
         Assert.assertNotNull(mockRequest.getSecurityContext());
     }
@@ -97,7 +97,7 @@ public class AuthenticationFilterTest extends BaseModelTest {
     @Test
     @RolesAllowed(AccessRights.ADMINISTRATOR_ROLE)
     public void test_InsufficientRights() throws NoSuchMethodException, SQLException {
-        // prepare
+        // arrange
         Method mockMethod = AuthenticationFilterTest.class.getMethod("test_InsufficientRights");
         filter.resourceInfo = new MockResourceInfo(mockMethod);
 
@@ -113,10 +113,10 @@ public class AuthenticationFilterTest extends BaseModelTest {
         Map<String, String> authHeader = Map.of(HttpHeaders.AUTHORIZATION, "Bearer " + encodedCredentials);
         MockRequest mockRequest = new MockRequest(authHeader);
 
-        // execute
+        // act
         filter.filter(mockRequest);
 
-        // validate
+        // assert
         Assert.assertNotNull(mockRequest.getAbortResponse());
         Assert.assertNull(mockRequest.getSecurityContext());
     }
@@ -124,7 +124,7 @@ public class AuthenticationFilterTest extends BaseModelTest {
     @Test
     @RolesAllowed(AccessRights.GUEST_ROLE)
     public void test_SuperiorRightsFilter() throws NoSuchMethodException, SQLException {
-        // prepare
+        // arrange
         Method mockMethod = AuthenticationFilterTest.class.getMethod("test_SuperiorRightsFilter");
         filter.resourceInfo = new MockResourceInfo(mockMethod);
 
@@ -140,10 +140,10 @@ public class AuthenticationFilterTest extends BaseModelTest {
         Map<String, String> authHeader = Map.of(HttpHeaders.AUTHORIZATION, "Bearer " + encodedCredentials);
         MockRequest mockRequest = new MockRequest(authHeader);
 
-        // execute
+        // act
         filter.filter(mockRequest);
 
-        // validate
+        // assert
         Assert.assertNull(mockRequest.getAbortResponse());
         Assert.assertNotNull(mockRequest.getSecurityContext());
     }
