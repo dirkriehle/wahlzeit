@@ -18,6 +18,29 @@ public class UserRepository extends AbstractRepository<User> {
     public UserFactory factory;
 
     /*
+     * business methods
+     */
+
+    public Optional<User> findByEmailPassword(String email, String plainPassword) throws SQLException {
+        assertIsNonNullArgument(email);
+        assertIsNonNullArgument(plainPassword);
+
+        String query = "SELECT * FROM users WHERE email_address = ? AND password = ?";
+        PreparedStatement stmt = getReadingStatement(query);
+        stmt.setString(1, email);
+        stmt.setString(2, plainPassword);
+
+        User result = null;
+        try (ResultSet resultSet = stmt.executeQuery()) {
+            if (resultSet.next()) {
+                result = parseAsteriskRow(resultSet);
+            }
+        }
+
+        return Optional.ofNullable(result);
+    }
+
+    /*
      * AbstractRepository Contract
      */
 
@@ -95,29 +118,6 @@ public class UserRepository extends AbstractRepository<User> {
         stmt.execute();
 
         return toDelete;
-    }
-
-    /*
-     * business methods
-     */
-
-    public Optional<User> findByEmailPassword(String email, String plainPassword) throws SQLException {
-        assertIsNonNullArgument(email);
-        assertIsNonNullArgument(plainPassword);
-
-        String query = "SELECT * FROM users WHERE email_address = ? AND password = ?";
-        PreparedStatement stmt = getReadingStatement(query);
-        stmt.setString(1, email);
-        stmt.setString(2, plainPassword);
-
-        User result = null;
-        try (ResultSet resultSet = stmt.executeQuery()) {
-            if (resultSet.next()) {
-                result = parseAsteriskRow(resultSet);
-            }
-        }
-
-        return Optional.ofNullable(result);
     }
 
     /*
