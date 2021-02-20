@@ -17,12 +17,12 @@ public class Transformer {
     public WahlzeitConfig config;
 
     public UserDto transform(User user) {
-        assertNonNull(user);
+        assertIsNotNull(user);
         return new UserDto(user.getId(), user.getName(), user.getEmail(), user.getPassword());
     }
 
     public PhotoDto transform(Photo photo) {
-        assertNonNull(photo);
+        assertIsNotNull(photo);
         assertValidPhoto(photo);
 
         String path = transformToMappedPath(photo);
@@ -30,14 +30,14 @@ public class Transformer {
     }
 
     public String transformToPersistPath(Photo photo) {
-        assertNonNull(photo);
+        assertIsNotNull(photo);
         assertValidPhoto(photo);
 
         return config.getPhotosDir().getRootDir() + File.separator + photo.getId() + ".png";
     }
 
     protected String transformToMappedPath(Photo photo) {
-        assertNonNull(photo);
+        assertIsNotNull(photo);
         assertValidPhoto(photo);
 
         return config.getStaticFileMappingPath() + File.separator + photo.getId() + ".png";
@@ -48,7 +48,7 @@ public class Transformer {
      * asserts
      */
 
-    private static void assertNonNull(Object obj) {
+    private static void assertIsNotNull(Object obj) {
         if (obj == null) {
             throw new NullPointerException("Object cannot be null");
         }
