@@ -19,6 +19,33 @@ public class PhotoRepository extends AbstractRepository<Photo> {
     public PhotoFactory factory;
 
     /*
+     * business methods
+     */
+
+    public List<Photo> findForUser(User user) throws SQLException {
+        assertPersistedObject(user);
+        return findForUser(user.getId());
+    }
+
+    public List<Photo> findForUser(Long userId) throws SQLException {
+        assertIsNonNullArgument(userId, "User");
+
+        String query = "SELECT * FROM photos WHERE owner_id = ?";
+        PreparedStatement stmt = getReadingStatement(query);
+        stmt.setLong(1, userId);
+
+        List<Photo> result = new ArrayList<>();
+        try (ResultSet resultSet = stmt.executeQuery()) {
+            if (resultSet.next()) {
+                Photo photo = parseAsteriskRow(resultSet);
+                result.add(photo);
+            }
+        }
+
+        return result;
+    }
+
+    /*
      * AbstractRepository contract
      */
 
@@ -97,34 +124,6 @@ public class PhotoRepository extends AbstractRepository<Photo> {
 
         return toDelete;
     }
-
-    /*
-     * business methods
-     */
-
-    public List<Photo> findForUser(User user) throws SQLException {
-        assertPersistedObject(user);
-        return findForUser(user.getId());
-    }
-
-    public List<Photo> findForUser(Long userId) throws SQLException {
-        assertIsNonNullArgument(userId, "User");
-
-        String query = "SELECT * FROM photos WHERE owner_id = ?";
-        PreparedStatement stmt = getReadingStatement(query);
-        stmt.setLong(1, userId);
-
-        List<Photo> result = new ArrayList<>();
-        try (ResultSet resultSet = stmt.executeQuery()) {
-            if (resultSet.next()) {
-                Photo photo = parseAsteriskRow(resultSet);
-                result.add(photo);
-            }
-        }
-
-        return result;
-    }
-
 
     /*
      * helpers methods
