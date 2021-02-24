@@ -1,6 +1,14 @@
 package org.wahlzeit_revisited.model;
 
+import org.wahlzeit.model.PhotoId;
+import org.wahlzeit.model.Tags;
+import org.wahlzeit.services.EmailAddress;
+import org.wahlzeit.services.Language;
+import org.wahlzeit.utils.StringUtil;
 import org.wahlzeit_revisited.repository.Persistent;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * A photo represents a user-provided (uploaded) photo.
@@ -37,6 +45,10 @@ public class Photo implements Persistent {
      * constructor
      */
 
+    public Photo(ResultSet resultSet) throws SQLException {
+        readFrom(resultSet);
+    }
+
     Photo(PhotoStatus status, int with, int height) {
         this.status = status;
         this.width = with;
@@ -66,6 +78,34 @@ public class Photo implements Persistent {
     @Override
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Override
+    public void readFrom(ResultSet rset) throws SQLException {
+        id = rset.getLong("id");
+        ownerId = rset.getLong("owner_id");
+        width = rset.getInt("width");
+        height = rset.getInt("height");
+        status = PhotoStatus.getFromInt(rset.getInt("status"));
+        creationTime = rset.getLong("creation_time");
+        maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
+    }
+
+    @Override
+    public void writeOn(ResultSet rset) throws SQLException {
+        rset.updateLong("id", id);
+        if (ownerId != null) {
+            rset.updateLong("owner_id", ownerId);
+        }
+        rset.updateInt("width", width);
+        rset.updateInt("height", height);
+        rset.updateInt("status", status.asInt());
+        rset.updateLong("creation_time", creationTime);
     }
 
     /*

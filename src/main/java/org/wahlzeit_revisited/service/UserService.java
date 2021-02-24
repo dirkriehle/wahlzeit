@@ -1,6 +1,7 @@
 package org.wahlzeit_revisited.service;
 
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import jakarta.ws.rs.core.Response;
 import org.wahlzeit.services.SysLog;
 import org.wahlzeit_revisited.auth.AccessRights;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Singleton
 public class UserService {
 
     @Inject
@@ -37,7 +39,11 @@ public class UserService {
         return Response.ok(responseDto).build();
     }
 
-    public Response createUser(String username, String email, String plainPassword) throws SQLException {
+    public synchronized Response createUser(String username, String email, String plainPassword) throws SQLException {
+        if (repository.hasByEmail(email)) {
+            return Response.status(Response.Status.CONFLICT).build();
+        }
+
         User createdUser = factory.createUser(username, email, plainPassword, AccessRights.USER);
 
         createdUser = repository.insert(createdUser);
