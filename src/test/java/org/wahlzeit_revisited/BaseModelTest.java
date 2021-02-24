@@ -31,7 +31,7 @@ public class BaseModelTest {
      * @return an unique email, prefix with the current timestamp
      */
     protected String buildUniqueEmail(String identifier) {
-        return Long.toHexString(Instant.now().toEpochMilli()) + identifier + "@fau.de";
+        return "unique" + Long.toHexString(Instant.now().toEpochMilli()) + identifier + "@fau.de";
     }
 
 }

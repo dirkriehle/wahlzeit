@@ -99,7 +99,7 @@ public class UserRepositoryIT extends BaseModelTest {
         repository.insert(expectedUser);
 
         // act
-        List<User> actualUsers = repository.doFindAll();
+        List<User> actualUsers = repository.findAll();
 
         // assert
         Assert.assertNotNull(actualUsers);

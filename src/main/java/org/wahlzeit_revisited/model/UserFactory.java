@@ -1,10 +1,19 @@
 package org.wahlzeit_revisited.model;
 
 import org.wahlzeit_revisited.auth.AccessRights;
+import org.wahlzeit_revisited.repository.Persistent;
+import org.wahlzeit_revisited.repository.PersistentFactory;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.Instant;
 
-public class UserFactory {
+public class UserFactory implements PersistentFactory<User> {
+
+    @Override
+    public User createPersistent(ResultSet resultSet) throws SQLException {
+        return new User(resultSet);
+    }
 
     public User createUser() {
         String name = "No Username";

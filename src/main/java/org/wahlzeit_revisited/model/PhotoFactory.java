@@ -1,6 +1,16 @@
 package org.wahlzeit_revisited.model;
 
-public class PhotoFactory {
+import org.wahlzeit_revisited.repository.PersistentFactory;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class PhotoFactory implements PersistentFactory<Photo> {
+
+    @Override
+    public Photo createPersistent(ResultSet resultSet) throws SQLException {
+        return new Photo(resultSet);
+    }
 
     public Photo createPhoto() {
         int with = Photo.MAX_PHOTO_WIDTH;

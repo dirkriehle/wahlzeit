@@ -80,7 +80,7 @@ public class PhotoRepositoryIT extends BaseModelTest {
         Photo actualPhoto = repository.delete(expectedPhoto);
 
         // assert
-        Optional<Photo> actualDbPhoto = repository.doFindById(expectedPhoto.getId());
+        Optional<Photo> actualDbPhoto = repository.findById(expectedPhoto.getId());
         Assert.assertNotNull(actualPhoto);
         Assert.assertTrue(actualDbPhoto.isEmpty());
     }
@@ -107,7 +107,7 @@ public class PhotoRepositoryIT extends BaseModelTest {
         userRepository.factory = userFactory;
 
         User user = userFactory.createUser();
-        user = userRepository.doInsert(user);
+        user = userRepository.insert(user);
 
         Photo expectedPhoto = factory.createPhoto(user.getId());
         expectedPhoto = repository.insert(expectedPhoto);
