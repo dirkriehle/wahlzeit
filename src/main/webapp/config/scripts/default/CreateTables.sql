@@ -1,10 +1,10 @@
 CREATE TABLE users (
    id serial PRIMARY KEY,
-   creation_time bigint NOT NULL,
-   name text NOT NULL,
-   email_address text NOT NULL UNIQUE,
-   "password" text NOT NULL,
-   rights integer NOT NULL,
+   creation_time bigint,
+   name text,
+   email_address text,
+   "password" text,
+   rights integer,
    name_as_tag text,
    "language" integer,
    notify_about_praise boolean,
@@ -17,11 +17,11 @@ CREATE TABLE users (
 
 CREATE TABLE photos (
     id serial PRIMARY KEY,
-    creation_time bigint NOT NULL,
-    owner_id integer REFERENCES users(id) NOT NULL,
-    status integer NOT NULL,
-    width integer NOT NULL,
-    height integer NOT NULL,
+    creation_time bigint,
+    owner_id integer REFERENCES users(id),
+    status integer,
+    width integer,
+    height integer,
     tags text,
     praise_sum integer,
     no_votes integer
