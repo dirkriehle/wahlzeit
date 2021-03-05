@@ -1,5 +1,5 @@
 ---
-name: Feature request
+name: Feature Request
 about: Suggest new feature (using user story)
 title: ''
 labels: ''
@@ -7,11 +7,14 @@ assignees: ''
 
 ---
 
-**User story**
-Use sentence template for user stories.
+## User story
+As a {}, I want / need {}, in order to {}.
 
-**Acceptance criteria**
-Provide list of feature-specific acceptance criteria for sprint review.
+## Acceptance criteria
+* Criterion 1
+* Criterion 2
+* ...
 
-**Definition of done**
-Provide list of non-feature-specific test criteria of feature (week 5 onwards).
+# Definition-of-done
+* Added after week 5
+* Always the same
