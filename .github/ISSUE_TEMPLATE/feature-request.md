@@ -15,6 +15,6 @@ As a {}, I want / need {}, in order to {}.
 * Criterion 2
 * ...
 
-# Definition-of-done
+## Definition-of-done
 * Added after week 5
 * Always the same
