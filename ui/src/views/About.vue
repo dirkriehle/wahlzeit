@@ -1,5 +1,6 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h1>About</h1>
+    This site lets you show, discuss, and praise photos. You can upload your own photos and you can search for specific photos.
   </div>
 </template>
