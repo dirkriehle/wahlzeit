@@ -68,17 +68,16 @@ We provided a remote debugging configuration for Visual Studio Code and IntelliJ
 
 In Visual Studio Code:
 
-<img src="vscode-debug.png" width="256" title="VSCode Debugging">
+![VSCode Debugging](vscode-debug.png)
 
 In IntelliJ IDEA:
 
-<img src="intellij-debug.png" width="256" title="IntelliJ Debugging">
-
+![Intellij Debugging](intellij-debug.png)
 
 ### Run Wahlzeit inside a Docker container
   1. Build the Docker image ``docker-compose build`` or ``docker build -t wahlzeit .``
-  2. Run the Docker container ``docker-compose up`` or ``docker run --network=host -p 8080:8080 wahlzeit``
-  3. Open [``http://localhost:8080``](http://localhost:8080) to try out Wahlzeit inside a Docker container
+  2. Run the Docker container ``docker-compose up`` or ``docker run -p 8080:8080 wahlzeit``
+  3. Open [``http://localhost:8080/wahlzeit``](http://localhost:8080/wahlzeit) to try out Wahlzeit inside a Docker container
 
 ### Activate GitHub Actions (CI)
 
