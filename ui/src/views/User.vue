@@ -28,7 +28,13 @@
     </tr>
     <tr>
       <td class="fiveCol2">Home page:&nbsp;</td>
-      <td class="fiveCol3x" colspan="3"><b><a href="http://wahlzeit.org/filter?userName=admin" rel="nofollow">http://wahlzeit.org/filter?userName=admin</a></b></td>
+      <td class="fiveCol3x" colspan="3">
+        <b
+          ><a href="http://wahlzeit.org/filter?userName=admin" rel="nofollow"
+            >http://wahlzeit.org/filter?userName=admin</a
+          ></b
+        >
+      </td>
     </tr>
   </table>
 </template>

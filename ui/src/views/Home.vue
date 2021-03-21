@@ -8,7 +8,10 @@
 import { Options, Vue } from "vue-class-component";
 
 @Options({
-  components: {}
+  components: {},
+  props: {
+    auth: ""
+  }
 })
 export default class Home extends Vue {}
 </script>

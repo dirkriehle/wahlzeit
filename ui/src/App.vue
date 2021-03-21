@@ -55,6 +55,14 @@
                   My Page
                 </router-link>
               </li>
+              <li>
+                <router-link
+                  class="dropdown-item"
+                  :to="{ name: 'Photo', params: { id: 1 } }"
+                >
+                  My Page
+                </router-link>
+              </li>
               <li><a class="dropdown-item" href="#">My Photos</a></li>
               <li><a class="dropdown-item" href="#">Settings</a></li>
             </ul>
@@ -63,7 +71,14 @@
             <a class="nav-link" @click="logout()" href="#">Log out</a>
           </li>
           <li v-if="!isLoggedIn" class="nav-item">
-            <a class="nav-link" @click="login()" href="#">Log in</a>
+            <a
+              class="nav-link"
+              href="#"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
+              Login
+            </a>
           </li>
           <li v-if="!isLoggedIn" class="nav-item">
             <a class="nav-link" @click="login()" href="#">Sign up</a>
@@ -74,25 +89,39 @@
   </nav>
 
   <main class="container">
-    <router-view />
+    <router-view :auth="auth" />
   </main>
+  <Login v-if="!isLoggedIn" @login="login" />
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import Login from "@/components/Login.vue";
 
 @Options({
-  components: {}
+  components: { Login }
 })
 export default class App extends Vue {
   isLoggedIn = false;
+  auth: string | null = "";
 
-  login() {
+  login(auth: string) {
+    this.auth = auth;
     this.isLoggedIn = true;
+    sessionStorage.setItem("auth", auth);
+    console.log(this.auth);
   }
 
   logout() {
     this.isLoggedIn = false;
+    sessionStorage.removeItem("auth");
+  }
+
+  created() {
+    this.auth = sessionStorage.getItem("auth");
+    if (this.auth) {
+      this.isLoggedIn = true;
+    }
   }
 }
 </script>
