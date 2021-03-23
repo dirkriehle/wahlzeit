@@ -13,5 +13,7 @@ import { Options, Vue } from "vue-class-component";
     auth: ""
   }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  auth = "";
+}
 </script>

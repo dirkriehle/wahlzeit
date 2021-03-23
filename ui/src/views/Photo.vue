@@ -31,7 +31,6 @@ export default class Photo extends Vue {
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data["path"]);
         return `http://localhost:8080${data["path"]}`;
       });
   }

@@ -3,6 +3,7 @@ import Home from "@/views/Home.vue";
 import About from "@/views/About.vue";
 import User from "@/views/User.vue";
 import Photo from "@/views/Photo.vue";
+import Upload from "@/views/Upload.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -25,6 +26,12 @@ const routes: Array<RouteRecordRaw> = [
     path: "/photo/:id",
     name: "Photo",
     component: Photo,
+    props: true
+  },
+  {
+    path: "/upload",
+    name: "Upload",
+    component: Upload,
     props: true
   }
 ];

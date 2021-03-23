@@ -63,6 +63,11 @@
                   My Page
                 </router-link>
               </li>
+              <li>
+                <router-link class="dropdown-item" :to="{ name: 'Upload' }">
+                  Upload Photo
+                </router-link>
+              </li>
               <li><a class="dropdown-item" href="#">My Photos</a></li>
               <li><a class="dropdown-item" href="#">Settings</a></li>
             </ul>
@@ -89,7 +94,7 @@
   </nav>
 
   <main class="container">
-    <router-view :auth="auth" />
+    <router-view :auth="auth" :isLoggedIn="isLoggedIn" />
   </main>
   <Login v-if="!isLoggedIn" @login="login" />
 </template>
