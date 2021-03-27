@@ -76,14 +76,7 @@
             <a class="nav-link" @click="logout()" href="#">Log out</a>
           </li>
           <li v-if="!isLoggedIn" class="nav-item">
-            <a
-              class="nav-link"
-              href="#"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-            >
-              Login
-            </a>
+            <Login btnClass="nav-link" @login="login" />
           </li>
           <li v-if="!isLoggedIn" class="nav-item">
             <a class="nav-link" @click="login()" href="#">Sign up</a>
@@ -96,7 +89,6 @@
   <main class="container">
     <router-view :auth="auth" :isLoggedIn="isLoggedIn" />
   </main>
-  <Login v-if="!isLoggedIn" @login="login" />
 </template>
 
 <script lang="ts">
