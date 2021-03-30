@@ -1,8 +1,8 @@
 CREATE TABLE users (
    id serial PRIMARY KEY,
+   name text UNIQUE,
+   email_address text UNIQUE,
    creation_time bigint,
-   name text,
-   email_address text,
    "password" text,
    rights integer,
    name_as_tag text,
@@ -19,6 +19,7 @@ CREATE TABLE photos (
     id serial PRIMARY KEY,
     creation_time bigint,
     owner_id integer REFERENCES users(id),
+    data bytea,
     status integer,
     width integer,
     height integer,

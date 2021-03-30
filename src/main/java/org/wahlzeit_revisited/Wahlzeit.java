@@ -56,12 +56,7 @@ public class Wahlzeit {
 
         // setup server
         URI baseUri = UriBuilder.fromUri("http://[::]/").port(8080).build();
-        HttpServer server = GrizzlyHttpServerFactory.createHttpServer(baseUri, config, false);
-
-        // setup static file serving - needed for local saved photos
-        StaticHttpHandler staticHandler = new StaticHttpHandler(sysConfig.getPhotosDir().getRootDir());
-        server.getServerConfiguration().addHttpHandler(staticHandler, sysConfig.getStaticFileMappingPath());
-        server.start();
+        GrizzlyHttpServerFactory.createHttpServer(baseUri, config, true);
 
         databaseMain.shutDown();
     }

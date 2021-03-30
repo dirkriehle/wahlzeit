@@ -15,7 +15,6 @@ import org.wahlzeit_revisited.repository.UserRepository;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Singleton
 public class UserService {
@@ -41,8 +40,15 @@ public class UserService {
         return responseDto;
     }
 
+    public UserDto getUser(Long userId) throws SQLException {
+        User user = repository.findById(userId).orElseThrow(() -> new NotFoundException("Unknown UserId"));
+
+        UserDto responseDto = transformer.transform(user);
+        return responseDto;
+    }
+
     public synchronized UserDto createUser(String username, String email, String plainPassword) throws SQLException {
-        if (repository.hasByEmail(email)) {
+        if (repository.hasByName(username) || repository.hasByEmail(email)) {
             throw new WebApplicationException("Email already registered", Response.Status.CONFLICT);
         }
 
@@ -56,7 +62,7 @@ public class UserService {
     }
 
     public UserDto login(String email, String password) throws SQLException {
-        User loginUser = repository.findByEmailPassword(email, password)
+        User loginUser = repository.findByNameOrEmailAndPassword(email, password)
                 .orElseThrow(() -> new NotFoundException("Invalid credentials"));
 
         UserDto responseDto = transformer.transform(loginUser);

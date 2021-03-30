@@ -13,6 +13,7 @@ import org.wahlzeit_revisited.repository.PhotoRepository;
 import org.wahlzeit_revisited.repository.UserRepository;
 import org.wahlzeit_revisited.utils.SysConfig;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -46,29 +47,30 @@ public class PhotoServiceIT extends BaseModelTest {
     }
 
     @Test
-    public void test_addPhoto() throws SQLException {
+    public void test_addPhoto() throws SQLException, IOException {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
 
         // act
-        PhotoDto responseDto = service.addPhoto(user, new byte[]{});
+        PhotoDto responseDto = service.addPhoto(user, buildMockImageBytes());
 
         // assert
         Assert.assertNotNull(responseDto);
     }
 
     @Test
-    public void test_getPhoto() throws SQLException {
+    public void test_getPhoto() throws SQLException, IOException {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
-        PhotoDto expectedDto = service.addPhoto(user, new byte[]{});
+        PhotoDto expectedDto = service.addPhoto(user, buildMockImageBytes());
 
         // act
         PhotoDto actualDto = service.getPhoto(expectedDto.getId());
 
         // assert
+        Assert.assertEquals(user.getId(), actualDto.getUserId());
         Assert.assertEquals(expectedDto.getId(), actualDto.getId());
         Assert.assertEquals(expectedDto.getPath(), actualDto.getPath());
         Assert.assertEquals(expectedDto.getWidth(), actualDto.getWidth());
@@ -76,17 +78,18 @@ public class PhotoServiceIT extends BaseModelTest {
     }
 
     @Test
-    public void test_getUserPhotos() throws SQLException {
+    public void test_getUserPhotos() throws SQLException, IOException {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
-        PhotoDto expectedDto = service.addPhoto(user, new byte[]{});
+        PhotoDto expectedDto = service.addPhoto(user, buildMockImageBytes());
 
         // act
         List<PhotoDto> responseDto = service.getUserPhotos(user.getId());
 
         // assert
         Assert.assertEquals(1, responseDto.size());
+        Assert.assertEquals(user.getId(), responseDto.get(0).getUserId());
         Assert.assertEquals(expectedDto.getId(), responseDto.get(0).getId());
         Assert.assertEquals(expectedDto.getPath(), responseDto.get(0).getPath());
         Assert.assertEquals(expectedDto.getWidth(), responseDto.get(0).getWidth());
@@ -94,17 +97,18 @@ public class PhotoServiceIT extends BaseModelTest {
     }
 
     @Test(expected = NotFoundException.class)
-    public void test_removePhoto() throws SQLException {
+    public void test_removePhoto() throws SQLException, IOException {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
-        PhotoDto expectedDto = service.addPhoto(user, new byte[]{});
+        PhotoDto expectedDto = service.addPhoto(user, buildMockImageBytes());
 
         // act
         PhotoDto responseDto = service.removePhoto(user, expectedDto.getId());
 
         // assert
         service.getPhoto(expectedDto.getId());
+        Assert.assertEquals(user.getId(), responseDto.getUserId());
         Assert.assertEquals(expectedDto.getId(), responseDto.getId());
         Assert.assertEquals(expectedDto.getPath(), responseDto.getPath());
         Assert.assertEquals(expectedDto.getWidth(), responseDto.getWidth());

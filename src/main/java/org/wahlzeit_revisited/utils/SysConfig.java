@@ -39,7 +39,6 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
      */
 
     public static final String ROOT_DIR = "src/main/webapp";
-    public static final String MAPPING_SLUG = "/static";
 
     public static final String DB_HOST = Optional.ofNullable(System.getenv("WAHLZEIT_DB_HOST")).orElse("localhost");
     public static final String DB_DRIVER = "DB_DRIVER";
@@ -74,7 +73,6 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
     public SysConfig() {
         // Root directory
         rootDir = ROOT_DIR;
-        staticMappingSlug = MAPPING_SLUG;
 
         // Config directories
         scriptsDir = new ConfigDir(rootDir, "config" + File.separator + "scripts");
@@ -111,10 +109,6 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
 
     public ConfigDir getTemplatesDir() {
         return templatesDir;
-    }
-
-    public Directory getPhotosDir() {
-        return photosDir;
     }
 
     public Directory getBackupDir() {

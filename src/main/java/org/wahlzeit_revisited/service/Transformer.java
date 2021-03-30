@@ -25,24 +25,9 @@ public class Transformer {
         assertIsNotNull(photo);
         assertValidPhoto(photo);
 
-        String path = transformToMappedPath(photo);
-        return new PhotoDto(photo.getId(), path, photo.getWidth(), photo.getHeight());
+        String path = "/api/photo/" + photo.getId() + "/data";
+        return new PhotoDto(photo.getId(), photo.getOwnerId(), path, photo.getWidth(), photo.getHeight());
     }
-
-    public String transformToPersistPath(Photo photo) {
-        assertIsNotNull(photo);
-        assertValidPhoto(photo);
-
-        return config.getPhotosDir().getRootDir() + File.separator + photo.getId() + ".png";
-    }
-
-    protected String transformToMappedPath(Photo photo) {
-        assertIsNotNull(photo);
-        assertValidPhoto(photo);
-
-        return config.getStaticFileMappingPath() + File.separator + photo.getId() + ".png";
-    }
-
 
     /*
      * asserts

@@ -16,8 +16,6 @@ public interface WahlzeitConfig {
 
     ConfigDir getTemplatesDir();
 
-    Directory getPhotosDir();
-
     Directory getBackupDir();
 
     Directory getTempDir();

@@ -4,6 +4,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import org.wahlzeit_revisited.auth.PrincipalUser;
+import org.wahlzeit_revisited.dto.ErrorDto;
 import org.wahlzeit_revisited.model.User;
 
 public abstract class AbstractResource {
@@ -21,7 +22,8 @@ public abstract class AbstractResource {
     }
 
     protected Response buildBadRequest() {
-        return Response.status(Response.Status.BAD_REQUEST).build();
+        ErrorDto errorDto = new ErrorDto("You may missed an api field");
+        return Response.status(Response.Status.BAD_REQUEST).entity(errorDto).build();
     }
 
     protected Response buildServerError() {

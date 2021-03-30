@@ -16,7 +16,7 @@ public class UserFactory implements PersistentFactory<User> {
     }
 
     public User createUser() {
-        String name = "No Username";
+        String name = Instant.now().toEpochMilli() + "NoUsername";
         String email = Instant.now().toEpochMilli() + "noEmail@fau.de";
         String password = "NoPassword";
         AccessRights accessRights = AccessRights.NONE;

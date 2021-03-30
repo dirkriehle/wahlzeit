@@ -18,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,27 +47,9 @@ public class PhotoService {
         return responseDto;
     }
 
-    public PhotoDto addPhoto(User user, byte[] photoBlob) throws SQLException {
-        Photo insertPhoto = factory.createPhoto(user.getId());
+    public PhotoDto addPhoto(User user, byte[] photoBlob) throws SQLException, IOException {
+        Photo insertPhoto = factory.createPhoto(user.getId(), photoBlob);
         insertPhoto = repository.insert(insertPhoto);
-
-        // write to disk
-        String persistPath = transformer.transformToPersistPath(insertPhoto);
-        File persistFile = new File(persistPath);
-        assertUniqueFile(persistFile);
-
-        try (FileOutputStream fileOutputStream = new FileOutputStream(persistFile)) {
-            fileOutputStream.write(photoBlob);
-        } catch (IOException e) {
-            SysLog.logThrowable(e);
-            // clean up orphans
-            repository.delete(insertPhoto);
-            if (persistFile.exists() && persistFile.delete()) {
-                SysLog.logSysError(String.format("Deleted photo from disk: %s", persistPath));
-            }
-            throw new InternalServerErrorException("Photo couldn't get persisted");
-        }
-        SysLog.logSysInfo(String.format("Created new photo on disk: %s", persistPath));
 
         PhotoDto responseDto = transformer.transform(insertPhoto);
         return responseDto;
@@ -79,7 +62,12 @@ public class PhotoService {
         return responseDto;
     }
 
-    public List<PhotoDto> getUserPhotos(Long userId) throws SQLException {
+    public byte[] getPhotoData(long photoId) throws SQLException {
+        Photo photo = repository.findById(photoId).orElseThrow(() -> new NotFoundException("Unknown photoId"));
+        return photo.getData();
+    }
+
+    public List<PhotoDto> getUserPhotos(long userId) throws SQLException {
         List<Photo> photoList = repository.findForUser(userId);
 
         List<PhotoDto> responseDto = new ArrayList<>(photoList.size());
@@ -91,33 +79,14 @@ public class PhotoService {
 
     public PhotoDto removePhoto(User user, long photoId) throws SQLException {
         Photo photo = repository.findById(photoId).orElseThrow(() -> new NotFoundException("Unknown photoId"));
-
         if (!user.hasModeratorRights() && !photo.getOwnerId().equals(user.getId())) {
             throw new ForbiddenException("Photo does not belong to user");
         }
 
         Photo deletedPhoto = repository.delete(photo);
 
-        // remove from disk
-        String persistPath = transformer.transformToPersistPath(deletedPhoto);
-        File persistFile = new File(persistPath);
-        if (persistFile.delete()) {
-            SysLog.logSysInfo(String.format("Deleted photo from disk: %s", persistPath));
-        } else {
-            SysLog.logSysInfo(String.format("Failed deleting photo from disk: %s", persistPath));
-        }
-
         PhotoDto responseDto = transformer.transform(deletedPhoto);
         return responseDto;
     }
 
-    /*
-     * Helper methods
-     */
-
-    private void assertUniqueFile(File file) {
-        if (file.exists()) {
-            throw new IllegalArgumentException("File with id %s already exists");
-        }
-    }
 }
