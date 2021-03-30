@@ -5,6 +5,9 @@ import org.junit.BeforeClass;
 import org.wahlzeit_revisited.main.DatabaseMain;
 import org.wahlzeit_revisited.utils.SysConfig;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.time.Instant;
 
 /**
@@ -44,5 +47,21 @@ public class BaseModelTest {
     protected String buildUniqueEmail(String identifier) {
         return "unique" + Long.toHexString(Instant.now().toEpochMilli()) + identifier + "@fau.de";
     }
+
+    protected byte[] buildMockImageBytes() {
+        return buildMockImageBytes(100, 100);
+    }
+
+    protected byte[] buildMockImageBytes(int width, int height) {
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(bufferedImage, "png", baos);
+        } catch (Exception e) {
+            throw new RuntimeException(e); // will never fail
+        }
+        return baos.toByteArray();
+    }
+
 
 }

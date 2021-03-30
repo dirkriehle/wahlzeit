@@ -19,6 +19,7 @@ CREATE TABLE photos (
     id serial PRIMARY KEY,
     creation_time bigint,
     owner_id integer REFERENCES users(id),
+    data bytea,
     status integer,
     width integer,
     height integer,

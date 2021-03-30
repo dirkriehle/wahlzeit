@@ -35,6 +35,7 @@ public class Photo implements Persistent {
     protected int height;
     protected PhotoSize maxPhotoSize = PhotoSize.MEDIUM; // derived
     protected long creationTime = System.currentTimeMillis();
+    protected byte[] data;
 
     /*
      * constructor
@@ -44,25 +45,18 @@ public class Photo implements Persistent {
         readFrom(resultSet);
     }
 
-    Photo(PhotoStatus status, int with, int height) {
+    Photo(PhotoStatus status, byte[] data, int with, int height) {
+        this.data = data;
         this.status = status;
         this.width = with;
         this.height = height;
     }
 
-    Photo(long ownerId, PhotoStatus status, int with, int height) {
+    Photo(long ownerId, PhotoStatus status, byte[] data, int with, int height) {
+        this.data = data;
         this.ownerId = ownerId;
         this.status = status;
         this.width = with;
-        this.height = height;
-    }
-
-    Photo(long id, long creationTime, long ownerId, PhotoStatus status, int width, int height) {
-        this.id = id;
-        this.creationTime = creationTime;
-        this.ownerId = ownerId;
-        this.status = status;
-        this.width = width;
         this.height = height;
     }
 
@@ -84,6 +78,7 @@ public class Photo implements Persistent {
     public void readFrom(ResultSet rset) throws SQLException {
         id = rset.getLong("id");
         ownerId = rset.getLong("owner_id");
+        data = rset.getBytes("data");
         width = rset.getInt("width");
         height = rset.getInt("height");
         status = PhotoStatus.getFromInt(rset.getInt("status"));
@@ -97,6 +92,7 @@ public class Photo implements Persistent {
         if (ownerId != null) {
             rset.updateLong("owner_id", ownerId);
         }
+        rset.updateBytes("data", data);
         rset.updateInt("width", width);
         rset.updateInt("height", height);
         rset.updateInt("status", status.asInt());
@@ -140,6 +136,13 @@ public class Photo implements Persistent {
      */
     public int getHeight() {
         return height;
+    }
+
+    /**
+     * @methodtype get
+     */
+    public byte[] getData() {
+        return data;
     }
 
     /**
