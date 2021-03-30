@@ -2,6 +2,9 @@ package org.wahlzeit_revisited.service;
 
 
 import jakarta.inject.Inject;
+import jakarta.ws.rs.ForbiddenException;
+import jakarta.ws.rs.InternalServerErrorException;
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response;
 import org.wahlzeit_revisited.dto.PhotoDto;
 import org.wahlzeit_revisited.model.Photo;
@@ -32,17 +35,18 @@ public class PhotoService {
      * business methods
      */
 
-    public Response getPhotos() throws SQLException {
+    public List<PhotoDto> getPhotos() throws SQLException {
         List<Photo> photoList = repository.findAll();
 
         List<PhotoDto> responseDto = new ArrayList<>(photoList.size());
         for (Photo photo : photoList) {
             responseDto.add(transformer.transform(photo));
         }
-        return Response.ok(responseDto).build();
+
+        return responseDto;
     }
 
-    public Response addPhoto(User user, byte[] photoBlob) throws SQLException {
+    public PhotoDto addPhoto(User user, byte[] photoBlob) throws SQLException {
         Photo insertPhoto = factory.createPhoto(user.getId());
         insertPhoto = repository.insert(insertPhoto);
 
@@ -60,42 +64,39 @@ public class PhotoService {
             if (persistFile.exists() && persistFile.delete()) {
                 SysLog.logSysError(String.format("Deleted photo from disk: %s", persistPath));
             }
-            return Response.serverError().build();
+            throw new InternalServerErrorException("Photo couldn't get persisted");
         }
         SysLog.logSysInfo(String.format("Created new photo on disk: %s", persistPath));
 
         PhotoDto responseDto = transformer.transform(insertPhoto);
-        return Response.ok(responseDto).build();
+        return responseDto;
     }
 
-    public Response getPhoto(long photoId) throws SQLException {
-        Optional<Photo> photoOpt = repository.findById(photoId);
-        if (photoOpt.isEmpty()) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+    public PhotoDto getPhoto(long photoId) throws SQLException {
+        Photo photo = repository.findById(photoId).orElseThrow(() -> new NotFoundException("Unknown photoId"));
 
-        PhotoDto responseDto = transformer.transform(photoOpt.get());
-        return Response.ok(responseDto).build();
+        PhotoDto responseDto = transformer.transform(photo);
+        return responseDto;
     }
 
-    public Response getUserPhotos(Long userId) throws SQLException {
+    public List<PhotoDto> getUserPhotos(Long userId) throws SQLException {
         List<Photo> photoList = repository.findForUser(userId);
 
         List<PhotoDto> responseDto = new ArrayList<>(photoList.size());
         for (Photo photo : photoList) {
             responseDto.add(transformer.transform(photo));
         }
-        return Response.ok(responseDto).build();
+        return responseDto;
     }
 
-    public Response removePhoto(User user, long photoId) throws SQLException {
-        Optional<Photo> photoOpt = repository.findById(photoId);
-        if (photoOpt.isEmpty()) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } else if (!user.hasModeratorRights() && !photoOpt.get().getOwnerId().equals(user.getId())) {
-            return Response.status(Response.Status.FORBIDDEN).build();
+    public PhotoDto removePhoto(User user, long photoId) throws SQLException {
+        Photo photo = repository.findById(photoId).orElseThrow(() -> new NotFoundException("Unknown photoId"));
+
+        if (!user.hasModeratorRights() && !photo.getOwnerId().equals(user.getId())) {
+            throw new ForbiddenException("Photo does not belong to user");
         }
-        Photo deletedPhoto = repository.delete(photoOpt.get());
+
+        Photo deletedPhoto = repository.delete(photo);
 
         // remove from disk
         String persistPath = transformer.transformToPersistPath(deletedPhoto);
@@ -107,7 +108,7 @@ public class PhotoService {
         }
 
         PhotoDto responseDto = transformer.transform(deletedPhoto);
-        return Response.ok(responseDto).build();
+        return responseDto;
     }
 
     /*

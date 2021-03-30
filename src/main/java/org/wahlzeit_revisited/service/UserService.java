@@ -2,6 +2,8 @@ package org.wahlzeit_revisited.service;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import org.wahlzeit.services.SysLog;
 import org.wahlzeit_revisited.auth.AccessRights;
@@ -29,19 +31,19 @@ public class UserService {
      * business methods
      */
 
-    public Response getUsers() throws SQLException {
+    public List<UserDto> getUsers() throws SQLException {
         List<User> userList = repository.findAll();
 
         List<UserDto> responseDto = new ArrayList<>(userList.size());
         for (User photo : userList) {
             responseDto.add(transformer.transform(photo));
         }
-        return Response.ok(responseDto).build();
+        return responseDto;
     }
 
-    public synchronized Response createUser(String username, String email, String plainPassword) throws SQLException {
+    public synchronized UserDto createUser(String username, String email, String plainPassword) throws SQLException {
         if (repository.hasByEmail(email)) {
-            return Response.status(Response.Status.CONFLICT).build();
+            throw new WebApplicationException("Email already registered", Response.Status.CONFLICT);
         }
 
         User createdUser = factory.createUser(username, email, plainPassword, AccessRights.USER);
@@ -50,25 +52,23 @@ public class UserService {
         SysLog.logSysInfo(String.format("Created user: %s (%s)  ", createdUser.getEmail(), createdUser.getId()));
 
         UserDto responseDto = transformer.transform(createdUser);
-        return Response.ok(responseDto).build();
+        return responseDto;
     }
 
-    public Response login(String email, String password) throws SQLException {
-        Optional<User> loginUserOpt = repository.findByEmailPassword(email, password);
-        if (loginUserOpt.isEmpty()) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
+    public UserDto login(String email, String password) throws SQLException {
+        User loginUser = repository.findByEmailPassword(email, password)
+                .orElseThrow(() -> new NotFoundException("Invalid credentials"));
 
-        UserDto responseDto = transformer.transform(loginUserOpt.get());
-        return Response.ok(responseDto).build();
+        UserDto responseDto = transformer.transform(loginUser);
+        return responseDto;
     }
 
-    public Response deleteUser(User user) throws SQLException {
+    public UserDto deleteUser(User user) throws SQLException {
         User deletedUser = repository.delete(user);
         SysLog.logSysInfo(String.format("Deleted user: %s (%s)  ", deletedUser.getEmail(), deletedUser.getId()));
 
         UserDto responseDto = transformer.transform(deletedUser);
-        return Response.ok(responseDto).build();
+        return responseDto;
     }
 
 }
