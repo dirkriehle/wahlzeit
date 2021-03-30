@@ -1,6 +1,6 @@
 package org.wahlzeit_revisited.service;
 
-import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.NotFoundException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,10 +39,9 @@ public class PhotoServiceIT extends BaseModelTest {
     @Test
     public void test_getPhotos() throws SQLException {
         // act
-        Response response = service.getPhotos();
+        List<PhotoDto> photoDtos = service.getPhotos();
 
         // assert
-        List<PhotoDto> photoDtos = assertSuccessfulResponse(response);
         Assert.assertNotNull(photoDtos);
     }
 
@@ -53,10 +52,9 @@ public class PhotoServiceIT extends BaseModelTest {
         user = userRepository.insert(user);
 
         // act
-        Response response = service.addPhoto(user, new byte[]{});
+        PhotoDto responseDto = service.addPhoto(user, new byte[]{});
 
         // assert
-        PhotoDto responseDto = assertSuccessfulResponse(response);
         Assert.assertNotNull(responseDto);
     }
 
@@ -65,13 +63,12 @@ public class PhotoServiceIT extends BaseModelTest {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
-        PhotoDto expectedDto = assertSuccessfulResponse(service.addPhoto(user, new byte[]{}));
+        PhotoDto expectedDto = service.addPhoto(user, new byte[]{});
 
         // act
-        Response response = service.getPhoto(expectedDto.getId());
+        PhotoDto actualDto = service.getPhoto(expectedDto.getId());
 
         // assert
-        PhotoDto actualDto = assertSuccessfulResponse(response);
         Assert.assertEquals(expectedDto.getId(), actualDto.getId());
         Assert.assertEquals(expectedDto.getPath(), actualDto.getPath());
         Assert.assertEquals(expectedDto.getWidth(), actualDto.getWidth());
@@ -83,13 +80,12 @@ public class PhotoServiceIT extends BaseModelTest {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
-        PhotoDto expectedDto = assertSuccessfulResponse(service.addPhoto(user, new byte[]{}));
+        PhotoDto expectedDto = service.addPhoto(user, new byte[]{});
 
         // act
-        Response response = service.getUserPhotos(user.getId());
+        List<PhotoDto> responseDto = service.getUserPhotos(user.getId());
 
         // assert
-        List<PhotoDto> responseDto = assertSuccessfulResponse(response);
         Assert.assertEquals(1, responseDto.size());
         Assert.assertEquals(expectedDto.getId(), responseDto.get(0).getId());
         Assert.assertEquals(expectedDto.getPath(), responseDto.get(0).getPath());
@@ -97,34 +93,22 @@ public class PhotoServiceIT extends BaseModelTest {
         Assert.assertEquals(expectedDto.getHeight(), responseDto.get(0).getHeight());
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void test_removePhoto() throws SQLException {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
-        PhotoDto expectedDto = assertSuccessfulResponse(service.addPhoto(user, new byte[]{}));
+        PhotoDto expectedDto = service.addPhoto(user, new byte[]{});
 
         // act
-        Response response = service.removePhoto(user, expectedDto.getId());
+        PhotoDto responseDto = service.removePhoto(user, expectedDto.getId());
 
         // assert
-        PhotoDto responseDto = assertSuccessfulResponse(response);
-        Assert.assertNotEquals(Response.Status.OK.getStatusCode(), service.getPhoto(expectedDto.getId()).getStatus());
+        service.getPhoto(expectedDto.getId());
         Assert.assertEquals(expectedDto.getId(), responseDto.getId());
         Assert.assertEquals(expectedDto.getPath(), responseDto.getPath());
         Assert.assertEquals(expectedDto.getWidth(), responseDto.getWidth());
         Assert.assertEquals(expectedDto.getHeight(), responseDto.getHeight());
     }
 
-    /*
-     * helpers
-     */
-
-    @SuppressWarnings("unchecked")
-    protected <T> T assertSuccessfulResponse(Response response) {
-        if (response.getStatus() < 200 || response.getStatus() > 299) {
-            Assert.fail("Invalid Statuscode: " + response.getStatus());
-        }
-        return (T) response.getEntity();
-    }
 }

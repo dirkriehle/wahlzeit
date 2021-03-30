@@ -109,7 +109,7 @@ public class UserRepositoryIT extends BaseModelTest {
     @Test
     public void test_getUserForAuth() throws SQLException {
         // arrange
-        String expectedEmail = buildUniqueEmail("loginTest@fau.de");
+        String expectedEmail = buildUniqueEmail("loginTest");
         String expectedPassword = "StrongPassword123";
         User expectedUser = factory.createUser(NAME, expectedEmail, expectedPassword, AccessRights.USER);
         expectedUser = repository.insert(expectedUser);

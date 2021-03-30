@@ -1,5 +1,6 @@
 package org.wahlzeit_revisited.service;
 
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response;
 import org.junit.Assert;
 import org.junit.Before;
@@ -35,10 +36,9 @@ public class UserServiceIT extends BaseModelTest {
     @Test
     public void test_getUsers() throws SQLException {
         // act
-        Response response = service.getUsers();
+        List<UserDto> userDtos = service.getUsers();
 
         // assert
-        List<UserDto> userDtos = assertSuccessfulResponse(response);
         Assert.assertNotNull(userDtos);
     }
 
@@ -50,32 +50,28 @@ public class UserServiceIT extends BaseModelTest {
         String expectedPassword = "TestPassword123";
 
         // act
-        Response response = service.createUser(expectedUsername, expectedEmail, expectedPassword);
+        UserDto actualUserDto = service.createUser(expectedUsername, expectedEmail, expectedPassword);
 
         // assert
-        UserDto actualUserDto = assertSuccessfulResponse(response);
         Assert.assertEquals(expectedEmail, actualUserDto.getEmail());
         Assert.assertEquals(expectedUsername, actualUserDto.getName());
-        Assert.assertEquals(expectedPassword, actualUserDto.getPassword());
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void test_deleteUser() throws SQLException {
         // arrange
         User deleteUser = new UserFactory().createUser();
         deleteUser = userRepository.insert(deleteUser);
 
         // act
-        Response response = service.deleteUser(deleteUser);
+        UserDto actualUserDto = service.deleteUser(deleteUser);
 
         // assert
-        UserDto actualUserDto = assertSuccessfulResponse(response);
-        Response loginResponse = service.login(deleteUser.getEmail(), deleteUser.getPassword());
-        Assert.assertNotEquals(Response.Status.OK.getStatusCode(), loginResponse.getStatus());
+        service.login(deleteUser.getEmail(), deleteUser.getPassword());
+
         Assert.assertEquals(deleteUser.getId(), actualUserDto.getId());
         Assert.assertEquals(deleteUser.getName(), actualUserDto.getName());
         Assert.assertEquals(deleteUser.getEmail(), actualUserDto.getEmail());
-        Assert.assertEquals(deleteUser.getPassword(), actualUserDto.getPassword());
     }
 
     @Test
@@ -85,14 +81,12 @@ public class UserServiceIT extends BaseModelTest {
         expectedUser = userRepository.insert(expectedUser);
 
         // act
-        Response response = service.login(expectedUser.getEmail(), expectedUser.getPassword());
+        UserDto actualUserDto = service.login(expectedUser.getEmail(), expectedUser.getPassword());
 
         // assert
-        UserDto actualUserDto = assertSuccessfulResponse(response);
         Assert.assertEquals(expectedUser.getId(), actualUserDto.getId());
         Assert.assertEquals(expectedUser.getName(), actualUserDto.getName());
         Assert.assertEquals(expectedUser.getEmail(), actualUserDto.getEmail());
-        Assert.assertEquals(expectedUser.getPassword(), actualUserDto.getPassword());
     }
 
     /*

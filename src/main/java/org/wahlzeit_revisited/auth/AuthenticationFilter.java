@@ -13,6 +13,9 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.ext.Provider;
+import org.wahlzeit_revisited.auth.AccessRights;
+import org.wahlzeit_revisited.auth.PrincipalUser;
+import org.wahlzeit_revisited.dto.ErrorDto;
 import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.repository.UserRepository;
 import org.wahlzeit_revisited.utils.SysLog;
@@ -51,14 +54,16 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         Method resource = resourceInfo.getResourceMethod();
 
         if (resource.isAnnotationPresent(DenyAll.class)) {
+            ErrorDto errorDto = new ErrorDto("Access blocked for all users");
             requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
-                    .entity("Access blocked for all users").build());
+                    .entity(errorDto).build());
         } else if (resource.isAnnotationPresent(RolesAllowed.class)) {
 
             String credentials = extractCredentials(requestContext);
             if (credentials == null) {
+                ErrorDto errorDto = new ErrorDto("Not allowed, you need to login first");
                 requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
-                        .entity("Not allowed, you need to login first").build());
+                        .entity(errorDto).build());
                 return;
             }
 
@@ -70,8 +75,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             // find according user
             Optional<User> userOpt = findUser(username, password);
             if (userOpt.isEmpty()) {
+                ErrorDto errorDto = new ErrorDto("Not allowed, invalid credentials");
                 requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
-                        .entity("Not allowed, invalid credentials").build());
+                        .entity(errorDto).build());
                 return;
             }
 
@@ -82,8 +88,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             for (String roleName : rolesSet) {
                 // Check if user rights match endpoint accessRights
                 if (!AccessRights.hasRights(userRights, AccessRights.getFromString(roleName))) {
+                    ErrorDto errorDto = new ErrorDto("Not allowed, user has no sufficient rights");
                     requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
-                            .entity("Not allowed, user has no sufficient rights").build());
+                            .entity(errorDto).build());
                     return;
                 }
             }

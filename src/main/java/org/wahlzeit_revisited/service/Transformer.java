@@ -18,7 +18,7 @@ public class Transformer {
 
     public UserDto transform(User user) {
         assertIsNotNull(user);
-        return new UserDto(user.getId(), user.getName(), user.getEmail(), user.getPassword());
+        return new UserDto(user.getId(), user.getName(), user.getEmail());
     }
 
     public PhotoDto transform(Photo photo) {
