@@ -27,6 +27,15 @@ public class BaseModelTest {
 
     /**
      * Builds an unique email, so tests can get repeated without resetting the database
+     * @param name eg the test name
+     * @return an unique username, prefix with the current timestamp
+     */
+    protected String buildUniqueName(String name) {
+        return "unique" + Long.toHexString(Instant.now().toEpochMilli()) + name;
+    }
+
+    /**
+     * Builds an unique email, so tests can get repeated without resetting the database
      * @param identifier eg the test name
      * @return an unique email, prefix with the current timestamp
      */

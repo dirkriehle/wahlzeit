@@ -30,14 +30,15 @@ public class UserRepository extends AbstractRepository<User> {
         }
     }
 
-    public Optional<User> findByEmailPassword(String email, String plainPassword) throws SQLException {
-        assertIsNonNullArgument(email);
+    public Optional<User> findByNameOrEmailAndPassword(String identifier, String plainPassword) throws SQLException {
+        assertIsNonNullArgument(identifier);
         assertIsNonNullArgument(plainPassword);
 
-        String query = String.format("SELECT * FROM %s WHERE email_address = ? AND password = ?", getTableName());
+        String query = String.format("SELECT * FROM %s WHERE email_address = ? OR name = ? AND password = ?", getTableName());
         PreparedStatement stmt = getReadingStatement(query);
-        stmt.setString(1, email);
-        stmt.setString(2, plainPassword);
+        stmt.setString(1, identifier);
+        stmt.setString(2, identifier);
+        stmt.setString(3, plainPassword);
 
         User result = null;
         try (ResultSet resultSet = stmt.executeQuery()) {

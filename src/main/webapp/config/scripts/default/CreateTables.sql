@@ -1,7 +1,7 @@
 CREATE TABLE users (
    id serial PRIMARY KEY,
+   name text UNIQUE,
    creation_time bigint,
-   name text,
    email_address text,
    "password" text,
    rights integer,

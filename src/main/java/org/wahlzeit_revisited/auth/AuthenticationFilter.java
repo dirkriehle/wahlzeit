@@ -132,7 +132,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
      */
     private Optional<User> findUser(String email, String password) {
         try {
-            return userRepository.findByEmailPassword(email, password);
+            return userRepository.findByNameOrEmailAndPassword(email, password);
         } catch (SQLException sqlException) {
             SysLog.logThrowable(sqlException);
             return Optional.empty();
