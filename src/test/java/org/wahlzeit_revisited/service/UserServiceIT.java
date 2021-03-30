@@ -45,7 +45,7 @@ public class UserServiceIT extends BaseModelTest {
     @Test
     public void test_createUser() throws SQLException {
         // arrange
-        String expectedUsername = "TestUser";
+        String expectedUsername = buildUniqueName("TestUser");
         String expectedEmail = buildUniqueEmail("create");
         String expectedPassword = "TestPassword123";
 
@@ -53,6 +53,23 @@ public class UserServiceIT extends BaseModelTest {
         UserDto actualUserDto = service.createUser(expectedUsername, expectedEmail, expectedPassword);
 
         // assert
+        Assert.assertEquals(expectedEmail, actualUserDto.getEmail());
+        Assert.assertEquals(expectedUsername, actualUserDto.getName());
+    }
+
+    @Test
+    public void test_getUser() throws SQLException {
+        // arrange
+        String expectedUsername = buildUniqueName("TestUser");
+        String expectedEmail = buildUniqueEmail("create");
+        String expectedPassword = "TestPassword123";
+        UserDto expectedUserDto = service.createUser(expectedUsername, expectedEmail, expectedPassword);
+
+        // act
+        UserDto actualUserDto = service.getUser(expectedUserDto.getId());
+
+        // assert
+        Assert.assertEquals(expectedUserDto.getId(), actualUserDto.getId());
         Assert.assertEquals(expectedEmail, actualUserDto.getEmail());
         Assert.assertEquals(expectedUsername, actualUserDto.getName());
     }

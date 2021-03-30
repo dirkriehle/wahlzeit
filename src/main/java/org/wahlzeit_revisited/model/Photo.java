@@ -1,10 +1,5 @@
 package org.wahlzeit_revisited.model;
 
-import org.wahlzeit.model.PhotoId;
-import org.wahlzeit.model.Tags;
-import org.wahlzeit.services.EmailAddress;
-import org.wahlzeit.services.Language;
-import org.wahlzeit.utils.StringUtil;
 import org.wahlzeit_revisited.repository.Persistent;
 
 import java.sql.ResultSet;

@@ -33,6 +33,15 @@ public class UserResource extends AbstractResource {
         return Response.ok(responseDto).build();
     }
 
+
+    @GET
+    @Path("/{id}")
+    @RolesAllowed(AccessRights.USER_ROLE)
+    public Response getUser(@PathParam("id") Long userId) throws SQLException {
+        UserDto responseDto = service.getUser(userId);
+        return Response.ok(responseDto).build();
+    }
+
     @POST
     @PermitAll
     public Response createUser(UserCreationDto creationDto) throws SQLException {

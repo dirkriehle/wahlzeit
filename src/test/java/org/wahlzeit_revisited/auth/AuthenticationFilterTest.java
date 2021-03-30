@@ -75,9 +75,10 @@ public class AuthenticationFilterTest extends BaseModelTest {
         filter.resourceInfo = new MockResourceInfo(mockMethod);
 
         // create new unique User
+        String name = buildUniqueName("sufficient");
         String email = buildUniqueEmail("sufficient");
         String password = "SimplePasswort1234";
-        User authUser = userFactory.createUser("", email, password, AccessRights.USER);
+        User authUser = userFactory.createUser(name, email, password, AccessRights.USER);
         userRepository.insert(authUser);
 
         // add header according to the BASIC auth standard
@@ -102,9 +103,10 @@ public class AuthenticationFilterTest extends BaseModelTest {
         filter.resourceInfo = new MockResourceInfo(mockMethod);
 
         // create new unique User
+        String name = buildUniqueName("insufficient");
         String email = buildUniqueEmail("insufficient");
         String password = "SimplePasswort1234";
-        User authUser = userFactory.createUser("", email, password, AccessRights.USER);
+        User authUser = userFactory.createUser(name, email, password, AccessRights.USER);
         userRepository.insert(authUser);
 
         // add header according to the BASIC auth standard
@@ -129,9 +131,10 @@ public class AuthenticationFilterTest extends BaseModelTest {
         filter.resourceInfo = new MockResourceInfo(mockMethod);
 
         // create new unique User
+        String name = buildUniqueName("superior");
         String email = buildUniqueEmail("superior");
         String password = "SimplePasswort1234";
-        User authUser = userFactory.createUser("", email, password, AccessRights.USER);
+        User authUser = userFactory.createUser(name, email, password, AccessRights.USER);
         userRepository.insert(authUser);
 
         // add header according to the BASIC auth standard

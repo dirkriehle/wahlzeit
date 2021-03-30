@@ -40,6 +40,13 @@ public class UserService {
         return responseDto;
     }
 
+    public UserDto getUser(Long userId) throws SQLException {
+        User user = repository.findById(userId).orElseThrow(() -> new NotFoundException("Unknown UserId"));
+
+        UserDto responseDto = transformer.transform(user);
+        return responseDto;
+    }
+
     public synchronized UserDto createUser(String username, String email, String plainPassword) throws SQLException {
         if (repository.hasByEmail(email)) {
             throw new WebApplicationException("Email already registered", Response.Status.CONFLICT);

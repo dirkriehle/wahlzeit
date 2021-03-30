@@ -26,7 +26,7 @@ public class Transformer {
         assertValidPhoto(photo);
 
         String path = transformToMappedPath(photo);
-        return new PhotoDto(photo.getId(), path, photo.getWidth(), photo.getHeight());
+        return new PhotoDto(photo.getId(), photo.getOwnerId(), path, photo.getWidth(), photo.getHeight());
     }
 
     public String transformToPersistPath(Photo photo) {

@@ -66,7 +66,7 @@ public class UserRepositoryIT extends BaseModelTest {
         // arrange
         User expectedUser = factory.createUser(name, buildUniqueEmail("update"), PWD, AccessRights.USER);
         repository.insert(expectedUser);
-        expectedUser.setName("Other Name");
+        expectedUser.setName(buildUniqueName("Other Name"));
 
         // act
         User actualUser = repository.update(expectedUser);

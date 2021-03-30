@@ -69,6 +69,7 @@ public class PhotoServiceIT extends BaseModelTest {
         PhotoDto actualDto = service.getPhoto(expectedDto.getId());
 
         // assert
+        Assert.assertEquals(user.getId(), actualDto.getUserId());
         Assert.assertEquals(expectedDto.getId(), actualDto.getId());
         Assert.assertEquals(expectedDto.getPath(), actualDto.getPath());
         Assert.assertEquals(expectedDto.getWidth(), actualDto.getWidth());
@@ -87,6 +88,7 @@ public class PhotoServiceIT extends BaseModelTest {
 
         // assert
         Assert.assertEquals(1, responseDto.size());
+        Assert.assertEquals(user.getId(), responseDto.get(0).getUserId());
         Assert.assertEquals(expectedDto.getId(), responseDto.get(0).getId());
         Assert.assertEquals(expectedDto.getPath(), responseDto.get(0).getPath());
         Assert.assertEquals(expectedDto.getWidth(), responseDto.get(0).getWidth());
@@ -105,6 +107,7 @@ public class PhotoServiceIT extends BaseModelTest {
 
         // assert
         service.getPhoto(expectedDto.getId());
+        Assert.assertEquals(user.getId(), responseDto.getUserId());
         Assert.assertEquals(expectedDto.getId(), responseDto.getId());
         Assert.assertEquals(expectedDto.getPath(), responseDto.getPath());
         Assert.assertEquals(expectedDto.getWidth(), responseDto.getWidth());
