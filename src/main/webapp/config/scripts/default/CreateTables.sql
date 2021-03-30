@@ -1,8 +1,8 @@
 CREATE TABLE users (
    id serial PRIMARY KEY,
    name text UNIQUE,
+   email_address text UNIQUE,
    creation_time bigint,
-   email_address text,
    "password" text,
    rights integer,
    name_as_tag text,

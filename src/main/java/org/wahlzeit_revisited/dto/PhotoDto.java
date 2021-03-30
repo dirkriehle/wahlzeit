@@ -1,5 +1,4 @@
 package org.wahlzeit_revisited.dto;
-
 public class PhotoDto {
 
     private final Long id;

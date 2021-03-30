@@ -48,7 +48,7 @@ public class UserService {
     }
 
     public synchronized UserDto createUser(String username, String email, String plainPassword) throws SQLException {
-        if (repository.hasByEmail(email)) {
+        if (repository.hasByName(username) || repository.hasByEmail(email)) {
             throw new WebApplicationException("Email already registered", Response.Status.CONFLICT);
         }
 

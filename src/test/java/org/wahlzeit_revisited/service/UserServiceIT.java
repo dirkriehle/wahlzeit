@@ -106,15 +106,4 @@ public class UserServiceIT extends BaseModelTest {
         Assert.assertEquals(expectedUser.getEmail(), actualUserDto.getEmail());
     }
 
-    /*
-     * helpers
-     */
-
-    @SuppressWarnings("unchecked")
-    protected <T> T assertSuccessfulResponse(Response response) {
-        if (response.getStatus() < 200 || response.getStatus() > 299) {
-            Assert.fail("Invalid Statuscode: " + response.getStatus());
-        }
-        return (T) response.getEntity();
-    }
 }

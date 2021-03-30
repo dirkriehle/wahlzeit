@@ -30,6 +30,18 @@ public class UserRepository extends AbstractRepository<User> {
         }
     }
 
+    public boolean hasByName(String username) throws SQLException {
+        assertIsNonNullArgument(username);
+
+        String query = String.format("SELECT * FROM %s WHERE name = ?", getTableName());
+        PreparedStatement stmt = getReadingStatement(query);
+        stmt.setString(1, username);
+
+        try (ResultSet resultSet = stmt.executeQuery()) {
+            return resultSet.next();
+        }
+    }
+
     public Optional<User> findByNameOrEmailAndPassword(String identifier, String plainPassword) throws SQLException {
         assertIsNonNullArgument(identifier);
         assertIsNonNullArgument(plainPassword);

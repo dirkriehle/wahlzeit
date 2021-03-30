@@ -15,6 +15,7 @@ import java.util.Optional;
 public class UserRepositoryIT extends BaseModelTest {
 
     private String name;
+    private String email;
     private static final String PWD = "SimplePassword";
 
     private UserRepository repository;
@@ -23,6 +24,7 @@ public class UserRepositoryIT extends BaseModelTest {
     @Before
     public void setupDependencies() {
         name = buildUniqueName("UserRepoTestName");
+        email = buildUniqueEmail("UserRepoTestMail");
         factory = new UserFactory();
         repository = new UserRepository();
         repository.factory = factory;
@@ -64,7 +66,7 @@ public class UserRepositoryIT extends BaseModelTest {
     @Test
     public void test_updateUser() throws SQLException {
         // arrange
-        User expectedUser = factory.createUser(name, buildUniqueEmail("update"), PWD, AccessRights.USER);
+        User expectedUser = factory.createUser(name, email, PWD, AccessRights.USER);
         repository.insert(expectedUser);
         expectedUser.setName(buildUniqueName("Other Name"));
 
@@ -81,7 +83,7 @@ public class UserRepositoryIT extends BaseModelTest {
     @Test
     public void test_deleteUser() throws SQLException {
         // arrange
-        User expectedUser = factory.createUser(name, buildUniqueEmail("del"), PWD, AccessRights.USER);
+        User expectedUser = factory.createUser(name, email, PWD, AccessRights.USER);
         expectedUser = repository.insert(expectedUser);
 
         // act
@@ -94,9 +96,35 @@ public class UserRepositoryIT extends BaseModelTest {
     }
 
     @Test
+    public void test_getByName() throws SQLException {
+        // arrange
+        User expectedUser = factory.createUser(name, email, PWD, AccessRights.USER);
+        repository.insert(expectedUser);
+
+        // act
+        boolean hasByName = repository.hasByName(name);
+
+        // assert
+        Assert.assertTrue(hasByName);
+    }
+
+    @Test
+    public void test_getByEmail() throws SQLException {
+        // arrange
+        User expectedUser = factory.createUser(name, email, PWD, AccessRights.USER);
+        repository.insert(expectedUser);
+
+        // act
+        boolean hasByEmail = repository.hasByEmail(email);
+
+        // assert
+        Assert.assertTrue(hasByEmail);
+    }
+
+    @Test
     public void test_getUsers() throws SQLException {
         // arrange
-        User expectedUser = factory.createUser(name, buildUniqueEmail("get"), PWD, AccessRights.USER);
+        User expectedUser = factory.createUser(name, email, PWD, AccessRights.USER);
         repository.insert(expectedUser);
 
         // act
@@ -110,13 +138,12 @@ public class UserRepositoryIT extends BaseModelTest {
     @Test
     public void test_getUserByEmailForAuth() throws SQLException {
         // arrange
-        String expectedEmail = buildUniqueEmail("loginTest");
         String expectedPassword = "StrongPassword1234";
-        User expectedUser = factory.createUser(name, expectedEmail, expectedPassword, AccessRights.USER);
+        User expectedUser = factory.createUser(name, email, expectedPassword, AccessRights.USER);
         expectedUser = repository.insert(expectedUser);
 
         // act
-        Optional<User> actualUserOpt = repository.findByNameOrEmailAndPassword(expectedEmail, expectedPassword);
+        Optional<User> actualUserOpt = repository.findByNameOrEmailAndPassword(email, expectedPassword);
 
         // assert
         Assert.assertTrue(actualUserOpt.isPresent());
@@ -127,7 +154,7 @@ public class UserRepositoryIT extends BaseModelTest {
     public void test_getUserByNameForAuth() throws SQLException {
         // arrange
         String expectedPassword = "StrongPassword123";
-        User expectedUser = factory.createUser(name, buildUniqueEmail("name"), expectedPassword, AccessRights.USER);
+        User expectedUser = factory.createUser(name, email, expectedPassword, AccessRights.USER);
         expectedUser = repository.insert(expectedUser);
 
         // act
