@@ -52,7 +52,6 @@ public class PhotoRepository extends AbstractRepository<Photo> {
         int i = 1;
         PreparedStatement stmt = getReadingStatement(queryBufffer.toString());
         for (String tag : tags) {
-            System.out.println("%" + tag + ",%");
             stmt.setString(i++, "%" + tag + ",%");
         }
 
