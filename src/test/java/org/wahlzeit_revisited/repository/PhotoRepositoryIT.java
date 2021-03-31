@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class PhotoRepositoryIT extends BaseModelTest {
 
@@ -113,7 +114,7 @@ public class PhotoRepositoryIT extends BaseModelTest {
         User user = userFactory.createUser();
         user = userRepository.insert(user);
 
-        Photo expectedPhoto = factory.createPhoto(user.getId(), buildMockImageBytes());
+        Photo expectedPhoto = factory.createPhoto(user.getId(), buildMockImageBytes(), Set.of());
         expectedPhoto = repository.insert(expectedPhoto);
 
         // act
@@ -122,7 +123,63 @@ public class PhotoRepositoryIT extends BaseModelTest {
         // assert
         Assert.assertNotNull(actualPhotos);
         Assert.assertEquals(1, actualPhotos.size());
+        Assert.assertEquals(user.getId(), actualPhotos.get(0).getOwnerId());
         Assert.assertEquals(expectedPhoto.getId(), actualPhotos.get(0).getId());
+    }
+
+    @Test
+    public void test_getPhotosForTags() throws SQLException, IOException {
+        // arrange
+        Set<String> expectedTags = Set.of("captainamerica", "batman", "poisonivy");
+        Photo expectedPhoto = factory.createPhoto(buildMockImageBytes(), expectedTags);
+        expectedPhoto = repository.insert(expectedPhoto);
+
+        // execute
+        List<Photo> allTags = repository.findForTags(expectedTags);
+        List<Photo> firstTag = repository.findForTags(Set.of("captainamerica"));
+        List<Photo> middleTag = repository.findForTags(Set.of("batman"));
+        List<Photo> lastTag = repository.findForTags(Set.of("poisonivy"));
+
+        // assert
+        final Long expectedId = expectedPhoto.getId();
+        Assert.assertTrue(allTags.stream().anyMatch(p -> p.getId().equals(expectedId)));
+        Assert.assertTrue(firstTag.stream().anyMatch(p -> p.getId().equals(expectedId)));
+        Assert.assertTrue(middleTag.stream().anyMatch(p -> p.getId().equals(expectedId)));
+        Assert.assertTrue(lastTag.stream().anyMatch(p -> p.getId().equals(expectedId)));
+    }
+
+    @Test
+    public void test_getEmptyTag() throws SQLException, IOException {
+        // arrange
+        Photo expectedPhoto = factory.createPhoto(buildMockImageBytes(), Set.of());
+        expectedPhoto = repository.insert(expectedPhoto);
+
+        // act
+        Photo actualPhoto = repository.findById(expectedPhoto.getId()).get();
+
+        // assert
+        Assert.assertNotNull(actualPhoto);
+        Assert.assertTrue(actualPhoto.getTags().isEmpty());
+    }
+
+    @Test
+    public void test_getEscapedTags() throws SQLException, IOException {
+        // arrange
+        Set<String> tags = Set.of("Captain America", "escaped,S3t", "");
+        Set<String> expectedTags = Set.of("captainamerica", "escapeds3t");
+        Photo expectedPhoto = factory.createPhoto(buildMockImageBytes(), tags);
+        expectedPhoto = repository.insert(expectedPhoto);
+
+        // act
+        Photo actualPhoto = repository.findById(expectedPhoto.getId()).get();
+
+        // assert
+        Assert.assertNotNull(actualPhoto);
+        Assert.assertEquals(expectedTags.size(), actualPhoto.getTags().size());
+        actualPhoto.getTags().forEach(System.out::println);
+        for (String expectedTag : expectedTags) {
+            Assert.assertTrue(actualPhoto.getTags().contains(expectedTag));
+        }
     }
 
 }

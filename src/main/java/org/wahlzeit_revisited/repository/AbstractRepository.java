@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -159,6 +160,13 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
     protected void assertPersistedObject(Persistent toPersist) {
         if (toPersist.getId() == null) {
             String formatted = String.format("Object '%s' has no id", toPersist.toString());
+            throw new IllegalStateException(formatted);
+        }
+    }
+
+    protected void assertIsNonEmpty(Collection<?> arg) {
+        if (arg.isEmpty()) {
+            String formatted = "Collection is empty";
             throw new IllegalStateException(formatted);
         }
     }

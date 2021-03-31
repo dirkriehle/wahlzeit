@@ -16,6 +16,7 @@ import org.wahlzeit_revisited.utils.SysConfig;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 public class PhotoServiceIT extends BaseModelTest {
 
@@ -51,12 +52,38 @@ public class PhotoServiceIT extends BaseModelTest {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
+        Set<String> expectedTags = Set.of("tag1", "tag2");
 
         // act
-        PhotoDto responseDto = service.addPhoto(user, buildMockImageBytes());
+        PhotoDto responseDto = service.addPhoto(user, buildMockImageBytes(), expectedTags);
 
         // assert
         Assert.assertNotNull(responseDto);
+        Assert.assertEquals(expectedTags.size(), responseDto.getTags().size());
+        for (String tag : expectedTags) {
+            Assert.assertTrue(responseDto.getTags().contains(tag));
+        }
+    }
+
+    @Test
+    public void test_getPhotosByTags() throws SQLException, IOException {
+        // arrange
+        User user = userFactory.createUser();
+        user = userRepository.insert(user);
+        Set<String> expectedTags = Set.of("tag1", "tag2");
+        PhotoDto expectedPhoto = service.addPhoto(user, buildMockImageBytes(), expectedTags);
+
+        // act
+        List<PhotoDto> responseDto = service.getTaggedPhotos(Set.of("tag1", "tAg 2"));
+
+        // assert
+        final Long expectedPhotoId = expectedPhoto.getId();
+        PhotoDto actualPhoto = responseDto.stream().filter((p) -> p.getId().equals(expectedPhotoId)).findFirst().get();
+        Assert.assertEquals(user.getId(), actualPhoto.getUserId());
+        Assert.assertEquals(expectedTags.size(), actualPhoto.getTags().size());
+        for (String expectedTag: expectedTags) {
+            Assert.assertTrue(actualPhoto.getTags().contains(expectedTag));
+        }
     }
 
     @Test
@@ -64,7 +91,7 @@ public class PhotoServiceIT extends BaseModelTest {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
-        PhotoDto expectedDto = service.addPhoto(user, buildMockImageBytes());
+        PhotoDto expectedDto = service.addPhoto(user, buildMockImageBytes(), Set.of());
 
         // act
         PhotoDto actualDto = service.getPhoto(expectedDto.getId());
@@ -82,7 +109,7 @@ public class PhotoServiceIT extends BaseModelTest {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
-        PhotoDto expectedDto = service.addPhoto(user, buildMockImageBytes());
+        PhotoDto expectedDto = service.addPhoto(user, buildMockImageBytes(), Set.of());
 
         // act
         List<PhotoDto> responseDto = service.getUserPhotos(user.getId());
@@ -101,7 +128,7 @@ public class PhotoServiceIT extends BaseModelTest {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
-        PhotoDto expectedDto = service.addPhoto(user, buildMockImageBytes());
+        PhotoDto expectedDto = service.addPhoto(user, buildMockImageBytes(), Set.of());
 
         // act
         PhotoDto responseDto = service.removePhoto(user, expectedDto.getId());

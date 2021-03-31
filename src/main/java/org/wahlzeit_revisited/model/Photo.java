@@ -4,6 +4,7 @@ import org.wahlzeit_revisited.repository.Persistent;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Set;
 
 /**
  * A photo represents a user-provided (uploaded) photo.
@@ -24,7 +25,9 @@ public class Photo implements Persistent {
     /*
      * coupled classes
      */
+
     protected PhotoStatus status;
+    protected Tags tags;
     protected Long ownerId;
 
     /*
@@ -45,17 +48,19 @@ public class Photo implements Persistent {
         readFrom(resultSet);
     }
 
-    Photo(PhotoStatus status, byte[] data, int with, int height) {
+    Photo(PhotoStatus status, byte[] data, Set<String> tags, int with, int height) {
         this.data = data;
         this.status = status;
+        this.tags = new Tags(tags);
         this.width = with;
         this.height = height;
     }
 
-    Photo(long ownerId, PhotoStatus status, byte[] data, int with, int height) {
+    Photo(long ownerId, PhotoStatus status, byte[] data, Set<String> tags, int with, int height) {
         this.data = data;
         this.ownerId = ownerId;
         this.status = status;
+        this.tags = new Tags(tags);
         this.width = with;
         this.height = height;
     }
@@ -79,6 +84,7 @@ public class Photo implements Persistent {
         id = rset.getLong("id");
         ownerId = rset.getLong("owner_id");
         data = rset.getBytes("data");
+        tags = new Tags(rset.getString("tags"));
         width = rset.getInt("width");
         height = rset.getInt("height");
         status = PhotoStatus.getFromInt(rset.getInt("status"));
@@ -93,6 +99,7 @@ public class Photo implements Persistent {
             rset.updateLong("owner_id", ownerId);
         }
         rset.updateBytes("data", data);
+        rset.updateString("tags", tags.asString());
         rset.updateInt("width", width);
         rset.updateInt("height", height);
         rset.updateInt("status", status.asInt());
@@ -108,6 +115,13 @@ public class Photo implements Persistent {
      */
     public Long getOwnerId() {
         return ownerId;
+    }
+
+    /**
+     * @methodtype get
+     */
+    public Set<String> getTags() {
+        return tags.getTags();
     }
 
     /**
@@ -160,16 +174,6 @@ public class Photo implements Persistent {
     }
 
     /**
-     * @methodtype set
-     */
-    public void setWidthAndHeight(int newWidth, int newHeight) {
-        width = newWidth;
-        height = newHeight;
-
-        maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
-    }
-
-    /**
      * Can this photo satisfy provided photo size?
      *
      * @methodtype boolean-query
@@ -213,10 +217,4 @@ public class Photo implements Persistent {
         return creationTime;
     }
 
-    /**
-     * @methodtype set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
 }
