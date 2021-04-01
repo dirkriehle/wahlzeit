@@ -3,7 +3,6 @@ package org.wahlzeit_revisited.repository;
 import jakarta.inject.Inject;
 import org.wahlzeit_revisited.model.Photo;
 import org.wahlzeit_revisited.model.PhotoFactory;
-import org.wahlzeit_revisited.model.PhotoStatus;
 import org.wahlzeit_revisited.model.User;
 
 import java.sql.PreparedStatement;
@@ -11,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 public class PhotoRepository extends AbstractRepository<Photo> {
 
@@ -34,14 +33,29 @@ public class PhotoRepository extends AbstractRepository<Photo> {
         PreparedStatement stmt = getReadingStatement(query);
         stmt.setLong(1, userId);
 
-        List<Photo> result = new ArrayList<>();
-        try (ResultSet resultSet = stmt.executeQuery()) {
-            if (resultSet.next()) {
-                Photo photo = factory.createPersistent(resultSet);
-                result.add(photo);
-            }
+        List<Photo> result = executeStatement(stmt);
+        return result;
+    }
+
+    public List<Photo> findForTags(Set<String> tags) throws SQLException {
+        assertIsNonNullArgument(tags);
+        assertIsNonEmpty(tags);
+
+        StringBuilder queryBufffer = new StringBuilder(String.format("SELECT * FROM %s WHERE ", getTableName()));
+        for (int i = 0; i < tags.size() - 1; i++) {
+            queryBufffer.append("tags LIKE ?");
+            queryBufffer.append(" AND ");
+        }
+        queryBufffer.append("tags LIKE ?");
+
+
+        int i = 1;
+        PreparedStatement stmt = getReadingStatement(queryBufffer.toString());
+        for (String tag : tags) {
+            stmt.setString(i++, "%" + tag + ",%");
         }
 
+        List<Photo> result = executeStatement(stmt);
         return result;
     }
 
@@ -57,5 +71,20 @@ public class PhotoRepository extends AbstractRepository<Photo> {
     @Override
     protected PersistentFactory<Photo> getFactory() {
         return factory;
+    }
+
+    /*
+     * Helpers
+     */
+
+    private List<Photo> executeStatement(PreparedStatement stmt) throws SQLException {
+        List<Photo> result = new ArrayList<>();
+        try (ResultSet resultSet = stmt.executeQuery()) {
+            while (resultSet.next()) {
+                Photo photo = factory.createPersistent(resultSet);
+                result.add(photo);
+            }
+        }
+        return result;
     }
 }

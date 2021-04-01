@@ -8,7 +8,8 @@ import org.wahlzeit_revisited.model.Photo;
 import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.utils.WahlzeitConfig;
 
-import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Singleton
 public class Transformer {
@@ -26,7 +27,11 @@ public class Transformer {
         assertValidPhoto(photo);
 
         String path = "/api/photo/" + photo.getId() + "/data";
-        return new PhotoDto(photo.getId(), photo.getOwnerId(), path, photo.getWidth(), photo.getHeight());
+        return new PhotoDto(photo.getId(), photo.getOwnerId(), path, photo.getTags(), photo.getWidth(), photo.getHeight());
+    }
+
+    public List<PhotoDto> transformPhotos(List<Photo> photos) {
+        return photos.stream().map(this::transform).collect(Collectors.toList());
     }
 
     /*

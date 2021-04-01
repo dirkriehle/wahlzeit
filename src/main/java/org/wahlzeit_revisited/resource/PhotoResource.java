@@ -14,6 +14,7 @@ import org.wahlzeit_revisited.service.PhotoService;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 
 @Path("api/photo")
@@ -25,17 +26,25 @@ public class PhotoResource extends AbstractResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
-    public Response getPhotos() throws SQLException {
-        List<PhotoDto> responseDto = service.getPhotos();
+    public Response getPhotos(@QueryParam("tags") Set<String> unescapedTags) throws SQLException {
+        List<PhotoDto> responseDto;
+        if (unescapedTags == null || unescapedTags.isEmpty()) {
+            responseDto = service.getPhotos();
+        } else {
+            responseDto = service.getTaggedPhotos(unescapedTags);
+        }
         return Response.ok(responseDto).build();
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(AccessRights.USER_ROLE)
-    public Response addPhoto(byte[] photoBlob) throws SQLException, IOException {
+    public Response addPhoto(byte[] photoBlob, @QueryParam("tags") Set<String> tags) throws SQLException, IOException {
+        if (tags == null) {
+            tags = Set.of();
+        }
         User user = getAuthorizedUser();
-        PhotoDto responseDto = service.addPhoto(user, photoBlob);
+        PhotoDto responseDto = service.addPhoto(user, photoBlob, tags);
         return Response.ok(responseDto).build();
     }
 
