@@ -1,39 +1,35 @@
 <template>
-  <Modal :btnClass="btnClass" id="loginmodal" @confirm="login">
-    <template v-slot:link>
-      Login
-    </template>
-    <template v-slot:header>
-      Log in
-    </template>
-    <template v-slot:body>
-      <div class="failed" v-if="failed">Login Failed</div>
-      <div class="form-floating mb-3">
-        <input
-          type="email"
-          class="form-control"
-          id="floatingInput"
-          placeholder="name@example.com"
-          v-model="name"
-          @keyup="loginEnter"
-        />
-        <label for="floatingInput">Email address</label>
-      </div>
-      <div class="form-floating">
-        <input
-          type="password"
-          class="form-control"
-          id="floatingPassword"
-          placeholder="Password"
-          v-model="password"
-          @keyup="loginEnter"
-        />
-        <label for="floatingPassword">Password</label>
-      </div>
-    </template>
-    <template v-slot:confirm>
-      Log in
-    </template>
+  <Modal
+    :btnClass="btnClass"
+    id="loginmodal"
+    @confirm="login"
+    modal-link="Log in"
+    modal-header="Log in"
+    modal-button="Log in"
+  >
+    <div class="failed" v-if="failed">Login Failed</div>
+    <div class="form-floating mb-3">
+      <input
+        type="email"
+        class="form-control"
+        id="floatingInput"
+        placeholder="name@example.com"
+        v-model="name"
+        @keyup="loginEnter"
+      />
+      <label for="floatingInput">Email address</label>
+    </div>
+    <div class="form-floating">
+      <input
+        type="password"
+        class="form-control"
+        id="floatingPassword"
+        placeholder="Password"
+        v-model="password"
+        @keyup="loginEnter"
+      />
+      <label for="floatingPassword">Password</label>
+    </div>
   </Modal>
 </template>
 

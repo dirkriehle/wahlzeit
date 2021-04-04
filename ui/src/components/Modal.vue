@@ -1,6 +1,6 @@
 <template>
   <a :class="btnClass" href="#" data-bs-toggle="modal" :data-bs-target="refid">
-    <slot name="link" />
+    {{ modalLink }}
   </a>
 
   <teleport to="body">
@@ -15,7 +15,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
-              <slot name="header" />
+              {{ modalHeader }}
             </h5>
             <button
               type="button"
@@ -26,7 +26,7 @@
             ></button>
           </div>
           <div class="modal-body">
-            <slot name="body" />
+            <slot />
           </div>
           <div class="modal-footer">
             <button
@@ -36,8 +36,13 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary" @click="confirm">
-              <slot name="confirm" />
+            <button
+              v-if="modalButton"
+              type="button"
+              class="btn btn-primary"
+              @click="confirm"
+            >
+              {{ modalButton }}
             </button>
           </div>
         </div>
@@ -51,7 +56,13 @@ import { Options, Vue } from "vue-class-component";
 
 @Options({
   emits: ["confirm"],
-  props: { btnClass: "", id: "" }
+  props: {
+    btnClass: "",
+    id: "",
+    modalLink: "",
+    modalHeader: "",
+    modalButton: ""
+  }
 })
 export default class Modal extends Vue {
   id = "";

@@ -64,9 +64,7 @@
                 </router-link>
               </li>
               <li>
-                <router-link class="dropdown-item" :to="{ name: 'Upload' }">
-                  Upload Photo
-                </router-link>
+                <Upload btnClass="dropdown-item" :auth="auth" />
               </li>
               <li><a class="dropdown-item" href="#">My Photos</a></li>
               <li><a class="dropdown-item" href="#">Settings</a></li>
@@ -94,9 +92,10 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Login from "@/components/Login.vue";
+import Upload from "@/components/Upload.vue";
 
 @Options({
-  components: { Login }
+  components: { Login, Upload }
 })
 export default class App extends Vue {
   isLoggedIn = false;
