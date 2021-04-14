@@ -90,4 +90,16 @@ public class PhotoService {
         return responseDto;
     }
 
+    public PhotoDto praisePhoto(long photoId, long ranking) throws SQLException {
+        if (ranking < 0 || ranking > 10) {
+            throw new WebApplicationException("Invalid ranking number: " + ranking, Response.Status.CONFLICT);
+        }
+
+        Photo photo = repository.findById(photoId).orElseThrow(() -> new NotFoundException("Unknown photoId"));
+        photo.addToPraise(ranking);
+        repository.update(photo);
+
+        PhotoDto responseDto = transformer.transform(photo);
+        return responseDto;
+    }
 }
