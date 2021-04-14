@@ -10,6 +10,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wahlzeit_revisited.BaseModelTest;
+import org.wahlzeit_revisited.filter.AuthenticationFilter;
 import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.model.UserFactory;
 import org.wahlzeit_revisited.repository.UserRepository;

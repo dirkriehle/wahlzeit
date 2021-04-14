@@ -1,7 +1,6 @@
 package org.wahlzeit_revisited.model;
 
 import org.wahlzeit_revisited.auth.AccessRights;
-import org.wahlzeit_revisited.repository.Persistent;
 import org.wahlzeit_revisited.repository.PersistentFactory;
 
 import java.sql.ResultSet;

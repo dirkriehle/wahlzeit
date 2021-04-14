@@ -1,4 +1,4 @@
-package org.wahlzeit_revisited.resource;
+package org.wahlzeit_revisited.filter;
 
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
