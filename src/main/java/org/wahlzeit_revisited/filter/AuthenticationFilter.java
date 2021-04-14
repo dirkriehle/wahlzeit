@@ -1,4 +1,4 @@
-package org.wahlzeit_revisited.auth;
+package org.wahlzeit_revisited.filter;
 
 import jakarta.annotation.Priority;
 import jakarta.annotation.security.DenyAll;
@@ -13,9 +13,9 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.ext.Provider;
+import org.wahlzeit_revisited.dto.ErrorDto;
 import org.wahlzeit_revisited.auth.AccessRights;
 import org.wahlzeit_revisited.auth.PrincipalUser;
-import org.wahlzeit_revisited.dto.ErrorDto;
 import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.repository.UserRepository;
 import org.wahlzeit_revisited.utils.SysLog;

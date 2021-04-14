@@ -50,6 +50,7 @@ public class Wahlzeit {
         // setup endpoints/API
         ResourceConfig config = new ResourceConfig()
                 .packages("org.wahlzeit_revisited.auth")
+                .packages("org.wahlzeit_revisited.filter")
                 .packages("org.wahlzeit_revisited.resource")
                 .packages("org.wahlzeit_revisited.service");
         config.register(new ServiceInjectBinder());
