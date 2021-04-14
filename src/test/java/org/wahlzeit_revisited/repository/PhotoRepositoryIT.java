@@ -107,18 +107,12 @@ public class PhotoRepositoryIT extends BaseModelTest {
     @Test
     public void test_getPhotoForUser() throws SQLException, IOException {
         // arrange
-        UserFactory userFactory = new UserFactory();
-        UserRepository userRepository = new UserRepository();
-        userRepository.factory = userFactory;
-
-        User user = userFactory.createUser();
-        user = userRepository.insert(user);
-
-        Photo expectedPhoto = factory.createPhoto(user.getId(), buildMockImageBytes(), Set.of());
+        User user = createUser();
+        Photo expectedPhoto = factory.createPhoto(user.getId(), buildMockImageBytes(), new Tags());
         expectedPhoto = repository.insert(expectedPhoto);
 
         // act
-        List<Photo> actualPhotos = repository.findForUser(user);
+        List<Photo> actualPhotos = repository.findWithFilter(new PhotoFilter(user.getId(), new Tags()));
 
         // assert
         Assert.assertNotNull(actualPhotos);
@@ -128,17 +122,20 @@ public class PhotoRepositoryIT extends BaseModelTest {
     }
 
     @Test
-    public void test_getPhotosForTags() throws SQLException, IOException {
+    public void test_getPhotosForNoUserButTags() throws SQLException, IOException {
         // arrange
-        Set<String> expectedTags = Set.of("captainamerica", "batman", "poisonivy");
+        Tags expectedTags = new Tags(Set.of("captainamerica", "batman", "poisonivy"));
+        Tags firstTags = new Tags(Set.of("captainamerica"));
+        Tags middleTags = new Tags(Set.of("batman"));
+        Tags lastTags = new Tags(Set.of("poisonivy"));
         Photo expectedPhoto = factory.createPhoto(buildMockImageBytes(), expectedTags);
         expectedPhoto = repository.insert(expectedPhoto);
 
         // execute
-        List<Photo> allTags = repository.findForTags(expectedTags);
-        List<Photo> firstTag = repository.findForTags(Set.of("captainamerica"));
-        List<Photo> middleTag = repository.findForTags(Set.of("batman"));
-        List<Photo> lastTag = repository.findForTags(Set.of("poisonivy"));
+        List<Photo> allTags = repository.findWithFilter(new PhotoFilter(null, expectedTags));
+        List<Photo> firstTag = repository.findWithFilter(new PhotoFilter(null, firstTags));
+        List<Photo> middleTag = repository.findWithFilter(new PhotoFilter(null, middleTags));
+        List<Photo> lastTag = repository.findWithFilter(new PhotoFilter(null, lastTags));
 
         // assert
         final Long expectedId = expectedPhoto.getId();
@@ -149,9 +146,39 @@ public class PhotoRepositoryIT extends BaseModelTest {
     }
 
     @Test
+    public void test_getPhotosForUserButNoTags() throws SQLException, IOException {
+        User user = createUser();
+        Photo expectedPhoto = factory.createPhoto(user.getId(), buildMockImageBytes(), new Tags());
+        expectedPhoto = repository.insert(expectedPhoto);
+
+        // act
+        List<Photo> actualPhotos = repository.findWithFilter(new PhotoFilter(user.getId(), new Tags()));
+
+        // assert
+        Assert.assertEquals(1, actualPhotos.size());
+        Assert.assertEquals(expectedPhoto.getId(), actualPhotos.get(0).getId());
+    }
+
+    @Test
+    public void test_getPhotosForUserAndTags() throws SQLException, IOException {
+        // arrange
+        Tags tags = new Tags(Set.of("batman"));
+        User user = createUser();
+        Photo expectedPhoto = factory.createPhoto(user.getId(), buildMockImageBytes(), tags);
+        expectedPhoto = repository.insert(expectedPhoto);
+
+        // act
+        List<Photo> actualPhotos = repository.findWithFilter(new PhotoFilter(user.getId(), tags));
+
+        // assert
+        Assert.assertEquals(1, actualPhotos.size());
+        Assert.assertEquals(expectedPhoto.getId(), actualPhotos.get(0).getId());
+    }
+
+    @Test
     public void test_getEmptyTag() throws SQLException, IOException {
         // arrange
-        Photo expectedPhoto = factory.createPhoto(buildMockImageBytes(), Set.of());
+        Photo expectedPhoto = factory.createPhoto(buildMockImageBytes(), new Tags());
         expectedPhoto = repository.insert(expectedPhoto);
 
         // act
@@ -165,8 +192,8 @@ public class PhotoRepositoryIT extends BaseModelTest {
     @Test
     public void test_getEscapedTags() throws SQLException, IOException {
         // arrange
-        Set<String> tags = Set.of("Captain America", "escaped,S3t", "");
-        Set<String> expectedTags = Set.of("captainamerica", "escapeds3t");
+        Tags tags = new Tags(Set.of("Captain America", "escaped,S3t", ""));
+        Tags expectedTags = new Tags(Set.of("captainamerica", "escapeds3t"));
         Photo expectedPhoto = factory.createPhoto(buildMockImageBytes(), tags);
         expectedPhoto = repository.insert(expectedPhoto);
 
@@ -175,11 +202,24 @@ public class PhotoRepositoryIT extends BaseModelTest {
 
         // assert
         Assert.assertNotNull(actualPhoto);
-        Assert.assertEquals(expectedTags.size(), actualPhoto.getTags().size());
+        Assert.assertEquals(expectedTags.getSize(), actualPhoto.getTags().size());
         actualPhoto.getTags().forEach(System.out::println);
-        for (String expectedTag : expectedTags) {
+        for (String expectedTag : expectedTags.getTags()) {
             Assert.assertTrue(actualPhoto.getTags().contains(expectedTag));
         }
+    }
+
+    /*
+     * Helpers
+     */
+
+    private User createUser() throws SQLException {
+        UserFactory userFactory = new UserFactory();
+        UserRepository userRepository = new UserRepository();
+        userRepository.factory = userFactory;
+
+        User user = userFactory.createUser();
+        return userRepository.insert(user);
     }
 
 }

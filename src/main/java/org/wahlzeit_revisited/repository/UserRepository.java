@@ -22,11 +22,13 @@ public class UserRepository extends AbstractRepository<User> {
         assertIsNonNullArgument(email);
 
         String query = String.format("SELECT * FROM %s WHERE email_address = ?", getTableName());
-        PreparedStatement stmt = getReadingStatement(query);
-        stmt.setString(1, email);
 
-        try (ResultSet resultSet = stmt.executeQuery()) {
-            return resultSet.next();
+        try (PreparedStatement stmt = getReadingStatement(query)) {
+            stmt.setString(1, email);
+
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                return resultSet.next();
+            }
         }
     }
 
@@ -34,11 +36,12 @@ public class UserRepository extends AbstractRepository<User> {
         assertIsNonNullArgument(username);
 
         String query = String.format("SELECT * FROM %s WHERE name = ?", getTableName());
-        PreparedStatement stmt = getReadingStatement(query);
-        stmt.setString(1, username);
+        try (PreparedStatement stmt = getReadingStatement(query)) {
+            stmt.setString(1, username);
 
-        try (ResultSet resultSet = stmt.executeQuery()) {
-            return resultSet.next();
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                return resultSet.next();
+            }
         }
     }
 
@@ -47,19 +50,20 @@ public class UserRepository extends AbstractRepository<User> {
         assertIsNonNullArgument(plainPassword);
 
         String query = String.format("SELECT * FROM %s WHERE email_address = ? OR name = ? AND password = ?", getTableName());
-        PreparedStatement stmt = getReadingStatement(query);
-        stmt.setString(1, identifier);
-        stmt.setString(2, identifier);
-        stmt.setString(3, plainPassword);
+        try (PreparedStatement stmt = getReadingStatement(query)) {
+            stmt.setString(1, identifier);
+            stmt.setString(2, identifier);
+            stmt.setString(3, plainPassword);
 
-        User result = null;
-        try (ResultSet resultSet = stmt.executeQuery()) {
-            if (resultSet.next()) {
-                result = factory.createPersistent(resultSet);
+            User result = null;
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                if (resultSet.next()) {
+                    result = factory.createPersistent(resultSet);
+                }
             }
-        }
 
-        return Optional.ofNullable(result);
+            return Optional.ofNullable(result);
+        }
     }
 
     /*

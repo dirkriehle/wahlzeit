@@ -24,8 +24,6 @@ import org.wahlzeit.services.SysConfig;
 import org.wahlzeit.services.SysLog;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -124,12 +122,6 @@ public class DatabaseConnection {
     protected Connection rdbmsConnection;
 
     /**
-     * Map contains prepared statements retrieved by query string
-     */
-    protected Map<String, PreparedStatement> readingStatements = new HashMap<String, PreparedStatement>();
-    protected Map<String, PreparedStatement> updatingStatements = new HashMap<String, PreparedStatement>();
-
-    /**
      *
      */
     protected DatabaseConnection(String dbcName) throws SQLException {
@@ -170,13 +162,7 @@ public class DatabaseConnection {
      *
      */
     public PreparedStatement getReadingStatement(String stmt) throws SQLException {
-        PreparedStatement result = readingStatements.get(stmt);
-        if (result == null) {
-            result = getRdbmsConnection().prepareStatement(stmt);
-            SysLog.logCreatedObject("PreparedStatement", result.toString());
-            readingStatements.put(stmt, result);
-        }
-
+        PreparedStatement result = getRdbmsConnection().prepareStatement(stmt);
         return result;
     }
 
@@ -184,13 +170,7 @@ public class DatabaseConnection {
      *
      */
     public PreparedStatement getUpdatingStatement(String stmt) throws SQLException {
-        PreparedStatement result = updatingStatements.get(stmt);
-        if (result == null) {
-            result = getRdbmsConnection().prepareStatement(stmt, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-            SysLog.logCreatedObject("UpdatingStatement", result.toString());
-            updatingStatements.put(stmt, result);
-        }
-
+        PreparedStatement result = getRdbmsConnection().prepareStatement(stmt, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
         return result;
     }
 

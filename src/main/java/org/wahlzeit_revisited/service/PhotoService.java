@@ -7,10 +7,7 @@ import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import org.wahlzeit_revisited.dto.PhotoDto;
-import org.wahlzeit_revisited.model.Photo;
-import org.wahlzeit_revisited.model.PhotoFactory;
-import org.wahlzeit_revisited.model.Tags;
-import org.wahlzeit_revisited.model.User;
+import org.wahlzeit_revisited.model.*;
 import org.wahlzeit_revisited.repository.PhotoRepository;
 
 import java.io.IOException;
@@ -39,11 +36,12 @@ public class PhotoService {
         return responseDto;
     }
 
-    public PhotoDto addPhoto(User user, byte[] photoBlob, Set<String> tags) throws SQLException, IOException {
-        if (tags.size() > Tags.MAX_NO_TAGS) {
+    public PhotoDto addPhoto(User user, byte[] photoBlob, Set<String> unescapedTags) throws SQLException, IOException {
+        if (unescapedTags.size() > Tags.MAX_NO_TAGS) {
             throw new WebApplicationException("Too much tags max: " + Tags.MAX_NO_TAGS, Response.Status.CONFLICT);
         }
 
+        Tags tags = new Tags(unescapedTags);
         Photo insertPhoto = factory.createPhoto(user.getId(), photoBlob, tags);
         insertPhoto = repository.insert(insertPhoto);
 
@@ -63,16 +61,11 @@ public class PhotoService {
         return photo.getData();
     }
 
-    public List<PhotoDto> getUserPhotos(long userId) throws SQLException {
-        List<Photo> photoList = repository.findForUser(userId);
-
-        List<PhotoDto> responseDto = transformer.transformPhotos(photoList);
-        return responseDto;
-    }
-
-    public List<PhotoDto> getTaggedPhotos(Set<String> unescapedTags) throws SQLException {
+    public List<PhotoDto> getFilteredPhotos(Long userId, Set<String> unescapedTags) throws SQLException {
         Tags escapedTags = new Tags(unescapedTags);
-        List<Photo> photoList = repository.findForTags(escapedTags.getTags());
+
+        PhotoFilter filter = new PhotoFilter(userId, escapedTags);
+        List<Photo> photoList = repository.findWithFilter(filter);
 
         List<PhotoDto> responseDto = transformer.transformPhotos(photoList);
         return responseDto;

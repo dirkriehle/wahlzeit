@@ -19,10 +19,10 @@ public class PhotoFactory implements PersistentFactory<Photo> {
     }
 
     public Photo createPhoto(byte[] data) throws IOException {
-        return createPhoto(data, Set.of());
+        return createPhoto(data, new Tags());
     }
 
-    public Photo createPhoto(byte[] data, Set<String> tags) throws IOException {
+    public Photo createPhoto(byte[] data, Tags tags) throws IOException {
         InputStream is = new ByteArrayInputStream(data);
         Image image = ImageIO.read(is);
         int width = image.getWidth(null);
@@ -32,7 +32,7 @@ public class PhotoFactory implements PersistentFactory<Photo> {
         return new Photo(status, data, tags, width, height);
     }
 
-    public Photo createPhoto(long ownerId, byte[] data, Set<String> tags) throws IOException {
+    public Photo createPhoto(long ownerId, byte[] data, Tags tags) throws IOException {
         InputStream is = new ByteArrayInputStream(data);
         Image image = ImageIO.read(is);
         int width = image.getWidth(null);
