@@ -48,19 +48,19 @@ public class Photo implements Persistent {
         readFrom(resultSet);
     }
 
-    Photo(PhotoStatus status, byte[] data, Set<String> tags, int with, int height) {
+    Photo(PhotoStatus status, byte[] data, Tags tags, int with, int height) {
         this.data = data;
         this.status = status;
-        this.tags = new Tags(tags);
+        this.tags = tags;
         this.width = with;
         this.height = height;
     }
 
-    Photo(long ownerId, PhotoStatus status, byte[] data, Set<String> tags, int with, int height) {
+    Photo(long ownerId, PhotoStatus status, byte[] data, Tags tags, int with, int height) {
         this.data = data;
         this.ownerId = ownerId;
         this.status = status;
-        this.tags = new Tags(tags);
+        this.tags = tags;
         this.width = with;
         this.height = height;
     }

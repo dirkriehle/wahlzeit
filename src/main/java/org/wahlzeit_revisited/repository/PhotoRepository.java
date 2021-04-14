@@ -3,13 +3,14 @@ package org.wahlzeit_revisited.repository;
 import jakarta.inject.Inject;
 import org.wahlzeit_revisited.model.Photo;
 import org.wahlzeit_revisited.model.PhotoFactory;
-import org.wahlzeit_revisited.model.User;
+import org.wahlzeit_revisited.model.PhotoFilter;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class PhotoRepository extends AbstractRepository<Photo> {
@@ -21,42 +22,48 @@ public class PhotoRepository extends AbstractRepository<Photo> {
      * business methods
      */
 
-    public List<Photo> findForUser(User user) throws SQLException {
-        assertPersistedObject(user);
-        return findForUser(user.getId());
-    }
-
-    public List<Photo> findForUser(Long userId) throws SQLException {
-        assertIsNonNullArgument(userId, "User");
-
-        String query = String.format("SELECT * FROM %s WHERE owner_id = ?", getTableName());
-        PreparedStatement stmt = getReadingStatement(query);
-        stmt.setLong(1, userId);
-
-        List<Photo> result = executeStatement(stmt);
-        return result;
-    }
-
-    public List<Photo> findForTags(Set<String> tags) throws SQLException {
-        assertIsNonNullArgument(tags);
-        assertIsNonEmpty(tags);
-
-        StringBuilder queryBufffer = new StringBuilder(String.format("SELECT * FROM %s WHERE ", getTableName()));
-        for (int i = 0; i < tags.size() - 1; i++) {
-            queryBufffer.append("tags LIKE ?");
-            queryBufffer.append(" AND ");
-        }
-        queryBufffer.append("tags LIKE ?");
-
-
-        int i = 1;
-        PreparedStatement stmt = getReadingStatement(queryBufffer.toString());
-        for (String tag : tags) {
-            stmt.setString(i++, "%" + tag + ",%");
+    public List<Photo> findWithFilter(PhotoFilter filter) throws SQLException {
+        assertIsNonNullArgument(filter);
+        if (!filter.hasFilters()) {
+            return findAll();
         }
 
-        List<Photo> result = executeStatement(stmt);
-        return result;
+        Optional<Long> userIdOpt = filter.getUserId();
+        Set<String> tags = filter.getTags();
+        StringBuilder queryBuffer = new StringBuilder(String.format("SELECT * FROM %s WHERE", getTableName()));
+
+        // add user search query
+        if (userIdOpt.isPresent()) {
+            queryBuffer.append(" owner_id = % ");
+            if (filter.filtersByTags()) {
+                queryBuffer.append(" AND ");
+            }
+        }
+
+        // add tag search query
+        if (filter.filtersByTags()) {
+            for (int i = 0; i < tags.size() - 1; i++) {
+                queryBuffer.append("tags LIKE ?");
+                queryBuffer.append(" AND ");
+            }
+            queryBuffer.append("tags LIKE ?");
+        }
+
+
+        try(PreparedStatement stmt = getReadingStatement(queryBuffer.toString())) {
+            int i = 1;
+            // Insert user query values
+            if (userIdOpt.isPresent()) {
+                stmt.setLong(i++, userIdOpt.get());
+            }
+            // Insert tag query values
+            for (String tag : tags) {
+                stmt.setString(i++, "%" + tag + ",%");
+            }
+
+            List<Photo> result = executeStatement(stmt);
+            return result;
+        }
     }
 
     /*

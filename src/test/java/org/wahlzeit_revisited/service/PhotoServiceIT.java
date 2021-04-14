@@ -66,7 +66,7 @@ public class PhotoServiceIT extends BaseModelTest {
     }
 
     @Test
-    public void test_getPhotosByTags() throws SQLException, IOException {
+    public void test_getPhotosNoUserByTags() throws SQLException, IOException {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
@@ -74,16 +74,32 @@ public class PhotoServiceIT extends BaseModelTest {
         PhotoDto expectedPhoto = service.addPhoto(user, buildMockImageBytes(), expectedTags);
 
         // act
-        List<PhotoDto> responseDto = service.getTaggedPhotos(Set.of("tag1", "tAg 2"));
+        List<PhotoDto> responseDto = service.getFilteredPhotos(null, Set.of("tag1", "tAg 2"));
 
         // assert
         final Long expectedPhotoId = expectedPhoto.getId();
         PhotoDto actualPhoto = responseDto.stream().filter((p) -> p.getId().equals(expectedPhotoId)).findFirst().get();
         Assert.assertEquals(user.getId(), actualPhoto.getUserId());
         Assert.assertEquals(expectedTags.size(), actualPhoto.getTags().size());
-        for (String expectedTag: expectedTags) {
+        for (String expectedTag : expectedTags) {
             Assert.assertTrue(actualPhoto.getTags().contains(expectedTag));
         }
+    }
+
+    @Test
+    public void test_getPhotosWithUserByTags() throws SQLException, IOException {
+        // arrange
+        User user = userFactory.createUser();
+        user = userRepository.insert(user);
+        Set<String> expectedTags = Set.of("tag1", "tag2");
+        PhotoDto expectedPhoto = service.addPhoto(user, buildMockImageBytes(), expectedTags);
+
+        // act
+        List<PhotoDto> responseDto = service.getFilteredPhotos(user.getId(), Set.of("tag1", "tAg 2"));
+
+        // assert
+        Assert.assertEquals(1, responseDto.size());
+        Assert.assertEquals(expectedPhoto.getId(), responseDto.get(0).getId());
     }
 
     @Test
@@ -112,7 +128,7 @@ public class PhotoServiceIT extends BaseModelTest {
         PhotoDto expectedDto = service.addPhoto(user, buildMockImageBytes(), Set.of());
 
         // act
-        List<PhotoDto> responseDto = service.getUserPhotos(user.getId());
+        List<PhotoDto> responseDto = service.getFilteredPhotos(user.getId(), Set.of());
 
         // assert
         Assert.assertEquals(1, responseDto.size());

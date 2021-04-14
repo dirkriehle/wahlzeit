@@ -26,13 +26,9 @@ public class PhotoResource extends AbstractResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
-    public Response getPhotos(@QueryParam("tags") Set<String> unescapedTags) throws SQLException {
-        List<PhotoDto> responseDto;
-        if (unescapedTags == null || unescapedTags.isEmpty()) {
-            responseDto = service.getPhotos();
-        } else {
-            responseDto = service.getTaggedPhotos(unescapedTags);
-        }
+    public Response getPhotos(@QueryParam("user") Long userId, @QueryParam("tags") Set<String> unescapedTags) throws SQLException {
+        unescapedTags = unescapedTags == null ? Set.of() : unescapedTags;
+        List<PhotoDto> responseDto = service.getFilteredPhotos(userId, unescapedTags);
         return Response.ok(responseDto).build();
     }
 

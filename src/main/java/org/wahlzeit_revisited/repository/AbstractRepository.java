@@ -3,7 +3,6 @@ package org.wahlzeit_revisited.repository;
 import org.wahlzeit.services.SysLog;
 import org.wahlzeit_revisited.database.DatabaseConnection;
 import org.wahlzeit_revisited.database.SessionManager;
-import org.wahlzeit_revisited.model.Photo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,33 +30,34 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
         assertIsNonNullArgument(id);
 
         String query = String.format("SELECT * FROM %s WHERE id = ?", getTableName());
-        PreparedStatement stmt = getReadingStatement(query);
-        stmt.setLong(1, id);
+        try (PreparedStatement stmt = getReadingStatement(query)) {
+            stmt.setLong(1, id);
 
-        T persistent = null;
-        try (ResultSet resultSet = stmt.executeQuery()) {
-            if (resultSet.next()) {
-                persistent = getFactory().createPersistent(resultSet);
+            T persistent = null;
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                if (resultSet.next()) {
+                    persistent = getFactory().createPersistent(resultSet);
+                }
             }
+
+            return Optional.ofNullable(persistent);
         }
-
-        return Optional.ofNullable(persistent);
-
     }
 
     public List<T> findAll() throws SQLException {
         String query = String.format("SELECT * FROM %s", getTableName());
-        PreparedStatement stmt = getReadingStatement(query);
+        try (PreparedStatement stmt = getReadingStatement(query)) {
 
-        List<T> result = new ArrayList<>();
-        try (ResultSet resultSet = stmt.executeQuery()) {
-            while (resultSet.next()) {
-                T persistent = getFactory().createPersistent(resultSet);
-                result.add(persistent);
+            List<T> result = new ArrayList<>();
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                while (resultSet.next()) {
+                    T persistent = getFactory().createPersistent(resultSet);
+                    result.add(persistent);
+                }
             }
-        }
 
-        return result;
+            return result;
+        }
     }
 
     public T insert(T toInsert) throws SQLException {
@@ -65,28 +65,29 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
         assertNonPersistedObject(toInsert);
 
         String query = String.format("INSERT INTO %s DEFAULT VALUES RETURNING id", getTableName());
-        PreparedStatement stmt = getReadingStatement(query);
+        try (PreparedStatement readStmt = getReadingStatement(query)) {
 
-        // Extract id from RETURNING statement
-        long persistedId;
-        try (ResultSet returningSet = stmt.executeQuery()) {
-            returningSet.next();
-            persistedId = returningSet.getLong(1);
-            toInsert.setId(persistedId);
+            // Extract id from RETURNING statement
+            long persistedId;
+            try (ResultSet returningSet = readStmt.executeQuery()) {
+                returningSet.next();
+                persistedId = returningSet.getLong(1);
+                toInsert.setId(persistedId);
+            }
+
+            // Get empty entity row
+            query = String.format("SELECT * FROM %s WHERE id = ?", getTableName());
+            try (PreparedStatement updateStmt = getUpdatingStatement(query)) {
+                updateStmt.setLong(1, persistedId);
+
+                // Write internal structure in resultSet and start transaction
+                try (ResultSet returningSet = updateStmt.executeQuery()) {
+                    returningSet.next();
+                    toInsert.writeOn(returningSet);
+                    returningSet.updateRow();
+                }
+            }
         }
-
-        // Get empty entity row
-        query = String.format("SELECT * FROM %s WHERE id = ?", getTableName());
-        stmt = getUpdatingStatement(query);
-        stmt.setLong(1, persistedId);
-
-        // Write internal structure in resultSet and start transaction
-        try (ResultSet returningSet = stmt.executeQuery()) {
-            returningSet.next();
-            toInsert.writeOn(returningSet);
-            returningSet.updateRow();
-        }
-
         assertPersistedObject(toInsert);
         return toInsert;
     }
@@ -96,18 +97,18 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
         assertPersistedObject(toUpdate);
 
         String query = String.format("SELECT * FROM %s WHERE id = ?", getTableName());
-        PreparedStatement stmt = getUpdatingStatement(query);
-        stmt.setLong(1, toUpdate.getId());
+        try (PreparedStatement stmt = getUpdatingStatement(query)) {
+            stmt.setLong(1, toUpdate.getId());
 
-        try (ResultSet resultSet = stmt.executeQuery()) {
-            if (resultSet.next()) {
-                toUpdate.writeOn(resultSet);
-                resultSet.updateRow();
-            } else {
-                SysLog.logSysError("Persistent to found: " + toUpdate.getId());
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                if (resultSet.next()) {
+                    toUpdate.writeOn(resultSet);
+                    resultSet.updateRow();
+                } else {
+                    SysLog.logSysError("Persistent to found: " + toUpdate.getId());
+                }
             }
         }
-
         assertPersistedObject(toUpdate);
         return toUpdate;
     }
@@ -117,11 +118,12 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
         assertPersistedObject(toDelete);
 
         String query = String.format("DELETE FROM %s WHERE id = ?", getTableName());
-        PreparedStatement stmt = getReadingStatement(query);
-        stmt.setLong(1, toDelete.getId());
-        stmt.execute();
+        try (PreparedStatement stmt = getReadingStatement(query)) {
+            stmt.setLong(1, toDelete.getId());
+            stmt.execute();
 
-        return toDelete;
+            return toDelete;
+        }
     }
 
     /*
