@@ -53,14 +53,6 @@ public class PhotoResource extends AbstractResource {
         return Response.ok(responseDto).build();
     }
 
-    @GET
-    @Path("/{id}/data")
-    @PermitAll
-    public Response getPhotoData(@PathParam("id") Long id) throws SQLException {
-        byte[] response = service.getPhotoData(id);
-        return Response.ok(response).build();
-    }
-
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
@@ -70,5 +62,22 @@ public class PhotoResource extends AbstractResource {
         PhotoDto photoDto = service.removePhoto(user, photoId);
         return Response.ok(photoDto).build();
     }
+
+    @GET
+    @Path("/{id}/data")
+    @PermitAll
+    public Response getPhotoData(@PathParam("id") Long photoId) throws SQLException {
+        byte[] response = service.getPhotoData(photoId);
+        return Response.ok(response).build();
+    }
+
+    @POST
+    @Path("/id/praise")
+    @PermitAll
+    public Response praiseData(@PathParam("id") Long photoId, Long ranking) throws SQLException {
+        PhotoDto photoDto = service.praisePhoto(photoId, ranking);
+        return Response.ok(photoDto).build();
+    }
+
 
 }

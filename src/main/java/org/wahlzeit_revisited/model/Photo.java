@@ -11,15 +11,6 @@ import java.util.Set;
  */
 public class Photo implements Persistent {
 
-    /*
-     * global constraints
-     */
-
-    public static final int MAX_PHOTO_WIDTH = 420;
-    public static final int MAX_PHOTO_HEIGHT = 600;
-    public static final int MAX_THUMB_PHOTO_WIDTH = 105;
-    public static final int MAX_THUMB_PHOTO_HEIGHT = 150;
-
     private Long id;
 
     /*
@@ -39,6 +30,9 @@ public class Photo implements Persistent {
     protected PhotoSize maxPhotoSize = PhotoSize.MEDIUM; // derived
     protected long creationTime = System.currentTimeMillis();
     protected byte[] data;
+
+    protected int praiseSum = 10;
+    protected int noVotes = 1;
 
     /*
      * constructor
@@ -90,6 +84,8 @@ public class Photo implements Persistent {
         status = PhotoStatus.getFromInt(rset.getInt("status"));
         creationTime = rset.getLong("creation_time");
         maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
+        praiseSum = rset.getInt("praise_sum");
+        noVotes = rset.getInt("no_votes");
     }
 
     @Override
@@ -104,6 +100,13 @@ public class Photo implements Persistent {
         rset.updateInt("height", height);
         rset.updateInt("status", status.asInt());
         rset.updateLong("creation_time", creationTime);
+        rset.updateInt("praise_sum", praiseSum);
+        rset.updateInt("no_votes", noVotes);
+    }
+
+    public void addToPraise(long ranking) {
+        praiseSum += ranking;
+        noVotes += 1;
     }
 
     /*
@@ -125,17 +128,10 @@ public class Photo implements Persistent {
     }
 
     /**
-     * @methodtype boolean-query
+     * @methodtype get
      */
-    public boolean hasSameOwner(Photo photo) {
-        return getOwnerId().equals(photo.getOwnerId());
-    }
-
-    /**
-     * @methodtype boolean-query
-     */
-    public boolean isWiderThanHigher() {
-        return (height * MAX_PHOTO_WIDTH) < (width * MAX_PHOTO_HEIGHT);
+    public double getPraise() {
+        return (double) praiseSum / noVotes;
     }
 
     /**
@@ -157,36 +153,6 @@ public class Photo implements Persistent {
      */
     public byte[] getData() {
         return data;
-    }
-
-    /**
-     * @methodtype get
-     */
-    public int getThumbWidth() {
-        return isWiderThanHigher() ? MAX_THUMB_PHOTO_WIDTH : (width * MAX_THUMB_PHOTO_HEIGHT / height);
-    }
-
-    /**
-     * @methodtype get
-     */
-    public int getThumbHeight() {
-        return isWiderThanHigher() ? (height * MAX_THUMB_PHOTO_WIDTH / width) : MAX_THUMB_PHOTO_HEIGHT;
-    }
-
-    /**
-     * Can this photo satisfy provided photo size?
-     *
-     * @methodtype boolean-query
-     */
-    public boolean hasPhotoSize(PhotoSize size) {
-        return maxPhotoSize.asInt() >= size.asInt();
-    }
-
-    /**
-     * @methodtype get
-     */
-    public PhotoSize getMaxPhotoSize() {
-        return maxPhotoSize;
     }
 
     /**

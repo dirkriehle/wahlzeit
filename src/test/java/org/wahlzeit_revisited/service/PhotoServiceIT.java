@@ -158,4 +158,18 @@ public class PhotoServiceIT extends BaseModelTest {
         Assert.assertEquals(expectedDto.getHeight(), responseDto.getHeight());
     }
 
+    @Test
+    public void test_praisePhoto() throws SQLException, IOException {
+        // arrange
+        User user = userFactory.createUser();
+        user = userRepository.insert(user);
+        PhotoDto expectedDto = service.addPhoto(user, buildMockImageBytes(), Set.of());
+
+        // act
+        PhotoDto responseDto = service.praisePhoto(expectedDto.getId(), 1);
+
+        // assert
+        Assert.assertTrue(responseDto.getPraise() < 6);
+        Assert.assertTrue(responseDto.getPraise() > 4);
+    }
 }

@@ -19,7 +19,11 @@ public class Transformer {
 
     public UserDto transform(User user) {
         assertIsNotNull(user);
-        return new UserDto(user.getId(), user.getName(), user.getEmail());
+        return new UserDto.Builder()
+                .withId(user.getId())
+                .withName(user.getName())
+                .withEmail(user.getEmail())
+                .build();
     }
 
     public PhotoDto transform(Photo photo) {
@@ -27,7 +31,15 @@ public class Transformer {
         assertValidPhoto(photo);
 
         String path = "/api/photo/" + photo.getId() + "/data";
-        return new PhotoDto(photo.getId(), photo.getOwnerId(), path, photo.getTags(), photo.getWidth(), photo.getHeight());
+        return new PhotoDto.Builder()
+                .withId(photo.getId())
+                .withUserId(photo.getOwnerId())
+                .withPath(path)
+                .withTags(photo.getTags())
+                .withWith(photo.getWidth())
+                .withHeight(photo.getHeight())
+                .withPraise(photo.getPraise())
+                .build();
     }
 
     public List<PhotoDto> transformPhotos(List<Photo> photos) {
