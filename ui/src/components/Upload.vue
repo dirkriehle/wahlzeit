@@ -4,7 +4,7 @@
     id="uploadmodal"
     @confirm="upload"
     modal-link="Upload Photo"
-    modal-header="UploadPhoto"
+    modal-header="Upload Photo"
     :modal-button="success ? false : 'Upload'"
   >
     <div v-if="!success">
@@ -35,7 +35,7 @@ import Modal from "@/components/Modal.vue";
     auth: ""
   }
 })
-export default class Home extends Vue {
+export default class Upload extends Vue {
   file: File | null = null;
   auth = "";
   errors = "";
