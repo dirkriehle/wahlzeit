@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class PhotoService {
@@ -50,36 +51,43 @@ public class PhotoService {
     }
 
     public PhotoDto getPhoto(long photoId) throws SQLException {
-        Photo photo = repository.findById(photoId).orElseThrow(() -> new NotFoundException("Unknown photoId"));
+        Photo photo = findVisiblePhoto(photoId);
 
         PhotoDto responseDto = transformer.transform(photo);
         return responseDto;
     }
 
     public byte[] getPhotoData(long photoId) throws SQLException {
-        Photo photo = repository.findById(photoId).orElseThrow(() -> new NotFoundException("Unknown photoId"));
+        Photo photo = findVisiblePhoto(photoId);
         return photo.getData();
     }
 
     public List<PhotoDto> getFilteredPhotos(Long userId, Set<String> unescapedTags) throws SQLException {
         Tags escapedTags = new Tags(unescapedTags);
 
+        // Create a database filter, and further filter visible photos in the main memory
         PhotoFilter filter = new PhotoFilter(userId, escapedTags);
-        List<Photo> photoList = repository.findWithFilter(filter);
+        List<Photo> photoList = repository
+                .findWithFilter(filter)
+                .stream()
+                .filter(Photo::isVisible)
+                .collect(Collectors.toList());
 
         List<PhotoDto> responseDto = transformer.transformPhotos(photoList);
         return responseDto;
     }
 
     public PhotoDto removePhoto(User user, long photoId) throws SQLException {
-        Photo photo = repository.findById(photoId).orElseThrow(() -> new NotFoundException("Unknown photoId"));
+        Photo photo = findVisiblePhoto(photoId);
         if (!user.hasModeratorRights() && !photo.getOwnerId().equals(user.getId())) {
             throw new ForbiddenException("Photo does not belong to user");
         }
 
-        Photo deletedPhoto = repository.delete(photo);
+        // the internet never forgets
+        photo.setStatus(PhotoStatus.DELETED);
+        repository.update(photo);
 
-        PhotoDto responseDto = transformer.transform(deletedPhoto);
+        PhotoDto responseDto = transformer.transform(photo);
         return responseDto;
     }
 
@@ -88,11 +96,31 @@ public class PhotoService {
             throw new WebApplicationException("Invalid ranking number: " + ranking, Response.Status.CONFLICT);
         }
 
-        Photo photo = repository.findById(photoId).orElseThrow(() -> new NotFoundException("Unknown photoId"));
+        Photo photo = findVisiblePhoto(photoId);
         photo.addToPraise(ranking);
         repository.update(photo);
 
         PhotoDto responseDto = transformer.transform(photo);
         return responseDto;
     }
+
+    public PhotoDto setPhotoStatus(Long photoId, String status) throws SQLException {
+        PhotoStatus newStatus = PhotoStatus.getFromString(status);
+        Photo photo = repository.findById(photoId).orElseThrow(() -> new NotFoundException("Unknown photoId"));
+
+        photo.setStatus(newStatus);
+        repository.update(photo);
+
+        PhotoDto photoDto = transformer.transform(photo);
+        return photoDto;
+    }
+
+    private Photo findVisiblePhoto(long photoId) throws SQLException {
+        Photo photo = repository.findById(photoId).orElseThrow(() -> new NotFoundException("Unknown photoId"));
+        if (!photo.isVisible()) {
+            throw new NotFoundException("Photo is not visible");
+        }
+        return photo;
+    }
+
 }
