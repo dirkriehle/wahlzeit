@@ -49,7 +49,7 @@ public class Wahlzeit {
         AgentManager.getInstance().startAllThreads();
     }
 
-    private static void startServerBlocking() {
+    private static void startServer() {
         // setup endpoints/API
         ResourceConfig config = new ResourceConfig()
                 .packages("org.wahlzeit_revisited.auth")
@@ -71,7 +71,7 @@ public class Wahlzeit {
 
         setupLanguageConfig();
         startAgents();
-        startServerBlocking();
+        startServer();
     }
 
 }
