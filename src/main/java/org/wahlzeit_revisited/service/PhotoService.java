@@ -6,6 +6,7 @@ import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
+import org.wahlzeit_revisited.auth.AccessRights;
 import org.wahlzeit_revisited.dto.PhotoDto;
 import org.wahlzeit_revisited.model.*;
 import org.wahlzeit_revisited.repository.PhotoRepository;
@@ -50,15 +51,14 @@ public class PhotoService {
         return responseDto;
     }
 
-    public PhotoDto getPhoto(long photoId) throws SQLException {
-        Photo photo = findVisiblePhoto(photoId);
-
+    public PhotoDto getPhoto(long photoId, AccessRights accessRights) throws SQLException {
+        Photo photo = findPhotoForAccessRights(photoId, accessRights);
         PhotoDto responseDto = transformer.transform(photo);
         return responseDto;
     }
 
-    public byte[] getPhotoData(long photoId) throws SQLException {
-        Photo photo = findVisiblePhoto(photoId);
+    public byte[] getPhotoData(long photoId, AccessRights accessRights) throws SQLException {
+        Photo photo = findPhotoForAccessRights(photoId, accessRights);
         return photo.getData();
     }
 
@@ -104,17 +104,6 @@ public class PhotoService {
         return responseDto;
     }
 
-    public PhotoDto setPhotoStatus(Long photoId, String status) throws SQLException {
-        PhotoStatus newStatus = PhotoStatus.getFromString(status);
-        Photo photo = repository.findById(photoId).orElseThrow(() -> new NotFoundException("Unknown photoId"));
-
-        photo.setStatus(newStatus);
-        repository.update(photo);
-
-        PhotoDto photoDto = transformer.transform(photo);
-        return photoDto;
-    }
-
     private Photo findVisiblePhoto(long photoId) throws SQLException {
         Photo photo = repository.findById(photoId).orElseThrow(() -> new NotFoundException("Unknown photoId"));
         if (!photo.isVisible()) {
@@ -123,4 +112,11 @@ public class PhotoService {
         return photo;
     }
 
+    private Photo findPhotoForAccessRights(long photoId, AccessRights accessRights) throws SQLException {
+        Photo photo = repository.findById(photoId).orElseThrow(() -> new NotFoundException("Unknown photoId"));
+        if (!photo.isVisible() && AccessRights.hasRights(accessRights, AccessRights.MODERATOR)) {
+            throw new NotFoundException("Photo is not visible");
+        }
+        return photo;
+    }
 }

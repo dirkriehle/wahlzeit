@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wahlzeit_revisited.BaseModelTest;
+import org.wahlzeit_revisited.auth.AccessRights;
 import org.wahlzeit_revisited.dto.PhotoDto;
 import org.wahlzeit_revisited.model.PhotoFactory;
 import org.wahlzeit_revisited.model.User;
@@ -110,7 +111,7 @@ public class PhotoServiceIT extends BaseModelTest {
         PhotoDto expectedDto = service.addPhoto(user, buildMockImageBytes(), Set.of());
 
         // act
-        PhotoDto actualDto = service.getPhoto(expectedDto.getId());
+        PhotoDto actualDto = service.getPhoto(expectedDto.getId(), AccessRights.USER);
 
         // assert
         Assert.assertEquals(user.getId(), actualDto.getUserId());
@@ -150,7 +151,7 @@ public class PhotoServiceIT extends BaseModelTest {
         PhotoDto responseDto = service.removePhoto(user, expectedDto.getId());
 
         // assert
-        service.getPhoto(expectedDto.getId());
+        service.getPhoto(expectedDto.getId(), AccessRights.USER);
         Assert.assertEquals(user.getId(), responseDto.getUserId());
         Assert.assertEquals(expectedDto.getId(), responseDto.getId());
         Assert.assertEquals(expectedDto.getPath(), responseDto.getPath());

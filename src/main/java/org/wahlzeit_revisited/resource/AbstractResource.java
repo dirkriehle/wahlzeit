@@ -3,6 +3,7 @@ package org.wahlzeit_revisited.resource;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
+import org.wahlzeit_revisited.auth.AccessRights;
 import org.wahlzeit_revisited.auth.PrincipalUser;
 import org.wahlzeit_revisited.dto.ErrorDto;
 import org.wahlzeit_revisited.model.User;
@@ -21,13 +22,18 @@ public abstract class AbstractResource {
         return principalUser.getUser();
     }
 
+    protected AccessRights getCallerAccessRights() {
+        if (securityContext.getUserPrincipal() == null) {
+            return AccessRights.NONE;
+        }
+
+        PrincipalUser principalUser = (PrincipalUser) securityContext.getUserPrincipal();
+        return principalUser.getUser().getRights();
+    }
+
     protected Response buildBadRequest() {
         ErrorDto errorDto = new ErrorDto("You may missed an api field");
         return Response.status(Response.Status.BAD_REQUEST).entity(errorDto).build();
-    }
-
-    protected Response buildServerError() {
-        return Response.serverError().build();
     }
 
 }

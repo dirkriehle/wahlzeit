@@ -49,7 +49,8 @@ public class PhotoResource extends AbstractResource {
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     public Response getPhoto(@PathParam("id") Long photoId) throws SQLException {
-        PhotoDto responseDto = service.getPhoto(photoId);
+        AccessRights accessRights = getCallerAccessRights();
+        PhotoDto responseDto = service.getPhoto(photoId, accessRights);
         return Response.ok(responseDto).build();
     }
 
@@ -67,7 +68,8 @@ public class PhotoResource extends AbstractResource {
     @Path("/{id}/data")
     @PermitAll
     public Response getPhotoData(@PathParam("id") Long photoId) throws SQLException {
-        byte[] response = service.getPhotoData(photoId);
+        AccessRights accessRights = getCallerAccessRights();
+        byte[] response = service.getPhotoData(photoId, accessRights);
         return Response.ok(response).build();
     }
 
@@ -78,13 +80,4 @@ public class PhotoResource extends AbstractResource {
         PhotoDto photoDto = service.praisePhoto(photoId, ranking);
         return Response.ok(photoDto).build();
     }
-
-    @POST
-    @Path("{id}/flag")
-    @RolesAllowed(AccessRights.MODERATOR_ROLE)
-    public Response flagPhoto(@PathParam("id") Long photoId, String status) throws SQLException {
-        PhotoDto photoDto = service.setPhotoStatus(photoId, status);
-        return Response.ok(photoDto).build();
-    }
-
 }

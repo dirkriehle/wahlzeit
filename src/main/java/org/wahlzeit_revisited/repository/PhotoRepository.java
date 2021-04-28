@@ -50,7 +50,7 @@ public class PhotoRepository extends AbstractRepository<Photo> {
         }
 
 
-        try(PreparedStatement stmt = getReadingStatement(queryBuffer.toString())) {
+        try (PreparedStatement stmt = getReadingStatement(queryBuffer.toString())) {
             int i = 1;
             // Insert user query values
             if (userIdOpt.isPresent()) {

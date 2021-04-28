@@ -4,5 +4,10 @@
         "**/.project": true,
         "**/.settings": true,
         "**/.factorypath": true
+    },
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#501D1A",
+        "titleBar.activeBackground": "#702924",
+        "titleBar.activeForeground": "#FEFCFC"
     }
 }
