@@ -2,7 +2,6 @@ package org.wahlzeit_revisited.model;
 
 import org.wahlzeit_revisited.auth.AccessRights;
 import org.wahlzeit_revisited.repository.Persistent;
-import org.wahlzeit_revisited.utils.EmailAddress;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +11,7 @@ public class User extends Client implements Persistent {
     private Long id;
     private String name;
     private String password;
+    private Language language;
 
     private long creationTime;
 
@@ -28,6 +28,7 @@ public class User extends Client implements Persistent {
         this.emailAddress = EmailAddress.getFromString(email);
         this.password = password;
         creationTime = System.currentTimeMillis();
+        language = Language.GERMAN;
     }
 
     User(Long id, Long creationTime, String name, String email, String password, AccessRights rights) {
@@ -61,6 +62,7 @@ public class User extends Client implements Persistent {
         password = rset.getString("password");
         rights = AccessRights.getFromInt(rset.getInt("rights"));
         creationTime = rset.getLong("creation_time");
+        language = Language.getFromInt(rset.getInt("language"));
     }
 
     @Override
@@ -71,6 +73,7 @@ public class User extends Client implements Persistent {
         rset.updateString("password", password);
         rset.updateInt("rights", rights.asInt());
         rset.updateLong("creation_time", creationTime);
+        rset.updateInt("language", language.asInt());
     }
 
     /*
@@ -107,5 +110,13 @@ public class User extends Client implements Persistent {
 
     public long getCreationTime() {
         return creationTime;
+    }
+
+    public Language getLanguage() {
+        return Language.ENGLISH;
+    }
+
+    public String getSiteUrlAsString() {
+        return "http://wahlzeit.org/";
     }
 }

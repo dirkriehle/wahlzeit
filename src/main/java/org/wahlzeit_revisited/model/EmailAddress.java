@@ -18,7 +18,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.utils;
+package org.wahlzeit_revisited.model;
 
 import org.wahlzeit.utils.StringUtil;
 
