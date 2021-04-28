@@ -26,8 +26,4 @@ public abstract class AbstractResource {
         return Response.status(Response.Status.BAD_REQUEST).entity(errorDto).build();
     }
 
-    protected Response buildServerError() {
-        return Response.serverError().build();
-    }
-
 }
