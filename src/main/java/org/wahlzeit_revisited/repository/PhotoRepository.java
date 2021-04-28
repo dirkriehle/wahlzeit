@@ -30,11 +30,11 @@ public class PhotoRepository extends AbstractRepository<Photo> {
 
         Optional<Long> userIdOpt = filter.getUserId();
         Set<String> tags = filter.getTags();
-        StringBuilder queryBuffer = new StringBuilder(String.format("SELECT * FROM %s WHERE", getTableName()));
+        StringBuilder queryBuffer = new StringBuilder(String.format("SELECT * FROM %s WHERE ", getTableName()));
 
         // add user search query
         if (userIdOpt.isPresent()) {
-            queryBuffer.append(" owner_id = % ");
+            queryBuffer.append(" owner_id = ? ");
             if (filter.filtersByTags()) {
                 queryBuffer.append(" AND ");
             }
