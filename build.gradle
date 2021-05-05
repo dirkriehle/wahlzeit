@@ -42,7 +42,7 @@ application {
 
 test {
     filter {
-        includeTestsMatching "org.wahlzeit.*"
+        includeTestsMatching "org.wahlzeit_revisited.*"
     }
     testLogging {
             events "passed", "skipped", "failed"
