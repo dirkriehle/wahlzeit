@@ -22,7 +22,6 @@ package org.wahlzeit_revisited.model;
 
 
 import org.wahlzeit_revisited.auth.AccessRights;
-import org.wahlzeit_revisited.utils.EmailAddress;
 
 /**
  * A Client uses the system. It is an abstract superclass. This package defines guest, user, moderator, and

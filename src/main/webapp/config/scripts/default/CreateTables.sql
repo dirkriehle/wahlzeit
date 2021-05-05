@@ -34,9 +34,9 @@ CREATE TABLE tags (
 );
 
 CREATE TABLE cases (
-	id integer PRIMARY KEY,
-	photo integer,
-	flagger text,
+	id serial PRIMARY KEY,
+	photo_id integer REFERENCES photos(id),
+	flagger_id integer REFERENCES users(id),
 	reason integer,
 	explanation text,
 	creation_time bigint,

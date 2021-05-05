@@ -2,7 +2,6 @@ package org.wahlzeit_revisited.model;
 
 import org.wahlzeit_revisited.auth.AccessRights;
 import org.wahlzeit_revisited.repository.Persistent;
-import org.wahlzeit_revisited.utils.EmailAddress;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +11,7 @@ public class User extends Client implements Persistent {
     private Long id;
     private String name;
     private String password;
+    private Gender gender = Gender.UNDEFINED;
 
     private long creationTime;
 
@@ -107,5 +107,13 @@ public class User extends Client implements Persistent {
 
     public long getCreationTime() {
         return creationTime;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public Gender getGender() {
+        return gender;
     }
 }

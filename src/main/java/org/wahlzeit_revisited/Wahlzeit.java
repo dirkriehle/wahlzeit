@@ -7,10 +7,13 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.wahlzeit_revisited.main.DatabaseMain;
+import org.wahlzeit_revisited.model.CaseFactory;
 import org.wahlzeit_revisited.model.PhotoFactory;
 import org.wahlzeit_revisited.model.UserFactory;
+import org.wahlzeit_revisited.repository.CaseRepository;
 import org.wahlzeit_revisited.repository.PhotoRepository;
 import org.wahlzeit_revisited.repository.UserRepository;
+import org.wahlzeit_revisited.service.CaseService;
 import org.wahlzeit_revisited.service.PhotoService;
 import org.wahlzeit_revisited.service.Transformer;
 import org.wahlzeit_revisited.service.UserService;
@@ -32,13 +35,16 @@ public class Wahlzeit {
             // factory
             bind(UserFactory.class).to(UserFactory.class);
             bind(PhotoFactory.class).to(PhotoFactory.class);
+            bind(CaseFactory.class).to(CaseFactory.class);
             // service
             bind(Transformer.class).to(Transformer.class);
             bind(PhotoService.class).to(PhotoService.class);
             bind(UserService.class).to(UserService.class);
+            bind(CaseService.class).to(CaseService.class);
             // repository
             bind(UserRepository.class).to(UserRepository.class);
             bind(PhotoRepository.class).to(PhotoRepository.class);
+            bind(CaseRepository.class).to(CaseRepository.class);
         }
     }
 
