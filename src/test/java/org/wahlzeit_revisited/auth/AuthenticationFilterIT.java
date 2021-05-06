@@ -21,7 +21,7 @@ import java.net.URI;
 import java.sql.SQLException;
 import java.util.*;
 
-public class AuthenticationFilterTest extends BaseModelTest {
+public class AuthenticationFilterIT extends BaseModelTest {
 
     private AuthenticationFilter filter;
     private UserRepository userRepository;
@@ -40,7 +40,7 @@ public class AuthenticationFilterTest extends BaseModelTest {
     @PermitAll
     public void test_PermitAll() throws NoSuchMethodException {
         // arrange
-        Method mockMethod = AuthenticationFilterTest.class.getMethod("test_PermitAll");
+        Method mockMethod = AuthenticationFilterIT.class.getMethod("test_PermitAll");
         filter.resourceInfo = new MockResourceInfo(mockMethod);
         MockRequest mockRequest = new MockRequest();
 
@@ -56,7 +56,7 @@ public class AuthenticationFilterTest extends BaseModelTest {
     @DenyAll
     public void test_DenyAll() throws NoSuchMethodException {
         // arrange
-        Method mockMethod = AuthenticationFilterTest.class.getMethod("test_DenyAll");
+        Method mockMethod = AuthenticationFilterIT.class.getMethod("test_DenyAll");
         filter.resourceInfo = new MockResourceInfo(mockMethod);
         MockRequest mockRequest = new MockRequest();
 
@@ -72,7 +72,7 @@ public class AuthenticationFilterTest extends BaseModelTest {
     @RolesAllowed(AccessRights.USER_ROLE)
     public void test_SufficientRights() throws NoSuchMethodException, SQLException {
         // arrange
-        Method mockMethod = AuthenticationFilterTest.class.getMethod("test_SufficientRights");
+        Method mockMethod = AuthenticationFilterIT.class.getMethod("test_SufficientRights");
         filter.resourceInfo = new MockResourceInfo(mockMethod);
 
         // create new unique User
@@ -100,7 +100,7 @@ public class AuthenticationFilterTest extends BaseModelTest {
     @RolesAllowed(AccessRights.ADMINISTRATOR_ROLE)
     public void test_InsufficientRights() throws NoSuchMethodException, SQLException {
         // arrange
-        Method mockMethod = AuthenticationFilterTest.class.getMethod("test_InsufficientRights");
+        Method mockMethod = AuthenticationFilterIT.class.getMethod("test_InsufficientRights");
         filter.resourceInfo = new MockResourceInfo(mockMethod);
 
         // create new unique User
@@ -128,7 +128,7 @@ public class AuthenticationFilterTest extends BaseModelTest {
     @RolesAllowed(AccessRights.GUEST_ROLE)
     public void test_SuperiorRightsFilter() throws NoSuchMethodException, SQLException {
         // arrange
-        Method mockMethod = AuthenticationFilterTest.class.getMethod("test_SuperiorRightsFilter");
+        Method mockMethod = AuthenticationFilterIT.class.getMethod("test_SuperiorRightsFilter");
         filter.resourceInfo = new MockResourceInfo(mockMethod);
 
         // create new unique User
