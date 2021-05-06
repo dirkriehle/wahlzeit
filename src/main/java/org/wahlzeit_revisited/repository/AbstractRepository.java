@@ -8,26 +8,48 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * AbstractRepository fulfills big parts of the Repository contract
+ * It states generalized SQL queries
+ *
+ * @param <T> to represent Persistent
+ */
 public abstract class AbstractRepository<T extends Persistent> implements Repository<T> {
 
     /*
      * template methods
      */
 
+    /**
+     * Returns the factory for the entity
+     * @return entity factory
+     */
     protected abstract PersistentFactory<T> getFactory();
 
+    /**
+     * Returns the entities table name inside the database, eg 'users
+     * @return table Name
+     */
     protected abstract String getTableName();
 
     /*
      * Repository contract
      */
 
+    /**
+     * Finds the entity by it's database id
+     * @param id entities id
+     * @return entity if exists
+     * @throws SQLException invalid table name
+     */
+    @Override
     public Optional<T> findById(Long id) throws SQLException {
-        assertIsNonNullArgument(id);
+        if (id == null || id < -1) {
+            return Optional.empty();
+        }
 
         String query = String.format("SELECT * FROM %s WHERE id = ?", getTableName());
         try (PreparedStatement stmt = getReadingStatement(query)) {
@@ -44,6 +66,12 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
         }
     }
 
+    /**
+     * Finds all entities of the database
+     * @return set of all entities
+     * @throws SQLException wrong table name
+     */
+    @Override
     public List<T> findAll() throws SQLException {
         String query = String.format("SELECT * FROM %s", getTableName());
         try (PreparedStatement stmt = getReadingStatement(query)) {
@@ -60,6 +88,14 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
         }
     }
 
+    /**
+     * Inserts a not already persisted entity
+     * The entities database id is derived from the query result
+     * @param toInsert entity to persist
+     * @return the persisted entity
+     * @throws SQLException wrong table name
+     */
+    @Override
     public T insert(T toInsert) throws SQLException {
         assertIsNonNullArgument(toInsert);
         assertNonPersistedObject(toInsert);
@@ -92,6 +128,13 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
         return toInsert;
     }
 
+    /**
+     * Updates a already persisted entity
+     * @param toUpdate to entity
+     * @return the updated entity
+     * @throws SQLException wrong table name
+     */
+    @Override
     public T update(T toUpdate) throws SQLException {
         assertIsNonNullArgument(toUpdate);
         assertPersistedObject(toUpdate);
@@ -113,6 +156,13 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
         return toUpdate;
     }
 
+    /**
+     * Deletes an persisted entity
+     * @param toDelete entity to delete
+     * @return the deleted entity
+     * @throws SQLException wrong table name
+     */
+    @Override
     public T delete(T toDelete) throws SQLException {
         assertIsNonNullArgument(toDelete);
         assertPersistedObject(toDelete);
@@ -126,10 +176,9 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
         }
     }
 
-    /*
-     * getters
+    /**
+     * @methodtype get
      */
-
     protected PreparedStatement getReadingStatement(String query) throws SQLException {
         SysLog.logQuery(query);
 
@@ -137,6 +186,9 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
         return dbc.getReadingStatement(query);
     }
 
+    /**
+     * @methodtype get
+     */
     protected PreparedStatement getUpdatingStatement(String query) throws SQLException {
         SysLog.logQuery(query);
 
@@ -144,14 +196,16 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
         return dbc.getUpdatingStatement(query);
     }
 
+    /**
+     * @methodtype get
+     */
     private DatabaseConnection getDatabaseConnection() {
         return SessionManager.getDatabaseConnection();
     }
 
-    /*
-     * asserts
+    /**
+     * @methodtype assert
      */
-
     protected void assertNonPersistedObject(Persistent toPersist) {
         if (toPersist.getId() != null) {
             String formatted = String.format("Object '%s' already has an id", toPersist.toString());
@@ -159,6 +213,9 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
         }
     }
 
+    /**
+     * @methodtype assert
+     */
     protected void assertPersistedObject(Persistent toPersist) {
         if (toPersist.getId() == null) {
             String formatted = String.format("Object '%s' has no id", toPersist.toString());
@@ -166,17 +223,16 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
         }
     }
 
-    protected void assertIsNonEmpty(Collection<?> arg) {
-        if (arg.isEmpty()) {
-            String formatted = "Collection is empty";
-            throw new IllegalStateException(formatted);
-        }
-    }
-
+    /**
+     * @methodtype assert
+     */
     protected void assertIsNonNullArgument(Object arg) {
         assertIsNonNullArgument(arg, "persistent");
     }
 
+    /**
+     * @methodtype assert
+     */
     protected void assertIsNonNullArgument(Object arg, String label) {
         if (arg == null) {
             throw new IllegalArgumentException(label + " should not be null");

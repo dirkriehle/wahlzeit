@@ -108,11 +108,11 @@ public class PhotoRepositoryIT extends BaseModelTest {
     public void test_getPhotoForUser() throws SQLException, IOException {
         // arrange
         User user = createUser();
-        Photo expectedPhoto = factory.createPhoto(user.getId(), buildMockImageBytes(), new Tags());
+        Photo expectedPhoto = factory.createPhoto(user, buildMockImageBytes(), new Tags());
         expectedPhoto = repository.insert(expectedPhoto);
 
         // act
-        List<Photo> actualPhotos = repository.findWithFilter(new PhotoFilter(user.getId(), new Tags()));
+        List<Photo> actualPhotos = repository.findWithFilter(new PhotoFilter(user, new Tags()));
 
         // assert
         Assert.assertNotNull(actualPhotos);
@@ -148,11 +148,11 @@ public class PhotoRepositoryIT extends BaseModelTest {
     @Test
     public void test_getPhotosForUserButNoTags() throws SQLException, IOException {
         User user = createUser();
-        Photo expectedPhoto = factory.createPhoto(user.getId(), buildMockImageBytes(), new Tags());
+        Photo expectedPhoto = factory.createPhoto(user, buildMockImageBytes(), new Tags());
         expectedPhoto = repository.insert(expectedPhoto);
 
         // act
-        List<Photo> actualPhotos = repository.findWithFilter(new PhotoFilter(user.getId(), new Tags()));
+        List<Photo> actualPhotos = repository.findWithFilter(new PhotoFilter(user, new Tags()));
 
         // assert
         Assert.assertEquals(1, actualPhotos.size());
@@ -164,11 +164,11 @@ public class PhotoRepositoryIT extends BaseModelTest {
         // arrange
         Tags tags = new Tags(Set.of("batman"));
         User user = createUser();
-        Photo expectedPhoto = factory.createPhoto(user.getId(), buildMockImageBytes(), tags);
+        Photo expectedPhoto = factory.createPhoto(user, buildMockImageBytes(), tags);
         expectedPhoto = repository.insert(expectedPhoto);
 
         // act
-        List<Photo> actualPhotos = repository.findWithFilter(new PhotoFilter(user.getId(), tags));
+        List<Photo> actualPhotos = repository.findWithFilter(new PhotoFilter(user, tags));
 
         // assert
         Assert.assertEquals(1, actualPhotos.size());

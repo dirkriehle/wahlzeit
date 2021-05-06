@@ -21,9 +21,8 @@
 package org.wahlzeit_revisited.utils;
 
 import jakarta.inject.Singleton;
-import org.wahlzeit_revisited.database.config.AbstractConfig;
-import org.wahlzeit_revisited.database.config.ConfigDir;
-import org.wahlzeit_revisited.database.config.Directory;
+import org.wahlzeit_revisited.config.AbstractConfig;
+import org.wahlzeit_revisited.config.ConfigDir;
 
 import java.io.File;
 import java.util.Optional;

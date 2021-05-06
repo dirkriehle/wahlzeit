@@ -25,6 +25,9 @@ import java.security.Principal;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * Jakarta Filter that handles the mapping from credentials to the user entity
+ */
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
@@ -46,6 +49,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
      * <p>
      * Currently only Basic HTTP authentication is supported. For more information see:
      * https://en.wikipedia.org/wiki/Basic_access_authentication
+     * <p>
+     * For a productive project a token based authorization scheme is advised
      *
      * @param requestContext the call context
      */

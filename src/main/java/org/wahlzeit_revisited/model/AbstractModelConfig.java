@@ -21,9 +21,8 @@
 package org.wahlzeit_revisited.model;
 
 
-
-import org.wahlzeit_revisited.database.config.AbstractConfig;
-import org.wahlzeit_revisited.database.config.ConfigDir;
+import org.wahlzeit_revisited.config.AbstractConfig;
+import org.wahlzeit_revisited.config.ConfigDir;
 import org.wahlzeit_revisited.utils.SysConfig;
 import org.wahlzeit_revisited.utils.SysLog;
 
@@ -38,131 +37,131 @@ import java.text.SimpleDateFormat;
  * Subclasses provide the parameters and language-specific handling of text and data.
  */
 public abstract class AbstractModelConfig extends AbstractConfig implements ModelConfig {
-	
-	/**
-	 * 
-	 */
-	protected Language language = Language.ENGLISH;
-	protected DateFormat dateFormatter = new SimpleDateFormat("MMM d, yyyy");
-	protected DecimalFormat praiseFormatter = new DecimalFormat("##.#");
-	
-	/**
-	 * 
-	 */
-	protected void initialize(Language myLanguage, DateFormat myDateFormatter, DecimalFormat myPraiseFormatter) {
-		language = myLanguage;
-		dateFormatter = myDateFormatter;
-		praiseFormatter = myPraiseFormatter;
-		
-		try {
-			ConfigDir templatesDir = new SysConfig().getTemplatesDir();
-			
-			String shortDefaultFileName = myLanguage.asIsoCode() + File.separator + "ModelConfig.AbstractModelConfig";
-			if(templatesDir.hasDefaultFile(shortDefaultFileName)) {
-				String absoluteDefaultFileName = templatesDir.getAbsoluteDefaultConfigFileName(shortDefaultFileName);
-				loadProperties(absoluteDefaultFileName);
-			}
-			
-			String shortCustomFileName = myLanguage.asIsoCode() + File.separator + "CustomModelConfig.properties";
-			if(templatesDir.hasCustomFile(shortCustomFileName)) {
-				String absoluteCustomFileName = templatesDir.getAbsoluteCustomConfigFileName(shortCustomFileName);
-				loadProperties(absoluteCustomFileName);
-			}
-		} catch (IOException ioex) {
-			SysLog.logThrowable(ioex);
-		}
-	}
 
-	/**
-	 * 
-	 */
-	public Language getLanguage() {
-		return language;
-	}
-	
-	/**
-	 * 
-	 */
-	public String getLanguageCode() {
-		return doGetValue("LanguageCode");
-	}
-	
-	/**
-	 * 
-	 */
-	public EmailAddress getModeratorEmailAddress() {
-		return EmailAddress.getFromString(doGetValue("ModeratorEmailAddress"));
-	}
-	
-	/**
-	 * 
-	 */
-	public EmailAddress getAdministratorEmailAddress() {
-		return EmailAddress.getFromString(doGetValue("AdministratorEmailAddress"));
-	}
+    /**
+     *
+     */
+    protected Language language = Language.ENGLISH;
+    protected DateFormat dateFormatter = new SimpleDateFormat("MMM d, yyyy");
+    protected DecimalFormat praiseFormatter = new DecimalFormat("##.#");
 
-	/**
-	 * 
-	 */
-	public EmailAddress getAuditEmailAddress() {
-		return EmailAddress.getFromString(doGetValue("AuditEmailAddress"));
-	}
+    /**
+     *
+     */
+    protected void initialize(Language myLanguage, DateFormat myDateFormatter, DecimalFormat myPraiseFormatter) {
+        language = myLanguage;
+        dateFormatter = myDateFormatter;
+        praiseFormatter = myPraiseFormatter;
 
-	/**
-	 * 
-	 */
-	public String getContinueWithShowPhoto() { 
-		return doGetValue("ContinueWithShowPhoto"); 
-	}
+        try {
+            ConfigDir templatesDir = new SysConfig().getTemplatesDir();
 
-	/**
-	 * 
-	 */
-	public String getGeneralEmailRegards() {
-		return doGetValue("GeneralEmailRegards");
-	}
+            String shortDefaultFileName = myLanguage.asIsoCode() + File.separator + "ModelConfig.AbstractModelConfig";
+            if (templatesDir.hasDefaultFile(shortDefaultFileName)) {
+                String absoluteDefaultFileName = templatesDir.getAbsoluteDefaultConfigFileName(shortDefaultFileName);
+                loadProperties(absoluteDefaultFileName);
+            }
 
-	/**
-	 * 
-	 */
-	public String getGeneralEmailFooter() {
-		return doGetValue("GeneralEmailFooter");
-	}
+            String shortCustomFileName = myLanguage.asIsoCode() + File.separator + "CustomModelConfig.properties";
+            if (templatesDir.hasCustomFile(shortCustomFileName)) {
+                String absoluteCustomFileName = templatesDir.getAbsoluteCustomConfigFileName(shortCustomFileName);
+                loadProperties(absoluteCustomFileName);
+            }
+        } catch (IOException ioex) {
+            SysLog.logThrowable(ioex);
+        }
+    }
+
+    /**
+     *
+     */
+    public Language getLanguage() {
+        return language;
+    }
+
+    /**
+     *
+     */
+    public String getLanguageCode() {
+        return doGetValue("LanguageCode");
+    }
+
+    /**
+     *
+     */
+    public EmailAddress getModeratorEmailAddress() {
+        return EmailAddress.getFromString(doGetValue("ModeratorEmailAddress"));
+    }
+
+    /**
+     *
+     */
+    public EmailAddress getAdministratorEmailAddress() {
+        return EmailAddress.getFromString(doGetValue("AdministratorEmailAddress"));
+    }
+
+    /**
+     *
+     */
+    public EmailAddress getAuditEmailAddress() {
+        return EmailAddress.getFromString(doGetValue("AuditEmailAddress"));
+    }
+
+    /**
+     *
+     */
+    public String getContinueWithShowPhoto() {
+        return doGetValue("ContinueWithShowPhoto");
+    }
+
+    /**
+     *
+     */
+    public String getGeneralEmailRegards() {
+        return doGetValue("GeneralEmailRegards");
+    }
+
+    /**
+     *
+     */
+    public String getGeneralEmailFooter() {
+        return doGetValue("GeneralEmailFooter");
+    }
 
 
-	/**
-	 * 
-	 */
-	public String getNotifyAboutPraiseEmailSubject() {
-		return doGetValue("NotifyAboutPraiseEmailSubject");
-	}
+    /**
+     *
+     */
+    public String getNotifyAboutPraiseEmailSubject() {
+        return doGetValue("NotifyAboutPraiseEmailSubject");
+    }
 
-	/**
-	 * 
-	 */
-	public String getNotifyAboutPraiseEmailBody() {
-		return doGetValue("NotifyAboutPraiseEmailBody");
-	}
+    /**
+     *
+     */
+    public String getNotifyAboutPraiseEmailBody() {
+        return doGetValue("NotifyAboutPraiseEmailBody");
+    }
 
-	/**
-	 * 
-	 */
-	public String getNotifyAboutPraiseEmailPostScriptum() {
-		return doGetValue("NotifyAboutPraiseEmailPostScriptum"); 
-	}
+    /**
+     *
+     */
+    public String getNotifyAboutPraiseEmailPostScriptum() {
+        return doGetValue("NotifyAboutPraiseEmailPostScriptum");
+    }
 
-	/**
-	 * 
-	 */
-	public String asDateString(long millis) {
-		return dateFormatter.format(millis);
-	}
-	
-	/**
-	 * 
-	 */
-	public String asPraiseString(double praise) {
-		return praiseFormatter.format(praise);
-	}
-	
+    /**
+     *
+     */
+    public String asDateString(long millis) {
+        return dateFormatter.format(millis);
+    }
+
+    /**
+     *
+     */
+    public String asPraiseString(double praise) {
+        return praiseFormatter.format(praise);
+    }
+
 }

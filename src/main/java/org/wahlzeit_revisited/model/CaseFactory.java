@@ -5,6 +5,9 @@ import org.wahlzeit_revisited.repository.PersistentFactory;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/*
+ * CaseFactory creates a new Case, or instantiates a entity from a resultSet
+ */
 public class CaseFactory implements PersistentFactory<Case> {
 
     @Override

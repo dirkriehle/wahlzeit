@@ -9,12 +9,16 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 import org.wahlzeit_revisited.auth.AccessRights;
 import org.wahlzeit_revisited.dto.PhotoDto;
+import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.service.PhotoFlagService;
 
 import java.util.List;
 
-@Path("api/photo/case")
-public class PhotoFlagResource {
+/*
+ * The bridge between the outer world and photo flagging
+ */
+@Path("api/photo/flag")
+public class PhotoFlagResource extends AbstractResource {
 
     @Inject
     PhotoFlagService service;
@@ -46,7 +50,8 @@ public class PhotoFlagResource {
     @Path("{id}")
     @RolesAllowed(AccessRights.MODERATOR_ROLE)
     public Response flagPhoto(@PathParam("id") Long photoId, String status) throws Exception {
-        PhotoDto photoDto = service.setPhotoStatus(photoId, status);
+        User user = getAuthorizedUser();
+        PhotoDto photoDto = service.setPhotoStatus(user, photoId, status);
         return Response.ok(photoDto).build();
     }
 

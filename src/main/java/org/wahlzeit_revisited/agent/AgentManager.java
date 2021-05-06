@@ -44,7 +44,7 @@ public class AgentManager {
 	}
 	
 	/**
-	 * 
+	 *
 	 */
 	public static synchronized AgentManager getInstance() {
 		if (instance == null) {
@@ -65,9 +65,58 @@ public class AgentManager {
 	protected AgentManager() {
 		// do nothing
 	}
-	
+
 	/**
-	 * 
+	 * @methodtype command
+	 */
+	public void startAllThreads() {
+		for (Iterator<AgentThread> i = threads.values().iterator(); i.hasNext(); ) {
+			AgentThread thread = i.next();
+			startThread(thread);
+		}
+	}
+
+	/**
+	 * @methodtype command
+	 */
+	public void stopAllThreads() {
+		for (Iterator<AgentThread> i = threads.values().iterator(); i.hasNext(); ) {
+			AgentThread thread = i.next();
+			stopThread(thread);
+		}
+	}
+
+	/**
+	 * @methodtype command
+	 */
+	public void startThread(AgentThread thread) {
+		thread.start();
+		String name = thread.getAgent().getName();
+		SysLog.logSysInfo("agent", name, "agent/thread was started");
+	}
+
+	/**
+	 * @methodtype command
+	 */
+	public void stopThread(AgentThread thread) {
+		Agent agent = thread.getAgent();
+		agent.stop();
+
+		thread.interrupt();
+		while(thread.isAlive()) {
+			try {
+				Thread.sleep(100);
+			} catch (Exception ex) {
+				// do nothing
+			}
+		}
+
+		String agentName = thread.getAgent().getName();
+		SysLog.logSysInfo("agent", agentName, "agent/thread was stopped");
+	}
+
+	/**
+	 * @methodtype get
 	 */
 	public Agent getAgent(String name) {
 		AgentThread thread = getThread(name);
@@ -75,7 +124,7 @@ public class AgentManager {
 	}
 	
 	/**
-	 * 
+	 * @methodtype set
 	 */
 	public void addAgent(Agent agent) {
 		synchronized(threads) {
@@ -90,69 +139,6 @@ public class AgentManager {
 	 */
 	public AgentThread getThread(String name) {
 		return threads.get(name);	
-	}
-	
-	/**
-	 * 
-	 */
-	public void startAllThreads() {
-		for (Iterator<AgentThread> i = threads.values().iterator(); i.hasNext(); ) {
-			AgentThread thread = i.next();
-			startThread(thread);
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	public void startThread(String name) {
-		startThread(getThread(name));
-	}
-		
-	/**
-	 * 
-	 */
-	public void startThread(AgentThread thread) {
-		thread.start();
-		String name = thread.getAgent().getName();
-		SysLog.logSysInfo("agent", name, "agent/thread was started");
-	}
-	
-	/**
-	 * 
-	 */
-	public void stopAllThreads() {
-		for (Iterator<AgentThread> i = threads.values().iterator(); i.hasNext(); ) {
-			AgentThread thread = i.next();
-			stopThread(thread);
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	public void stopThread(String name) {
-		stopThread(getThread(name));
-	}
-	
-	/**
-	 * 
-	 */
-	public void stopThread(AgentThread thread) {
-		Agent agent = thread.getAgent();
-		agent.stop();
-		
-		thread.interrupt();
-		while(thread.isAlive()) {
-			try {
-				Thread.sleep(100);
-			} catch (Exception ex) {
-				// do nothing
-			}
-		}
-
-		String agentName = thread.getAgent().getName();
-		SysLog.logSysInfo("agent", agentName, "agent/thread was stopped");
 	}
 
 }

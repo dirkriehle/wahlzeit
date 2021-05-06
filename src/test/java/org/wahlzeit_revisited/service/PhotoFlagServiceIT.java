@@ -12,7 +12,6 @@ import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.model.UserFactory;
 import org.wahlzeit_revisited.repository.PhotoRepository;
 import org.wahlzeit_revisited.repository.UserRepository;
-import org.wahlzeit_revisited.utils.SysConfig;
 
 import java.util.List;
 import java.util.Set;
@@ -36,7 +35,6 @@ public class PhotoFlagServiceIT extends BaseModelTest {
         photoService.repository = new PhotoRepository();
         photoService.repository.factory = new PhotoFactory();
         photoService.transformer = new Transformer();
-        photoService.transformer.config = new SysConfig();
 
         userFactory = new UserFactory();
         userRepository = new UserRepository();
@@ -44,14 +42,14 @@ public class PhotoFlagServiceIT extends BaseModelTest {
     }
 
     @Test(expected = NotFoundException.class)
-    public void test_setFlaggedPhoto() throws Exception {
+    public void test_setFlaggedPhotoStillVisible() throws Exception {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
         PhotoDto expectedPhoto = photoService.addPhoto(user, buildMockImageBytes(), Set.of());
 
         // act
-        service.setPhotoStatus(expectedPhoto.getId(), PhotoStatus.FLAGGED.asString());
+        service.setPhotoStatus(user, expectedPhoto.getId(), PhotoStatus.FLAGGED.asString());
 
         // assert
         PhotoDto actualPhoto = service.getFlaggedPhoto(expectedPhoto.getId());
@@ -65,7 +63,7 @@ public class PhotoFlagServiceIT extends BaseModelTest {
         User user = userFactory.createUser();
         user = userRepository.insert(user);
         PhotoDto expectedPhoto = photoService.addPhoto(user, buildMockImageBytes(), Set.of());
-        service.setPhotoStatus(expectedPhoto.getId(), PhotoStatus.FLAGGED.asString());
+        service.setPhotoStatus(user, expectedPhoto.getId(), PhotoStatus.FLAGGED.asString());
 
         // act
         List<PhotoDto> actualPhotos = service.getFlaggedPhotos();

@@ -13,15 +13,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+/*
+ * Repository to query Photo entities
+ */
 public class PhotoRepository extends AbstractRepository<Photo> {
 
     @Inject
     public PhotoFactory factory;
 
-    /*
-     * business methods
+    /**
+     * Generates a SQL query dynamically by using the filter
+     * Initially the query string is generated
+     * Finally the filter values are applied to the prepared statement
+     *
+     * If no filter is provided all Photos are returned
+     * @param filter the query constraints
+     * @return Set of all Photos matching filter
+     * @throws SQLException invalid generated sql
      */
-
     public List<Photo> findWithFilter(PhotoFilter filter) throws SQLException {
         assertIsNonNullArgument(filter);
         if (!filter.hasFilters()) {
@@ -49,7 +58,7 @@ public class PhotoRepository extends AbstractRepository<Photo> {
             queryBuffer.append("tags LIKE ?");
         }
 
-
+        // Insert query values to prepared statement
         try (PreparedStatement stmt = getReadingStatement(queryBuffer.toString())) {
             int i = 1;
             // Insert user query values
@@ -84,6 +93,13 @@ public class PhotoRepository extends AbstractRepository<Photo> {
      * Helpers
      */
 
+    /**
+     * Iterates through the rows of the statement
+     * Creates a new Photo for every row
+     * @param stmt statement to execute
+     * @return parsed Photo
+     * @throws SQLException invalid stmt
+     */
     private List<Photo> executeStatement(PreparedStatement stmt) throws SQLException {
         List<Photo> result = new ArrayList<>();
         try (ResultSet resultSet = stmt.executeQuery()) {

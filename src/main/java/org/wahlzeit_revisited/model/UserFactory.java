@@ -7,13 +7,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 
+/*
+ * UserFactory creates a new Photo, or instantiates a entity from a resultSet
+ */
 public class UserFactory implements PersistentFactory<User> {
+
+    /*
+     * PersistentFactory contract
+     */
 
     @Override
     public User createPersistent(ResultSet resultSet) throws SQLException {
         return new User(resultSet);
     }
 
+    /**
+     *
+     * @return
+     */
     public User createUser() {
         String name = Instant.now().toEpochMilli() + "NoUsername";
         String email = Instant.now().toEpochMilli() + "noEmail@fau.de";
@@ -29,10 +40,6 @@ public class UserFactory implements PersistentFactory<User> {
         User user = new User(name, email, password);
         user.setRights(rights);
         return user;
-    }
-
-    public User createUser(Long id, Long creationTime, String name, String email, String password, AccessRights rights) {
-        return new User(id, creationTime, name, email, password, rights);
     }
 
 }

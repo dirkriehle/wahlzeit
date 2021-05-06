@@ -61,8 +61,10 @@ public class Case implements Persistent {
     }
 
     /**
-     *
+     * Persistent contract
      */
+
+    @Override
     public void readFrom(ResultSet rset) throws SQLException {
         id = rset.getLong("id");
         photoId = rset.getLong("photo_id");
@@ -76,9 +78,8 @@ public class Case implements Persistent {
         decidedOn = rset.getLong("decision_time");
     }
 
-    /**
-     *
-     */
+
+    @Override
     public void writeOn(ResultSet rset) throws SQLException {
         rset.updateLong("id", id);
         rset.updateLong("photo_id", photoId);
@@ -92,87 +93,81 @@ public class Case implements Persistent {
         rset.updateLong("decision_time", decidedOn);
     }
 
-    /**
-     *
-     */
     @Override
     public Long getId() {
         return id;
     }
 
-    /**
-     *
-     */
     @Override
     public void setId(long id) {
         this.id = id;
     }
 
     /**
-     *
+     * @methodtype get
      */
     public Long getPhotoId() {
         return photoId;
     }
 
     /**
-     *
+     * @methodtype get
      */
     public long getCreationTime() {
         return createdOn;
     }
 
     /**
-     *
+     * @methodtype get
      */
     public Long getFlaggerId() {
         return flaggerId;
     }
 
     /**
-     * =
+     * @methodtype set
      */
     public void setFlaggerId(long flaggerId) {
         this.flaggerId = flaggerId;
     }
 
     /**
-     *
+     * @methodtype get
      */
     public FlagReason getReason() {
         return reason;
     }
 
     /**
-     * =
+     * @methodtype set
      */
     public void setReason(FlagReason reason) {
         this.reason = reason;
     }
 
     /**
-     *
+     * @methodtype get
      */
     public String getExplanation() {
         return explanation;
     }
 
     /**
-     * =
+     * @methodtype set
      */
     public void setExplanation(String newExplanation) {
         explanation = newExplanation;
     }
 
     /**
-     *
+     * @methodtype boolean-query
      */
     public boolean wasDecided() {
         return wasDecided;
     }
 
     /**
-     *
+     * @methodtype set
      */
     public void setDecided() {
         wasDecided = true;
@@ -180,7 +175,7 @@ public class Case implements Persistent {
     }
 
     /**
-     *
+     * @methodtype get
      */
     public long getDecisionTime() {
         return decidedOn;

@@ -97,20 +97,37 @@ public class DatabaseConnection {
         }
     }
 
+    /*
+     * Ensure Database driver is available inside of the project
+     */
+    static {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException ex) {
+            SysLog.logThrowable(ex);
+        }
+    }
+
     /**
      *
      */
-    public static synchronized void returnDatabaseConnection(DatabaseConnection dbc) {
-        if (dbc != null) {
-            if (dbc.isOpen()) {
-                pool.add(dbc);
-            } else {
-                SysLog.logSysError("tried to return closed database connection to pool; ignoring it");
-            }
-        } else {
-            SysLog.logSysError("tried to return null to database connection pool; ignoring it");
-        }
+    public static Connection openRdbmsConnection() throws SQLException {
+        String dbConnection = sysConfig.getDbConnectionAsString();
+        String dbUser = sysConfig.getDbUserAsString();
+        String dbPassword = sysConfig.getDbPasswordAsString();
+        Connection result = DriverManager.getConnection(dbConnection, dbUser, dbPassword);
+        SysLog.logSysInfo("opening database connection: " + result.toString());
+        return result;
     }
+
+    /**
+     *
+     */
+    public static void closeConnection(Connection cn) throws SQLException {
+        SysLog.logSysInfo("closing database connection: " + cn.toString());
+        cn.close();
+    }
+
 
     /**
      *
@@ -173,37 +190,7 @@ public class DatabaseConnection {
     public PreparedStatement getUpdatingStatement(String stmt) throws SQLException {
         PreparedStatement result = getRdbmsConnection().prepareStatement(stmt, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
         return result;
-    }
 
-    /*
-     *
-     */
-    static {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException ex) {
-            SysLog.logThrowable(ex);
-        }
-    }
-
-    /**
-     *
-     */
-    public static Connection openRdbmsConnection() throws SQLException {
-        String dbConnection = sysConfig.getDbConnectionAsString();
-        String dbUser = sysConfig.getDbUserAsString();
-        String dbPassword = sysConfig.getDbPasswordAsString();
-        Connection result = DriverManager.getConnection(dbConnection, dbUser, dbPassword);
-        SysLog.logSysInfo("opening database connection: " + result.toString());
-        return result;
-    }
-
-    /**
-     *
-     */
-    public static void closeConnection(Connection cn) throws SQLException {
-        SysLog.logSysInfo("closing database connection: " + cn.toString());
-        cn.close();
     }
 
 }

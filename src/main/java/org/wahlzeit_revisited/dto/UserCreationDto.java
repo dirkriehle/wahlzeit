@@ -1,5 +1,8 @@
 package org.wahlzeit_revisited.dto;
 
+/**
+ * UserCreationDto represents the creation of a new user for the outer world
+ */
 public class UserCreationDto {
 
     /*

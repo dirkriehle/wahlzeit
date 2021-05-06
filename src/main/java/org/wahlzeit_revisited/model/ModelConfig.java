@@ -21,7 +21,7 @@
 package org.wahlzeit_revisited.model;
 
 
-import org.wahlzeit_revisited.database.config.Configuration;
+import org.wahlzeit_revisited.config.Configuration;
 
 
 /**
@@ -29,7 +29,7 @@ import org.wahlzeit_revisited.database.config.Configuration;
  */
 public interface ModelConfig extends Configuration {
 
-    // Meta stuff
+    // Meta
     Language getLanguage();
 
     String getLanguageCode();

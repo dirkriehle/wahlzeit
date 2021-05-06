@@ -1,5 +1,8 @@
 package org.wahlzeit_revisited.dto;
 
+/**
+ * LoginRequestDto so outer world can log in
+ */
 public class LoginRequestDto {
 
     /*
@@ -8,10 +11,6 @@ public class LoginRequestDto {
 
     private String email;
     private String password;
-
-    /*
-     * constructor
-     */
 
     public LoginRequestDto() {
         // default constructor

@@ -1,5 +1,8 @@
 package org.wahlzeit_revisited.dto;
 
+/**
+ * ErrorDto maps an internal for the outer world
+ */
 public class ErrorDto {
 
     private String msg;

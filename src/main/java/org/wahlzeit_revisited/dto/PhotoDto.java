@@ -2,6 +2,9 @@ package org.wahlzeit_revisited.dto;
 
 import java.util.Set;
 
+/**
+ * PhotoDto represents the Photo-entity for the outer world
+ */
 public class PhotoDto {
 
     private final Long id;

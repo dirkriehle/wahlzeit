@@ -22,12 +22,8 @@ package org.wahlzeit_revisited.agent;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
-import org.wahlzeit_revisited.model.LanguageConfigs;
-import org.wahlzeit_revisited.model.ModelConfig;
-import org.wahlzeit_revisited.model.Photo;
-import org.wahlzeit_revisited.model.User;
+import org.wahlzeit_revisited.model.*;
 import org.wahlzeit_revisited.repository.UserRepository;
-import org.wahlzeit_revisited.model.EmailAddress;
 import org.wahlzeit_revisited.service.mailing.EmailService;
 import org.wahlzeit_revisited.service.mailing.EmailServiceManager;
 import org.wahlzeit_revisited.utils.SysLog;
@@ -65,7 +61,7 @@ public class NotifyAboutPraiseAgent extends Agent {
     }
 
     /**
-     *
+     * @methodtype command
      */
     public void addForNotify(Photo photo) {
         synchronized (praisedPhotos) {
@@ -74,14 +70,14 @@ public class NotifyAboutPraiseAgent extends Agent {
     }
 
     /**
-     *
+     * @methodtype hook
      */
     protected void doRun() {
         notifyOwners();
     }
 
     /**
-     *
+     * @methodtype hook
      */
     protected void notifyOwners() {
         Photo[] photos;
@@ -105,7 +101,7 @@ public class NotifyAboutPraiseAgent extends Agent {
     }
 
     /**
-     *
+     * @methodtype helper
      */
     protected void notifyOwner(Photo photo, Photo[] photos) throws SQLException, NotFoundException {
         User user = userRepository.findById(photo.getOwnerId()).orElseThrow(NotFoundException::new);

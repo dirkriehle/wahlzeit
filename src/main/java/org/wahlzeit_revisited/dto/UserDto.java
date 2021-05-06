@@ -1,5 +1,8 @@
 package org.wahlzeit_revisited.dto;
 
+/**
+ * UserDto represents the User-entity for the outer world
+ */
 public class UserDto {
 
     /*

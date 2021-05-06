@@ -1,7 +1,6 @@
 package org.wahlzeit_revisited.service;
 
 import jakarta.ws.rs.NotFoundException;
-import jakarta.ws.rs.core.Response;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +9,6 @@ import org.wahlzeit_revisited.dto.UserDto;
 import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.model.UserFactory;
 import org.wahlzeit_revisited.repository.UserRepository;
-import org.wahlzeit_revisited.utils.SysConfig;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -27,7 +25,6 @@ public class UserServiceIT extends BaseModelTest {
         service.repository = new UserRepository();
         service.repository.factory = new UserFactory();
         service.transformer = new Transformer();
-        service.transformer.config = new SysConfig();
 
         userRepository = new UserRepository();
         userRepository.factory = new UserFactory();

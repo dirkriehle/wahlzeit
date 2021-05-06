@@ -18,8 +18,10 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.database.config;
+package org.wahlzeit_revisited.config;
 
+
+import org.wahlzeit_revisited.utils.Directory;
 
 import java.io.File;
 

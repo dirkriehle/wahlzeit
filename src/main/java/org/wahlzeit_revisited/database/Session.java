@@ -58,31 +58,10 @@ public class Session {
     }
 
     /**
-     * @methodproperty hook
-     * <p>
-     * Hook method for subclasses to get to know when name changes.
-     * @see #initialize(String)
-     */
-    protected void finalize() throws Throwable {
-        try {
-            returnDatabaseConnection();
-        } finally {
-            super.finalize();
-        }
-    }
-
-    /**
      *
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     *
-     */
-    public boolean hasDatabaseConnection() {
-        return databaseConnection != null;
     }
 
     /**
@@ -98,48 +77,6 @@ public class Session {
         }
 
         return databaseConnection;
-    }
-
-    /**
-     * @methodproperty hook
-     * <p>
-     * Hook method for subclasses to get to know when processing time changes.
-     * @see #addProcessingTime(long)
-     * @see #resetProcessingTime()
-     */
-    public void returnDatabaseConnection() {
-        if (databaseConnection != null) {
-            DatabaseConnection.returnDatabaseConnection(databaseConnection);
-            databaseConnection = null;
-        }
-    }
-
-    /**
-     *
-     */
-    public String getClientName() {
-        return "system";
-    }
-
-    /**
-     *
-     */
-    public void resetProcessingTime() {
-        processingTime = 0;
-    }
-
-    /**
-     *
-     */
-    public void addProcessingTime(long time) {
-        processingTime += time;
-    }
-
-    /**
-     *
-     */
-    public long getProcessingTime() {
-        return processingTime;
     }
 
 }

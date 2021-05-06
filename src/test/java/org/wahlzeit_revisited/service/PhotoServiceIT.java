@@ -32,7 +32,6 @@ public class PhotoServiceIT extends BaseModelTest {
         service.repository = new PhotoRepository();
         service.repository.factory = new PhotoFactory();
         service.transformer = new Transformer();
-        service.transformer.config = new SysConfig();
 
         userFactory = new UserFactory();
         userRepository = new UserRepository();

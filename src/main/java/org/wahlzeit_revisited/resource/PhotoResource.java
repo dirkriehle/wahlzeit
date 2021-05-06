@@ -16,7 +16,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
-
+/*
+ * The bridge between the outer world and photos
+ */
 @Path("api/photo")
 public class PhotoResource extends AbstractResource {
 
