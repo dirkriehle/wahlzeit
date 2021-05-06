@@ -20,8 +20,8 @@
 
 package org.wahlzeit_revisited.database;
 
-import org.wahlzeit.services.SysConfig;
-import org.wahlzeit.services.SysLog;
+import org.wahlzeit_revisited.utils.SysConfig;
+import org.wahlzeit_revisited.utils.SysLog;
 
 import java.sql.*;
 import java.util.Set;
@@ -39,6 +39,7 @@ public class DatabaseConnection {
      *
      */
     protected static Set<DatabaseConnection> pool = ConcurrentHashMap.newKeySet();
+    protected static SysConfig sysConfig = new SysConfig();
 
     /**
      *
@@ -70,7 +71,7 @@ public class DatabaseConnection {
      */
     public static synchronized boolean waitForDatabaseIsReady(final int retries, final int sleepTimeBetweenRetries) {
         int retryCounter = retries;
-        String dbUrl = SysConfig.getDbConnectionAsString();
+        String dbUrl = sysConfig.getDbConnectionAsString();
         do {
             try {
                 DatabaseConnection.ensureDatabaseConnection();
@@ -189,9 +190,9 @@ public class DatabaseConnection {
      *
      */
     public static Connection openRdbmsConnection() throws SQLException {
-        String dbConnection = SysConfig.getDbConnectionAsString();
-        String dbUser = SysConfig.getDbUserAsString();
-        String dbPassword = SysConfig.getDbPasswordAsString();
+        String dbConnection = sysConfig.getDbConnectionAsString();
+        String dbUser = sysConfig.getDbUserAsString();
+        String dbPassword = sysConfig.getDbPasswordAsString();
         Connection result = DriverManager.getConnection(dbConnection, dbUser, dbPassword);
         SysLog.logSysInfo("opening database connection: " + result.toString());
         return result;

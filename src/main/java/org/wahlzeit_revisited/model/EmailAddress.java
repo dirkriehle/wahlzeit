@@ -20,7 +20,7 @@
 
 package org.wahlzeit_revisited.model;
 
-import org.wahlzeit.utils.StringUtil;
+import org.wahlzeit_revisited.utils.StringUtil;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;

@@ -20,7 +20,7 @@
 
 package org.wahlzeit_revisited.model;
 
-import org.wahlzeit.utils.StringUtil;
+import org.wahlzeit_revisited.utils.StringUtil;
 
 import java.util.Set;
 import java.util.TreeSet;
