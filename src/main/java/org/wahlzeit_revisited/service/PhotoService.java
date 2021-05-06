@@ -52,7 +52,6 @@ public class PhotoService {
 
     public PhotoDto getPhoto(long photoId) throws SQLException {
         Photo photo = findVisiblePhoto(photoId);
-
         PhotoDto responseDto = transformer.transform(photo);
         return responseDto;
     }
@@ -102,17 +101,6 @@ public class PhotoService {
 
         PhotoDto responseDto = transformer.transform(photo);
         return responseDto;
-    }
-
-    public PhotoDto setPhotoStatus(Long photoId, String status) throws SQLException {
-        PhotoStatus newStatus = PhotoStatus.getFromString(status);
-        Photo photo = repository.findById(photoId).orElseThrow(() -> new NotFoundException("Unknown photoId"));
-
-        photo.setStatus(newStatus);
-        repository.update(photo);
-
-        PhotoDto photoDto = transformer.transform(photo);
-        return photoDto;
     }
 
     private Photo findVisiblePhoto(long photoId) throws SQLException {

@@ -78,13 +78,4 @@ public class PhotoResource extends AbstractResource {
         PhotoDto photoDto = service.praisePhoto(photoId, ranking);
         return Response.ok(photoDto).build();
     }
-
-    @POST
-    @Path("{id}/flag")
-    @RolesAllowed(AccessRights.MODERATOR_ROLE)
-    public Response flagPhoto(@PathParam("id") Long photoId, String status) throws SQLException {
-        PhotoDto photoDto = service.setPhotoStatus(photoId, status);
-        return Response.ok(photoDto).build();
-    }
-
 }

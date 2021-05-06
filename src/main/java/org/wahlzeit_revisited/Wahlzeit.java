@@ -11,6 +11,7 @@ import org.wahlzeit_revisited.model.PhotoFactory;
 import org.wahlzeit_revisited.model.UserFactory;
 import org.wahlzeit_revisited.repository.PhotoRepository;
 import org.wahlzeit_revisited.repository.UserRepository;
+import org.wahlzeit_revisited.service.PhotoCaseService;
 import org.wahlzeit_revisited.service.PhotoService;
 import org.wahlzeit_revisited.service.Transformer;
 import org.wahlzeit_revisited.service.UserService;
@@ -35,6 +36,7 @@ public class Wahlzeit {
             // service
             bind(Transformer.class).to(Transformer.class);
             bind(PhotoService.class).to(PhotoService.class);
+            bind(PhotoCaseService.class).to(PhotoCaseService.class);
             bind(UserService.class).to(UserService.class);
             // repository
             bind(UserRepository.class).to(UserRepository.class);
