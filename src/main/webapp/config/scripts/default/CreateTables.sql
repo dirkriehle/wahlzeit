@@ -5,7 +5,8 @@ CREATE TABLE users
     email_address text UNIQUE,
     creation_time bigint,
     password      text,
-    rights        integer
+    rights        integer,
+    language      integer
 );
 
 CREATE TABLE photos
