@@ -1,8 +1,6 @@
 package org.wahlzeit_revisited;
 
 import jakarta.ws.rs.core.UriBuilder;
-import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -13,10 +11,7 @@ import org.wahlzeit_revisited.model.UserFactory;
 import org.wahlzeit_revisited.repository.CaseRepository;
 import org.wahlzeit_revisited.repository.PhotoRepository;
 import org.wahlzeit_revisited.repository.UserRepository;
-import org.wahlzeit_revisited.service.CaseService;
-import org.wahlzeit_revisited.service.PhotoService;
-import org.wahlzeit_revisited.service.Transformer;
-import org.wahlzeit_revisited.service.UserService;
+import org.wahlzeit_revisited.service.*;
 import org.wahlzeit_revisited.utils.SysConfig;
 import org.wahlzeit_revisited.utils.WahlzeitConfig;
 
@@ -39,6 +34,7 @@ public class Wahlzeit {
             // service
             bind(Transformer.class).to(Transformer.class);
             bind(PhotoService.class).to(PhotoService.class);
+            bind(PhotoFlagService.class).to(PhotoFlagService.class);
             bind(UserService.class).to(UserService.class);
             bind(CaseService.class).to(CaseService.class);
             // repository
