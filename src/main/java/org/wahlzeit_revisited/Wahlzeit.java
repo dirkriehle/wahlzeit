@@ -4,10 +4,9 @@ import jakarta.ws.rs.core.UriBuilder;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.wahlzeit_revisited.agent.AgentManager;
 import org.wahlzeit_revisited.main.DatabaseMain;
-import org.wahlzeit_revisited.model.CaseFactory;
-import org.wahlzeit_revisited.model.PhotoFactory;
-import org.wahlzeit_revisited.model.UserFactory;
+import org.wahlzeit_revisited.model.*;
 import org.wahlzeit_revisited.repository.CaseRepository;
 import org.wahlzeit_revisited.repository.PhotoRepository;
 import org.wahlzeit_revisited.repository.UserRepository;
@@ -44,14 +43,20 @@ public class Wahlzeit {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        // setup database-connection
-        DatabaseMain databaseMain = new DatabaseMain(sysConfig);
-        databaseMain.startUp();
+    private static void setupLanguageConfig() {
+        LanguageConfigs.put(Language.ENGLISH, new EnglishModelConfig());
+        LanguageConfigs.put(Language.GERMAN, new GermanModelConfig());
+    }
 
+    private static void startAgents() {
+        AgentManager.getInstance().startAllThreads();
+    }
+
+    private static void startServer() {
         // setup endpoints/API
         ResourceConfig config = new ResourceConfig()
                 .packages("org.wahlzeit_revisited.auth")
+                .packages("org.wahlzeit_revisited.agent")
                 .packages("org.wahlzeit_revisited.filter")
                 .packages("org.wahlzeit_revisited.resource")
                 .packages("org.wahlzeit_revisited.service");
@@ -60,8 +65,16 @@ public class Wahlzeit {
         // setup server
         URI baseUri = UriBuilder.fromUri("http://[::]/").port(8080).build();
         GrizzlyHttpServerFactory.createHttpServer(baseUri, config, true);
+    }
 
-        databaseMain.shutDown();
+    public static void main(String[] args) throws Exception {
+        // setup database-connection
+        DatabaseMain databaseMain = new DatabaseMain(sysConfig);
+        databaseMain.startUp();
+
+        setupLanguageConfig();
+        startAgents();
+        startServer();
     }
 
 }

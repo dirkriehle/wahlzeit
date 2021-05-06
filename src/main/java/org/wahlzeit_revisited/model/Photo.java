@@ -183,4 +183,8 @@ public class Photo implements Persistent {
         return creationTime;
     }
 
+    public boolean hasSameOwner(Photo photo) {
+        return ownerId.equals(photo.ownerId);
+    }
+
 }
