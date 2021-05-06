@@ -35,3 +35,6 @@ jobs:
 
       - name: Run tests
         run: ./gradlew test
+
+      - name: Run integration tests
+        run: ./gradlew testIT
