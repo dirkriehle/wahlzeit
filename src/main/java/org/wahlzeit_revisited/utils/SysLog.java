@@ -20,7 +20,6 @@
 
 package org.wahlzeit_revisited.utils;
 
-import org.wahlzeit.services.Log;
 
 import java.sql.Statement;
 

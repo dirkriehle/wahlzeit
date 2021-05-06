@@ -6,6 +6,8 @@ import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
+import org.wahlzeit_revisited.agent.AgentManager;
+import org.wahlzeit_revisited.agent.NotifyAboutPraiseAgent;
 import org.wahlzeit_revisited.dto.PhotoDto;
 import org.wahlzeit_revisited.model.*;
 import org.wahlzeit_revisited.repository.PhotoRepository;
@@ -98,6 +100,7 @@ public class PhotoService {
         Photo photo = findVisiblePhoto(photoId);
         photo.addToPraise(ranking);
         repository.update(photo);
+        notifyPraise(photo);
 
         PhotoDto responseDto = transformer.transform(photo);
         return responseDto;
@@ -110,5 +113,13 @@ public class PhotoService {
         }
         return photo;
     }
+
+    private void notifyPraise(Photo photo) {
+        NotifyAboutPraiseAgent praiseAgent = (NotifyAboutPraiseAgent) AgentManager
+                .getInstance()
+                .getAgent(NotifyAboutPraiseAgent.NAME);
+        praiseAgent.addForNotify(photo);
+    }
+    
 
 }
