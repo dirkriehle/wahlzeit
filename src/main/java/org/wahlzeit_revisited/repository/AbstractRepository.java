@@ -3,6 +3,7 @@ package org.wahlzeit_revisited.repository;
 import org.wahlzeit.services.SysLog;
 import org.wahlzeit_revisited.database.DatabaseConnection;
 import org.wahlzeit_revisited.database.SessionManager;
+import org.wahlzeit_revisited.model.Photo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
