@@ -11,9 +11,10 @@ public class User extends Client implements Persistent {
     private Long id;
     private String name;
     private String password;
-    private Language language;
+    private Gender gender = Gender.UNDEFINED;
+    private Language language = Language.GERMAN;
 
-    private long creationTime;
+    private long creationTime = System.currentTimeMillis();
 
     /*
      * constructor
@@ -27,8 +28,6 @@ public class User extends Client implements Persistent {
         this.name = name;
         this.emailAddress = EmailAddress.getFromString(email);
         this.password = password;
-        creationTime = System.currentTimeMillis();
-        language = Language.GERMAN;
     }
 
     User(Long id, Long creationTime, String name, String email, String password, AccessRights rights) {
@@ -112,8 +111,16 @@ public class User extends Client implements Persistent {
         return creationTime;
     }
 
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
     public Language getLanguage() {
-        return Language.ENGLISH;
+        return language;
     }
 
     public String getSiteUrlAsString() {

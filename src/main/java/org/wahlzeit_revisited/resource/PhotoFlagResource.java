@@ -9,15 +9,15 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 import org.wahlzeit_revisited.auth.AccessRights;
 import org.wahlzeit_revisited.dto.PhotoDto;
-import org.wahlzeit_revisited.service.PhotoCaseService;
+import org.wahlzeit_revisited.service.PhotoFlagService;
 
 import java.util.List;
 
 @Path("api/photo/case")
-public class PhotoCaseResource {
+public class PhotoFlagResource {
 
     @Inject
-    PhotoCaseService service;
+    PhotoFlagService service;
 
     @GET
     @RolesAllowed(AccessRights.MODERATOR_ROLE)

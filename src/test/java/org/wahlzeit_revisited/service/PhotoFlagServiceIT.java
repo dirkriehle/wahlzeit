@@ -17,16 +17,16 @@ import org.wahlzeit_revisited.utils.SysConfig;
 import java.util.List;
 import java.util.Set;
 
-public class PhotoCaseServiceIT extends BaseModelTest {
+public class PhotoFlagServiceIT extends BaseModelTest {
 
-    private PhotoCaseService service;
+    private PhotoFlagService service;
     private PhotoService photoService;
     private UserRepository userRepository;
     private UserFactory userFactory;
 
     @Before
     public void setupDependencies() {
-        service = new PhotoCaseService();
+        service = new PhotoFlagService();
         service.repository = new PhotoRepository();
         service.repository.factory = new PhotoFactory();
         service.transformer = new Transformer();

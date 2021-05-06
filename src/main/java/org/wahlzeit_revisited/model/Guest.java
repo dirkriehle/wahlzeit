@@ -20,20 +20,19 @@
 
 package org.wahlzeit_revisited.model;
 
-import org.wahlzeit.model.AccessRights;
-import org.wahlzeit.model.Client;
-import org.wahlzeit.services.EmailAddress;
+
+import org.wahlzeit_revisited.auth.AccessRights;
 
 /**
  * A Guest is a client that is not logged in.
  */
 public class Guest extends Client {
 
-	/**
-	 * 
-	 */
-	public Guest() {
-		initialize(AccessRights.GUEST, EmailAddress.EMPTY);
-	}
+    /**
+     *
+     */
+    public Guest() {
+        initialize(AccessRights.GUEST, EmailAddress.EMPTY);
+    }
 
 }

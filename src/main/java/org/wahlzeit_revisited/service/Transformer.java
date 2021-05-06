@@ -2,10 +2,13 @@ package org.wahlzeit_revisited.service;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import org.wahlzeit_revisited.dto.CaseDto;
 import org.wahlzeit_revisited.dto.PhotoDto;
 import org.wahlzeit_revisited.dto.UserDto;
+import org.wahlzeit_revisited.model.Case;
 import org.wahlzeit_revisited.model.Photo;
 import org.wahlzeit_revisited.model.User;
+import org.wahlzeit_revisited.repository.Persistent;
 import org.wahlzeit_revisited.utils.WahlzeitConfig;
 
 import java.util.List;
@@ -19,6 +22,8 @@ public class Transformer {
 
     public UserDto transform(User user) {
         assertIsNotNull(user);
+        assertValidPersistent(user);
+
         return new UserDto.Builder()
                 .withId(user.getId())
                 .withName(user.getName())
@@ -28,7 +33,7 @@ public class Transformer {
 
     public PhotoDto transform(Photo photo) {
         assertIsNotNull(photo);
-        assertValidPhoto(photo);
+        assertValidPersistent(photo);
 
         String path = "/api/photo/" + photo.getId() + "/data";
         return new PhotoDto.Builder()
@@ -42,8 +47,28 @@ public class Transformer {
                 .build();
     }
 
+    public CaseDto transform(Case photoCase) {
+        assertIsNotNull(photoCase);
+        assertValidPersistent(photoCase);
+
+        return new CaseDto.Builder()
+                .withId(photoCase.getId())
+                .withPhotoId(photoCase.getPhotoId())
+                .withFlaggerId(photoCase.getFlaggerId())
+                .withReason(photoCase.getReason())
+                .withWasDecided(photoCase.wasDecided())
+                .withExplanation(photoCase.getExplanation())
+                .withCreatedOn(photoCase.getCreationTime())
+                .withDecidedOn(photoCase.getDecisionTime())
+                .build();
+    }
+
     public List<PhotoDto> transformPhotos(List<Photo> photos) {
         return photos.stream().map(this::transform).collect(Collectors.toList());
+    }
+
+    public List<CaseDto> transformCases(List<Case> cases) {
+        return cases.stream().map(this::transform).collect(Collectors.toList());
     }
 
     /*
@@ -56,10 +81,11 @@ public class Transformer {
         }
     }
 
-    private static void assertValidPhoto(Photo photo) {
-        if (photo.getId() == null) {
+    private static void assertValidPersistent(Persistent persistent) {
+        if (persistent.getId() == null) {
             throw new IllegalArgumentException("Photo needs an id");
         }
     }
+
 
 }

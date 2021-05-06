@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PhotoCaseService {
+public class PhotoFlagService {
 
     @Inject
     PhotoRepository repository;

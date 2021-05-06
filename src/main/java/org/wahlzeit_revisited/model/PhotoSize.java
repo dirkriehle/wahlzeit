@@ -20,25 +20,22 @@
 
 package org.wahlzeit_revisited.model;
 
-import org.wahlzeit.model.Photo;
-import org.wahlzeit.utils.EnumValue;
-
 /**
  * The PhotoSize class defines the sizes in which a Photo can come.
  * The defined sizes are: thumb, extra small, small, medium, large, and extra large.
  * For each size, there is a defined pixel size to which photos are scaled.
  */
-public enum PhotoSize implements EnumValue {
+public enum PhotoSize {
 
     /**
      * medium: 440, 600
      */
     THUMB(0, Photo.MAX_THUMB_PHOTO_WIDTH, Photo.MAX_THUMB_PHOTO_HEIGHT), // = (105, 150)
-    EXTRA_SMALL(1, Photo.MAX_PHOTO_WIDTH * 1 / 2, Photo.MAX_PHOTO_HEIGHT * 1 / 2), // (210, 300)
+    EXTRA_SMALL(1, Photo.MAX_PHOTO_WIDTH / 2, Photo.MAX_PHOTO_HEIGHT / 2), // (210, 300)
     SMALL(2, Photo.MAX_PHOTO_WIDTH * 2 / 3, Photo.MAX_PHOTO_HEIGHT * 2 / 3), // (280, 400)
-    MEDIUM(3, Photo.MAX_PHOTO_WIDTH * 1 / 1, Photo.MAX_PHOTO_HEIGHT * 1 / 1), // (420, 600)
+    MEDIUM(3, Photo.MAX_PHOTO_WIDTH, Photo.MAX_PHOTO_HEIGHT), // (420, 600)
     LARGE(4, Photo.MAX_PHOTO_WIDTH * 3 / 2, Photo.MAX_PHOTO_HEIGHT * 3 / 2), // (630, 900)
-    EXTRA_LARGE(5, Photo.MAX_PHOTO_WIDTH * 2 / 1, Photo.MAX_PHOTO_HEIGHT * 2 / 1); // (840, 1200)
+    EXTRA_LARGE(5, Photo.MAX_PHOTO_WIDTH * 2, Photo.MAX_PHOTO_HEIGHT * 2); // (840, 1200)
 
     /**
      * All possible states of PhotoSize
