@@ -74,7 +74,7 @@ public class PhotoService {
     @PostConstruct
     public void setupInitialPhotos() throws SQLException, IOException {
         if (!repository.findAll().isEmpty()) {
-            //return;
+            return;
         }
 
         int count = 0;
