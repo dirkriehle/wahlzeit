@@ -55,13 +55,12 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
      * Config directories
      */
     protected ConfigDir scriptsDir;
-    protected ConfigDir staticDir;
+    protected ConfigDir photosDir;
     protected ConfigDir templatesDir;
 
     /**
      * Data directories
      */
-    protected Directory photosDir;
     protected Directory backupDir;
     protected Directory tempDir;
 
@@ -75,11 +74,11 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
 
         // Config directories
         scriptsDir = new ConfigDir(rootDir, "config" + File.separator + "scripts");
-        staticDir = new ConfigDir(rootDir, "config" + File.separator + "static");
+        photosDir = new ConfigDir(rootDir, "config" + File.separator + "flowers");
         templatesDir = new ConfigDir(rootDir, "config" + File.separator + "templates");
 
         // Data directories
-        photosDir = new Directory(rootDir, "data" + File.separator + "photos");
+
         backupDir = new Directory(rootDir, "data" + File.separator + "backup");
         tempDir = new Directory(rootDir, "data" + File.separator + "temp");
 
@@ -91,49 +90,78 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
     }
 
     /**
-     * getter
+     * @methodtype get
      */
-
     public String getRootDirAsString() {
         return rootDir;
     }
 
-    public ConfigDir getStaticDir() {
-        return staticDir;
+    /**
+     * @methodtype get
+     */
+    public ConfigDir getPhotosDir() {
+        return photosDir;
     }
 
+    /**
+     * @methodtype get
+     */
     public ConfigDir getScriptsDir() {
         return scriptsDir;
     }
 
+    /**
+     * @methodtype get
+     */
     public ConfigDir getTemplatesDir() {
         return templatesDir;
     }
 
+    /**
+     * @methodtype get
+     */
     public Directory getBackupDir() {
         return backupDir;
     }
 
+    /**
+     * @methodtype get
+     */
     public Directory getTempDir() {
         return tempDir;
     }
 
+    /**
+     * @methodtype get
+     */
     public String getStaticFileMappingPath() {
         return staticMappingSlug;
     }
 
+    /**
+     * @methodtype get
+     */
     public String getDbDriverAsString() {
         return getValue(DB_DRIVER);
     }
 
+    /**
+     * @methodtype get
+     */
     public String getDbConnectionAsString() {
         return getValue(DB_CONNECTION);
     }
 
+    /**
+     * @methodtype get
+     */
     public String getDbUserAsString() {
         return getValue(DB_USER);
     }
 
+    /**
+     * @methodtype get
+     */
     public String getDbPasswordAsString() {
         return getValue(DB_PASSWORD);
     }

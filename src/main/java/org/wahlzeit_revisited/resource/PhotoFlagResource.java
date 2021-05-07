@@ -23,10 +23,8 @@ package org.wahlzeit_revisited.resource;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.wahlzeit_revisited.auth.AccessRights;
 import org.wahlzeit_revisited.dto.PhotoDto;
@@ -39,6 +37,7 @@ import java.util.List;
  * The bridge between the outer world and photo flagging
  */
 @Path("api/photo/flag")
+@Produces(MediaType.APPLICATION_JSON)
 public class PhotoFlagResource extends AbstractResource {
 
     @Inject

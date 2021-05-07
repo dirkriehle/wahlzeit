@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wahlzeit_revisited.BaseModelTest;
-import org.wahlzeit_revisited.auth.AccessRights;
 import org.wahlzeit_revisited.dto.PhotoDto;
 import org.wahlzeit_revisited.model.PhotoFactory;
 import org.wahlzeit_revisited.model.User;
@@ -28,6 +27,7 @@ public class PhotoServiceIT extends BaseModelTest {
     @Before
     public void setupDependencies() {
         service = new PhotoService();
+        service.config = new SysConfig();
         service.factory = new PhotoFactory();
         service.repository = new PhotoRepository();
         service.repository.factory = new PhotoFactory();
@@ -38,6 +38,19 @@ public class PhotoServiceIT extends BaseModelTest {
         userFactory = new UserFactory();
         userRepository = new UserRepository();
         userRepository.factory = new UserFactory();
+    }
+
+    @Test
+    public void test_getRandomPhoto() throws SQLException, IOException {
+        // arrange
+        service.setupInitialPhotos();
+
+        // act
+        PhotoDto actualPhoto = service.getRandomPhoto();
+
+        // assert - doesn't throw an exception
+        Assert.assertNotNull(actualPhoto);
+        Assert.assertNotNull(actualPhoto.getPath());
     }
 
     @Test

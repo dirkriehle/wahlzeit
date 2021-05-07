@@ -30,7 +30,7 @@ public interface WahlzeitConfig {
 
     String getRootDirAsString();
 
-    ConfigDir getStaticDir();
+    ConfigDir getPhotosDir();
 
     ConfigDir getScriptsDir();
 
