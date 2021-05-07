@@ -7,6 +7,10 @@ import jakarta.ws.rs.ext.Provider;
 
 import java.io.IOException;
 
+/**
+ * Adds CrossOriginRequestS headers, this service is reachable to the outer world
+ * https://en.wikipedia.org/wiki/Basic_access_authentication
+ */
 @Provider
 public class CorsFilter implements ContainerResponseFilter {
 

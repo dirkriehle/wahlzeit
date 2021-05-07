@@ -17,6 +17,9 @@ import org.wahlzeit_revisited.service.UserService;
 import java.sql.SQLException;
 import java.util.List;
 
+/*
+ * The bridge between the outer world and users
+ */
 @Path("api/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)

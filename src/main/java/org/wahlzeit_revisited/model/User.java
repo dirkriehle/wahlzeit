@@ -30,15 +30,6 @@ public class User extends Client implements Persistent {
         this.password = password;
     }
 
-    User(Long id, Long creationTime, String name, String email, String password, AccessRights rights) {
-        this.id = id;
-        this.creationTime = creationTime;
-        this.name = name;
-        this.emailAddress = EmailAddress.getFromString(email);
-        this.password = password;
-        this.rights = rights;
-    }
-
     /*
      * Persistent contract
      */

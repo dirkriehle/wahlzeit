@@ -19,7 +19,7 @@ import java.net.URI;
 
 public class Wahlzeit {
 
-    private static final WahlzeitConfig sysConfig = new SysConfig(); // Global config
+    private static final SysConfig sysConfig = new SysConfig(); // Global config
 
     private static class ServiceInjectBinder extends AbstractBinder {
         @Override

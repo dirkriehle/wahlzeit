@@ -16,6 +16,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Business logic of users
+ */
 @Singleton
 public class UserService {
 
@@ -26,10 +29,12 @@ public class UserService {
     @Inject
     public UserFactory factory;
 
-    /*
-     * business methods
+    /**
+     * Get all users
+     *
+     * @return all users
+     * @throws SQLException internal error
      */
-
     public List<UserDto> getUsers() throws SQLException {
         List<User> userList = repository.findAll();
 
@@ -37,42 +42,81 @@ public class UserService {
         for (User photo : userList) {
             responseDto.add(transformer.transform(photo));
         }
+        SysLog.logSysInfo(String.format("Fetched %s users", responseDto.size()));
         return responseDto;
     }
 
+    /**
+     * Finds a user by id
+     *
+     * @param userId the user to find
+     * @return found user
+     * @throws SQLException internal error
+     */
     public UserDto getUser(Long userId) throws SQLException {
         User user = repository.findById(userId).orElseThrow(() -> new NotFoundException("Unknown UserId"));
 
+        SysLog.logSysInfo(String.format("Got user by id: %s ", user.getId()));
         UserDto responseDto = transformer.transform(user);
         return responseDto;
     }
 
+    /**
+     * Creates a new User
+     * <p>
+     * Class is not thread safe, as email might be no longer unique
+     * due a race condition
+     * <p>
+     * One might consider transactions for a productive application
+     * One might consider password hashing for a productive application
+     *
+     * @param username      register username
+     * @param email         register email
+     * @param plainPassword register password
+     * @return created user
+     * @throws SQLException internal error
+     */
     public synchronized UserDto createUser(String username, String email, String plainPassword) throws SQLException {
         if (repository.hasByName(username) || repository.hasByEmail(email)) {
             throw new WebApplicationException("Email already registered", Response.Status.CONFLICT);
         }
 
         User createdUser = factory.createUser(username, email, plainPassword, AccessRights.USER);
-
         createdUser = repository.insert(createdUser);
-        SysLog.logSysInfo(String.format("Created user: %s (%s)  ", createdUser.getEmail(), createdUser.getId()));
 
+        SysLog.logSysInfo(String.format("Created user: %s ", createdUser.getId()));
         UserDto responseDto = transformer.transform(createdUser);
         return responseDto;
     }
 
-    public UserDto login(String email, String password) throws SQLException {
-        User loginUser = repository.findByNameOrEmailAndPassword(email, password)
+    /**
+     * Returns the userDto for the credentials
+     *
+     * @param identifier the users email or username
+     * @param password   according password
+     * @return matching userDto
+     * @throws SQLException internal error
+     */
+    public UserDto login(String identifier, String password) throws SQLException {
+        User loginUser = repository.findByNameOrEmailAndPassword(identifier, password)
                 .orElseThrow(() -> new NotFoundException("Invalid credentials"));
 
+        SysLog.logSysInfo(String.format("Logged user in: %s ", loginUser.getId()));
         UserDto responseDto = transformer.transform(loginUser);
         return responseDto;
     }
 
+    /**
+     * Deletes an user
+     *
+     * @param user to delete
+     * @return deleted user
+     * @throws SQLException internal error
+     */
     public UserDto deleteUser(User user) throws SQLException {
         User deletedUser = repository.delete(user);
-        SysLog.logSysInfo(String.format("Deleted user: %s (%s)  ", deletedUser.getEmail(), deletedUser.getId()));
 
+        SysLog.logSysInfo(String.format("Deleted user: %s ", deletedUser.getId()));
         UserDto responseDto = transformer.transform(deletedUser);
         return responseDto;
     }

@@ -11,6 +11,9 @@ import org.wahlzeit_revisited.service.CaseService;
 
 import java.util.List;
 
+/*
+ * The bridge between the outer world and cases
+ */
 @Path("api/case")
 public class CaseResource extends AbstractResource {
 
@@ -20,7 +23,7 @@ public class CaseResource extends AbstractResource {
     @GET
     @RolesAllowed(AccessRights.MODERATOR_ROLE)
     public Response getCases() throws Exception {
-        List<CaseDto> responseDto = service.getCases();
+        List<CaseDto> responseDto = service.getAllCases();
         return Response.ok(responseDto).build();
     }
 

@@ -81,7 +81,7 @@ public enum AccessRights {
     /**
      *
      */
-    private AccessRights(int myValue) {
+    AccessRights(int myValue) {
         value = myValue;
     }
 

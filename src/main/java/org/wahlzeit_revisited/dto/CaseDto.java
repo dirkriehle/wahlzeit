@@ -2,6 +2,9 @@ package org.wahlzeit_revisited.dto;
 
 import org.wahlzeit_revisited.model.FlagReason;
 
+/**
+ * CaseDto represents the Case-entity for the outer world
+ */
 public class CaseDto {
 
     protected long id;
@@ -24,38 +27,65 @@ public class CaseDto {
         this.decidedOn = decidedOn;
     }
 
+    /**
+     * @methodtype get
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * @methodtype get
+     */
     public Long getPhotoId() {
         return photoId;
     }
 
+    /**
+     * @methodtype get
+     */
     public Long getFlaggerId() {
         return flaggerId;
     }
 
+    /**
+     * @methodtype get
+     */
     public FlagReason getReason() {
         return reason;
     }
 
+    /**
+     * @methodtype get
+     */
     public String getExplanation() {
         return explanation;
     }
 
+    /**
+     * @methodtype get
+     */
     public Long getCreatedOn() {
         return createdOn;
     }
 
+    /**
+     * @methodtype boolean-query
+     */
     public Boolean isWasDecided() {
         return wasDecided;
     }
 
+    /**
+     * @methodtype get
+     */
     public Long getDecidedOn() {
         return decidedOn;
     }
 
+    /*
+     * Builder
+     */
 
     public static class Builder {
         protected long id;
@@ -110,6 +140,9 @@ public class CaseDto {
             return this;
         }
 
+        /**
+         * @methodtype transform
+         */
         public CaseDto build() {
             return new CaseDto(id, photoId, flaggerId, reason, explanation, createdOn, wasDecided, decidedOn);
         }

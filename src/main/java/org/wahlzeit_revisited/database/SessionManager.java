@@ -41,7 +41,7 @@ public class SessionManager {
     /**
      *
      */
-    public static void dropThreadLocalSession() {
+    public static void dropSession() {
         session = null;
     }
 

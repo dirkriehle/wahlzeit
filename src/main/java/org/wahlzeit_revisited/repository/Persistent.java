@@ -25,7 +25,6 @@ import java.sql.SQLException;
 
 /**
  * A Persistent object is an object that can be read from and written to some storage.
- * Also, it has a write count, which serves as a dirty flag.
  */
 public interface Persistent {
 

@@ -9,15 +9,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
+/*
+ * Repository to query User entities
+ */
 public class UserRepository extends AbstractRepository<User> {
 
     @Inject
     public UserFactory factory;
 
-    /*
-     * business methods
+    /**
+     * Checks if a user with email exists
+     * @param email the email to heck
+     * @return according user exists
+     * @throws SQLException wrong table name
      */
-
     public boolean hasByEmail(String email) throws SQLException {
         assertIsNonNullArgument(email);
 
@@ -32,6 +37,12 @@ public class UserRepository extends AbstractRepository<User> {
         }
     }
 
+    /**
+     * Checks if a user with username exists
+     * @param username the username to heck
+     * @return according user exists
+     * @throws SQLException wrong table name
+     */
     public boolean hasByName(String username) throws SQLException {
         assertIsNonNullArgument(username);
 
@@ -45,10 +56,18 @@ public class UserRepository extends AbstractRepository<User> {
         }
     }
 
+    /**
+     * Returns a user for username|email & password combination
+     * @param identifier username or email
+     * @param plainPassword the plain not hashed password
+     * @return The according user
+     * @throws SQLException wrong table name
+     */
     public Optional<User> findByNameOrEmailAndPassword(String identifier, String plainPassword) throws SQLException {
         assertIsNonNullArgument(identifier);
         assertIsNonNullArgument(plainPassword);
 
+        // One might hash the password in a productive system
         String query = String.format("SELECT * FROM %s WHERE email_address = ? OR name = ? AND password = ?", getTableName());
         try (PreparedStatement stmt = getReadingStatement(query)) {
             stmt.setString(1, identifier);

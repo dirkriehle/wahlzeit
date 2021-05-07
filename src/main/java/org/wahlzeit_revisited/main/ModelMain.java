@@ -21,9 +21,9 @@
 package org.wahlzeit_revisited.main;
 
 
+import org.wahlzeit_revisited.config.ConfigDir;
 import org.wahlzeit_revisited.database.DatabaseConnection;
 import org.wahlzeit_revisited.database.SessionManager;
-import org.wahlzeit_revisited.database.config.ConfigDir;
 import org.wahlzeit_revisited.utils.FileUtil;
 import org.wahlzeit_revisited.utils.SysLog;
 import org.wahlzeit_revisited.utils.WahlzeitConfig;
@@ -66,13 +66,6 @@ public abstract class ModelMain extends AbstractMain {
     /**
      *
      */
-    protected void shutDown() throws Exception {
-        saveAll();
-    }
-
-    /**
-     *
-     */
     public void setUpDatabase() throws SQLException {
         runScript("CreateTables.sql");
     }
@@ -82,13 +75,6 @@ public abstract class ModelMain extends AbstractMain {
      */
     public void tearDownDatabase() throws SQLException {
         runScript("DropTables.sql");
-    }
-
-    /**
-     *
-     */
-    public void saveAll() throws SQLException {
-        // TODO:
     }
 
     /**

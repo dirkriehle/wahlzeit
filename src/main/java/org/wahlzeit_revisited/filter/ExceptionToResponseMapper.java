@@ -7,6 +7,10 @@ import jakarta.ws.rs.ext.Provider;
 import org.wahlzeit_revisited.dto.ErrorDto;
 import org.wahlzeit_revisited.utils.SysLog;
 
+/*
+ * Maps in internal exception to an ErrorDto
+ * So outer world knows what to expect, when an error occurs
+ */
 @Provider
 public class ExceptionToResponseMapper implements ExceptionMapper<Throwable> {
 

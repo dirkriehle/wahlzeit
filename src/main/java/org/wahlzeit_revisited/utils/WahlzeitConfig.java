@@ -1,7 +1,6 @@
 package org.wahlzeit_revisited.utils;
 
-import org.wahlzeit_revisited.database.config.ConfigDir;
-import org.wahlzeit_revisited.database.config.Directory;
+import org.wahlzeit_revisited.config.ConfigDir;
 
 /**
  * A basic set of system configuration data

@@ -29,14 +29,14 @@ import java.text.SimpleDateFormat;
  */
 public class EnglishModelConfig extends AbstractModelConfig {
 
-	/**
-	 * 
-	 */
-	public EnglishModelConfig() {
-		DecimalFormat praiseFormatter = new DecimalFormat("##.##");
-		praiseFormatter.setMinimumFractionDigits(2);
-		
-		initialize(Language.ENGLISH, new SimpleDateFormat("MMM d, yyyy"), praiseFormatter);
-	}
+    /**
+     *
+     */
+    public EnglishModelConfig() {
+        DecimalFormat praiseFormatter = new DecimalFormat("##.##");
+        praiseFormatter.setMinimumFractionDigits(2);
+
+        initialize(Language.ENGLISH, new SimpleDateFormat("MMM d, yyyy"), praiseFormatter);
+    }
 
 }

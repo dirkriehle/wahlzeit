@@ -1,18 +1,13 @@
 package org.wahlzeit_revisited.dto;
 
+/**
+ * UserDto represents the User-entity for the outer world
+ */
 public class UserDto {
-
-    /*
-     * members
-     */
 
     private final Long id;
     private final String name;
     private final String email;
-
-    /*
-     * constructor
-     */
 
     UserDto(Long id, String name, String email) {
         this.id = id;
@@ -20,18 +15,23 @@ public class UserDto {
         this.email = email;
     }
 
-    /*
-     * getters/setters
+    /**
+     * @methodtype get
      */
-
     public Long getId() {
         return id;
     }
 
+    /**
+     * @methodtype get
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @methodtype get
+     */
     public String getEmail() {
         return email;
     }
