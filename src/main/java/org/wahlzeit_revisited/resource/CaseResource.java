@@ -3,6 +3,7 @@ package org.wahlzeit_revisited.resource;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.wahlzeit_revisited.auth.AccessRights;
 import org.wahlzeit_revisited.dto.CaseDto;
@@ -15,6 +16,7 @@ import java.util.List;
  * The bridge between the outer world and cases
  */
 @Path("api/case")
+@Produces(MediaType.APPLICATION_JSON)
 public class CaseResource extends AbstractResource {
 
     @Inject
