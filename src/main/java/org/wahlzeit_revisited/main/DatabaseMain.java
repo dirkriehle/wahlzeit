@@ -12,7 +12,7 @@ public class DatabaseMain extends ModelMain {
     }
 
     public void shutDown() {
-        SessionManager.dropThreadLocalSession();
+        SessionManager.dropSession();
         SysLog.logSysInfo("Shutting down database");
     }
 }
