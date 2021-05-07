@@ -26,7 +26,6 @@ import java.sql.*;
 
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
-import org.wahlzeit.servlets.AbstractServlet;
 
 /**
  * A single-threaded Main class with database connection. Can be used by tools that don't want to start a server.
@@ -131,7 +130,7 @@ public abstract class ModelMain extends AbstractMain {
 			Case.setLastCaseId(new CaseId(lastCaseId));
 			SysLog.logSysInfo("loaded global variable lastCaseId: " + lastCaseId);
 			int lastSessionId = result.getInt("last_session_id");
-			AbstractServlet.setLastSessionId(lastSessionId);		
+			// AbstractServlet.setLastSessionId(lastSessionId);
 			SysLog.logSysInfo("loaded global variable lastSessionId: " + lastSessionId);
 		} else {
 			SysLog.logSysError("Could not load globals!");
@@ -162,9 +161,9 @@ public abstract class ModelMain extends AbstractMain {
 			int lastCaseId = Case.getLastCaseId().asInt();
 			rset.updateInt("last_case_id", lastCaseId);
 			SysLog.logSysInfo("saved global variable lastCaseId: " + lastCaseId);
-			int lastSessionId = AbstractServlet.getLastSessionId();
-			rset.updateInt("last_session_id", lastSessionId);
-			SysLog.logSysInfo("saved global variable lastSessionId: " + lastSessionId);
+			// int lastSessionId = AbstractServlet.getLastSessionId();
+			// rset.updateInt("last_session_id", lastSessionId);
+			// SysLog.logSysInfo("saved global variable lastSessionId: " + lastSessionId);
 			rset.updateRow();
 		} else {
 			SysLog.logSysError("Could not save globals!");

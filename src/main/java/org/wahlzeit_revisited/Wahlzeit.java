@@ -63,7 +63,7 @@ public class Wahlzeit {
         config.register(new ServiceInjectBinder());
 
         // setup server
-        URI baseUri = UriBuilder.fromUri("http://[::]/").port(8080).build();
+        URI baseUri = UriBuilder.fromUri("http://0.0.0.0/").port(8080).build();
         GrizzlyHttpServerFactory.createHttpServer(baseUri, config, true);
     }
 
