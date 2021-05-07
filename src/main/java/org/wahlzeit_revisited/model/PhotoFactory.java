@@ -1,5 +1,6 @@
 package org.wahlzeit_revisited.model;
 
+import com.sun.istack.Nullable;
 import org.wahlzeit_revisited.repository.PersistentFactory;
 
 import javax.imageio.ImageIO;
@@ -58,7 +59,7 @@ public class PhotoFactory implements PersistentFactory<Photo> {
      * @return owned and tagged photo
      * @throws IOException invalid image data
      */
-    public Photo createPhoto(User owner, byte[] data, Tags tags) throws IOException {
+    public Photo createPhoto(@Nullable User owner, byte[] data, Tags tags) throws IOException {
         InputStream is = new ByteArrayInputStream(data);
         Image image = ImageIO.read(is);
         int width = image.getWidth(null);
