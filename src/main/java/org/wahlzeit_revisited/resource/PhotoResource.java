@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
+ * Copyright (c) 2021 by Aron Metzig
+ *
+ * This file is part of the Wahlzeit photo rating application.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
 package org.wahlzeit_revisited.resource;
 
 import jakarta.annotation.security.PermitAll;
@@ -47,6 +68,15 @@ public class PhotoResource extends AbstractResource {
     }
 
     @GET
+    @Path("/rand")
+    @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
+    public Response getRandomPhoto() throws SQLException {
+        PhotoDto responseDto = service.getRandomPhoto();
+        return Response.ok(responseDto).build();
+    }
+
+    @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
@@ -56,8 +86,8 @@ public class PhotoResource extends AbstractResource {
     }
 
     @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(AccessRights.USER_ROLE)
     public Response removePhoto(@PathParam("id") Long photoId) throws SQLException {
         User user = getAuthorizedUser();
@@ -67,6 +97,7 @@ public class PhotoResource extends AbstractResource {
 
     @GET
     @Path("/{id}/data")
+    @Produces("image/*")
     @PermitAll
     public Response getPhotoData(@PathParam("id") Long photoId) throws SQLException {
         byte[] response = service.getPhotoData(photoId);
@@ -75,6 +106,7 @@ public class PhotoResource extends AbstractResource {
 
     @POST
     @Path("/{id}/praise")
+    @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     public Response praiseData(@PathParam("id") Long photoId, Long ranking) throws SQLException {
         PhotoDto photoDto = service.praisePhoto(photoId, ranking);

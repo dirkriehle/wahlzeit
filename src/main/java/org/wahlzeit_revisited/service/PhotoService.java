@@ -1,8 +1,30 @@
+/*
+ * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
+ * Copyright (c) 2021 by Aron Metzig
+ *
+ * This file is part of the Wahlzeit photo rating application.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
 package org.wahlzeit_revisited.service;
 
 
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
@@ -13,14 +35,12 @@ import org.wahlzeit_revisited.dto.PhotoDto;
 import org.wahlzeit_revisited.model.*;
 import org.wahlzeit_revisited.repository.PhotoRepository;
 import org.wahlzeit_revisited.repository.UserRepository;
-import org.wahlzeit_revisited.utils.SysConfig;
 import org.wahlzeit_revisited.utils.SysLog;
 import org.wahlzeit_revisited.utils.WahlzeitConfig;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
@@ -29,10 +49,12 @@ import java.util.stream.Collectors;
 /*
  * Business logic of photos
  */
+@Singleton
 public class PhotoService {
 
     @Inject
-    SysConfig config;
+    WahlzeitConfig config;
+
     @Inject
     UserRepository userRepository;
 
@@ -111,7 +133,7 @@ public class PhotoService {
      *
      * @param photoId id of photo
      * @return found PhotoDto
-     * @throws SQLException
+     * @throws SQLException internal error
      */
     public PhotoDto getPhoto(long photoId) throws SQLException {
         Photo photo = findVisiblePhoto(photoId);
@@ -122,11 +144,25 @@ public class PhotoService {
     }
 
     /**
+     * Get a random Photo
+     *
+     * @return visible photo
+     * @throws SQLException internal error
+     */
+    public PhotoDto getRandomPhoto() throws SQLException {
+        Photo randomPhoto = repository.findRandomVisible();
+
+        SysLog.logSysInfo(String.format("Fetched random photo %s", randomPhoto.getId()));
+        PhotoDto responseDto = transformer.transform(randomPhoto);
+        return responseDto;
+    }
+
+    /**
      * Get a photo data by id
      *
      * @param photoId id of photo
      * @return photo content
-     * @throws SQLException
+     * @throws SQLException internal error
      */
     public byte[] getPhotoData(long photoId) throws SQLException {
         Photo photo = findVisiblePhoto(photoId);
@@ -140,7 +176,7 @@ public class PhotoService {
      * @param userId        id of to filter user
      * @param unescapedTags list of to filter tags
      * @return found PhotoDtos
-     * @throws SQLException
+     * @throws SQLException internal error
      */
     public List<PhotoDto> getFilteredPhotos(Long userId, Set<String> unescapedTags) throws SQLException {
         Tags escapedTags = new Tags(unescapedTags);
