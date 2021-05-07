@@ -20,8 +20,8 @@
 
 package org.wahlzeit_revisited.config;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * An interface that manages a simple key/value store.
@@ -49,6 +49,6 @@ public interface Configuration {
     /**
      *
      */
-    void loadProperties(File file) throws IOException;
+    void loadProperties(InputStream file) throws IOException;
 
 }

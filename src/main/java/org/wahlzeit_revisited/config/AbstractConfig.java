@@ -21,9 +21,8 @@
 package org.wahlzeit_revisited.config;
 
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -89,12 +88,10 @@ public abstract class AbstractConfig implements Configuration {
     /**
      *
      */
-    public void loadProperties(File file) throws IOException {
+    public void loadProperties(InputStream stream) throws IOException {
         Properties input = new Properties();
 
-        FileInputStream stream = null;
         try {
-            stream = new FileInputStream(file);
             input.load(stream);
 
             for (Enumeration e = input.propertyNames(); e.hasMoreElements(); ) {

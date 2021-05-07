@@ -24,7 +24,8 @@ import jakarta.inject.Singleton;
 import org.wahlzeit_revisited.config.AbstractConfig;
 
 import java.io.File;
-import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -46,9 +47,9 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
     /**
      * Config directories
      */
-    protected File photosDir;
-    protected Path scriptsPath;
-    protected Path languagePath;
+    protected List<String> photosPath;
+    protected String scriptsPath;
+    protected String languagePath;
 
     /**
      * Constructor
@@ -56,10 +57,16 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
 
     public SysConfig() {
         // Config directories
-        String photoDirPath = Path.of("config", "photos").toString();
-        photosDir = new File(getClass().getClassLoader().getResource(photoDirPath).getFile());
-        scriptsPath = Path.of("config", "db");
-        languagePath = Path.of("config", "lang");
+        String sep = File.separator;
+
+        photosPath = List.of(
+                "config" + sep + "photos" + sep + "flower1.jpg",
+                "config" + sep + "photos" + sep + "flower2.jpg",
+                "config" + sep + "photos" + sep + "flower3.jpg",
+                "config" + sep + "photos" + sep + "flower4.jpg"
+        );
+        scriptsPath = sep + "config" + sep + "db";
+        languagePath = sep + "config" + sep + "lang";
 
         // Database connection
         doSetValue(SysConfig.DB_DRIVER, "org.postgresql.Driver");
@@ -73,20 +80,20 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
      * @methodtype get
      */
     @Override
-    public File getPhotosDir() {
-        return photosDir;
+    public Collection<String> getPhotosPath() {
+        return photosPath;
     }
 
     /**
      * @methodtype get
      */
     @Override
-    public Path getScriptsPath() {
+    public String getScriptsPath() {
         return scriptsPath;
     }
 
     @Override
-    public Path getLanguagePath() {
+    public String getLanguagePath() {
         return languagePath;
     }
 

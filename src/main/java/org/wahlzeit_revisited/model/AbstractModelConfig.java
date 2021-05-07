@@ -27,7 +27,7 @@ import org.wahlzeit_revisited.utils.SysLog;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -53,14 +53,16 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
         dateFormatter = myDateFormatter;
         praiseFormatter = myPraiseFormatter;
 
-        Path languagePath = new SysConfig()
+        String languagePath = new SysConfig()
                 .getLanguagePath()
-                .resolve(myLanguage.asIsoCode())
-                .resolve("ModelConfig.properties");
+                + File.separator
+                + myLanguage.asIsoCode()
+                + File.separator
+                + "ModelConfig.properties";
 
         try {
-            File properties = new File(getClass().getClassLoader().getResource(languagePath.toString()).getFile());
-            loadProperties(properties);
+            InputStream propertyStream = getClass().getResourceAsStream(languagePath);
+            loadProperties(propertyStream);
         } catch (IOException e) {
             SysLog.logThrowable(e);
         }

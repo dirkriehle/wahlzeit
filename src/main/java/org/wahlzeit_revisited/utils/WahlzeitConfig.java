@@ -21,8 +21,7 @@
 
 package org.wahlzeit_revisited.utils;
 
-import java.io.File;
-import java.nio.file.Path;
+import java.util.Collection;
 
 /**
  * A basic set of system configuration data
@@ -30,11 +29,11 @@ import java.nio.file.Path;
 public interface WahlzeitConfig {
 
 
-    File getPhotosDir();
+    Collection<String> getPhotosPath();
 
-    Path getScriptsPath();
+    String getScriptsPath();
 
-    Path getLanguagePath();
+    String getLanguagePath();
 
     String getDbDriverAsString();
 

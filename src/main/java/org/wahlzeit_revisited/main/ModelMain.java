@@ -26,11 +26,12 @@ import org.wahlzeit_revisited.database.SessionManager;
 import org.wahlzeit_revisited.utils.SysLog;
 import org.wahlzeit_revisited.utils.WahlzeitConfig;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.*;
+import java.util.stream.Collectors;
 
 /**
  * A single-threaded Main class with database connection. Can be used by tools that don't want to start a server.
@@ -86,22 +87,18 @@ public abstract class ModelMain extends AbstractMain {
         DatabaseConnection dbc = SessionManager.getDatabaseConnection();
         Connection conn = dbc.getRdbmsConnection();
 
-        Path path = config.getScriptsPath().resolve(scriptName);
-        File file = new File(getClass().getClassLoader().getResource(path.toString()).getFile());
-        if (file.exists()) {
-            try {
-                runScript(conn, file.toPath());
-            } catch (IOException ignored) {
-
-            }
-        }
+        String path = config.getScriptsPath() + File.separator + scriptName;
+        InputStream is = getClass().getResourceAsStream(path);
+        runScript(conn, is);
     }
 
     /**
      *
      */
-    protected void runScript(Connection conn, Path scriptPath) throws SQLException, IOException {
-        String query = Files.readString(scriptPath);
+    protected void runScript(Connection conn, InputStream inputStream) throws SQLException {
+        String query = new BufferedReader(new InputStreamReader(inputStream))
+                .lines()
+                .collect(Collectors.joining(System.lineSeparator()));
         SysLog.logQuery(query);
 
         Statement stmt = conn.createStatement();
