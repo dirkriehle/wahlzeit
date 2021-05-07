@@ -21,8 +21,6 @@
 package org.wahlzeit_revisited.model;
 
 
-import com.sun.istack.Nullable;
-
 import java.util.Optional;
 import java.util.Set;
 
@@ -34,7 +32,7 @@ public class PhotoFilter {
     private final User user;
     private final Tags tags;
 
-    public PhotoFilter(@Nullable User user, Tags tags) {
+    public PhotoFilter(User user, Tags tags) {
         this.user = user;
         this.tags = tags;
     }
