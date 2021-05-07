@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com, Aron Metzig
+ * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
+ * Copyright (c) 2021 by Aron Metzig
  *
  * This file is part of the Wahlzeit photo rating application.
  *
