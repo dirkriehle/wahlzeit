@@ -33,6 +33,7 @@ public class PhotoFactory implements PersistentFactory<Photo> {
 
     /**
      * Creates a tagged photo from bytes
+     *
      * @param data photo data
      * @param tags photo tags
      * @return the tagged photo
@@ -50,9 +51,10 @@ public class PhotoFactory implements PersistentFactory<Photo> {
 
     /**
      * Creates a owned and tagged photo from bytes
+     *
      * @param owner photo owner
-     * @param data photo data
-     * @param tags photo tags
+     * @param data  photo data
+     * @param tags  photo tags
      * @return owned and tagged photo
      * @throws IOException invalid image data
      */
@@ -61,7 +63,7 @@ public class PhotoFactory implements PersistentFactory<Photo> {
         Image image = ImageIO.read(is);
         int width = image.getWidth(null);
         int height = image.getHeight(null);
-        long ownerId = owner.getId();
+        long ownerId = owner == null ? 0 : owner.getId();
 
         PhotoStatus status = PhotoStatus.VISIBLE;
         return new Photo(ownerId, status, data, tags, width, height);

@@ -47,6 +47,15 @@ public class PhotoResource extends AbstractResource {
     }
 
     @GET
+    @Path("/rand")
+    @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
+    public Response getRandomPhoto() throws SQLException {
+        PhotoDto responseDto = service.getRandomPhoto();
+        return Response.ok(responseDto).build();
+    }
+
+    @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
@@ -56,8 +65,8 @@ public class PhotoResource extends AbstractResource {
     }
 
     @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed(AccessRights.USER_ROLE)
     public Response removePhoto(@PathParam("id") Long photoId) throws SQLException {
         User user = getAuthorizedUser();
@@ -67,6 +76,7 @@ public class PhotoResource extends AbstractResource {
 
     @GET
     @Path("/{id}/data")
+    @Produces("image/*")
     @PermitAll
     public Response getPhotoData(@PathParam("id") Long photoId) throws SQLException {
         byte[] response = service.getPhotoData(photoId);
@@ -75,6 +85,7 @@ public class PhotoResource extends AbstractResource {
 
     @POST
     @Path("/{id}/praise")
+    @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     public Response praiseData(@PathParam("id") Long photoId, Long ranking) throws SQLException {
         PhotoDto photoDto = service.praisePhoto(photoId, ranking);

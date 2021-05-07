@@ -4,6 +4,7 @@ import jakarta.inject.Inject;
 import org.wahlzeit_revisited.model.Photo;
 import org.wahlzeit_revisited.model.PhotoFactory;
 import org.wahlzeit_revisited.model.PhotoFilter;
+import org.wahlzeit_revisited.model.PhotoStatus;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,8 +26,9 @@ public class PhotoRepository extends AbstractRepository<Photo> {
      * Generates a SQL query dynamically by using the filter
      * Initially the query string is generated
      * Finally the filter values are applied to the prepared statement
-     *
+     * <p>
      * If no filter is provided all Photos are returned
+     *
      * @param filter the query constraints
      * @return Set of all Photos matching filter
      * @throws SQLException invalid generated sql
@@ -75,6 +77,25 @@ public class PhotoRepository extends AbstractRepository<Photo> {
         }
     }
 
+    /**
+     * Finds a single visible photo by random
+     *
+     * @return random photo, if exists
+     */
+    public Photo findRandomVisible() throws SQLException {
+        Photo photo = null;
+        String query = String.format("SELECT * from %s WHERE status = ? ORDER BY RANDOM() LIMIT 1", getTableName());
+        try (PreparedStatement stmt = getReadingStatement(query)) {
+            stmt.setInt(1, PhotoStatus.VISIBLE.asInt());
+            try (ResultSet resultSet = stmt.executeQuery()) {
+                if (resultSet.next()) {
+                    photo = getFactory().createPersistent(resultSet);
+                }
+            }
+        }
+        return photo;
+    }
+
     /*
      * AbstractRepository contract
      */
@@ -96,6 +117,7 @@ public class PhotoRepository extends AbstractRepository<Photo> {
     /**
      * Iterates through the rows of the statement
      * Creates a new Photo for every row
+     *
      * @param stmt statement to execute
      * @return parsed Photo
      * @throws SQLException invalid stmt

@@ -1,7 +1,9 @@
 package org.wahlzeit_revisited.service;
 
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
@@ -12,9 +14,13 @@ import org.wahlzeit_revisited.dto.PhotoDto;
 import org.wahlzeit_revisited.model.*;
 import org.wahlzeit_revisited.repository.PhotoRepository;
 import org.wahlzeit_revisited.repository.UserRepository;
+import org.wahlzeit_revisited.utils.Directory;
 import org.wahlzeit_revisited.utils.SysLog;
+import org.wahlzeit_revisited.utils.WahlzeitConfig;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
@@ -23,7 +29,11 @@ import java.util.stream.Collectors;
 /*
  * Business logic of photos
  */
+@Singleton
 public class PhotoService {
+
+    @Inject
+    WahlzeitConfig config;
 
     @Inject
     UserRepository userRepository;
@@ -34,6 +44,32 @@ public class PhotoService {
     public PhotoRepository repository;
     @Inject
     public PhotoFactory factory;
+
+    /**
+     * Executed by Jakarta on the first execution of the application
+     * Inserts all photos of the configured directory into the database
+     *
+     * @throws SQLException
+     * @throws IOException
+     */
+    @PostConstruct
+    public void setupInitialPhotos() throws SQLException, IOException {
+        if (!repository.findAll().isEmpty()) {
+            return;
+        }
+
+        int count = 0;
+        Directory initialImageDir = config.getPhotosDir();
+        File dir = new File(initialImageDir.asString());
+        for (File currentFile : dir.listFiles()) {
+            if (!currentFile.getName().endsWith(".txt")) {
+                byte[] imageData = Files.readAllBytes(currentFile.toPath());
+                addPhoto(null, imageData, Set.of());
+                count++;
+            }
+        }
+        SysLog.logSysInfo(String.format("Initialized wahlzeit with %s photos", count));
+    }
 
     /**
      * Get all photos
@@ -78,7 +114,7 @@ public class PhotoService {
      *
      * @param photoId id of photo
      * @return found PhotoDto
-     * @throws SQLException
+     * @throws SQLException internal error
      */
     public PhotoDto getPhoto(long photoId) throws SQLException {
         Photo photo = findVisiblePhoto(photoId);
@@ -89,11 +125,25 @@ public class PhotoService {
     }
 
     /**
+     * Get a random Photo
+     *
+     * @return visible photo
+     * @throws SQLException internal error
+     */
+    public PhotoDto getRandomPhoto() throws SQLException {
+        Photo randomPhoto = repository.findRandomVisible();
+
+        SysLog.logSysInfo(String.format("Fetched random photo %s", randomPhoto.getId()));
+        PhotoDto responseDto = transformer.transform(randomPhoto);
+        return responseDto;
+    }
+
+    /**
      * Get a photo data by id
      *
      * @param photoId id of photo
      * @return photo content
-     * @throws SQLException
+     * @throws SQLException internal error
      */
     public byte[] getPhotoData(long photoId) throws SQLException {
         Photo photo = findVisiblePhoto(photoId);
@@ -107,7 +157,7 @@ public class PhotoService {
      * @param userId        id of to filter user
      * @param unescapedTags list of to filter tags
      * @return found PhotoDtos
-     * @throws SQLException
+     * @throws SQLException internal error
      */
     public List<PhotoDto> getFilteredPhotos(Long userId, Set<String> unescapedTags) throws SQLException {
         Tags escapedTags = new Tags(unescapedTags);
