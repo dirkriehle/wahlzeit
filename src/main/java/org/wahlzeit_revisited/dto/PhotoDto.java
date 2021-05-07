@@ -25,30 +25,51 @@ public class PhotoDto {
         this.praise = praise;
     }
 
+    /**
+     * @methodtype get
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * @methodtype get
+     */
     public Long getUserId() {
         return userId;
     }
 
+    /**
+     * @methodtype get
+     */
     public String getPath() {
         return path;
     }
 
+    /**
+     * @methodtype get
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * @methodtype get
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * @methodtype get
+     */
     public double getPraise() {
         return praise;
     }
 
+    /**
+     * @methodtype get
+     */
     public Set<String> getTags() {
         return tags;
     }
@@ -101,6 +122,9 @@ public class PhotoDto {
             return this;
         }
 
+        /**
+         * @methodtype transform
+         */
         public PhotoDto build() {
             return new PhotoDto(id, userId, path, tags, width, height, praise);
         }
