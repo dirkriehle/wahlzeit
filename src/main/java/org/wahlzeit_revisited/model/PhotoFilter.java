@@ -44,7 +44,10 @@ public class PhotoFilter {
      * @methodtype get
      */
     public Optional<Long> getUserId() {
-        return Optional.ofNullable(user.getId());
+        if (user == null) {
+            return Optional.empty();
+        }
+        return Optional.of(user.getId());
     }
 
     /**
