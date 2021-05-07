@@ -21,13 +21,15 @@
 package org.wahlzeit_revisited.main;
 
 
-import org.wahlzeit_revisited.config.ConfigDir;
 import org.wahlzeit_revisited.database.DatabaseConnection;
 import org.wahlzeit_revisited.database.SessionManager;
-import org.wahlzeit_revisited.utils.FileUtil;
 import org.wahlzeit_revisited.utils.SysLog;
 import org.wahlzeit_revisited.utils.WahlzeitConfig;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.*;
 
 /**
@@ -84,24 +86,22 @@ public abstract class ModelMain extends AbstractMain {
         DatabaseConnection dbc = SessionManager.getDatabaseConnection();
         Connection conn = dbc.getRdbmsConnection();
 
-        ConfigDir scriptsDir = config.getScriptsDir();
+        Path path = config.getScriptsPath().resolve(scriptName);
+        File file = new File(getClass().getClassLoader().getResource(path.toString()).getFile());
+        if (file.exists()) {
+            try {
+                runScript(conn, file.toPath());
+            } catch (IOException ignored) {
 
-        if (scriptsDir.hasDefaultFile(scriptName)) {
-            String defaultScriptFileName = scriptsDir.getAbsoluteDefaultConfigFileName(scriptName);
-            runScript(conn, defaultScriptFileName);
-        }
-
-        if (scriptsDir.hasCustomFile(scriptName)) {
-            String customConfigFileName = scriptsDir.getAbsoluteCustomConfigFileName(scriptName);
-            runScript(conn, customConfigFileName);
+            }
         }
     }
 
     /**
      *
      */
-    protected void runScript(Connection conn, String fullFileName) throws SQLException {
-        String query = FileUtil.safelyReadFileAsString(fullFileName);
+    protected void runScript(Connection conn, Path scriptPath) throws SQLException, IOException {
+        String query = Files.readString(scriptPath);
         SysLog.logQuery(query);
 
         Statement stmt = conn.createStatement();

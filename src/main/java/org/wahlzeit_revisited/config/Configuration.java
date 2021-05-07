@@ -49,11 +49,6 @@ public interface Configuration {
     /**
      *
      */
-    void loadProperties(String fileName) throws IllegalArgumentException, IOException;
-
-    /**
-     *
-     */
     void loadProperties(File file) throws IOException;
 
 }

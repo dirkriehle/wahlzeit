@@ -22,9 +22,9 @@ package org.wahlzeit_revisited.utils;
 
 import jakarta.inject.Singleton;
 import org.wahlzeit_revisited.config.AbstractConfig;
-import org.wahlzeit_revisited.config.ConfigDir;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Optional;
 
 /**
@@ -37,8 +37,6 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
      * Database driver definitions
      */
 
-    public static final String ROOT_DIR = "src/main/webapp";
-
     public static final String DB_HOST = Optional.ofNullable(System.getenv("WAHLZEIT_DB_HOST")).orElse("localhost");
     public static final String DB_DRIVER = "DB_DRIVER";
     public static final String DB_CONNECTION = "DB_CONNECTION";
@@ -46,42 +44,22 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
     public static final String DB_PASSWORD = "DB_PASSWORD";
 
     /**
-     * base directories
-     */
-    protected String rootDir;
-    protected String staticMappingSlug;
-
-    /**
      * Config directories
      */
-    protected ConfigDir scriptsDir;
-    protected ConfigDir staticDir;
-    protected ConfigDir templatesDir;
-
-    /**
-     * Data directories
-     */
-    protected Directory photosDir;
-    protected Directory backupDir;
-    protected Directory tempDir;
+    protected File photosDir;
+    protected Path scriptsPath;
+    protected Path languagePath;
 
     /**
      * Constructor
      */
 
     public SysConfig() {
-        // Root directory
-        rootDir = ROOT_DIR;
-
         // Config directories
-        scriptsDir = new ConfigDir(rootDir, "config" + File.separator + "scripts");
-        staticDir = new ConfigDir(rootDir, "config" + File.separator + "static");
-        templatesDir = new ConfigDir(rootDir, "config" + File.separator + "templates");
-
-        // Data directories
-        photosDir = new Directory(rootDir, "data" + File.separator + "photos");
-        backupDir = new Directory(rootDir, "data" + File.separator + "backup");
-        tempDir = new Directory(rootDir, "data" + File.separator + "temp");
+        String photoDirPath = Path.of("config", "photos").toString();
+        photosDir = new File(getClass().getClassLoader().getResource(photoDirPath).getFile());
+        scriptsPath = Path.of("config", "db");
+        languagePath = Path.of("config", "lang");
 
         // Database connection
         doSetValue(SysConfig.DB_DRIVER, "org.postgresql.Driver");
@@ -90,50 +68,56 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
         doSetValue(SysConfig.DB_PASSWORD, "wahlzeit");
     }
 
+
     /**
-     * getter
+     * @methodtype get
      */
-
-    public String getRootDirAsString() {
-        return rootDir;
+    @Override
+    public File getPhotosDir() {
+        return photosDir;
     }
 
-    public ConfigDir getStaticDir() {
-        return staticDir;
+    /**
+     * @methodtype get
+     */
+    @Override
+    public Path getScriptsPath() {
+        return scriptsPath;
     }
 
-    public ConfigDir getScriptsDir() {
-        return scriptsDir;
+    @Override
+    public Path getLanguagePath() {
+        return languagePath;
     }
 
-    public ConfigDir getTemplatesDir() {
-        return templatesDir;
-    }
-
-    public Directory getBackupDir() {
-        return backupDir;
-    }
-
-    public Directory getTempDir() {
-        return tempDir;
-    }
-
-    public String getStaticFileMappingPath() {
-        return staticMappingSlug;
-    }
-
+    /**
+     * @methodtype get
+     */
+    @Override
     public String getDbDriverAsString() {
         return getValue(DB_DRIVER);
     }
 
+    /**
+     * @methodtype get
+     */
+    @Override
     public String getDbConnectionAsString() {
         return getValue(DB_CONNECTION);
     }
 
+    /**
+     * @methodtype get
+     */
+    @Override
     public String getDbUserAsString() {
         return getValue(DB_USER);
     }
 
+    /**
+     * @methodtype get
+     */
+    @Override
     public String getDbPasswordAsString() {
         return getValue(DB_PASSWORD);
     }

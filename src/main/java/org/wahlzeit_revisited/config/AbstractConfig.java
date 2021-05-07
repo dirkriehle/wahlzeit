@@ -89,18 +89,6 @@ public abstract class AbstractConfig implements Configuration {
     /**
      *
      */
-    public void loadProperties(String fileName) throws IllegalArgumentException, IOException {
-        File file = new File(fileName);
-        if (!file.exists()) {
-            throw new IllegalArgumentException("file does not exist: " + fileName);
-        }
-
-        loadProperties(file);
-    }
-
-    /**
-     *
-     */
     public void loadProperties(File file) throws IOException {
         Properties input = new Properties();
 

@@ -1,6 +1,7 @@
 package org.wahlzeit_revisited.service;
 
 
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
@@ -12,9 +13,14 @@ import org.wahlzeit_revisited.dto.PhotoDto;
 import org.wahlzeit_revisited.model.*;
 import org.wahlzeit_revisited.repository.PhotoRepository;
 import org.wahlzeit_revisited.repository.UserRepository;
+import org.wahlzeit_revisited.utils.SysConfig;
 import org.wahlzeit_revisited.utils.SysLog;
+import org.wahlzeit_revisited.utils.WahlzeitConfig;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +32,8 @@ import java.util.stream.Collectors;
 public class PhotoService {
 
     @Inject
+    SysConfig config;
+    @Inject
     UserRepository userRepository;
 
     @Inject
@@ -34,6 +42,31 @@ public class PhotoService {
     public PhotoRepository repository;
     @Inject
     public PhotoFactory factory;
+
+    /**
+     * Executed by Jakarta on the first execution of the application
+     * Inserts all photos of the configured directory into the database
+     *
+     * @throws SQLException
+     * @throws IOException
+     */
+    @PostConstruct
+    public void setupInitialPhotos() throws SQLException, IOException {
+        if (!repository.findAll().isEmpty()) {
+            return;
+        }
+
+        int count = 0;
+        File initialImageDir = config.getPhotosDir();
+        for (File currentFile : initialImageDir.listFiles()) {
+            if (!currentFile.getName().endsWith(".txt")) {
+                byte[] imageData = Files.readAllBytes(currentFile.toPath());
+                addPhoto(null, imageData, Set.of());
+                count++;
+            }
+        }
+        SysLog.logSysInfo(String.format("Initialized wahlzeit with %s photos", count));
+    }
 
     /**
      * Get all photos
