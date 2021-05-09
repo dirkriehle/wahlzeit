@@ -59,6 +59,7 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
         // Config directories
         String sep = File.separator;
 
+        // TODO: Iteration of directory for jar and ide case
         photosPath = List.of(
                 "config" + sep + "photos" + sep + "flower1.jpg",
                 "config" + sep + "photos" + sep + "flower2.jpg",
