@@ -35,13 +35,11 @@ import org.wahlzeit_revisited.dto.PhotoDto;
 import org.wahlzeit_revisited.model.*;
 import org.wahlzeit_revisited.repository.PhotoRepository;
 import org.wahlzeit_revisited.repository.UserRepository;
-import org.wahlzeit_revisited.utils.Directory;
 import org.wahlzeit_revisited.utils.SysLog;
 import org.wahlzeit_revisited.utils.WahlzeitConfig;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
@@ -80,14 +78,12 @@ public class PhotoService {
         }
 
         int count = 0;
-        Directory initialImageDir = config.getPhotosDir();
-        File dir = new File(initialImageDir.asString());
-        for (File currentFile : dir.listFiles()) {
-            if (!currentFile.getName().endsWith(".txt")) {
-                byte[] imageData = Files.readAllBytes(currentFile.toPath());
-                addPhoto(null, imageData, Set.of());
-                count++;
-            }
+        ClassLoader classLoader = getClass().getClassLoader();
+        for (String currentFilePath : config.getPhotosPath()) {
+            InputStream is = classLoader.getResourceAsStream(currentFilePath);
+            byte[] imageData = is.readAllBytes();
+            addPhoto(null, imageData, Set.of());
+            count++;
         }
         SysLog.logSysInfo(String.format("Initialized wahlzeit with %s photos", count));
     }

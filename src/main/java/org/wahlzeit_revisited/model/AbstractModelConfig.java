@@ -22,12 +22,12 @@ package org.wahlzeit_revisited.model;
 
 
 import org.wahlzeit_revisited.config.AbstractConfig;
-import org.wahlzeit_revisited.config.ConfigDir;
 import org.wahlzeit_revisited.utils.SysConfig;
 import org.wahlzeit_revisited.utils.SysLog;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -53,22 +53,18 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
         dateFormatter = myDateFormatter;
         praiseFormatter = myPraiseFormatter;
 
+        String languagePath = new SysConfig()
+                .getLanguagePath()
+                + File.separator
+                + myLanguage.asIsoCode()
+                + File.separator
+                + "ModelConfig.properties";
+
         try {
-            ConfigDir templatesDir = new SysConfig().getTemplatesDir();
-
-            String shortDefaultFileName = myLanguage.asIsoCode() + File.separator + "ModelConfig.AbstractModelConfig";
-            if (templatesDir.hasDefaultFile(shortDefaultFileName)) {
-                String absoluteDefaultFileName = templatesDir.getAbsoluteDefaultConfigFileName(shortDefaultFileName);
-                loadProperties(absoluteDefaultFileName);
-            }
-
-            String shortCustomFileName = myLanguage.asIsoCode() + File.separator + "CustomModelConfig.properties";
-            if (templatesDir.hasCustomFile(shortCustomFileName)) {
-                String absoluteCustomFileName = templatesDir.getAbsoluteCustomConfigFileName(shortCustomFileName);
-                loadProperties(absoluteCustomFileName);
-            }
-        } catch (IOException ioex) {
-            SysLog.logThrowable(ioex);
+            InputStream propertyStream = getClass().getResourceAsStream(languagePath);
+            loadProperties(propertyStream);
+        } catch (IOException e) {
+            SysLog.logThrowable(e);
         }
     }
 

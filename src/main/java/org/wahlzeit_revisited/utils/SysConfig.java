@@ -22,9 +22,10 @@ package org.wahlzeit_revisited.utils;
 
 import jakarta.inject.Singleton;
 import org.wahlzeit_revisited.config.AbstractConfig;
-import org.wahlzeit_revisited.config.ConfigDir;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -37,8 +38,6 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
      * Database driver definitions
      */
 
-    public static final String ROOT_DIR = "src/main/webapp";
-
     public static final String DB_HOST = Optional.ofNullable(System.getenv("WAHLZEIT_DB_HOST")).orElse("localhost");
     public static final String DB_DRIVER = "DB_DRIVER";
     public static final String DB_CONNECTION = "DB_CONNECTION";
@@ -46,41 +45,29 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
     public static final String DB_PASSWORD = "DB_PASSWORD";
 
     /**
-     * base directories
-     */
-    protected String rootDir;
-    protected String staticMappingSlug;
-
-    /**
      * Config directories
      */
-    protected ConfigDir scriptsDir;
-    protected ConfigDir photosDir;
-    protected ConfigDir templatesDir;
-
-    /**
-     * Data directories
-     */
-    protected Directory backupDir;
-    protected Directory tempDir;
+    protected List<String> photosPath;
+    protected String scriptsPath;
+    protected String languagePath;
 
     /**
      * Constructor
      */
 
     public SysConfig() {
-        // Root directory
-        rootDir = ROOT_DIR;
-
         // Config directories
-        scriptsDir = new ConfigDir(rootDir, "config" + File.separator + "scripts");
-        photosDir = new ConfigDir(rootDir, "config" + File.separator + "flowers");
-        templatesDir = new ConfigDir(rootDir, "config" + File.separator + "templates");
+        String sep = File.separator;
 
-        // Data directories
-
-        backupDir = new Directory(rootDir, "data" + File.separator + "backup");
-        tempDir = new Directory(rootDir, "data" + File.separator + "temp");
+        // TODO: Iteration of directory for jar and ide case
+        photosPath = List.of(
+                "config" + sep + "photos" + sep + "flower1.jpg",
+                "config" + sep + "photos" + sep + "flower2.jpg",
+                "config" + sep + "photos" + sep + "flower3.jpg",
+                "config" + sep + "photos" + sep + "flower4.jpg"
+        );
+        scriptsPath = sep + "config" + sep + "db";
+        languagePath = sep + "config" + sep + "lang";
 
         // Database connection
         doSetValue(SysConfig.DB_DRIVER, "org.postgresql.Driver");
@@ -89,58 +76,32 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
         doSetValue(SysConfig.DB_PASSWORD, "wahlzeit");
     }
 
+
     /**
      * @methodtype get
      */
-    public String getRootDirAsString() {
-        return rootDir;
+    @Override
+    public Collection<String> getPhotosPath() {
+        return photosPath;
     }
 
     /**
      * @methodtype get
      */
-    public ConfigDir getPhotosDir() {
-        return photosDir;
+    @Override
+    public String getScriptsPath() {
+        return scriptsPath;
+    }
+
+    @Override
+    public String getLanguagePath() {
+        return languagePath;
     }
 
     /**
      * @methodtype get
      */
-    public ConfigDir getScriptsDir() {
-        return scriptsDir;
-    }
-
-    /**
-     * @methodtype get
-     */
-    public ConfigDir getTemplatesDir() {
-        return templatesDir;
-    }
-
-    /**
-     * @methodtype get
-     */
-    public Directory getBackupDir() {
-        return backupDir;
-    }
-
-    /**
-     * @methodtype get
-     */
-    public Directory getTempDir() {
-        return tempDir;
-    }
-
-    /**
-     * @methodtype get
-     */
-    public String getStaticFileMappingPath() {
-        return staticMappingSlug;
-    }
-
-    /**
-     * @methodtype get
-     */
+    @Override
     public String getDbDriverAsString() {
         return getValue(DB_DRIVER);
     }
@@ -148,6 +109,7 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
     /**
      * @methodtype get
      */
+    @Override
     public String getDbConnectionAsString() {
         return getValue(DB_CONNECTION);
     }
@@ -155,6 +117,7 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
     /**
      * @methodtype get
      */
+    @Override
     public String getDbUserAsString() {
         return getValue(DB_USER);
     }
@@ -162,6 +125,7 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
     /**
      * @methodtype get
      */
+    @Override
     public String getDbPasswordAsString() {
         return getValue(DB_PASSWORD);
     }

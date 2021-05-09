@@ -21,14 +21,17 @@
 package org.wahlzeit_revisited.main;
 
 
-import org.wahlzeit_revisited.config.ConfigDir;
 import org.wahlzeit_revisited.database.DatabaseConnection;
 import org.wahlzeit_revisited.database.SessionManager;
-import org.wahlzeit_revisited.utils.FileUtil;
 import org.wahlzeit_revisited.utils.SysLog;
 import org.wahlzeit_revisited.utils.WahlzeitConfig;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.*;
+import java.util.stream.Collectors;
 
 /**
  * A single-threaded Main class with database connection. Can be used by tools that don't want to start a server.
@@ -84,24 +87,18 @@ public abstract class ModelMain extends AbstractMain {
         DatabaseConnection dbc = SessionManager.getDatabaseConnection();
         Connection conn = dbc.getRdbmsConnection();
 
-        ConfigDir scriptsDir = config.getScriptsDir();
-
-        if (scriptsDir.hasDefaultFile(scriptName)) {
-            String defaultScriptFileName = scriptsDir.getAbsoluteDefaultConfigFileName(scriptName);
-            runScript(conn, defaultScriptFileName);
-        }
-
-        if (scriptsDir.hasCustomFile(scriptName)) {
-            String customConfigFileName = scriptsDir.getAbsoluteCustomConfigFileName(scriptName);
-            runScript(conn, customConfigFileName);
-        }
+        String path = config.getScriptsPath() + File.separator + scriptName;
+        InputStream is = getClass().getResourceAsStream(path);
+        runScript(conn, is);
     }
 
     /**
      *
      */
-    protected void runScript(Connection conn, String fullFileName) throws SQLException {
-        String query = FileUtil.safelyReadFileAsString(fullFileName);
+    protected void runScript(Connection conn, InputStream inputStream) throws SQLException {
+        String query = new BufferedReader(new InputStreamReader(inputStream))
+                .lines()
+                .collect(Collectors.joining(System.lineSeparator()));
         SysLog.logQuery(query);
 
         Statement stmt = conn.createStatement();

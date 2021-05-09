@@ -21,26 +21,19 @@
 
 package org.wahlzeit_revisited.utils;
 
-import org.wahlzeit_revisited.config.ConfigDir;
+import java.util.Collection;
 
 /**
  * A basic set of system configuration data
  */
 public interface WahlzeitConfig {
 
-    String getRootDirAsString();
 
-    ConfigDir getPhotosDir();
+    Collection<String> getPhotosPath();
 
-    ConfigDir getScriptsDir();
+    String getScriptsPath();
 
-    ConfigDir getTemplatesDir();
-
-    Directory getBackupDir();
-
-    Directory getTempDir();
-
-    String getStaticFileMappingPath();
+    String getLanguagePath();
 
     String getDbDriverAsString();
 
