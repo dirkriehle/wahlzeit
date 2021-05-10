@@ -32,9 +32,9 @@ import jakarta.ws.rs.core.Response;
 import org.wahlzeit_revisited.agent.AgentManager;
 import org.wahlzeit_revisited.agent.NotifyAboutPraiseAgent;
 import org.wahlzeit_revisited.api.dto.PhotoDto;
-import org.wahlzeit_revisited.model.*;
 import org.wahlzeit_revisited.api.repository.PhotoRepository;
 import org.wahlzeit_revisited.api.repository.UserRepository;
+import org.wahlzeit_revisited.model.*;
 import org.wahlzeit_revisited.utils.SysLog;
 import org.wahlzeit_revisited.utils.WahlzeitConfig;
 

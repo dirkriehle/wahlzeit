@@ -43,7 +43,6 @@ public class UserFactory implements PersistentFactory<User> {
     }
 
     /**
-     *
      * @return
      */
     public User createUser() {

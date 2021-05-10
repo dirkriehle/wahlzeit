@@ -40,6 +40,7 @@ public class UserRepository extends AbstractRepository<User> {
 
     /**
      * Checks if a user with email exists
+     *
      * @param email the email to heck
      * @return according user exists
      * @throws SQLException wrong table name
@@ -60,6 +61,7 @@ public class UserRepository extends AbstractRepository<User> {
 
     /**
      * Checks if a user with username exists
+     *
      * @param username the username to heck
      * @return according user exists
      * @throws SQLException wrong table name
@@ -79,7 +81,8 @@ public class UserRepository extends AbstractRepository<User> {
 
     /**
      * Returns a user for username|email & password combination
-     * @param identifier username or email
+     *
+     * @param identifier    username or email
      * @param plainPassword the plain not hashed password
      * @return The according user
      * @throws SQLException wrong table name

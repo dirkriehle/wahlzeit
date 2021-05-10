@@ -22,8 +22,8 @@ package org.wahlzeit_revisited.agent;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
-import org.wahlzeit_revisited.model.*;
 import org.wahlzeit_revisited.api.repository.UserRepository;
+import org.wahlzeit_revisited.model.*;
 import org.wahlzeit_revisited.service.mailing.EmailService;
 import org.wahlzeit_revisited.service.mailing.EmailServiceManager;
 import org.wahlzeit_revisited.utils.SysLog;

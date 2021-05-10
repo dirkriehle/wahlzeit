@@ -28,6 +28,7 @@ import java.util.Optional;
 /**
  * A Repository is a wrapper between the Database and Java POJOs
  * It provides CRUD operations on the entities
+ *
  * @param <T> to represent Persistent
  */
 public interface Repository<T extends Persistent> {

@@ -92,7 +92,8 @@ public enum UserStatus {
 
     /**
      *
-     */UserStatus(int newValue) {
+     */
+    UserStatus(int newValue) {
         value = newValue;
     }
 

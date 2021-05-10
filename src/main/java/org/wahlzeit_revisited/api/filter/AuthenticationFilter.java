@@ -34,11 +34,11 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.ext.Provider;
-import org.wahlzeit_revisited.api.dto.ErrorDto;
 import org.wahlzeit_revisited.api.auth.AccessRights;
 import org.wahlzeit_revisited.api.auth.PrincipalUser;
-import org.wahlzeit_revisited.model.User;
+import org.wahlzeit_revisited.api.dto.ErrorDto;
 import org.wahlzeit_revisited.api.repository.UserRepository;
+import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.utils.SysLog;
 
 import java.lang.reflect.Method;

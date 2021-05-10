@@ -23,27 +23,27 @@ package org.wahlzeit_revisited.service.mailing;
 import javax.mail.MessagingException;
 
 /**
- * 
+ *
  */
 public class MailingException extends Exception {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 
-	 */
-	public MailingException(String reason)	{
-		super(reason);
-	}
-	
-	/**
-	 * 
-	 */
-	public MailingException(String reason, MessagingException other) {
-		super(reason, other);
-	}
-	
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
+     *
+     */
+    public MailingException(String reason) {
+        super(reason);
+    }
+
+    /**
+     *
+     */
+    public MailingException(String reason, MessagingException other) {
+        super(reason, other);
+    }
+
 }

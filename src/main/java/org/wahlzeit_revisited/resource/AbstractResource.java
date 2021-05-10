@@ -40,6 +40,7 @@ public abstract class AbstractResource {
 
     /**
      * Returns the caller or throws an internal exception
+     *
      * @return the caller from the current call context
      */
     protected User getAuthorizedUser() {

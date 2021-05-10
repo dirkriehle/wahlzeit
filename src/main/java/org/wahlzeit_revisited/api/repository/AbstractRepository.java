@@ -46,12 +46,14 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
 
     /**
      * Returns the factory for the entity
+     *
      * @return entity factory
      */
     protected abstract PersistentFactory<T> getFactory();
 
     /**
      * Returns the entities table name inside the database, eg 'users
+     *
      * @return table Name
      */
     protected abstract String getTableName();
@@ -62,6 +64,7 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
 
     /**
      * Finds the entity by it's database id
+     *
      * @param id entities id
      * @return entity if exists
      * @throws SQLException invalid table name
@@ -89,6 +92,7 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
 
     /**
      * Finds all entities of the database
+     *
      * @return set of all entities
      * @throws SQLException wrong table name
      */
@@ -112,6 +116,7 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
     /**
      * Inserts a not already persisted entity
      * The entities database id is derived from the query result
+     *
      * @param toInsert entity to persist
      * @return the persisted entity
      * @throws SQLException wrong table name
@@ -151,6 +156,7 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
 
     /**
      * Updates a already persisted entity
+     *
      * @param toUpdate to entity
      * @return the updated entity
      * @throws SQLException wrong table name
@@ -179,6 +185,7 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
 
     /**
      * Deletes an persisted entity
+     *
      * @param toDelete entity to delete
      * @return the deleted entity
      * @throws SQLException wrong table name
