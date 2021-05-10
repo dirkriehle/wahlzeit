@@ -1,4 +1,4 @@
-package org.wahlzeit_revisited.auth;
+package org.wahlzeit_revisited.api.auth;
 
 import jakarta.annotation.security.DenyAll;
 import jakarta.annotation.security.PermitAll;
@@ -10,10 +10,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wahlzeit_revisited.BaseModelTest;
-import org.wahlzeit_revisited.filter.AuthenticationFilter;
+import org.wahlzeit_revisited.api.filter.AuthenticationFilter;
 import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.model.UserFactory;
-import org.wahlzeit_revisited.repository.UserRepository;
+import org.wahlzeit_revisited.api.repository.UserRepository;
 
 import java.io.InputStream;
 import java.lang.reflect.Method;

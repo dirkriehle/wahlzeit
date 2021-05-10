@@ -19,13 +19,13 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.filter;
+package org.wahlzeit_revisited.api.filter;
 
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import org.wahlzeit_revisited.dto.ErrorDto;
+import org.wahlzeit_revisited.api.dto.ErrorDto;
 import org.wahlzeit_revisited.utils.SysLog;
 
 /*

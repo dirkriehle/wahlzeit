@@ -5,11 +5,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wahlzeit_revisited.BaseModelTest;
-import org.wahlzeit_revisited.dto.CaseDto;
+import org.wahlzeit_revisited.api.dto.CaseDto;
 import org.wahlzeit_revisited.model.*;
-import org.wahlzeit_revisited.repository.CaseRepository;
-import org.wahlzeit_revisited.repository.PhotoRepository;
-import org.wahlzeit_revisited.repository.UserRepository;
+import org.wahlzeit_revisited.api.repository.CaseRepository;
+import org.wahlzeit_revisited.api.repository.PhotoRepository;
+import org.wahlzeit_revisited.api.repository.UserRepository;
 
 import java.sql.SQLException;
 

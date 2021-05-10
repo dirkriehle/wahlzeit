@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.filter;
+package org.wahlzeit_revisited.api.filter;
 
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;

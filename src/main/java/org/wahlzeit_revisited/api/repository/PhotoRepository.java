@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.repository;
+package org.wahlzeit_revisited.api.repository;
 
 import jakarta.inject.Inject;
 import org.wahlzeit_revisited.model.Photo;

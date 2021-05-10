@@ -18,7 +18,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.auth;
+package org.wahlzeit_revisited.api.auth;
 
 /**
  * An AccessRight is an enum value that represents a defined level of access. Possible access levels are none, guest,

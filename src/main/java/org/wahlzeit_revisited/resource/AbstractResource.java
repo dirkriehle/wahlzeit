@@ -24,8 +24,8 @@ package org.wahlzeit_revisited.resource;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
-import org.wahlzeit_revisited.auth.PrincipalUser;
-import org.wahlzeit_revisited.dto.ErrorDto;
+import org.wahlzeit_revisited.api.auth.PrincipalUser;
+import org.wahlzeit_revisited.api.dto.ErrorDto;
 import org.wahlzeit_revisited.model.User;
 
 /**

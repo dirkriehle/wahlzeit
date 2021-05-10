@@ -19,23 +19,27 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.dto;
+package org.wahlzeit_revisited.api.repository;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 
 /**
- * ErrorDto maps an internal error for the outer world
+ * A Repository is a wrapper between the Database and Java POJOs
+ * It provides CRUD operations on the entities
+ * @param <T> to represent Persistent
  */
-public class ErrorDto {
+public interface Repository<T extends Persistent> {
 
-    private final String msg;
+    Optional<T> findById(Long id) throws SQLException;
 
-    public ErrorDto(String msg) {
-        this.msg = msg;
-    }
+    List<T> findAll() throws SQLException;
 
-    /**
-     * @methodtype getter
-     */
-    public String getMsg() {
-        return msg;
-    }
+    T insert(T toInsert) throws SQLException;
+
+    T update(T toUpdate) throws SQLException;
+
+    T delete(T toDelete) throws SQLException;
+
 }

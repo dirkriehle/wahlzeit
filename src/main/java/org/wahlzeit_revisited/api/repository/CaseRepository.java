@@ -19,19 +19,32 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.repository;
+package org.wahlzeit_revisited.api.repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
-public interface PersistentFactory<T extends Persistent> {
+import jakarta.inject.Inject;
+import org.wahlzeit_revisited.model.Case;
+import org.wahlzeit_revisited.model.CaseFactory;
 
-    /**
-     * Creates an persistent entity from a db query
-     * @param resultSet database row
-     * @return initialized entity
-     * @throws SQLException invalid SQL statement
+/*
+ * Repository to query Case entities
+ */
+public class CaseRepository extends AbstractRepository<Case> {
+
+    /*
+     * AbstractRepository contract
      */
-    T createPersistent(ResultSet resultSet) throws SQLException;
 
+    @Inject
+    public CaseFactory factory;
+
+    @Override
+    protected PersistentFactory<Case> getFactory() {
+        return factory;
+    }
+
+    @Override
+    protected String getTableName() {
+        return "cases";
+    }
 }

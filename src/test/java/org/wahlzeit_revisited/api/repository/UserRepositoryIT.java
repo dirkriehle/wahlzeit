@@ -1,10 +1,10 @@
-package org.wahlzeit_revisited.repository;
+package org.wahlzeit_revisited.api.repository;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wahlzeit_revisited.BaseModelTest;
-import org.wahlzeit_revisited.auth.AccessRights;
+import org.wahlzeit_revisited.api.auth.AccessRights;
 import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.model.UserFactory;
 

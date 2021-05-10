@@ -19,29 +19,29 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.dto;
+package org.wahlzeit_revisited.api.dto;
 
 /**
- * UserCreationDto represents the creation of a new user for the outer world
+ * UserDto represents the User-entity for the outer world
  */
-public class UserCreationDto {
+public class UserDto {
 
-    /*
-     * members
-     */
+    private final Long id;
+    private final String name;
+    private final String email;
 
-    String name;
-    String email;
-    String password;
-
-    /*
-     * constructor
-     */
-
-    public UserCreationDto() {
-        // default constructor
+    UserDto(Long id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
     }
 
+    /**
+     * @methodtype get
+     */
+    public Long getId() {
+        return id;
+    }
 
     /**
      * @methodtype get
@@ -51,37 +51,40 @@ public class UserCreationDto {
     }
 
     /**
-     * @methodtype set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * @methodtype get
      */
     public String getEmail() {
         return email;
     }
 
-    /**
-     * @methodtype set
+    /*
+     * Builder
      */
-    public void setEmail(String email) {
-        this.email = email;
+
+    public static class Builder {
+        private Long id;
+        private String name;
+        private String email;
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public UserDto build() {
+            return new UserDto(id, name, email);
+        }
+
     }
 
-    /**
-     * @methodtype get
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @methodtype set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

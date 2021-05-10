@@ -28,9 +28,9 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.wahlzeit_revisited.agent.AgentManager;
 import org.wahlzeit_revisited.main.DatabaseMain;
 import org.wahlzeit_revisited.model.*;
-import org.wahlzeit_revisited.repository.CaseRepository;
-import org.wahlzeit_revisited.repository.PhotoRepository;
-import org.wahlzeit_revisited.repository.UserRepository;
+import org.wahlzeit_revisited.api.repository.CaseRepository;
+import org.wahlzeit_revisited.api.repository.PhotoRepository;
+import org.wahlzeit_revisited.api.repository.UserRepository;
 import org.wahlzeit_revisited.service.*;
 import org.wahlzeit_revisited.utils.SysConfig;
 import org.wahlzeit_revisited.utils.WahlzeitConfig;
@@ -76,11 +76,10 @@ public class Wahlzeit {
     private static void startServer() {
         // setup endpoints/API
         ResourceConfig config = new ResourceConfig()
-                .packages("org.wahlzeit_revisited.auth")
-                .packages("org.wahlzeit_revisited.agent")
-                .packages("org.wahlzeit_revisited.filter")
-                .packages("org.wahlzeit_revisited.resource")
-                .packages("org.wahlzeit_revisited.service");
+                .packages("org.wahlzeit_revisited.api.auth")
+                .packages("org.wahlzeit_revisited.api.filter")
+                .packages("org.wahlzeit_revisited.api.resource")
+                .packages("org.wahlzeit_revisited.api.service");
         config.register(new ServiceInjectBinder());
 
         // setup server

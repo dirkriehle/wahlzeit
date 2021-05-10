@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.dto;
+package org.wahlzeit_revisited.api.dto;
 
 import org.wahlzeit_revisited.model.FlagReason;
 

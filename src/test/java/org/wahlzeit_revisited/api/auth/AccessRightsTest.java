@@ -17,7 +17,7 @@
  * License along with this program. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-package org.wahlzeit_revisited.auth;
+package org.wahlzeit_revisited.api.auth;
 
 import org.junit.Test;
 

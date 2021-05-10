@@ -27,8 +27,8 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.wahlzeit_revisited.auth.AccessRights;
-import org.wahlzeit_revisited.dto.PhotoDto;
+import org.wahlzeit_revisited.api.auth.AccessRights;
+import org.wahlzeit_revisited.api.dto.PhotoDto;
 import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.service.PhotoService;
 

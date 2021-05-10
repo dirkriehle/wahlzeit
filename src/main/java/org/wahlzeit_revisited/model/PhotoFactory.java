@@ -21,7 +21,7 @@
 
 package org.wahlzeit_revisited.model;
 
-import org.wahlzeit_revisited.repository.PersistentFactory;
+import org.wahlzeit_revisited.api.repository.PersistentFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

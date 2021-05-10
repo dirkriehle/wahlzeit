@@ -28,10 +28,10 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.wahlzeit_revisited.auth.AccessRights;
-import org.wahlzeit_revisited.dto.LoginRequestDto;
-import org.wahlzeit_revisited.dto.UserCreationDto;
-import org.wahlzeit_revisited.dto.UserDto;
+import org.wahlzeit_revisited.api.auth.AccessRights;
+import org.wahlzeit_revisited.api.dto.LoginRequestDto;
+import org.wahlzeit_revisited.api.dto.UserCreationDto;
+import org.wahlzeit_revisited.api.dto.UserDto;
 import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.service.UserService;
 

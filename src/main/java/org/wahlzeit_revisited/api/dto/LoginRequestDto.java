@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
+ * Copyright (c) 2021 by Aron Metzig
  *
  * This file is part of the Wahlzeit photo rating application.
  *
@@ -18,21 +19,45 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.model;
-
-
-import org.wahlzeit_revisited.api.auth.AccessRights;
+package org.wahlzeit_revisited.api.dto;
 
 /**
- * A Guest is a client that is not logged in.
+ * LoginRequestDto so outer world can log in
  */
-public class Guest extends Client {
+public class LoginRequestDto {
 
-    /**
-     *
-     */
-    public Guest() {
-        initialize(AccessRights.GUEST, EmailAddress.EMPTY);
+    private String email;
+    private String password;
+
+    public LoginRequestDto() {
+        // default constructor
     }
 
+    /**
+     * @methodtype get
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * @methodtype get
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

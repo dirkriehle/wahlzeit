@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.auth;
+package org.wahlzeit_revisited.api.auth;
 
 import org.wahlzeit_revisited.model.User;
 

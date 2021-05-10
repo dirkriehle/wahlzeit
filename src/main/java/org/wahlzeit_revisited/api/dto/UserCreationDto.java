@@ -19,18 +19,42 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.dto;
+package org.wahlzeit_revisited.api.dto;
 
 /**
- * LoginRequestDto so outer world can log in
+ * UserCreationDto represents the creation of a new user for the outer world
  */
-public class LoginRequestDto {
+public class UserCreationDto {
 
-    private String email;
-    private String password;
+    /*
+     * members
+     */
 
-    public LoginRequestDto() {
+    String name;
+    String email;
+    String password;
+
+    /*
+     * constructor
+     */
+
+    public UserCreationDto() {
         // default constructor
+    }
+
+
+    /**
+     * @methodtype get
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**

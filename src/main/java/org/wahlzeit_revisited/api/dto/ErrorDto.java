@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
+ * Copyright (c) 2021 by Aron Metzig
  *
  * This file is part of the Wahlzeit photo rating application.
  *
@@ -18,31 +19,23 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.repository;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
+package org.wahlzeit_revisited.api.dto;
 
 /**
- * A Persistent object is an object that can be read from and written to some storage.
+ * ErrorDto maps an internal error for the outer world
  */
-public interface Persistent {
+public class ErrorDto {
+
+    private final String msg;
+
+    public ErrorDto(String msg) {
+        this.msg = msg;
+    }
 
     /**
-     *
+     * @methodtype getter
      */
-    Long getId();
-
-    void setId(long id);
-
-    /**
-     *
-     */
-    void readFrom(ResultSet rset) throws SQLException;
-
-    /**
-     *
-     */
-    void writeOn(ResultSet rset) throws SQLException;
-
+    public String getMsg() {
+        return msg;
+    }
 }
