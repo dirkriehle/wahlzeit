@@ -96,7 +96,7 @@ public class Log {
 	/**
 	 * 
 	 */
-	protected static final StringBuffer createLogEntry(String level) {
+	protected static StringBuffer createLogEntry(String level) {
 		StringBuffer sb = new StringBuffer(256);
 		String date = null;
 		synchronized (dateFormatter) {
@@ -110,28 +110,28 @@ public class Log {
 	/**
 	 * 
 	 */
-	public static final void addField(StringBuffer sb, String name, String value) {
+	public static void addField(StringBuffer sb, String name, String value) {
 		sb.append(", " + name + "=" + value);
 	}
 	
 	/**
 	 * 
 	 */
-	public static final void addLogType(StringBuffer sb, String logType) {
+	public static void addLogType(StringBuffer sb, String logType) {
 		addField(sb, "logType", logType);
 	}
 	
 	/**
 	 *
 	 */
-	public static final void addThrowable(StringBuffer sb, Throwable t) {
+	public static void addThrowable(StringBuffer sb, Throwable t) {
 		addField(sb, "throwable", t.toString());
 	}
 	
 	/**
 	 * 
 	 */
-	public static final void addStacktrace(StringBuffer sb, Throwable t) {
+	public static void addStacktrace(StringBuffer sb, Throwable t) {
 		StringWriter sw = new StringWriter();
 		t.printStackTrace(new PrintWriter(sw));
 		addField(sb, "stacktrace", sw.toString());
@@ -140,7 +140,7 @@ public class Log {
 	/**
 	 * 
 	 */
-	public static final void addQuery(StringBuffer sb, Statement q) {
+	public static void addQuery(StringBuffer sb, Statement q) {
 		addField(sb, "query", q.toString());
 	}
 
@@ -152,7 +152,7 @@ public class Log {
 	/**
 	 * 
 	 */
-	public static final void log(StringBuffer sb) {
+	public static void log(StringBuffer sb) {
 		 logger.info(sb.toString());
 	}
 	

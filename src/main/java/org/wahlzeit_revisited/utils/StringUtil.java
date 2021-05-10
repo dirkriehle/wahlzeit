@@ -34,21 +34,21 @@ public class StringUtil {
     /**
      *
      */
-    public final static boolean isLegalUserName(String s) {
+    public static boolean isLegalUserName(String s) {
         return isSafeString(s) && !s.equals("");
     }
 
     /**
      *
      */
-    public final static boolean isLegalPassword(String s) {
+    public static boolean isLegalPassword(String s) {
         return isSafeString(s) && !s.equals("");
     }
 
     /**
      *
      */
-    public final static boolean isValidStrictEmailAddress(String s) {
+    public static boolean isValidStrictEmailAddress(String s) {
         int a = s.indexOf('@');
         int d = s.lastIndexOf('.');
         return isSafeIncluding(s, "_-+@.") && (a > 0) && (a < (d - 2)) && (d < (s.length() - 2));
@@ -57,7 +57,7 @@ public class StringUtil {
     /**
      *
      */
-    public final static boolean isValidLocalEmailAddress(String s) {
+    public static boolean isValidLocalEmailAddress(String s) {
         int a = s.indexOf('@');
         int d = s.lastIndexOf('@');
         return isSafeIncluding(s, "_-+@.") && (a > 0) && (a == d);
@@ -66,28 +66,28 @@ public class StringUtil {
     /**
      *
      */
-    public final static boolean isLegalCharacterName(String s) {
+    public static boolean isLegalCharacterName(String s) {
         return isSafeString(s);
     }
 
     /**
      *
      */
-    public final static boolean isLegalSeriesName(String s) {
+    public static boolean isLegalSeriesName(String s) {
         return isSafeString(s);
     }
 
     /**
      *
      */
-    public final static boolean isLegalTagsString(String s) {
+    public static boolean isLegalTagsString(String s) {
         return isSafeString(s);
     }
 
     /**
      *
      */
-    public final static boolean isValidURL(String s) {
+    public static boolean isValidURL(String s) {
         try {
             return new URL(s) != null;
         } catch (MalformedURLException ex) {
@@ -98,35 +98,35 @@ public class StringUtil {
     /**
      *
      */
-    public final static boolean isNullOrEmptyString(Object s) {
+    public static boolean isNullOrEmptyString(Object s) {
         return (s == null) || s.equals("");
     }
 
     /**
      *
      */
-    public final static boolean isSafeString(String s) {
+    public static boolean isSafeString(String s) {
         return isSafeWebString(s); // & isSafeQueryArg(s);
     }
 
     /**
      *
      */
-    public final static boolean isSafeWebString(String s) {
+    public static boolean isSafeWebString(String s) {
         return isSafeExcluding(s, "`'&<>;\"\\");
     }
 
     /**
      *
      */
-    public final static boolean isSafeQueryArg(String s) {
+    public static boolean isSafeQueryArg(String s) {
         return isSafeWebString(s);
     }
 
     /**
      * @methodtype boolean-query
      */
-    protected final static boolean isSafeIncluding(String s, String l) {
+    protected static boolean isSafeIncluding(String s, String l) {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (!Character.isLetterOrDigit(c) && (l.indexOf(c) == -1)) {
@@ -140,7 +140,7 @@ public class StringUtil {
     /**
      *
      */
-    protected final static boolean isSafeExcluding(String s, String l) {
+    protected static boolean isSafeExcluding(String s, String l) {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (!Character.isLetterOrDigit(c) && (l.indexOf(c) != -1)) {
@@ -154,7 +154,7 @@ public class StringUtil {
     /**
      *
      */
-    public final static String maskChar(String s, char c) {
+    public static String maskChar(String s, char c) {
         StringBuffer result = new StringBuffer(s.length() + 4);
         for (int i = 0; i < s.length(); i++) {
             char v = s.charAt(i);
@@ -198,7 +198,7 @@ public class StringUtil {
     /**
      *
      */
-    public final static String asStringInSeconds(long duration) {
+    public static String asStringInSeconds(long duration) {
         long seconds = duration / 1000;
         long milliSeconds = duration - (seconds * 1000);
         return String.valueOf(seconds) + "." + asThreeDigits(milliSeconds);
@@ -218,7 +218,7 @@ public class StringUtil {
      * @return
      * @fixme Review for performance
      */
-    public final static String pathAsUrlString(String path) {
+    public static String pathAsUrlString(String path) {
         if (!File.separator.equals(URL_SEPARATOR)) {
             // We are not on a platform where file separator matches the url separator,
             // we need to convert between them.
@@ -230,7 +230,7 @@ public class StringUtil {
     /**
      *
      */
-    public final static URL asUrl(String s) throws IllegalArgumentException {
+    public static URL asUrl(String s) throws IllegalArgumentException {
         try {
             return new URL(s);
         } catch (MalformedURLException ex) {
@@ -241,7 +241,7 @@ public class StringUtil {
     /**
      *
      */
-    public final static URL asUrlOrDefault(String s, URL defval) {
+    public static URL asUrlOrDefault(String s, URL defval) {
         try {
             return new URL(s);
         } catch (MalformedURLException ex) {
