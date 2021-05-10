@@ -56,7 +56,7 @@ public class Tags {
     /**
      *
      */
-    protected Set<String> tags = new TreeSet<String>();
+    protected Set<String> tags = new TreeSet<>();
 
     /**
      *
@@ -164,7 +164,7 @@ public class Tags {
      * @methodproperties class
      */
     public static Set<String> asTagSetFromString(String tags, char separator) {
-        Set<String> result = new TreeSet<String>();
+        Set<String> result = new TreeSet<>();
 
         if (tags != null) {
             int i = 0;
@@ -205,7 +205,7 @@ public class Tags {
      *
      */
     public static String asTag(String n) {
-        StringBuffer result = new StringBuffer(n.length());
+        StringBuilder result = new StringBuilder(n.length());
 
         for (int i = 0; i < n.length(); i++) {
             char c = n.charAt(i);

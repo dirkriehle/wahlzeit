@@ -36,7 +36,7 @@ public class EmailAddress {
     /**
      *
      */
-    protected static final Map<String, EmailAddress> instances = new HashMap<String, EmailAddress>();
+    protected static final Map<String, EmailAddress> instances = new HashMap<>();
 
     /**
      *

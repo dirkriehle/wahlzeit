@@ -155,7 +155,7 @@ public class StringUtil {
      *
      */
     public static String maskChar(String s, char c) {
-        StringBuffer result = new StringBuffer(s.length() + 4);
+        StringBuilder result = new StringBuilder(s.length() + 4);
         for (int i = 0; i < s.length(); i++) {
             char v = s.charAt(i);
             if (v == c) {

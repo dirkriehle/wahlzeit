@@ -70,8 +70,7 @@ public class AgentManager {
 	 * @methodtype command
 	 */
 	public void startAllThreads() {
-		for (Iterator<AgentThread> i = threads.values().iterator(); i.hasNext(); ) {
-			AgentThread thread = i.next();
+		for (AgentThread thread : threads.values()) {
 			startThread(thread);
 		}
 	}
@@ -80,8 +79,7 @@ public class AgentManager {
 	 * @methodtype command
 	 */
 	public void stopAllThreads() {
-		for (Iterator<AgentThread> i = threads.values().iterator(); i.hasNext(); ) {
-			AgentThread thread = i.next();
+		for (AgentThread thread : threads.values()) {
 			stopThread(thread);
 		}
 	}
