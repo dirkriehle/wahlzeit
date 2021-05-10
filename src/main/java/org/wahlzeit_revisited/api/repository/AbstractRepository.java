@@ -229,7 +229,7 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
      */
     protected void assertNonPersistedObject(Persistent toPersist) {
         if (toPersist.getId() != null) {
-            String formatted = String.format("Object '%s' already has an id", toPersist.toString());
+            String formatted = String.format("Object '%s' already has an id", toPersist);
             throw new IllegalStateException(formatted);
         }
     }
@@ -239,7 +239,7 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
      */
     protected void assertPersistedObject(Persistent toPersist) {
         if (toPersist.getId() == null) {
-            String formatted = String.format("Object '%s' has no id", toPersist.toString());
+            String formatted = String.format("Object '%s' has no id", toPersist);
             throw new IllegalStateException(formatted);
         }
     }

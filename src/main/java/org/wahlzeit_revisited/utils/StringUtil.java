@@ -201,7 +201,7 @@ public class StringUtil {
     public static String asStringInSeconds(long duration) {
         long seconds = duration / 1000;
         long milliSeconds = duration - (seconds * 1000);
-        return String.valueOf(seconds) + "." + asThreeDigits(milliSeconds);
+        return seconds + "." + asThreeDigits(milliSeconds);
     }
 
     /**
