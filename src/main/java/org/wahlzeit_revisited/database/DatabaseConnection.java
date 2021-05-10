@@ -172,7 +172,7 @@ public class DatabaseConnection {
     /**
      *
      */
-    public Connection getRdbmsConnection() throws SQLException {
+    public Connection getRdbmsConnection() {
         return rdbmsConnection;
     }
 
