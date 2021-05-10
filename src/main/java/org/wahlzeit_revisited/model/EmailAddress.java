@@ -81,7 +81,7 @@ public class EmailAddress {
     /**
      *
      */
-    protected String value;
+    protected final String value;
 
     /**
      *

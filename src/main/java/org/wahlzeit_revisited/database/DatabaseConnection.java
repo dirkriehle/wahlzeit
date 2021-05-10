@@ -38,8 +38,8 @@ public class DatabaseConnection {
     /**
      *
      */
-    protected static Set<DatabaseConnection> pool = ConcurrentHashMap.newKeySet();
-    protected static SysConfig sysConfig = new SysConfig();
+    protected static final Set<DatabaseConnection> pool = ConcurrentHashMap.newKeySet();
+    protected static final SysConfig sysConfig = new SysConfig();
 
     /**
      *

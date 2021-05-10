@@ -57,7 +57,7 @@ public class AgentManager {
 	/**
 	 * 
 	 */
-	protected Map<String, AgentThread> threads = new HashMap<String, AgentThread>();
+	protected final Map<String, AgentThread>  threads = new HashMap<>();
 	
 	/**
 	 * 

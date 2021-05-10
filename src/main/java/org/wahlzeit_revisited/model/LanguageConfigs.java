@@ -34,7 +34,7 @@ public class LanguageConfigs {
 	/**
 	 * 
 	 */
-	protected static Map<Language, ModelConfig> configurations = new HashMap<Language, ModelConfig>();
+	protected static final Map<Language, ModelConfig> configurations = new HashMap<>();
 	
 	/**
 	 * 

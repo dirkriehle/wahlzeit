@@ -39,7 +39,7 @@ public class Log {
 	/**
 	 * 
 	 */
-	protected static DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+	protected static final DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
 
 	/**
 	 * 
@@ -147,7 +147,7 @@ public class Log {
 	/**
 	 * 
 	 */
-	protected static Logger logger = Logger.getLogger(Log.class.getName());
+	protected static final Logger logger = Logger.getLogger(Log.class.getName());
 	
 	/**
 	 * 

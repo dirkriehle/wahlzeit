@@ -170,7 +170,7 @@ public class Tags {
             int i = 0;
             int j = 0;
             for (; i < tags.length(); i = j) {
-                for (; ((i < tags.length()) && (tags.charAt(i) == separator)); ) {
+                while (((i < tags.length()) && (tags.charAt(i) == separator))) {
                     i++;
                 }
 

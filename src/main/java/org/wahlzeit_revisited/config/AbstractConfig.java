@@ -37,7 +37,7 @@ public abstract class AbstractConfig implements Configuration {
     /**
      *
      */
-    protected Map<String, String> store = new HashMap<String, String>();
+    protected final Map<String, String> store = new HashMap<>();
 
     /**
      *

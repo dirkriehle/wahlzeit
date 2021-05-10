@@ -47,9 +47,9 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
     /**
      * Config directories
      */
-    protected List<String> photosPath;
-    protected String scriptsPath;
-    protected String languagePath;
+    protected final List<String> photosPath;
+    protected final String scriptsPath;
+    protected final String languagePath;
 
     /**
      * Constructor
