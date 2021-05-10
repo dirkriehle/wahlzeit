@@ -98,7 +98,7 @@ public class Log {
 	 */
 	protected static StringBuffer createLogEntry(String level) {
 		StringBuffer sb = new StringBuffer(256);
-		String date = null;
+		String date;
 		synchronized (dateFormatter) {
 			date = dateFormatter.format(System.currentTimeMillis());
 		}
@@ -111,7 +111,7 @@ public class Log {
 	 * 
 	 */
 	public static void addField(StringBuffer sb, String name, String value) {
-		sb.append(", " + name + "=" + value);
+		sb.append(", ").append(name).append("=").append(value);
 	}
 	
 	/**

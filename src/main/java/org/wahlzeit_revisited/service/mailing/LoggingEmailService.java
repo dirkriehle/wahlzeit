@@ -33,7 +33,7 @@ public class LoggingEmailService implements EmailService {
 	/**
 	 *
 	 */
-	protected EmailService decorated = null;
+	protected EmailService decorated;
 
 	/**
 	 *
