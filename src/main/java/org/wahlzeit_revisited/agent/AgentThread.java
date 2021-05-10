@@ -30,7 +30,7 @@ public class AgentThread extends Thread {
 	/**
 	 * 
 	 */
-	protected Agent agent;
+	protected final Agent agent;
 	
 	/**
 	 * 
