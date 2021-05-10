@@ -34,7 +34,7 @@ public enum Language {
     /**
      *
      */
-    private static Language[] allValues = {
+    private static final Language[] ALL_VALUES = {
             ENGLISH, SPANISH, GERMAN, JAPANESE
     };
 
@@ -43,7 +43,7 @@ public enum Language {
      */
     public static Language getFromInt(int myValue) throws IllegalArgumentException {
         if ((myValue >= 0) && (myValue <= 3)) {
-            return allValues[myValue];
+            return ALL_VALUES[myValue];
         }
 
         throw new IllegalArgumentException("invalid Language int: " + myValue);
@@ -92,7 +92,7 @@ public enum Language {
     /**
      *
      */
-    private int value;
+    private final int value;
 
     /**
      *
@@ -126,7 +126,7 @@ public enum Language {
      *
      */
     public Language[] getAllValues() {
-        return allValues;
+        return ALL_VALUES;
     }
 
     /**

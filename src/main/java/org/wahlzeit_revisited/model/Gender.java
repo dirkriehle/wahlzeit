@@ -34,7 +34,7 @@ public enum Gender {
     /**
      *
      */
-    private static Gender[] allValues = {
+    private static final Gender[] ALL_VALUES = {
             UNDEFINED, MALE, FEMALE, OTHER
     };
 
@@ -43,7 +43,7 @@ public enum Gender {
      */
     public static Gender getFromInt(int myValue) throws IllegalArgumentException {
         assertIsValidGenderAsInt(myValue);
-        return allValues[myValue];
+        return ALL_VALUES[myValue];
     }
 
     /**
@@ -78,12 +78,12 @@ public enum Gender {
     /**
      *
      */
-    private int value;
+    private final int value;
 
     /**
      *
      */
-    private Gender(int myValue) {
+    Gender(int myValue) {
         value = myValue;
     }
 
@@ -105,7 +105,7 @@ public enum Gender {
      *
      */
     public Gender[] getAllValues() {
-        return allValues;
+        return ALL_VALUES;
     }
 
     /**

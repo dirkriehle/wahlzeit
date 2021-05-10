@@ -48,7 +48,7 @@ public enum PhotoStatus {
     /**
      * All possible states of PhotoStatus
      */
-    private static PhotoStatus[] allValues = {
+    private static final PhotoStatus[] ALL_VALUES = {
             VISIBLE, INVISIBLE, FLAGGED, MODERATED, DELETED,
     };
 
@@ -57,7 +57,7 @@ public enum PhotoStatus {
      */
     public static PhotoStatus getFromInt(int myValue) throws IllegalArgumentException {
         if ((myValue >= 0) && (myValue <= 15)) {
-            return allValues[myValue];
+            return ALL_VALUES[myValue];
         }
 
         throw new IllegalArgumentException("invalid PhotoStatus int: " + myValue);
@@ -66,7 +66,7 @@ public enum PhotoStatus {
     /**
      *
      */
-    private static String[] valueNames = {
+    private static final String[] VALUE_NAMES = {
             "visible", "invisible", "flagged", "flagged",
             "moderated", "moderated", "moderated", "moderated",
             "deleted", "deleted", "deleted", "deleted",
@@ -78,7 +78,7 @@ public enum PhotoStatus {
      */
     public static PhotoStatus getFromString(String myStatus) throws IllegalArgumentException {
         for (PhotoStatus status : PhotoStatus.values()) {
-            if (valueNames[status.asInt()].equals(myStatus)) {
+            if (VALUE_NAMES[status.asInt()].equals(myStatus)) {
                 return status;
             }
         }
@@ -89,12 +89,12 @@ public enum PhotoStatus {
     /**
      *
      */
-    private int value = 0;
+    private final int value;
 
     /**
      *
      */
-    private PhotoStatus(int myValue) {
+    PhotoStatus(int myValue) {
         value = myValue;
     }
 
@@ -109,14 +109,14 @@ public enum PhotoStatus {
      *
      */
     public String asString() {
-        return valueNames[value];
+        return VALUE_NAMES[value];
     }
 
     /**
      *
      */
     public PhotoStatus[] getAllValues() {
-        return allValues;
+        return ALL_VALUES;
     }
 
     /**
@@ -193,14 +193,14 @@ public enum PhotoStatus {
      *
      */
     protected PhotoStatus flag(int statusBit) {
-        return allValues[value | (1 << statusBit)];
+        return ALL_VALUES[value | (1 << statusBit)];
     }
 
     /**
      *
      */
     protected PhotoStatus unflag(int statusBit) {
-        return allValues[value & (-1 - (1 << statusBit))];
+        return ALL_VALUES[value & (-1 - (1 << statusBit))];
     }
 
 }

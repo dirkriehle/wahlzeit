@@ -48,7 +48,7 @@ public enum AccessRights {
     /**
      *
      */
-    private static AccessRights[] allValues = {
+    private static final AccessRights[] ALL_VALUES = {
             NONE, GUEST, USER, MODERATOR, ADMINISTRATOR
     };
 
@@ -57,7 +57,7 @@ public enum AccessRights {
      */
     public static AccessRights getFromInt(int myValue) throws IllegalArgumentException {
         assertIsValidIntValue(myValue);
-        return allValues[myValue];
+        return ALL_VALUES[myValue];
     }
 
     /**
@@ -76,7 +76,7 @@ public enum AccessRights {
     /**
      *
      */
-    private int value;
+    private final int value;
 
     /**
      *
@@ -103,7 +103,7 @@ public enum AccessRights {
      * @methodtype get
      */
     public AccessRights[] getAllValues() {
-        return allValues;
+        return ALL_VALUES;
     }
 
     /**

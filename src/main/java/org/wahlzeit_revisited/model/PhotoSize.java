@@ -40,7 +40,7 @@ public enum PhotoSize {
     /**
      * All possible states of PhotoSize
      */
-    private static PhotoSize[] allValues = {
+    private static final PhotoSize[] ALL_VALUES = {
             THUMB, EXTRA_SMALL, SMALL, MEDIUM, LARGE, EXTRA_LARGE
     };
 
@@ -49,7 +49,7 @@ public enum PhotoSize {
      */
     public static PhotoSize getFromInt(int myValue) throws IllegalArgumentException {
         assertIsValidPhotoSizeAsInt(myValue);
-        return allValues[myValue];
+        return ALL_VALUES[myValue];
     }
 
     /**
@@ -81,7 +81,7 @@ public enum PhotoSize {
     /**
      *
      */
-    private static String[] valueNames = {
+    private static final String[] VALUE_NAMES = {
             "thumb", "extra-small", "small", "medium", "large", "extra-large"
     };
 
@@ -90,7 +90,7 @@ public enum PhotoSize {
      */
     public static PhotoSize getFromString(String mySize) throws IllegalArgumentException {
         for (PhotoSize result : PhotoSize.values()) {
-            if (valueNames[result.asInt()].equals(mySize)) {
+            if (VALUE_NAMES[result.asInt()].equals(mySize)) {
                 return result;
             }
         }
@@ -101,14 +101,14 @@ public enum PhotoSize {
     /**
      *
      */
-    private int value = 0;
-    private int maxPhotoWidth;
-    private int maxPhotoHeight;
+    private final int value;
+    private final int maxPhotoWidth;
+    private final int maxPhotoHeight;
 
     /**
      *
      */
-    private PhotoSize(int myValue, int myMaxWidth, int myMaxHeight) {
+    PhotoSize(int myValue, int myMaxWidth, int myMaxHeight) {
         value = myValue;
         maxPhotoWidth = myMaxWidth;
         maxPhotoHeight = myMaxHeight;
@@ -125,14 +125,14 @@ public enum PhotoSize {
      *
      */
     public String asString() {
-        return valueNames[value];
+        return VALUE_NAMES[value];
     }
 
     /**
      *
      */
     public PhotoSize[] getAllValues() {
-        return allValues;
+        return ALL_VALUES;
     }
 
     /**

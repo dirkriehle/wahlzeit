@@ -22,7 +22,7 @@ public enum FlagReason {
     /**
      *
      */
-    private static FlagReason[] allValues = {
+    private static final FlagReason[] ALL_VALUES = {
             MISMATCH, OFFENSIVE, COPYRIGHT, OTHER
     };
 
@@ -32,7 +32,7 @@ public enum FlagReason {
     public static FlagReason getFromInt(int myValue) throws IllegalArgumentException {
         assertIsValidFlagReasonAsInt(myValue);
 
-        return allValues[myValue];
+        return ALL_VALUES[myValue];
     }
 
     /**
@@ -53,12 +53,12 @@ public enum FlagReason {
     /**
      * Used to index arrays
      */
-    private int value;
+    private final int value;
 
     /**
      *
      */
-    private FlagReason(int myValue) {
+    FlagReason(int myValue) {
         assertIsValidFlagReasonAsInt(myValue);
 
         value = myValue;
@@ -90,7 +90,7 @@ public enum FlagReason {
      * @methodtype get
      */
     public FlagReason[] getAllValues() {
-        return allValues;
+        return ALL_VALUES;
     }
 
     /**

@@ -44,7 +44,7 @@ public enum UserStatus {
     /**
      * All possible states of UserStatus
      */
-    private static UserStatus[] allValues = {
+    private static final UserStatus[] ALL_VALUES = {
             CREATED, CONFIRMED, DISABLED, DISABLED2
     };
 
@@ -53,7 +53,7 @@ public enum UserStatus {
      */
     public static UserStatus getFromInt(int myValue) throws IllegalArgumentException {
         assertIsValidUserStatusAsInt(myValue);
-        return allValues[myValue];
+        return ALL_VALUES[myValue];
     }
 
     /**
@@ -68,7 +68,7 @@ public enum UserStatus {
     /**
      *
      */
-    private static String[] valueNames = {
+    private static final String[] VALUE_NAMES = {
             "created", "confirmed", "disabled", "disabled"
     };
 
@@ -77,7 +77,7 @@ public enum UserStatus {
      */
     public static UserStatus getFromString(String aStatus) throws IllegalArgumentException {
         for (UserStatus status : UserStatus.values()) {
-            if (valueNames[status.asInt()].equals(aStatus)) {
+            if (VALUE_NAMES[status.asInt()].equals(aStatus)) {
                 return status;
             }
         }
@@ -88,12 +88,11 @@ public enum UserStatus {
     /**
      *
      */
-    private int value = 0;
+    private final int value;
 
     /**
      *
-     */
-    private UserStatus(int newValue) {
+     */UserStatus(int newValue) {
         value = newValue;
     }
 
@@ -108,14 +107,14 @@ public enum UserStatus {
      *
      */
     public String asString() {
-        return valueNames[value];
+        return VALUE_NAMES[value];
     }
 
     /**
      *
      */
     public UserStatus[] getAllValues() {
-        return allValues;
+        return ALL_VALUES;
     }
 
     /**
