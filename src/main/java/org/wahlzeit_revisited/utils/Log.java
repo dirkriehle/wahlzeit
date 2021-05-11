@@ -38,7 +38,7 @@ public class Log {
     /**
      *
      */
-    protected static final DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+    protected static final DateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
 
     /**
      *
@@ -98,8 +98,8 @@ public class Log {
     protected static StringBuffer createLogEntry(String level) {
         StringBuffer sb = new StringBuffer(256);
         String date;
-        synchronized (dateFormatter) {
-            date = dateFormatter.format(System.currentTimeMillis());
+        synchronized (DATE_FORMATTER) {
+            date = DATE_FORMATTER.format(System.currentTimeMillis());
         }
         sb.append(date);
         addField(sb, "level", level);
@@ -146,13 +146,13 @@ public class Log {
     /**
      *
      */
-    protected static final Logger logger = Logger.getLogger(Log.class.getName());
+    protected static final Logger LOGGER = Logger.getLogger(Log.class.getName());
 
     /**
      *
      */
     public static void log(StringBuffer sb) {
-        logger.info(sb.toString());
+        LOGGER.info(sb.toString());
     }
 
 }

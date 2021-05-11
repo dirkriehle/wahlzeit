@@ -40,13 +40,13 @@ import java.net.URI;
 
 public class Wahlzeit {
 
-    private static final SysConfig sysConfig = new SysConfig(); // Global config
+    private static final SysConfig SYS_CONFIG = new SysConfig(); // Global config
 
     private static class ServiceInjectBinder extends AbstractBinder {
         @Override
         protected void configure() {
             // Setup @inject annotation -> bind(InjectClass).to(ImplClass)
-            bind(sysConfig).to(WahlzeitConfig.class);
+            bind(SYS_CONFIG).to(WahlzeitConfig.class);
             // factory
             bind(UserFactory.class).to(UserFactory.class);
             bind(PhotoFactory.class).to(PhotoFactory.class);
@@ -89,7 +89,7 @@ public class Wahlzeit {
 
     public static void main(String[] args) throws Exception {
         // setup database-connection
-        DatabaseMain databaseMain = new DatabaseMain(sysConfig);
+        DatabaseMain databaseMain = new DatabaseMain(SYS_CONFIG);
         databaseMain.startUp();
 
         setupLanguageConfig();

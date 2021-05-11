@@ -38,7 +38,7 @@ public enum FlagReason {
     /**
      *
      */
-    private static final String[] valueNames = {
+    private static final String[] VALUE_NAMES = {
             "mismatch", "offensive", "copyright", "other"
     };
 
@@ -79,7 +79,7 @@ public enum FlagReason {
      * @methodtype conversion
      */
     public String asString() {
-        String name = valueNames[value];
+        String name = VALUE_NAMES[value];
 
         assertIsValidFlagReasonAsString(name);
 
@@ -124,7 +124,7 @@ public enum FlagReason {
     private static int findFlagReasonIntFromString(String reason) {
         int value = 0;
 
-        for (String name : valueNames) {
+        for (String name : VALUE_NAMES) {
             if (name.equals(reason)) {
                 break;
             } else {

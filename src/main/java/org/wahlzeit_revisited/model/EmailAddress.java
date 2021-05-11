@@ -24,8 +24,8 @@ import org.wahlzeit_revisited.utils.StringUtil;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * An email address provides a simple email address representation.
@@ -36,7 +36,7 @@ public class EmailAddress {
     /**
      *
      */
-    protected static final Map<String, EmailAddress> instances = new HashMap<>();
+    protected static final Map<String, EmailAddress> INSTANCES = new ConcurrentHashMap<>();
 
     /**
      *
@@ -55,14 +55,12 @@ public class EmailAddress {
      *
      */
     protected static EmailAddress doGetFromString(String myValue) {
-        EmailAddress result = instances.get(myValue);
+        EmailAddress result = INSTANCES.get(myValue);
         if (result == null) {
-            synchronized (instances) {
-                result = instances.get(myValue);
-                if (result == null) {
-                    result = new EmailAddress(myValue);
-                    instances.put(myValue, result);
-                }
+            result = INSTANCES.get(myValue);
+            if (result == null) {
+                result = new EmailAddress(myValue);
+                INSTANCES.put(myValue, result);
             }
         }
 

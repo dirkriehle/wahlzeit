@@ -58,7 +58,7 @@ public enum Gender {
     /**
      *
      */
-    private static final String[] valueNames = {
+    private static final String[] VALUE_NAMES = {
             "undefined", "male", "female", "other"
     };
 
@@ -67,7 +67,7 @@ public enum Gender {
      */
     public static Gender getFromString(String myGender) throws IllegalArgumentException {
         for (Gender gender : Gender.values()) {
-            if (valueNames[gender.asInt()].equals(myGender)) {
+            if (VALUE_NAMES[gender.asInt()].equals(myGender)) {
                 return gender;
             }
         }
@@ -98,7 +98,7 @@ public enum Gender {
      *
      */
     public String asString() {
-        return valueNames[value];
+        return VALUE_NAMES[value];
     }
 
     /**

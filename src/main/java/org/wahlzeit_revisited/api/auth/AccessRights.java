@@ -35,7 +35,7 @@ public enum AccessRights {
     /**
      *
      */
-    private static final String[] valueNames = {
+    private static final String[] VALUE_NAMES = {
             "none", "guest", "user", "moderator", "administrator"
     };
 
@@ -65,7 +65,7 @@ public enum AccessRights {
      */
     public static AccessRights getFromString(String myRights) throws IllegalArgumentException {
         for (AccessRights rights : AccessRights.values()) {
-            if (valueNames[rights.asInt()].equals(myRights)) {
+            if (VALUE_NAMES[rights.asInt()].equals(myRights)) {
                 return rights;
             }
         }
@@ -96,7 +96,7 @@ public enum AccessRights {
      * @methodtype conversion
      */
     public String asString() {
-        return valueNames[value];
+        return VALUE_NAMES[value];
     }
 
     /**

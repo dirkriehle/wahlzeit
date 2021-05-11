@@ -33,20 +33,20 @@ public class LanguageConfigs {
     /**
      *
      */
-    protected static final Map<Language, ModelConfig> configurations = new HashMap<>();
+    protected static final Map<Language, ModelConfig> CONFIGURATIONS = new HashMap<>();
 
     /**
      *
      */
     public static ModelConfig get(Language language) {
-        return configurations.get(language);
+        return CONFIGURATIONS.get(language);
     }
 
     /**
      *
      */
     public static void put(Language language, ModelConfig config) {
-        configurations.put(language, config);
+        CONFIGURATIONS.put(language, config);
     }
 
 }

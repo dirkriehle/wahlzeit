@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A database connection wraps an RDMBS connection object.
- * It pools and reuses existing connections; it caches common SQL statements.
+ * It POOLs and reuses existing connections; it caches common SQL statements.
  *
  * @author dirkriehle
  */
@@ -38,8 +38,8 @@ public class DatabaseConnection {
     /**
      *
      */
-    protected static final Set<DatabaseConnection> pool = ConcurrentHashMap.newKeySet();
-    protected static final SysConfig sysConfig = new SysConfig();
+    protected static final Set<DatabaseConnection> POOL = ConcurrentHashMap.newKeySet();
+    protected static final SysConfig SYS_CONFIG = new SysConfig();
 
     /**
      *
@@ -51,12 +51,12 @@ public class DatabaseConnection {
      */
     public static synchronized DatabaseConnection ensureDatabaseConnection() throws SQLException {
         DatabaseConnection result;
-        if (pool.isEmpty()) {
+        if (POOL.isEmpty()) {
             result = new DatabaseConnection("dbc" + dbcId++);
             SysLog.logCreatedObject("DatabaseConnection", result.getName());
         } else {
-            result = pool.iterator().next();
-            pool.remove(result);
+            result = POOL.iterator().next();
+            POOL.remove(result);
         }
 
         return result;
@@ -71,7 +71,7 @@ public class DatabaseConnection {
      */
     public static synchronized boolean waitForDatabaseIsReady(final int retries, final int sleepTimeBetweenRetries) {
         int retryCounter = retries;
-        String dbUrl = sysConfig.getDbConnectionAsString();
+        String dbUrl = SYS_CONFIG.getDbConnectionAsString();
         do {
             try {
                 DatabaseConnection.ensureDatabaseConnection();
@@ -112,9 +112,9 @@ public class DatabaseConnection {
      *
      */
     public static Connection openRdbmsConnection() throws SQLException {
-        String dbConnection = sysConfig.getDbConnectionAsString();
-        String dbUser = sysConfig.getDbUserAsString();
-        String dbPassword = sysConfig.getDbPasswordAsString();
+        String dbConnection = SYS_CONFIG.getDbConnectionAsString();
+        String dbUser = SYS_CONFIG.getDbUserAsString();
+        String dbPassword = SYS_CONFIG.getDbPasswordAsString();
         Connection result = DriverManager.getConnection(dbConnection, dbUser, dbPassword);
         SysLog.logSysInfo("opening database connection: " + result.toString());
         return result;

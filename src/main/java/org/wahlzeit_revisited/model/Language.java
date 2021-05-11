@@ -52,7 +52,7 @@ public enum Language {
     /**
      *
      */
-    private static final String[] isoCodes = {
+    private static final String[] ISO_CODES = {
             "en", "es", "de", "ja"
     };
 
@@ -61,7 +61,7 @@ public enum Language {
      */
     public static Language getFromIsoCode(String isoCode) throws IllegalArgumentException {
         for (Language language : Language.values()) {
-            if (isoCodes[language.asInt()].equals(isoCode)) {
+            if (ISO_CODES[language.asInt()].equals(isoCode)) {
                 return language;
             }
         }
@@ -72,7 +72,7 @@ public enum Language {
     /**
      *
      */
-    private static final String[] valueNames = {
+    private static final String[] VALUE_NAMES = {
             "english", "spanish", "german", "japanese"
     };
 
@@ -81,7 +81,7 @@ public enum Language {
      */
     public static Language getFromString(String myLanguage) throws IllegalArgumentException {
         for (Language language : Language.values()) {
-            if (valueNames[language.asInt()].equals(myLanguage)) {
+            if (ISO_CODES[language.asInt()].equals(myLanguage)) {
                 return language;
             }
         }
@@ -112,14 +112,14 @@ public enum Language {
      *
      */
     public String asIsoCode() {
-        return isoCodes[value];
+        return ISO_CODES[value];
     }
 
     /**
      *
      */
     public String asString() {
-        return valueNames[value];
+        return VALUE_NAMES[value];
     }
 
     /**
