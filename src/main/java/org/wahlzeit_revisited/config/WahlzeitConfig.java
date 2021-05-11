@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.utils;
+package org.wahlzeit_revisited.config;
 
 import java.util.Collection;
 

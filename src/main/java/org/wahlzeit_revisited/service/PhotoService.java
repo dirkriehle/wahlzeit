@@ -36,7 +36,7 @@ import org.wahlzeit_revisited.api.repository.PhotoRepository;
 import org.wahlzeit_revisited.api.repository.UserRepository;
 import org.wahlzeit_revisited.model.*;
 import org.wahlzeit_revisited.utils.SysLog;
-import org.wahlzeit_revisited.utils.WahlzeitConfig;
+import org.wahlzeit_revisited.config.WahlzeitConfig;
 
 import java.io.IOException;
 import java.io.InputStream;

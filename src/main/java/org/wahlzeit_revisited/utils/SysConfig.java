@@ -22,6 +22,7 @@ package org.wahlzeit_revisited.utils;
 
 import jakarta.inject.Singleton;
 import org.wahlzeit_revisited.config.AbstractConfig;
+import org.wahlzeit_revisited.config.WahlzeitConfig;
 
 import java.io.File;
 import java.util.Collection;

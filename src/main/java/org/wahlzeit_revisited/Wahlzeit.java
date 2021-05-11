@@ -33,7 +33,7 @@ import org.wahlzeit_revisited.main.DatabaseMain;
 import org.wahlzeit_revisited.model.*;
 import org.wahlzeit_revisited.service.*;
 import org.wahlzeit_revisited.utils.SysConfig;
-import org.wahlzeit_revisited.utils.WahlzeitConfig;
+import org.wahlzeit_revisited.config.WahlzeitConfig;
 
 import java.net.URI;
 
