@@ -79,7 +79,8 @@ public class Wahlzeit {
                 .packages("org.wahlzeit_revisited.api.auth")
                 .packages("org.wahlzeit_revisited.api.filter")
                 .packages("org.wahlzeit_revisited.api.resource")
-                .packages("org.wahlzeit_revisited.api.service");
+                .packages("org.wahlzeit_revisited.api.service")
+                .packages("org.wahlzeit_revisited.repository");;
         config.register(new ServiceInjectBinder());
 
         // setup server
