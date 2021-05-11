@@ -19,28 +19,32 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.api.repository;
+package org.wahlzeit_revisited.repository;
 
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Optional;
 
-/**
- * A Repository is a wrapper between the Database and Java POJOs
- * It provides CRUD operations on the entities
- *
- * @param <T> to represent Persistent
+import jakarta.inject.Inject;
+import org.wahlzeit_revisited.model.Case;
+import org.wahlzeit_revisited.model.CaseFactory;
+
+/*
+ * Repository to query Case entities
  */
-public interface Repository<T extends Persistent> {
+public class CaseRepository extends AbstractRepository<Case> {
 
-    Optional<T> findById(Long id) throws SQLException;
+    /*
+     * AbstractRepository contract
+     */
 
-    List<T> findAll() throws SQLException;
+    @Inject
+    public CaseFactory factory;
 
-    T insert(T toInsert) throws SQLException;
+    @Override
+    protected PersistentFactory<Case> getFactory() {
+        return factory;
+    }
 
-    T update(T toUpdate) throws SQLException;
-
-    T delete(T toDelete) throws SQLException;
-
+    @Override
+    protected String getTableName() {
+        return "cases";
+    }
 }

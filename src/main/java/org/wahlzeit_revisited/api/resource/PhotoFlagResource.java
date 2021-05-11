@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.resource;
+package org.wahlzeit_revisited.api.resource;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;

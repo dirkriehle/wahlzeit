@@ -1,4 +1,4 @@
-package org.wahlzeit_revisited.api.repository;
+package org.wahlzeit_revisited.repository;
 
 import org.junit.Assert;
 import org.junit.Before;

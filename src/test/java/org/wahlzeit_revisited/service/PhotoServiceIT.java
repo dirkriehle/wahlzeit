@@ -9,8 +9,8 @@ import org.wahlzeit_revisited.api.dto.PhotoDto;
 import org.wahlzeit_revisited.model.PhotoFactory;
 import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.model.UserFactory;
-import org.wahlzeit_revisited.api.repository.PhotoRepository;
-import org.wahlzeit_revisited.api.repository.UserRepository;
+import org.wahlzeit_revisited.repository.PhotoRepository;
+import org.wahlzeit_revisited.repository.UserRepository;
 import org.wahlzeit_revisited.utils.SysConfig;
 
 import java.io.IOException;

@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
- * Copyright (c) 2021 by Aron Metzig
  *
  * This file is part of the Wahlzeit photo rating application.
  *
@@ -19,32 +18,31 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.api.repository;
+package org.wahlzeit_revisited.repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import jakarta.inject.Inject;
-import org.wahlzeit_revisited.model.Case;
-import org.wahlzeit_revisited.model.CaseFactory;
-
-/*
- * Repository to query Case entities
+/**
+ * A Persistent object is an object that can be read from and written to some storage.
  */
-public class CaseRepository extends AbstractRepository<Case> {
+public interface Persistent {
 
-    /*
-     * AbstractRepository contract
+    /**
+     *
      */
+    Long getId();
 
-    @Inject
-    public CaseFactory factory;
+    void setId(long id);
 
-    @Override
-    protected PersistentFactory<Case> getFactory() {
-        return factory;
-    }
+    /**
+     *
+     */
+    void readFrom(ResultSet rset) throws SQLException;
 
-    @Override
-    protected String getTableName() {
-        return "cases";
-    }
+    /**
+     *
+     */
+    void writeOn(ResultSet rset) throws SQLException;
+
 }
