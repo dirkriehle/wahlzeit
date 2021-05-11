@@ -1,19 +1,29 @@
 <template>
   <Modal
     :btn-class="btnClass"
-    id="messagemodal"
-    @confirm="messag"
-    modal-link="Message"
-    modal-header="Message"
-    modal-button="Message"
+    id="tellmodal"
+    @confirm="tell"
+    modal-link="Tell"
+    modal-header="Tell"
+    modal-button="Tell"
   >
+    <div class="form-floating mb-3">
+      <input
+        type="email"
+        class="form-control"
+        id="fromMail"
+        placeholder="name@example.com"
+        :value="fromMail"
+      />
+      <label for="fromMail">From</label>
+    </div>
+
     <div class="form-floating mb-3">
       <input
         type="email"
         class="form-control"
         id="toMail"
         placeholder="name@example.com"
-        :value="toMail"
       />
       <label for="toMail">To</label>
     </div>
@@ -37,25 +47,23 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import Modal from "@/components/Modal.vue";
+import Modal from "@/components/modals/Modal.vue";
 
 @Options({
   components: { Modal },
   props: {
     btnClass: "",
-    auth: "",
-    toUser: ""
+    auth: ""
   }
 })
-export default class Message extends Vue {
+export default class Tell extends Vue {
   auth = "";
-  toUser = "";
 
-  get toMail() {
-    return this.toUser;
+  get fromMail() {
+    return "todo";
   }
 
-  messag() {
+  tell() {
     console.log("TODO: tell");
   }
 }

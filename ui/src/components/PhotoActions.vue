@@ -15,9 +15,9 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import Tell from "@/components/Tell.vue";
-import Message from "@/components/Message.vue";
-import Report from "@/components/Report.vue";
+import Tell from "@/components/modals/Tell.vue";
+import Message from "@/components/modals/Message.vue";
+import Report from "@/components/modals/Report.vue";
 
 @Options({
   components: { Tell, Message, Report },
@@ -41,14 +41,6 @@ export default class PhotoActions extends Vue {
 
   select() {
     console.log("select");
-  }
-
-  messag() {
-    console.log("message");
-  }
-
-  report() {
-    console.log("report");
   }
 }
 </script>

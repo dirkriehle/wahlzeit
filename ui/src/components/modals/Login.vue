@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import Modal from "@/components/Modal.vue";
+import Modal from "@/components/modals/Modal.vue";
 
 @Options({
   emits: ["login"],

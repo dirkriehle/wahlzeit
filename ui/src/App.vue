@@ -91,8 +91,8 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import Login from "@/components/Login.vue";
-import Upload from "@/components/Upload.vue";
+import Login from "@/components/modals/Login.vue";
+import Upload from "@/components/modals/Upload.vue";
 
 @Options({
   components: { Login, Upload }
