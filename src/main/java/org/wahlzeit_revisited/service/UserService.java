@@ -28,7 +28,7 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import org.wahlzeit_revisited.api.auth.AccessRights;
 import org.wahlzeit_revisited.api.dto.UserDto;
-import org.wahlzeit_revisited.repository.UserRepository;
+import org.wahlzeit_revisited.database.repository.UserRepository;
 import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.model.UserFactory;
 import org.wahlzeit_revisited.utils.SysLog;

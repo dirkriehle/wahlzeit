@@ -7,9 +7,9 @@ import org.junit.Test;
 import org.wahlzeit_revisited.BaseModelTest;
 import org.wahlzeit_revisited.api.dto.CaseDto;
 import org.wahlzeit_revisited.model.*;
-import org.wahlzeit_revisited.repository.CaseRepository;
-import org.wahlzeit_revisited.repository.PhotoRepository;
-import org.wahlzeit_revisited.repository.UserRepository;
+import org.wahlzeit_revisited.database.repository.CaseRepository;
+import org.wahlzeit_revisited.database.repository.PhotoRepository;
+import org.wahlzeit_revisited.database.repository.UserRepository;
 
 import java.sql.SQLException;
 

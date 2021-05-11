@@ -25,7 +25,7 @@ import jakarta.inject.Singleton;
 import org.wahlzeit_revisited.api.dto.CaseDto;
 import org.wahlzeit_revisited.api.dto.PhotoDto;
 import org.wahlzeit_revisited.api.dto.UserDto;
-import org.wahlzeit_revisited.repository.Persistent;
+import org.wahlzeit_revisited.database.repository.Persistent;
 import org.wahlzeit_revisited.model.Case;
 import org.wahlzeit_revisited.model.Photo;
 import org.wahlzeit_revisited.model.User;

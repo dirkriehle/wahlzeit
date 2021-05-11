@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
+ * Copyright (c) 2021 by Aron Metzig
  *
  * This file is part of the Wahlzeit photo rating application.
  *
@@ -18,31 +19,28 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.repository;
+package org.wahlzeit_revisited.database.repository;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
 
 /**
- * A Persistent object is an object that can be read from and written to some storage.
+ * A Repository is a wrapper between the Database and Java POJOs
+ * It provides CRUD operations on the entities
+ *
+ * @param <T> to represent Persistent
  */
-public interface Persistent {
+public interface Repository<T extends Persistent> {
 
-    /**
-     *
-     */
-    Long getId();
+    Optional<T> findById(Long id) throws SQLException;
 
-    void setId(long id);
+    List<T> findAll() throws SQLException;
 
-    /**
-     *
-     */
-    void readFrom(ResultSet rset) throws SQLException;
+    T insert(T toInsert) throws SQLException;
 
-    /**
-     *
-     */
-    void writeOn(ResultSet rset) throws SQLException;
+    T update(T toUpdate) throws SQLException;
+
+    T delete(T toDelete) throws SQLException;
 
 }

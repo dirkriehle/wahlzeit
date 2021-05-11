@@ -26,9 +26,9 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.wahlzeit_revisited.agent.AgentManager;
-import org.wahlzeit_revisited.repository.CaseRepository;
-import org.wahlzeit_revisited.repository.PhotoRepository;
-import org.wahlzeit_revisited.repository.UserRepository;
+import org.wahlzeit_revisited.database.repository.CaseRepository;
+import org.wahlzeit_revisited.database.repository.PhotoRepository;
+import org.wahlzeit_revisited.database.repository.UserRepository;
 import org.wahlzeit_revisited.main.DatabaseMain;
 import org.wahlzeit_revisited.model.*;
 import org.wahlzeit_revisited.service.*;
@@ -80,7 +80,7 @@ public class Wahlzeit {
                 .packages("org.wahlzeit_revisited.api.filter")
                 .packages("org.wahlzeit_revisited.api.resource")
                 .packages("org.wahlzeit_revisited.api.service")
-                .packages("org.wahlzeit_revisited.repository");;
+                .packages("org.wahlzeit_revisited.db.repository");
         config.register(new ServiceInjectBinder());
 
         // setup server

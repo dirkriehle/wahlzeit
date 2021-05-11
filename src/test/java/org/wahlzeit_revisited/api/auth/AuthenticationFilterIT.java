@@ -13,7 +13,7 @@ import org.wahlzeit_revisited.BaseModelTest;
 import org.wahlzeit_revisited.api.filter.AuthenticationFilter;
 import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.model.UserFactory;
-import org.wahlzeit_revisited.repository.UserRepository;
+import org.wahlzeit_revisited.database.repository.UserRepository;
 
 import java.io.InputStream;
 import java.lang.reflect.Method;

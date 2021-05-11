@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
- * Copyright (c) 2021 by Aron Metzig
  *
  * This file is part of the Wahlzeit photo rating application.
  *
@@ -19,20 +18,31 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.repository;
+package org.wahlzeit_revisited.database.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public interface PersistentFactory<T extends Persistent> {
+/**
+ * A Persistent object is an object that can be read from and written to some storage.
+ */
+public interface Persistent {
 
     /**
-     * Creates an persistent entity from a db query
      *
-     * @param resultSet database row
-     * @return initialized entity
-     * @throws SQLException invalid SQL statement
      */
-    T createPersistent(ResultSet resultSet) throws SQLException;
+    Long getId();
+
+    void setId(long id);
+
+    /**
+     *
+     */
+    void readFrom(ResultSet rset) throws SQLException;
+
+    /**
+     *
+     */
+    void writeOn(ResultSet rset) throws SQLException;
 
 }

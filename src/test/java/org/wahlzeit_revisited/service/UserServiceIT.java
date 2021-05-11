@@ -8,7 +8,7 @@ import org.wahlzeit_revisited.BaseModelTest;
 import org.wahlzeit_revisited.api.dto.UserDto;
 import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.model.UserFactory;
-import org.wahlzeit_revisited.repository.UserRepository;
+import org.wahlzeit_revisited.database.repository.UserRepository;
 
 import java.sql.SQLException;
 import java.util.List;

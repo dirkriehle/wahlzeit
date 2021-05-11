@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit_revisited.repository;
+package org.wahlzeit_revisited.database.repository;
 
 import org.wahlzeit_revisited.database.DatabaseConnection;
 import org.wahlzeit_revisited.database.SessionManager;
