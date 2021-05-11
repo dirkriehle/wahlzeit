@@ -22,13 +22,13 @@
 package org.wahlzeit_revisited.service;
 
 import jakarta.inject.Singleton;
-import org.wahlzeit_revisited.dto.CaseDto;
-import org.wahlzeit_revisited.dto.PhotoDto;
-import org.wahlzeit_revisited.dto.UserDto;
+import org.wahlzeit_revisited.api.dto.CaseDto;
+import org.wahlzeit_revisited.api.dto.PhotoDto;
+import org.wahlzeit_revisited.api.dto.UserDto;
+import org.wahlzeit_revisited.database.repository.Persistent;
 import org.wahlzeit_revisited.model.Case;
 import org.wahlzeit_revisited.model.Photo;
 import org.wahlzeit_revisited.model.User;
-import org.wahlzeit_revisited.repository.Persistent;
 
 import java.util.List;
 import java.util.stream.Collectors;

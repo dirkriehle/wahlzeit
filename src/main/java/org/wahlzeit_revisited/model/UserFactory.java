@@ -21,8 +21,8 @@
 
 package org.wahlzeit_revisited.model;
 
-import org.wahlzeit_revisited.auth.AccessRights;
-import org.wahlzeit_revisited.repository.PersistentFactory;
+import org.wahlzeit_revisited.api.auth.AccessRights;
+import org.wahlzeit_revisited.database.repository.PersistentFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,7 +43,6 @@ public class UserFactory implements PersistentFactory<User> {
     }
 
     /**
-     *
      * @return
      */
     public User createUser() {

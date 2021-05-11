@@ -22,7 +22,7 @@ public enum FlagReason {
     /**
      *
      */
-    private static FlagReason[] allValues = {
+    private static final FlagReason[] ALL_VALUES = {
             MISMATCH, OFFENSIVE, COPYRIGHT, OTHER
     };
 
@@ -32,13 +32,13 @@ public enum FlagReason {
     public static FlagReason getFromInt(int myValue) throws IllegalArgumentException {
         assertIsValidFlagReasonAsInt(myValue);
 
-        return allValues[myValue];
+        return ALL_VALUES[myValue];
     }
 
     /**
      *
      */
-    private static final String[] valueNames = {
+    private static final String[] VALUE_NAMES = {
             "mismatch", "offensive", "copyright", "other"
     };
 
@@ -53,12 +53,12 @@ public enum FlagReason {
     /**
      * Used to index arrays
      */
-    private int value;
+    private final int value;
 
     /**
      *
      */
-    private FlagReason(int myValue) {
+    FlagReason(int myValue) {
         assertIsValidFlagReasonAsInt(myValue);
 
         value = myValue;
@@ -79,7 +79,7 @@ public enum FlagReason {
      * @methodtype conversion
      */
     public String asString() {
-        String name = valueNames[value];
+        String name = VALUE_NAMES[value];
 
         assertIsValidFlagReasonAsString(name);
 
@@ -90,7 +90,7 @@ public enum FlagReason {
      * @methodtype get
      */
     public FlagReason[] getAllValues() {
-        return allValues;
+        return ALL_VALUES;
     }
 
     /**
@@ -124,7 +124,7 @@ public enum FlagReason {
     private static int findFlagReasonIntFromString(String reason) {
         int value = 0;
 
-        for (String name : valueNames) {
+        for (String name : VALUE_NAMES) {
             if (name.equals(reason)) {
                 break;
             } else {

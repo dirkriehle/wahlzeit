@@ -31,12 +31,12 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import org.wahlzeit_revisited.agent.AgentManager;
 import org.wahlzeit_revisited.agent.NotifyAboutPraiseAgent;
-import org.wahlzeit_revisited.dto.PhotoDto;
+import org.wahlzeit_revisited.api.dto.PhotoDto;
+import org.wahlzeit_revisited.database.repository.PhotoRepository;
+import org.wahlzeit_revisited.database.repository.UserRepository;
 import org.wahlzeit_revisited.model.*;
-import org.wahlzeit_revisited.repository.PhotoRepository;
-import org.wahlzeit_revisited.repository.UserRepository;
 import org.wahlzeit_revisited.utils.SysLog;
-import org.wahlzeit_revisited.utils.WahlzeitConfig;
+import org.wahlzeit_revisited.config.WahlzeitConfig;
 
 import java.io.IOException;
 import java.io.InputStream;

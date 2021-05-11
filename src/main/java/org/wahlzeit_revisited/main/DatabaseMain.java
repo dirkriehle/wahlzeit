@@ -23,7 +23,7 @@ package org.wahlzeit_revisited.main;
 
 import org.wahlzeit_revisited.database.SessionManager;
 import org.wahlzeit_revisited.utils.SysLog;
-import org.wahlzeit_revisited.utils.WahlzeitConfig;
+import org.wahlzeit_revisited.config.WahlzeitConfig;
 
 public class DatabaseMain extends ModelMain {
 

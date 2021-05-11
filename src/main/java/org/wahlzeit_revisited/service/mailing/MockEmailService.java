@@ -26,22 +26,21 @@ import javax.mail.Message;
 
 /**
  * Abstract superclass for non-trivial EmailServer implementations.
- * 
  */
 public class MockEmailService extends AbstractEmailService {
 
-	/**
-	 * 
-	 */
-	protected Message doCreateEmail(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body) throws MailingException {
-		return null;
-	}
+    /**
+     *
+     */
+    protected Message doCreateEmail(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body) {
+        return null;
+    }
 
-	/**
-	 * 
-	 */	
-	protected void doSendEmail(Message msg) throws MailingException {
-		// do nothing
-	}
-	
+    /**
+     *
+     */
+    protected void doSendEmail(Message msg) {
+        // do nothing
+    }
+
 }

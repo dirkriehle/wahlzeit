@@ -5,13 +5,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wahlzeit_revisited.BaseModelTest;
-import org.wahlzeit_revisited.dto.PhotoDto;
+import org.wahlzeit_revisited.api.dto.PhotoDto;
 import org.wahlzeit_revisited.model.PhotoFactory;
 import org.wahlzeit_revisited.model.PhotoStatus;
 import org.wahlzeit_revisited.model.User;
 import org.wahlzeit_revisited.model.UserFactory;
-import org.wahlzeit_revisited.repository.PhotoRepository;
-import org.wahlzeit_revisited.repository.UserRepository;
+import org.wahlzeit_revisited.database.repository.PhotoRepository;
+import org.wahlzeit_revisited.database.repository.UserRepository;
 
 import java.util.List;
 import java.util.Set;

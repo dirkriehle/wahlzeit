@@ -30,130 +30,129 @@ import java.text.SimpleDateFormat;
 
 /**
  * Simple logging class; should be replaced with log4j or the like.
- * 
- * @author dirkriehle
  *
+ * @author dirkriehle
  */
 public class Log {
-	
-	/**
-	 * 
-	 */
-	protected static DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
 
-	/**
-	 * 
-	 */
-	public static void logInfo(String l, String s) {
-		StringBuffer sb = createLogEntry(l);
-		addLogType(sb, "info");
-		addField(sb, "info", s);
-		log(sb);
-	}
-	
-	/**
-	 * 
-	 */
-	public static void logInfo(String level, String type, String value) {
-		StringBuffer sb = createLogEntry(level);
-		addLogType(sb, "info");
-		addField(sb, type, value);
-		log(sb);
-	}
-	
-	/**
-	 * 
-	 */
-	public static void logInfo(String level, String type, String value, String info) {
-		StringBuffer sb = createLogEntry(level);
-		addLogType(sb, "info");
-		addField(sb, type, value);
-		addField(sb, "info", info);
-		log(sb);
-	}
-	
-	/**
-	 * 
-	 */
-	public static void logCreatedObject(String level, String type, String object) {
-		StringBuffer sb = createLogEntry(level);
-		addLogType(sb, "info");
-		addField(sb, "created", type);
-		addField(sb, "object", object);
-		log(sb);
-	}
+    /**
+     *
+     */
+    protected static final DateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
 
-	/**
-	 * 
-	 */
-	public static void logError(String l, String s) {
-		StringBuffer sb = createLogEntry(l);
-		addLogType(sb, "error");
-		addField(sb, "error", s);
-		log(sb);
-	}
-	
-	/**
-	 * 
-	 */
-	protected static final StringBuffer createLogEntry(String level) {
-		StringBuffer sb = new StringBuffer(256);
-		String date = null;
-		synchronized (dateFormatter) {
-			date = dateFormatter.format(System.currentTimeMillis());
-		}
-		sb.append(date);
-		addField(sb, "level", level);
-		return sb;
-	}
-	
-	/**
-	 * 
-	 */
-	public static final void addField(StringBuffer sb, String name, String value) {
-		sb.append(", " + name + "=" + value);
-	}
-	
-	/**
-	 * 
-	 */
-	public static final void addLogType(StringBuffer sb, String logType) {
-		addField(sb, "logType", logType);
-	}
-	
-	/**
-	 *
-	 */
-	public static final void addThrowable(StringBuffer sb, Throwable t) {
-		addField(sb, "throwable", t.toString());
-	}
-	
-	/**
-	 * 
-	 */
-	public static final void addStacktrace(StringBuffer sb, Throwable t) {
-		StringWriter sw = new StringWriter();
-		t.printStackTrace(new PrintWriter(sw));
-		addField(sb, "stacktrace", sw.toString());
-	}
+    /**
+     *
+     */
+    public static void logInfo(String l, String s) {
+        StringBuffer sb = createLogEntry(l);
+        addLogType(sb, "info");
+        addField(sb, "info", s);
+        log(sb);
+    }
 
-	/**
-	 * 
-	 */
-	public static final void addQuery(StringBuffer sb, Statement q) {
-		addField(sb, "query", q.toString());
-	}
+    /**
+     *
+     */
+    public static void logInfo(String level, String type, String value) {
+        StringBuffer sb = createLogEntry(level);
+        addLogType(sb, "info");
+        addField(sb, type, value);
+        log(sb);
+    }
 
-	/**
-	 * 
-	 */
-	protected static Logger logger = Logger.getLogger(Log.class.getName());
-	
-	/**
-	 * 
-	 */
-	public static final void log(StringBuffer sb) {
-		 logger.info(sb.toString());
-	}
-	
+    /**
+     *
+     */
+    public static void logInfo(String level, String type, String value, String info) {
+        StringBuffer sb = createLogEntry(level);
+        addLogType(sb, "info");
+        addField(sb, type, value);
+        addField(sb, "info", info);
+        log(sb);
+    }
+
+    /**
+     *
+     */
+    public static void logCreatedObject(String level, String type, String object) {
+        StringBuffer sb = createLogEntry(level);
+        addLogType(sb, "info");
+        addField(sb, "created", type);
+        addField(sb, "object", object);
+        log(sb);
+    }
+
+    /**
+     *
+     */
+    public static void logError(String l, String s) {
+        StringBuffer sb = createLogEntry(l);
+        addLogType(sb, "error");
+        addField(sb, "error", s);
+        log(sb);
+    }
+
+    /**
+     *
+     */
+    protected static StringBuffer createLogEntry(String level) {
+        StringBuffer sb = new StringBuffer(256);
+        String date;
+        synchronized (DATE_FORMATTER) {
+            date = DATE_FORMATTER.format(System.currentTimeMillis());
+        }
+        sb.append(date);
+        addField(sb, "level", level);
+        return sb;
+    }
+
+    /**
+     *
+     */
+    public static void addField(StringBuffer sb, String name, String value) {
+        sb.append(", ").append(name).append("=").append(value);
+    }
+
+    /**
+     *
+     */
+    public static void addLogType(StringBuffer sb, String logType) {
+        addField(sb, "logType", logType);
+    }
+
+    /**
+     *
+     */
+    public static void addThrowable(StringBuffer sb, Throwable t) {
+        addField(sb, "throwable", t.toString());
+    }
+
+    /**
+     *
+     */
+    public static void addStacktrace(StringBuffer sb, Throwable t) {
+        StringWriter sw = new StringWriter();
+        t.printStackTrace(new PrintWriter(sw));
+        addField(sb, "stacktrace", sw.toString());
+    }
+
+    /**
+     *
+     */
+    public static void addQuery(StringBuffer sb, Statement q) {
+        addField(sb, "query", q.toString());
+    }
+
+    /**
+     *
+     */
+    protected static final Logger LOGGER = Logger.getLogger(Log.class.getName());
+
+    /**
+     *
+     */
+    public static void log(StringBuffer sb) {
+        LOGGER.info(sb.toString());
+    }
+
 }

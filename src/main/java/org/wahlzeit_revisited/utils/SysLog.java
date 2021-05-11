@@ -69,7 +69,7 @@ public class SysLog extends Log {
     /**
      *
      */
-    public static final void logQuery(Statement q) {
+    public static void logQuery(Statement q) {
         StringBuffer sb = createSysLogEntry();
         addLogType(sb, "info");
         addQuery(sb, q);
@@ -79,7 +79,7 @@ public class SysLog extends Log {
     /**
      *
      */
-    public static final void logQuery(String s) {
+    public static void logQuery(String s) {
         StringBuffer sb = createSysLogEntry();
         addLogType(sb, "info");
         addField(sb, "query", s);
@@ -89,7 +89,7 @@ public class SysLog extends Log {
     /**
      *
      */
-    public static final void logThrowable(Throwable t) {
+    public static void logThrowable(Throwable t) {
         Throwable cause = t.getCause();
         if (cause != null) {
             logThrowable(cause);

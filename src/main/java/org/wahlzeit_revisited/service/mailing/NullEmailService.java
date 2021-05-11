@@ -24,32 +24,30 @@ import org.wahlzeit_revisited.model.EmailAddress;
 import org.wahlzeit_revisited.utils.SysLog;
 
 /**
- * 
  * @author dirk
- *
  */
 public class NullEmailService implements EmailService {
 
-	@Override
-	public void sendEmail(EmailAddress from, EmailAddress to, String subject, String body) throws MailingException {
-		SysLog.logSysInfo("Called sendEmail (no bcc) on null implementation");
-	}
-	
-	@Override
-	public boolean sendEmailIgnoreException(EmailAddress from, EmailAddress to, String subject, String body) {
-		SysLog.logSysInfo("Called sendEmailIgnoreException (no bcc) on null implementation");
-		return true;
-	}
-	
-	@Override
-	public void sendEmail(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body) throws MailingException {
-		SysLog.logSysInfo("Called sendEmail (with bcc) on null implementation");
-	}
+    @Override
+    public void sendEmail(EmailAddress from, EmailAddress to, String subject, String body) {
+        SysLog.logSysInfo("Called sendEmail (no bcc) on null implementation");
+    }
 
-	@Override
-	public boolean sendEmailIgnoreException(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body) {
-		SysLog.logSysInfo("Called sendEmailIgnoreException (with bcc) on null implementation");
-		return true;
-	}
+    @Override
+    public boolean sendEmailIgnoreException(EmailAddress from, EmailAddress to, String subject, String body) {
+        SysLog.logSysInfo("Called sendEmailIgnoreException (no bcc) on null implementation");
+        return true;
+    }
+
+    @Override
+    public void sendEmail(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body) {
+        SysLog.logSysInfo("Called sendEmail (with bcc) on null implementation");
+    }
+
+    @Override
+    public boolean sendEmailIgnoreException(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body) {
+        SysLog.logSysInfo("Called sendEmailIgnoreException (with bcc) on null implementation");
+        return true;
+    }
 
 }

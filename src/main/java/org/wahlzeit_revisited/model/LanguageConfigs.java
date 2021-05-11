@@ -21,7 +21,6 @@
 package org.wahlzeit_revisited.model;
 
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,23 +30,23 @@ import java.util.Map;
  */
 public class LanguageConfigs {
 
-	/**
-	 * 
-	 */
-	protected static Map<Language, ModelConfig> configurations = new HashMap<Language, ModelConfig>();
-	
-	/**
-	 * 
-	 */
-	public static ModelConfig get(Language language) {
-		return configurations.get(language);
-	}
-	
-	/**
-	 * 
-	 */
-	public static void put(Language language, ModelConfig config) {
-		configurations.put(language, config);
-	}
+    /**
+     *
+     */
+    protected static final Map<Language, ModelConfig> CONFIGURATIONS = new HashMap<>();
+
+    /**
+     *
+     */
+    public static ModelConfig get(Language language) {
+        return CONFIGURATIONS.get(language);
+    }
+
+    /**
+     *
+     */
+    public static void put(Language language, ModelConfig config) {
+        CONFIGURATIONS.put(language, config);
+    }
 
 }

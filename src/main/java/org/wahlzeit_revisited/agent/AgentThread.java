@@ -21,30 +21,28 @@
 package org.wahlzeit_revisited.agent;
 
 /**
- * 
  * @author dirkriehle
- *
  */
 public class AgentThread extends Thread {
-	
-	/**
-	 * 
-	 */
-	protected Agent agent = null;
-	
-	/**
-	 * 
-	 */
-	public AgentThread(Agent myAgent) {
-		super(myAgent);
-		agent = myAgent;
-	}
-	
-	/**
-	 * 
-	 */
-	public Agent getAgent() {
-		return agent;
-	}
+
+    /**
+     *
+     */
+    protected final Agent agent;
+
+    /**
+     *
+     */
+    public AgentThread(Agent myAgent) {
+        super(myAgent);
+        agent = myAgent;
+    }
+
+    /**
+     *
+     */
+    public Agent getAgent() {
+        return agent;
+    }
 
 }

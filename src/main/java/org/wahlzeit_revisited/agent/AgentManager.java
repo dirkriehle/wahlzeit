@@ -22,123 +22,111 @@ package org.wahlzeit_revisited.agent;
 
 import org.wahlzeit_revisited.utils.SysLog;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The AgentManager singleton manages all Agent instances.
  */
 public class AgentManager {
-	
-	/**
-	 * 
-	 */
-	protected static AgentManager instance = null;
-	
-	/**
-	 * @methodtype initialization
-	 */
-	protected static void initInstance() {
-		getInstance().addAgent(new NotifyAboutPraiseAgent());
-	}
-	
-	/**
-	 *
-	 */
-	public static synchronized AgentManager getInstance() {
-		if (instance == null) {
-			instance = new AgentManager();
-			initInstance();
-		}
-		return instance;
-	}
-	
-	/**
-	 * 
-	 */
-	protected Map<String, AgentThread> threads = new HashMap<String, AgentThread>();
-	
-	/**
-	 * 
-	 */
-	protected AgentManager() {
-		// do nothing
-	}
 
-	/**
-	 * @methodtype command
-	 */
-	public void startAllThreads() {
-		for (Iterator<AgentThread> i = threads.values().iterator(); i.hasNext(); ) {
-			AgentThread thread = i.next();
-			startThread(thread);
-		}
-	}
+    /**
+     *
+     */
+    protected static AgentManager instance = null;
 
-	/**
-	 * @methodtype command
-	 */
-	public void stopAllThreads() {
-		for (Iterator<AgentThread> i = threads.values().iterator(); i.hasNext(); ) {
-			AgentThread thread = i.next();
-			stopThread(thread);
-		}
-	}
+    /**
+     * @methodtype initialization
+     */
+    protected static void initInstance() {
+        getInstance().addAgent(new NotifyAboutPraiseAgent());
+    }
 
-	/**
-	 * @methodtype command
-	 */
-	public void startThread(AgentThread thread) {
-		thread.start();
-		String name = thread.getAgent().getName();
-		SysLog.logSysInfo("agent", name, "agent/thread was started");
-	}
+    /**
+     *
+     */
+    public static synchronized AgentManager getInstance() {
+        if (instance == null) {
+            instance = new AgentManager();
+            initInstance();
+        }
+        return instance;
+    }
 
-	/**
-	 * @methodtype command
-	 */
-	public void stopThread(AgentThread thread) {
-		Agent agent = thread.getAgent();
-		agent.stop();
+    /**
+     *
+     */
+    protected final Map<String, AgentThread> threads = new ConcurrentHashMap<>();
 
-		thread.interrupt();
-		while(thread.isAlive()) {
-			try {
-				Thread.sleep(100);
-			} catch (Exception ex) {
-				// do nothing
-			}
-		}
+    /**
+     *
+     */
+    protected AgentManager() {
+        // do nothing
+    }
 
-		String agentName = thread.getAgent().getName();
-		SysLog.logSysInfo("agent", agentName, "agent/thread was stopped");
-	}
+    /**
+     * @methodtype command
+     */
+    public void startAllThreads() {
+        for (AgentThread thread : threads.values()) {
+            startThread(thread);
+        }
+    }
 
-	/**
-	 * @methodtype get
-	 */
-	public Agent getAgent(String name) {
-		AgentThread thread = getThread(name);
-		return thread.getAgent();
-	}
-	
-	/**
-	 * @methodtype set
-	 */
-	public void addAgent(Agent agent) {
-		synchronized(threads) {
-			String name = agent.getName();
-			AgentThread thread = new AgentThread(agent);
-			threads.put(name, thread);
-		}
-	}
-	
-	/**
-	 * @methodtype get
-	 */
-	public AgentThread getThread(String name) {
-		return threads.get(name);	
-	}
+    /**
+     * @methodtype command
+     */
+    public void stopAllThreads() {
+        for (AgentThread thread : threads.values()) {
+            stopThread(thread);
+        }
+    }
+
+    /**
+     * @methodtype command
+     */
+    public void startThread(AgentThread thread) {
+        thread.start();
+        String name = thread.getAgent().getName();
+        SysLog.logSysInfo("agent", name, "agent/thread was started");
+    }
+
+    /**
+     * @methodtype command
+     */
+    public void stopThread(AgentThread thread) {
+        Agent agent = thread.getAgent();
+        agent.stop();
+
+        thread.interrupt();
+        while (thread.isAlive()) {
+            try {
+                Thread.sleep(100);
+            } catch (Exception ex) {
+                // do nothing
+            }
+        }
+
+        String agentName = thread.getAgent().getName();
+        SysLog.logSysInfo("agent", agentName, "agent/thread was stopped");
+    }
+
+    /**
+     * @methodtype get
+     */
+    public Agent getAgent(String name) {
+        AgentThread thread = threads.get(name);
+        return thread.getAgent();
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void addAgent(Agent agent) {
+        String name = agent.getName();
+        AgentThread thread = new AgentThread(agent);
+        threads.put(name, thread);
+    }
 
 }

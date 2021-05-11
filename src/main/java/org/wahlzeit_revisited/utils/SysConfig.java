@@ -22,6 +22,7 @@ package org.wahlzeit_revisited.utils;
 
 import jakarta.inject.Singleton;
 import org.wahlzeit_revisited.config.AbstractConfig;
+import org.wahlzeit_revisited.config.WahlzeitConfig;
 
 import java.io.File;
 import java.util.Collection;
@@ -47,9 +48,9 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
     /**
      * Config directories
      */
-    protected List<String> photosPath;
-    protected String scriptsPath;
-    protected String languagePath;
+    protected final List<String> photosPath;
+    protected final String scriptsPath;
+    protected final String languagePath;
 
     /**
      * Constructor

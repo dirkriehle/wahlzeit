@@ -37,7 +37,7 @@ public abstract class AbstractConfig implements Configuration {
     /**
      *
      */
-    protected Map<String, String> store = new HashMap<String, String>();
+    protected final Map<String, String> store = new HashMap<>();
 
     /**
      *
@@ -94,7 +94,7 @@ public abstract class AbstractConfig implements Configuration {
         try {
             input.load(stream);
 
-            for (Enumeration e = input.propertyNames(); e.hasMoreElements(); ) {
+            for (Enumeration<?> e = input.propertyNames(); e.hasMoreElements(); ) {
                 String key = (String) e.nextElement();
                 doSetValue(key, input.getProperty(key));
             }

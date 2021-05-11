@@ -24,11 +24,11 @@ package org.wahlzeit_revisited.service;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
-import org.wahlzeit_revisited.dto.PhotoDto;
+import org.wahlzeit_revisited.api.dto.PhotoDto;
+import org.wahlzeit_revisited.database.repository.PhotoRepository;
 import org.wahlzeit_revisited.model.Photo;
 import org.wahlzeit_revisited.model.PhotoStatus;
 import org.wahlzeit_revisited.model.User;
-import org.wahlzeit_revisited.repository.PhotoRepository;
 import org.wahlzeit_revisited.utils.SysLog;
 
 import java.sql.SQLException;

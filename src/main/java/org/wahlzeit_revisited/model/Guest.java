@@ -21,7 +21,7 @@
 package org.wahlzeit_revisited.model;
 
 
-import org.wahlzeit_revisited.auth.AccessRights;
+import org.wahlzeit_revisited.api.auth.AccessRights;
 
 /**
  * A Guest is a client that is not logged in.

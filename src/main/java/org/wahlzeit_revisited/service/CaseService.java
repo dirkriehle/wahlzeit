@@ -23,10 +23,10 @@ package org.wahlzeit_revisited.service;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
-import org.wahlzeit_revisited.dto.CaseDto;
+import org.wahlzeit_revisited.api.dto.CaseDto;
+import org.wahlzeit_revisited.database.repository.CaseRepository;
+import org.wahlzeit_revisited.database.repository.PhotoRepository;
 import org.wahlzeit_revisited.model.*;
-import org.wahlzeit_revisited.repository.CaseRepository;
-import org.wahlzeit_revisited.repository.PhotoRepository;
 import org.wahlzeit_revisited.utils.SysLog;
 
 import java.sql.SQLException;

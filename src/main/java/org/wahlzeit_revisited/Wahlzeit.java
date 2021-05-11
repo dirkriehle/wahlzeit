@@ -26,27 +26,27 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.wahlzeit_revisited.agent.AgentManager;
+import org.wahlzeit_revisited.database.repository.CaseRepository;
+import org.wahlzeit_revisited.database.repository.PhotoRepository;
+import org.wahlzeit_revisited.database.repository.UserRepository;
 import org.wahlzeit_revisited.main.DatabaseMain;
 import org.wahlzeit_revisited.model.*;
-import org.wahlzeit_revisited.repository.CaseRepository;
-import org.wahlzeit_revisited.repository.PhotoRepository;
-import org.wahlzeit_revisited.repository.UserRepository;
 import org.wahlzeit_revisited.service.*;
 import org.wahlzeit_revisited.utils.SysConfig;
-import org.wahlzeit_revisited.utils.WahlzeitConfig;
+import org.wahlzeit_revisited.config.WahlzeitConfig;
 
 import java.net.URI;
 
 
 public class Wahlzeit {
 
-    private static final SysConfig sysConfig = new SysConfig(); // Global config
+    private static final SysConfig SYS_CONFIG = new SysConfig(); // Global config
 
     private static class ServiceInjectBinder extends AbstractBinder {
         @Override
         protected void configure() {
             // Setup @inject annotation -> bind(InjectClass).to(ImplClass)
-            bind(sysConfig).to(WahlzeitConfig.class);
+            bind(SYS_CONFIG).to(WahlzeitConfig.class);
             // factory
             bind(UserFactory.class).to(UserFactory.class);
             bind(PhotoFactory.class).to(PhotoFactory.class);
@@ -76,11 +76,11 @@ public class Wahlzeit {
     private static void startServer() {
         // setup endpoints/API
         ResourceConfig config = new ResourceConfig()
-                .packages("org.wahlzeit_revisited.auth")
-                .packages("org.wahlzeit_revisited.agent")
-                .packages("org.wahlzeit_revisited.filter")
-                .packages("org.wahlzeit_revisited.resource")
-                .packages("org.wahlzeit_revisited.service");
+                .packages("org.wahlzeit_revisited.api.auth")
+                .packages("org.wahlzeit_revisited.api.filter")
+                .packages("org.wahlzeit_revisited.api.resource")
+                .packages("org.wahlzeit_revisited.api.service")
+                .packages("org.wahlzeit_revisited.db.repository");
         config.register(new ServiceInjectBinder());
 
         // setup server
@@ -90,7 +90,7 @@ public class Wahlzeit {
 
     public static void main(String[] args) throws Exception {
         // setup database-connection
-        DatabaseMain databaseMain = new DatabaseMain(sysConfig);
+        DatabaseMain databaseMain = new DatabaseMain(SYS_CONFIG);
         databaseMain.startUp();
 
         setupLanguageConfig();

@@ -20,8 +20,8 @@
 
 package org.wahlzeit_revisited.model;
 
-import org.wahlzeit_revisited.auth.AccessRights;
-import org.wahlzeit_revisited.repository.Persistent;
+import org.wahlzeit_revisited.api.auth.AccessRights;
+import org.wahlzeit_revisited.database.repository.Persistent;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -26,77 +26,76 @@ import org.wahlzeit_revisited.utils.SysLog;
 /**
  * A logging mailing service logs email send attempts before sending emails.
  * This is a decorator pattern application.
- * 
  */
 public class LoggingEmailService implements EmailService {
 
-	/**
-	 *
-	 */
-	protected EmailService decorated = null;
+    /**
+     *
+     */
+    protected final EmailService decorated;
 
-	/**
-	 *
-	 */
-	public LoggingEmailService(EmailService myDecorated) {
-		decorated = myDecorated;
-	}
+    /**
+     *
+     */
+    public LoggingEmailService(EmailService myDecorated) {
+        decorated = myDecorated;
+    }
 
-	/**
-	 *
-	 */
-	@Override
-	public void sendEmail(EmailAddress from, EmailAddress to, String subject, String body) throws MailingException {
-		String fromString = (from == null) ? "null" : from.asString();
-		String toString = (to == null) ? "null" : to.asString();
-		String subjectString = (subject == null) ? "null" : subject;
+    /**
+     *
+     */
+    @Override
+    public void sendEmail(EmailAddress from, EmailAddress to, String subject, String body) throws MailingException {
+        String fromString = (from == null) ? "null" : from.asString();
+        String toString = (to == null) ? "null" : to.asString();
+        String subjectString = (subject == null) ? "null" : subject;
 
-		SysLog.logSysInfo("Called sendEmail from: " + fromString + " to: " + toString + " with subject: " + subjectString);
+        SysLog.logSysInfo("Called sendEmail from: " + fromString + " to: " + toString + " with subject: " + subjectString);
 
-		decorated.sendEmail(from, to, subject, body);
-	}
+        decorated.sendEmail(from, to, subject, body);
+    }
 
-	/**
-	 *
-	 */
-	@Override
-	public boolean sendEmailIgnoreException(EmailAddress from, EmailAddress to, String subject, String body) {
-		try {
-			sendEmail(from, to, subject, body);
-			return true;
-		} catch (MailingException ex) {
-			// sendEmail failed
-			return false;
-		}
-	}
+    /**
+     *
+     */
+    @Override
+    public boolean sendEmailIgnoreException(EmailAddress from, EmailAddress to, String subject, String body) {
+        try {
+            sendEmail(from, to, subject, body);
+            return true;
+        } catch (MailingException ex) {
+            // sendEmail failed
+            return false;
+        }
+    }
 
-	/**
-	 *
-	 */
-	@Override
-	public void sendEmail(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body) throws MailingException {
-		String fromString = (from == null) ? "null" : from.asString();
-		String toString = (to == null) ? "null" : to.asString();
-		String bccString = (bcc == null) ? "null" : bcc.asString();
-		String subjectString = (subject == null) ? "null" : subject;
-		
-		SysLog.logSysInfo("Called sendEmail from: " + fromString + " to: " + toString + " bcc: " + bccString + " with subject: " + subjectString);
-		
-		decorated.sendEmail(from, to, bcc, subject, body);
-	}
+    /**
+     *
+     */
+    @Override
+    public void sendEmail(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body) throws MailingException {
+        String fromString = (from == null) ? "null" : from.asString();
+        String toString = (to == null) ? "null" : to.asString();
+        String bccString = (bcc == null) ? "null" : bcc.asString();
+        String subjectString = (subject == null) ? "null" : subject;
 
-	/**
-	 * 
-	 */
-	@Override
-	public boolean sendEmailIgnoreException(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body) {
-		try {
-			sendEmail(from, to, bcc, subject, body);
-			return true;
-		} catch (MailingException ex) {
-			// sendEmail failed
-			return false;
-		}
-	}
+        SysLog.logSysInfo("Called sendEmail from: " + fromString + " to: " + toString + " bcc: " + bccString + " with subject: " + subjectString);
+
+        decorated.sendEmail(from, to, bcc, subject, body);
+    }
+
+    /**
+     *
+     */
+    @Override
+    public boolean sendEmailIgnoreException(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body) {
+        try {
+            sendEmail(from, to, bcc, subject, body);
+            return true;
+        } catch (MailingException ex) {
+            // sendEmail failed
+            return false;
+        }
+    }
 
 }
