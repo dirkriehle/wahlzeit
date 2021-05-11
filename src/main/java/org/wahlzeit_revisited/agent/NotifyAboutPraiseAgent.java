@@ -22,17 +22,18 @@ package org.wahlzeit_revisited.agent;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
-import org.wahlzeit_revisited.repository.UserRepository;
 import org.wahlzeit_revisited.model.*;
+import org.wahlzeit_revisited.repository.UserRepository;
 import org.wahlzeit_revisited.service.mailing.EmailService;
 import org.wahlzeit_revisited.service.mailing.EmailServiceManager;
 import org.wahlzeit_revisited.utils.SysLog;
 import org.wahlzeit_revisited.utils.UserLog;
 
 import java.sql.SQLException;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -51,7 +52,7 @@ public class NotifyAboutPraiseAgent extends Agent {
     /**
      *
      */
-    protected final Set<Photo> praisedPhotos = new HashSet<>();
+    protected final Set<Photo> praisedPhotos = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     /**
      *
@@ -64,9 +65,7 @@ public class NotifyAboutPraiseAgent extends Agent {
      * @methodtype command
      */
     public void addForNotify(Photo photo) {
-        synchronized (praisedPhotos) {
-            praisedPhotos.add(photo);
-        }
+        praisedPhotos.add(photo);
     }
 
     /**
@@ -80,13 +79,11 @@ public class NotifyAboutPraiseAgent extends Agent {
      * @methodtype hook
      */
     protected void notifyOwners() {
-        Photo[] photos;
-        synchronized (praisedPhotos) {
-            photos = praisedPhotos.stream()
-                    .filter(Objects::nonNull)
-                    .toArray(Photo[]::new);
-            praisedPhotos.clear();
-        }
+        Photo[] photos = praisedPhotos.stream()
+                .filter(Objects::nonNull)
+                .toArray(Photo[]::new);
+        praisedPhotos.clear();
+
 
         for (Photo photo : photos) {
             // Handled photos get masked out, by setting to null

@@ -22,8 +22,8 @@ package org.wahlzeit_revisited.agent;
 
 import org.wahlzeit_revisited.utils.SysLog;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The AgentManager singleton manages all Agent instances.
@@ -56,7 +56,7 @@ public class AgentManager {
     /**
      *
      */
-    protected final Map<String, AgentThread> threads = new HashMap<>();
+    protected final Map<String, AgentThread> threads = new ConcurrentHashMap<>();
 
     /**
      *
@@ -116,7 +116,7 @@ public class AgentManager {
      * @methodtype get
      */
     public Agent getAgent(String name) {
-        AgentThread thread = getThread(name);
+        AgentThread thread = threads.get(name);
         return thread.getAgent();
     }
 
@@ -124,18 +124,9 @@ public class AgentManager {
      * @methodtype set
      */
     public void addAgent(Agent agent) {
-        synchronized (threads) {
-            String name = agent.getName();
-            AgentThread thread = new AgentThread(agent);
-            threads.put(name, thread);
-        }
-    }
-
-    /**
-     * @methodtype get
-     */
-    public AgentThread getThread(String name) {
-        return threads.get(name);
+        String name = agent.getName();
+        AgentThread thread = new AgentThread(agent);
+        threads.put(name, thread);
     }
 
 }
