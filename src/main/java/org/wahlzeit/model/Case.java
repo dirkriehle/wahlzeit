@@ -20,38 +20,164 @@
 
 package org.wahlzeit.model;
 
-import org.wahlzeit.services.*;
+
+import org.wahlzeit.database.repository.Persistent;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 /**
- * A case is a user complaint, most notably about an inappropriate photo.
- * Subclasses capture the specifics of different types of cases; here only an id is provided.
+ * A photo case is a case where someone flagged a photo as inappropriate.
  */
-public abstract class Case extends DataObject {
-	
-	/**
-	 * 0 is never returned, first value is 1
-	 */
-	protected static CaseId lastCaseId = CaseId.NULL_ID;
-	
-	/**
-	 * @methodtype get
-	 */
-	public static synchronized CaseId getLastCaseId() {
-		return lastCaseId;
-	}
-	
-	/**
-	 * @methodtype set
-	 */
-	public static synchronized void setLastCaseId(CaseId newId) {
-		lastCaseId = newId;
-	}
-	
-	/**
-	 * @methodtype idiom
-	 */
-	public static synchronized CaseId getNextCaseId() {
-		return lastCaseId = lastCaseId.getNextId();
-	}
+public class Case implements Persistent {
 
+    /**
+     *
+     */
+    protected Long id;
+    protected Long photoId; // photo id -> photo
+    protected Long flaggerId;
+    protected FlagReason reason;
+    protected String explanation = "none";
+    protected long createdOn = System.currentTimeMillis();
+    protected boolean wasDecided = false;
+    protected long decidedOn = 0;
+
+    /**
+     *
+     */
+    public Case(long flaggerId, long photoId, FlagReason flagReason) {
+        this.flaggerId = flaggerId;
+        this.photoId = photoId;
+        this.reason = flagReason;
+    }
+
+    /**
+     *
+     */
+    public Case(ResultSet rset) throws SQLException {
+        readFrom(rset);
+    }
+
+    /**
+     * Persistent contract
+     */
+
+    @Override
+    public void readFrom(ResultSet rset) throws SQLException {
+        id = rset.getLong("id");
+        photoId = rset.getLong("photo_id");
+        createdOn = rset.getLong("creation_time");
+
+        flaggerId = rset.getLong("flagger_id");
+        reason = FlagReason.getFromInt(rset.getInt("reason"));
+        explanation = rset.getString("explanation");
+
+        wasDecided = rset.getBoolean("was_decided");
+        decidedOn = rset.getLong("decision_time");
+    }
+
+
+    @Override
+    public void writeOn(ResultSet rset) throws SQLException {
+        rset.updateLong("id", id);
+        rset.updateLong("photo_id", photoId);
+        rset.updateLong("creation_time", createdOn);
+
+        rset.updateLong("flagger_id", flaggerId);
+        rset.updateInt("reason", reason.asInt());
+        rset.updateString("explanation", explanation);
+
+        rset.updateBoolean("was_decided", wasDecided);
+        rset.updateLong("decision_time", decidedOn);
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
+     * @methodtype get
+     */
+    public Long getPhotoId() {
+        return photoId;
+    }
+
+    /**
+     * @methodtype get
+     */
+    public long getCreationTime() {
+        return createdOn;
+    }
+
+    /**
+     * @methodtype get
+     */
+    public Long getFlaggerId() {
+        return flaggerId;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setFlaggerId(long flaggerId) {
+        this.flaggerId = flaggerId;
+    }
+
+    /**
+     * @methodtype get
+     */
+    public FlagReason getReason() {
+        return reason;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setReason(FlagReason reason) {
+        this.reason = reason;
+    }
+
+    /**
+     * @methodtype get
+     */
+    public String getExplanation() {
+        return explanation;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setExplanation(String newExplanation) {
+        explanation = newExplanation;
+    }
+
+    /**
+     * @methodtype boolean-query
+     */
+    public boolean wasDecided() {
+        return wasDecided;
+    }
+
+    /**
+     * @methodtype set
+     */
+    public void setDecided() {
+        wasDecided = true;
+        decidedOn = System.currentTimeMillis();
+    }
+
+    /**
+     * @methodtype get
+     */
+    public long getDecisionTime() {
+        return decidedOn;
+    }
 }

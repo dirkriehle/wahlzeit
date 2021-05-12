@@ -20,66 +20,22 @@
 
 package org.wahlzeit.model;
 
-import java.net.*;
-import java.text.*;
-
-import org.wahlzeit.services.*;
-import org.wahlzeit.utils.*;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 
 /**
  * A model configuration for the German language.
  */
 public class GermanModelConfig extends AbstractModelConfig {
 
-	/**
-	 * 
-	 */
-	public GermanModelConfig() {
-		DecimalFormat praiseFormatter = new DecimalFormat("##,##");
-		praiseFormatter.setMinimumFractionDigits(2);
-		
-		super.initialize(Language.GERMAN, new SimpleDateFormat("d. MMM yyyy"), praiseFormatter);
-	}
-	
-	/**
-	 * 
-	 */
-	public String asYesOrNoString(boolean yes) {
-		if (yes) {
-			return "ja";
-		} else {
-			return "nein";
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	public String asPhotoSummary(String un) {
-		String result = "Foto";
-		result += " von " + un;				
-		return result;
-	}
+    /**
+     *
+     */
+    public GermanModelConfig() {
+        DecimalFormat praiseFormatter = new DecimalFormat("##,##");
+        praiseFormatter.setMinimumFractionDigits(2);
 
-	/**
-	 * 
-	 */
-	public String asPhotoCaption(String un, URL url) {
-		String result = "Foto";
-		if (url != null) {
-			result += " von " + HtmlUtil.asHref(url.toString(), un);
-		} else {
-			result += " von " + un;
-		}
-		return result;
-	}
-	
-	/**
-	 * 
-	 */
-	public String getNewPhotoSizeSet(PhotoSize ss) {
-		String size = HtmlUtil.asBold(asValueString(ss));
-		return "Wir haben die Fotogröße auf " + size + " gesetzt.";
-	}
+        super.initialize(Language.GERMAN, new SimpleDateFormat("d. MMM yyyy"), praiseFormatter);
+    }
 
 }
