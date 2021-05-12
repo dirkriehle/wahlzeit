@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
+ * Copyright (c) 2021 by Aron Metzig
  *
  * This file is part of the Wahlzeit photo rating application.
  *
@@ -20,90 +21,73 @@
 
 package org.wahlzeit.model;
 
-import java.sql.*;
+import org.wahlzeit.database.repository.PersistentFactory;
 
-import org.wahlzeit.services.*;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-/**
- * An Abstract Factory for creating photos and related objects.
+/*
+ * PhotoFactory creates a new Photo, or instantiates a entity from a resultSet
  */
-public class PhotoFactory {
-	
-	/**
-	 * Hidden singleton instance; needs to be initialized from the outside.
-	 */
-	private static PhotoFactory instance = null;
-	
-	/**
-	 * Public singleton access method.
-	 */
-	public static synchronized PhotoFactory getInstance() {
-		if (instance == null) {
-			SysLog.logSysInfo("setting generic PhotoFactory");
-			setInstance(new PhotoFactory());
-		}
-		
-		return instance;
-	}
-	
-	/**
-	 * Method to set the singleton instance of PhotoFactory.
-	 */
-	protected static synchronized void setInstance(PhotoFactory photoFactory) {
-		if (instance != null) {
-			throw new IllegalStateException("attempt to initialize PhotoFactory twice");
-		}
-		
-		instance = photoFactory;
-	}
-	
-	/**
-	 * Hidden singleton instance; needs to be initialized from the outside.
-	 */
-	public static void initialize() {
-		getInstance(); // drops result due to getInstance() side-effects
-	}
-	
-	/**
-	 * 
-	 */
-	protected PhotoFactory() {
-		// do nothing
-	}
+public class PhotoFactory implements PersistentFactory<Photo> {
 
-	/**
-	 * @methodtype factory
-	 */
-	public Photo createPhoto() {
-		return new Photo();
-	}
-	
-	/**
-	 * 
-	 */
-	public Photo createPhoto(PhotoId id) {
-		return new Photo(id);
-	}
-	
-	/**
-	 * 
-	 */
-	public Photo createPhoto(ResultSet rs) throws SQLException {
-		return new Photo(rs);
-	}
-	
-	/**
-	 * 
-	 */
-	public PhotoFilter createPhotoFilter() {
-		return new PhotoFilter();
-	}
-	
-	/**
-	 * 
-	 */
-	public PhotoTagCollector createPhotoTagCollector() {
-		return new PhotoTagCollector();
-	}
+    /*
+     * PersistentFactory contract
+     */
+
+    @Override
+    public Photo createPersistent(ResultSet resultSet) throws SQLException {
+        return new Photo(resultSet);
+    }
+
+    /**
+     * Creates a plain photo from bytes
+     */
+    public Photo createPhoto(byte[] data) throws IOException {
+        return createPhoto(data, new Tags());
+    }
+
+    /**
+     * Creates a tagged photo from bytes
+     *
+     * @param data photo data
+     * @param tags photo tags
+     * @return the tagged photo
+     * @throws IOException invalid image data
+     */
+    public Photo createPhoto(byte[] data, Tags tags) throws IOException {
+        InputStream is = new ByteArrayInputStream(data);
+        Image image = ImageIO.read(is);
+        int width = image.getWidth(null);
+        int height = image.getHeight(null);
+
+        PhotoStatus status = PhotoStatus.VISIBLE;
+        return new Photo(status, data, tags, width, height);
+    }
+
+    /**
+     * Creates a owned and tagged photo from bytes
+     *
+     * @param owner photo owner
+     * @param data  photo data
+     * @param tags  photo tags
+     * @return owned and tagged photo
+     * @throws IOException invalid image data
+     */
+    public Photo createPhoto(User owner, byte[] data, Tags tags) throws IOException {
+        InputStream is = new ByteArrayInputStream(data);
+        Image image = ImageIO.read(is);
+        int width = image.getWidth(null);
+        int height = image.getHeight(null);
+        long ownerId = owner == null ? 0 : owner.getId();
+
+        PhotoStatus status = PhotoStatus.VISIBLE;
+        return new Photo(ownerId, status, data, tags, width, height);
+    }
 
 }

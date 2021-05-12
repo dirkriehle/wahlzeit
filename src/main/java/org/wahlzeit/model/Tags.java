@@ -20,199 +20,211 @@
 
 package org.wahlzeit.model;
 
-import java.util.*;
+import org.wahlzeit.utils.StringUtil;
 
-import org.wahlzeit.utils.*;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * A Tags instance represents a set of tags; each tag ist just a string.
- * All tags are maintained lowercase and without whitespace. 
- * For example, "Captain America" turns into "captainamerica".
+ * All tags are maintained lowercase and without whitespace and ','.
+ * For example, "Captain America" turns into "captainamerica,".
  */
 public class Tags {
 
-	/**
-	 * 
-	 */
-	public static final char SEPARATOR_CHAR = ',';
+    /**
+     *
+     */
+    public static final char SEPARATOR_CHAR = ',';
 
-	/**
-	 * 
-	 */
-	public static final int MAX_NO_TAGS = 32;
+    /**
+     *
+     */
+    public static final int MAX_NO_TAGS = 32;
 
-	/**
-	 * 
-	 */
-	public static final Tags EMPTY_TAGS = new Tags();
+    /**
+     *
+     */
+    public static final int MIN_TAG_LEN = 3;
 
-	/**
-	 * 
-	 */
-	private final char separator;
+    /**
+     *
+     */
+    public static final Tags EMPTY_TAGS = new Tags();
 
-	/**
-	 * 
-	 */
-	protected Set<String> tags = new TreeSet<String>();
+    /**
+     *
+     */
+    protected Set<String> tags = new TreeSet<>();
 
-	/**
-	 * 
-	 */
-	public Tags() {
-		// do nothing
-		this.separator = SEPARATOR_CHAR;
-	}
+    /**
+     *
+     */
+    public Tags() {
 
-	/**
-	 * 
-	 */
-	public Tags(String myTags) {
-		this.separator = SEPARATOR_CHAR;
-		this.tags = asTagSetFromString(myTags);
-	}
+    }
 
-	/**
-	 * 
-	 */
-	public Tags(String myTags, char separator) {
-		this.separator = separator;
-		this.tags = asTagSetFromString(myTags, separator);
-	}
+    /**
+     *
+     */
 
-	/**
-	 * 
-	 * @methodtype boolean-query
-	 */
-	@Override
-	public int hashCode() {
-		return (tags == null) ? super.hashCode() : tags.hashCode();
-	}
+    public Tags(Set<String> myTags) {
+        this.tags = asEscapedTagSet(myTags);
+    }
 
-	/**
-	 * 
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (!(obj instanceof Tags)) return false;
+    public Tags(String myTags) {
+        this.tags = asTagSetFromString(myTags);
+    }
 
-		Tags other = (Tags) obj;
-		return isEqual(other);
-	}
+    /**
+     * @methodtype boolean-query
+     */
+    @Override
+    public int hashCode() {
+        return (tags == null) ? super.hashCode() : tags.hashCode();
+    }
 
-	/**
-	 * 
-	 */
-	public boolean isEqual(Tags other) {
-		if (tags == null) {
-			return other.tags == null;				
-		}
+    /**
+     *
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Tags)) return false;
 
-		return tags.equals(other.tags);
-	}
+        Tags other = (Tags) obj;
+        return isEqual(other);
+    }
 
-	/**
-	 * 
-	 */
-	public boolean hasTag(String tag) {
-		return (null != tag) && tags.contains(tag);
-	}
+    /**
+     *
+     */
+    public boolean isEqual(Tags other) {
+        if (tags == null) {
+            return other.tags == null;
+        }
 
-	/**
-	 * 
-	 * @methodtype get
-	 */
-	public int getSize() {
-		return tags.size();
-	}
+        return tags.equals(other.tags);
+    }
 
-	/**
-	 * 
-	 * @methodtype conversion
-	 */
-	public String asString() {
-		return asString(false, separator);
-	}
+    /**
+     *
+     */
+    public boolean hasTag(String tag) {
+        return (null != tag) && tags.contains(tag);
+    }
 
-	/**
-	 * 
-	 */
-	public String asString(boolean lead, char sep) {
-		StringBuffer result = new StringBuffer();
-		String seps = (lead ? " " : "") + sep + " ";
-		String[] myTags = asArray();
-		for (int i = 0; i < myTags.length; i++) {
-			if (i != 0)
-				result.append(seps);
-			result.append(myTags[i]);
-		}
-		return result.toString();
-	}
+    /**
+     * @methodtype get
+     */
+    public int getSize() {
+        return tags.size();
+    }
 
-	/**
-	 * 
-	 */
-	public String[] asArray() {
-		return (String[]) tags.toArray(new String[tags.size()]);
-	}
+    /**
+     * @methodtype get
+     */
+    public Set<String> getTags() {
+        return tags;
+    }
 
-	/**
-	 * @methodtype conversion
-	 * @methodproperties convenience, class
-	 */
-	public static Set<String> asTagSetFromString(String tags) {
-		return asTagSetFromString(tags, SEPARATOR_CHAR);
-	}
+    /**
+     * @methodtype conversion
+     */
+    public String asString() {
+        return asString(false, SEPARATOR_CHAR);
+    }
 
-	/**
-	 * @methodtype conversion
-	 * @methodproperties class
-	 */
-	public static Set<String> asTagSetFromString(String tags, char separator) {
-		Set<String> result = new TreeSet<String>();
+    /**
+     *
+     */
+    public String asString(boolean lead, char sep) {
+        // Get's transformed into "tag1, tag2, tag3,"
+        StringBuilder result = new StringBuilder();
+        String seps = (lead ? " " : "") + sep + " ";
+        for (String tag : tags) {
+            result.append(tag);
+            result.append(seps);
+        }
+        return result.toString();
+    }
 
-		if (tags != null) {
-			int i = 0;
-			int j = 0;
-			for (; i < tags.length(); i = j) {
-				for (; ((i < tags.length()) && (tags.charAt(i) == separator));) {
-					i++;
-				}
+    /**
+     * @methodtype conversion
+     */
+    public String[] asArray() {
+        return tags.toArray(String[]::new);
+    }
 
-				for (j = i; ((j < tags.length()) && (tags.charAt(j) != separator));) {
-					j++;
-				}
 
-				if (i != j) {
-					String tag = asTag(tags.substring(i, j));
-					if (!StringUtil.isNullOrEmptyString(tag)) {
-						result.add(tag);
-					}
-				}
-			}
-		}
+    /**
+     * @methodtype conversion
+     * @methodproperties convenience, class
+     */
+    public static Set<String> asTagSetFromString(String tags) {
+        return asTagSetFromString(tags, SEPARATOR_CHAR);
+    }
 
-		return result;
-	}
+    /**
+     * @methodtype conversion
+     * @methodproperties class
+     */
+    public static Set<String> asTagSetFromString(String tags, char separator) {
+        Set<String> result = new TreeSet<>();
 
-	/**
-	 * 
-	 */
-	public static String asTag(String n) {
-		StringBuffer result = new StringBuffer(n.length());
+        if (tags != null) {
+            int i = 0;
+            int j = 0;
+            for (; i < tags.length(); i = j) {
+                while (((i < tags.length()) && (tags.charAt(i) == separator))) {
+                    i++;
+                }
 
-		for (int i = 0; i < n.length(); i++) {
-			char c = n.charAt(i);
-			if (Character.isLetter(c)) {
-				result.append(Character.toLowerCase(c));
-			} else if (Character.isDigit(c)) {
-				result.append(c);
-			}
-		}
+                for (j = i; ((j < tags.length()) && (tags.charAt(j) != separator)); ) {
+                    j++;
+                }
 
-		return result.toString();
-	}
+                if (i != j) {
+                    String tag = asTag(tags.substring(i, j));
+                    if (!StringUtil.isNullOrEmptyString(tag)) {
+                        result.add(tag);
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * @methodtype conversion
+     * @methodproperties class
+     */
+    public static Set<String> asEscapedTagSet(Set<String> tagSet) {
+        return tagSet.stream()
+                .filter(s -> s.length() >= MIN_TAG_LEN) // Filter invalid tags
+                .map(Tags::asTag) // Normalize and escape
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     *
+     */
+    public static String asTag(String n) {
+        StringBuilder result = new StringBuilder(n.length());
+
+        for (int i = 0; i < n.length(); i++) {
+            char c = n.charAt(i);
+            if (Character.isLetter(c)) {
+                result.append(Character.toLowerCase(c));
+            } else if (Character.isDigit(c)) {
+                result.append(c);
+            }
+        }
+
+        return result.toString();
+    }
 
 }

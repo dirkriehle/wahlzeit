@@ -8,18 +8,6 @@ repositories {
     jcenter()
 }
 
-ext {
-    mainSourcesDir = 'src/main/java'
-}
-
-sourceSets {
-    main {
-        java {
-            srcDir mainSourcesDir
-        }
-    }
-}
-
 dependencies {
     implementation 'org.postgresql:postgresql:9.3-1104-jdbc41'
     implementation 'log4j:log4j:1.2.17'
@@ -35,16 +23,16 @@ dependencies {
 }
 
 application {
-    mainClass = "org.wahlzeit_revisited.Wahlzeit"
+    mainClass = "org.wahlzeit.Wahlzeit"
 }
 
 shadowJar {
-    mainClassName = "org.wahlzeit_revisited.Wahlzeit"
+    mainClassName = "org.wahlzeit.Wahlzeit"
 }
 
 test {
     filter {
-        includeTestsMatching "org.wahlzeit_revisited.*Test"
+        includeTestsMatching "org.wahlzeit.*Test"
     }
     testLogging {
         events "passed", "skipped", "failed"
@@ -61,7 +49,7 @@ test {
 
 task testIT(type: Test) {
     filter {
-        includeTestsMatching "org.wahlzeit_revisited.*IT"
+        includeTestsMatching "org.wahlzeit.*IT"
     }
     testLogging {
         events "passed", "skipped", "failed"
