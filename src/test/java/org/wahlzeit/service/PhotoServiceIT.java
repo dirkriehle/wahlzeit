@@ -16,9 +16,6 @@ public class PhotoServiceIT extends BaseModelTest {
 
     @Test
     public void test_getRandomPhoto() throws SQLException, IOException {
-        // arrange
-        photoService.setupInitialPhotos();
-
         // act
         PhotoDto actualPhoto = photoService.getRandomPhoto();
 
