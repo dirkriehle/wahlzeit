@@ -22,6 +22,8 @@
 package org.wahlzeit;
 
 import jakarta.ws.rs.core.UriBuilder;
+import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.servlet.WebappContext;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -30,8 +32,9 @@ import org.wahlzeit.config.WahlzeitConfig;
 import org.wahlzeit.database.repository.CaseRepository;
 import org.wahlzeit.database.repository.PhotoRepository;
 import org.wahlzeit.database.repository.UserRepository;
-import org.wahlzeit.main.DatabaseMain;
-import org.wahlzeit.model.*;
+import org.wahlzeit.model.CaseFactory;
+import org.wahlzeit.model.PhotoFactory;
+import org.wahlzeit.model.UserFactory;
 import org.wahlzeit.service.*;
 import org.wahlzeit.utils.SysConfig;
 
@@ -40,13 +43,13 @@ import java.net.URI;
 
 public class Wahlzeit {
 
-    private static final SysConfig SYS_CONFIG = new SysConfig(); // Global config
-
     private static class ServiceInjectBinder extends AbstractBinder {
         @Override
         protected void configure() {
             // Setup @inject annotation -> bind(InjectClass).to(ImplClass)
-            bind(SYS_CONFIG).to(WahlzeitConfig.class);
+            bind(SysConfig.class).to(WahlzeitConfig.class);
+            // manager
+            bind(AgentManager.class).to(AgentManager.class);
             // factory
             bind(UserFactory.class).to(UserFactory.class);
             bind(PhotoFactory.class).to(PhotoFactory.class);
@@ -64,38 +67,24 @@ public class Wahlzeit {
         }
     }
 
-    private static void setupLanguageConfig() {
-        LanguageConfigs.put(Language.ENGLISH, new EnglishModelConfig());
-        LanguageConfigs.put(Language.GERMAN, new GermanModelConfig());
-    }
-
-    private static void startAgents() {
-        AgentManager.getInstance().startAllThreads();
-    }
-
-    private static void startServer() {
+    public static void main(String[] args) throws Exception {
         // setup endpoints/API
         ResourceConfig config = new ResourceConfig()
+                .packages("org.wahlzeit.agent")
+                .packages("org.wahlzeit.api")
                 .packages("org.wahlzeit.api.auth")
                 .packages("org.wahlzeit.api.filter")
                 .packages("org.wahlzeit.api.resource")
                 .packages("org.wahlzeit.api.service")
-                .packages("org.wahlzeit.db.repository");
-        config.register(new ServiceInjectBinder());
+                .packages("org.wahlzeit.db.repository")
+                .register(new ServiceInjectBinder());
 
         // setup server
+        WebappContext context = new WebappContext("Wahlzeit");
         URI baseUri = UriBuilder.fromUri("http://0.0.0.0/").port(8080).build();
-        GrizzlyHttpServerFactory.createHttpServer(baseUri, config, true);
-    }
-
-    public static void main(String[] args) throws Exception {
-        // setup database-connection
-        DatabaseMain databaseMain = new DatabaseMain(SYS_CONFIG);
-        databaseMain.startUp();
-
-        setupLanguageConfig();
-        startAgents();
-        startServer();
+        HttpServer httpServer = GrizzlyHttpServerFactory.createHttpServer(baseUri, config, false);
+        context.deploy(httpServer); // Call container startup hooks before starting the httpServer
+        httpServer.start();
     }
 
 }

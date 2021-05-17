@@ -60,6 +60,8 @@ public class PhotoService {
     UserRepository userRepository;
 
     @Inject
+    AgentManager agentManager;
+    @Inject
     public Transformer transformer;
     @Inject
     public PhotoRepository repository;
@@ -256,9 +258,7 @@ public class PhotoService {
      * @methodtype command
      */
     private void notifyPraise(Photo photo) {
-        NotifyAboutPraiseAgent praiseAgent = (NotifyAboutPraiseAgent) AgentManager
-                .getInstance()
-                .getAgent(NotifyAboutPraiseAgent.NAME);
+        NotifyAboutPraiseAgent praiseAgent = agentManager.getAgent(NotifyAboutPraiseAgent.NAME);
         praiseAgent.addForNotify(photo);
     }
 

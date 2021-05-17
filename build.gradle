@@ -13,6 +13,9 @@ dependencies {
     implementation 'log4j:log4j:1.2.17'
     implementation 'com.sun.mail:javax.mail:1.6.2'
 
+    implementation group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+    implementation group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '5.0.0'
+    implementation group: 'org.glassfish.grizzly', name: 'grizzly-http-servlet', version: '3.0.0'
     implementation group: 'org.glassfish.jersey.containers', name: 'jersey-container-grizzly2-http', version: '3.0.2'
     implementation group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: '3.0.2'
     implementation group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '3.0.2'

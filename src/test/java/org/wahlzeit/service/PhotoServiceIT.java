@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wahlzeit.BaseModelTest;
+import org.wahlzeit.agent.AgentManager;
 import org.wahlzeit.api.dto.PhotoDto;
 import org.wahlzeit.database.repository.PhotoRepository;
 import org.wahlzeit.database.repository.UserRepository;
@@ -27,6 +28,7 @@ public class PhotoServiceIT extends BaseModelTest {
     @Before
     public void setupDependencies() {
         service = new PhotoService();
+        service.agentManager = new AgentManager();
         service.config = new SysConfig();
         service.factory = new PhotoFactory();
         service.repository = new PhotoRepository();
