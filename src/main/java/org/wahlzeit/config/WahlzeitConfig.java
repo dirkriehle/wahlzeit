@@ -33,10 +33,6 @@ public interface WahlzeitConfig {
 
     String getScriptsPath();
 
-    String getLanguagePath();
-
-    String getDbDriverAsString();
-
     String getDbConnectionAsString();
 
     String getDbUserAsString();

@@ -50,7 +50,6 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
      */
     protected final List<String> photosPath;
     protected final String scriptsPath;
-    protected final String languagePath;
 
     /**
      * Constructor
@@ -68,7 +67,6 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
                 "config" + sep + "photos" + sep + "flower4.jpg"
         );
         scriptsPath = sep + "config" + sep + "db";
-        languagePath = sep + "config" + sep + "lang";
 
         // Database connection
         doSetValue(SysConfig.DB_DRIVER, "org.postgresql.Driver");
@@ -92,19 +90,6 @@ public class SysConfig extends AbstractConfig implements WahlzeitConfig {
     @Override
     public String getScriptsPath() {
         return scriptsPath;
-    }
-
-    @Override
-    public String getLanguagePath() {
-        return languagePath;
-    }
-
-    /**
-     * @methodtype get
-     */
-    @Override
-    public String getDbDriverAsString() {
-        return getValue(DB_DRIVER);
     }
 
     /**
