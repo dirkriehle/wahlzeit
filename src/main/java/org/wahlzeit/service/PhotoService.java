@@ -29,6 +29,7 @@ import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
+import org.apache.log4j.Logger;
 import org.wahlzeit.agent.AgentManager;
 import org.wahlzeit.agent.NotifyAboutPraiseAgent;
 import org.wahlzeit.api.dto.PhotoDto;
@@ -36,7 +37,6 @@ import org.wahlzeit.config.WahlzeitConfig;
 import org.wahlzeit.database.repository.PhotoRepository;
 import org.wahlzeit.database.repository.UserRepository;
 import org.wahlzeit.model.*;
-import org.wahlzeit.utils.SysLog;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,12 +51,14 @@ import java.util.stream.Collectors;
 @Singleton
 public class PhotoService {
 
-    @Inject
-    WahlzeitConfig config;
+    protected static final Logger LOG = Logger.getLogger(PhotoService.class);
 
     @Inject
-    UserRepository userRepository;
-
+    public WahlzeitConfig config;
+    @Inject
+    public UserRepository userRepository;
+    @Inject
+    public AgentManager agentManager;
     @Inject
     public Transformer transformer;
     @Inject
@@ -85,7 +87,7 @@ public class PhotoService {
             addPhoto(null, imageData, Set.of());
             count++;
         }
-        SysLog.logSysInfo(String.format("Initialized wahlzeit with %s photos", count));
+        LOG.info(String.format("Initialized wahlzeit with %s photos", count));
     }
 
     /**
@@ -97,7 +99,7 @@ public class PhotoService {
     public List<PhotoDto> getPhotos() throws SQLException {
         List<Photo> photoList = repository.findAll();
 
-        SysLog.logSysInfo(String.format("Fetched %s photos", photoList.size()));
+        LOG.info(String.format("Fetched %s photos", photoList.size()));
         List<PhotoDto> responseDto = transformer.transformPhotos(photoList);
         return responseDto;
     }
@@ -121,7 +123,7 @@ public class PhotoService {
         Photo insertPhoto = factory.createPhoto(user, photoBlob, tags);
         insertPhoto = repository.insert(insertPhoto);
 
-        SysLog.logSysInfo(String.format("Added photo %s", insertPhoto.getId()));
+        LOG.info(String.format("Added photo %s", insertPhoto.getId()));
         PhotoDto responseDto = transformer.transform(insertPhoto);
         return responseDto;
     }
@@ -136,7 +138,7 @@ public class PhotoService {
     public PhotoDto getPhoto(long photoId) throws SQLException {
         Photo photo = findVisiblePhoto(photoId);
 
-        SysLog.logSysInfo(String.format("Fetched photo %s", photo.getId()));
+        LOG.info(String.format("Fetched photo %s", photo.getId()));
         PhotoDto responseDto = transformer.transform(photo);
         return responseDto;
     }
@@ -150,7 +152,7 @@ public class PhotoService {
     public PhotoDto getRandomPhoto() throws SQLException {
         Photo randomPhoto = repository.findRandomVisible();
 
-        SysLog.logSysInfo(String.format("Fetched random photo %s", randomPhoto.getId()));
+        LOG.info(String.format("Fetched random photo %s", randomPhoto.getId()));
         PhotoDto responseDto = transformer.transform(randomPhoto);
         return responseDto;
     }
@@ -164,7 +166,7 @@ public class PhotoService {
      */
     public byte[] getPhotoData(long photoId) throws SQLException {
         Photo photo = findVisiblePhoto(photoId);
-        SysLog.logSysInfo(String.format("Fetched photo %s data", photo.getId()));
+        LOG.info(String.format("Fetched photo %s data", photo.getId()));
         return photo.getData();
     }
 
@@ -188,7 +190,7 @@ public class PhotoService {
                 .filter(Photo::isVisible)
                 .collect(Collectors.toList());
 
-        SysLog.logSysInfo(String.format("Fetched %s filtered photos", photoList.size()));
+        LOG.info(String.format("Fetched %s filtered photos", photoList.size()));
         List<PhotoDto> responseDto = transformer.transformPhotos(photoList);
         return responseDto;
     }
@@ -211,7 +213,7 @@ public class PhotoService {
         photo.setStatus(PhotoStatus.DELETED);
         repository.update(photo);
 
-        SysLog.logSysInfo(String.format("Deleted photo %s", photo.getId()));
+        LOG.info(String.format("Deleted photo %s", photo.getId()));
         PhotoDto responseDto = transformer.transform(photo);
         return responseDto;
     }
@@ -234,7 +236,7 @@ public class PhotoService {
         repository.update(photo);
         notifyPraise(photo);
 
-        SysLog.logSysInfo(String.format("Praised photo %s to %s", photo.getId(), photo.getPraise()));
+        LOG.info(String.format("Praised photo %s to %s", photo.getId(), photo.getPraise()));
         PhotoDto responseDto = transformer.transform(photo);
         return responseDto;
     }
@@ -254,9 +256,7 @@ public class PhotoService {
      * @methodtype command
      */
     private void notifyPraise(Photo photo) {
-        NotifyAboutPraiseAgent praiseAgent = (NotifyAboutPraiseAgent) AgentManager
-                .getInstance()
-                .getAgent(NotifyAboutPraiseAgent.NAME);
+        NotifyAboutPraiseAgent praiseAgent = agentManager.getAgent(NotifyAboutPraiseAgent.NAME);
         praiseAgent.addForNotify(photo);
     }
 

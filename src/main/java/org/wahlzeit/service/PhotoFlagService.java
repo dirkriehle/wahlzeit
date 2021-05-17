@@ -24,12 +24,12 @@ package org.wahlzeit.service;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
+import org.apache.log4j.Logger;
 import org.wahlzeit.api.dto.PhotoDto;
 import org.wahlzeit.database.repository.PhotoRepository;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoStatus;
 import org.wahlzeit.model.User;
-import org.wahlzeit.utils.SysLog;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -40,10 +40,12 @@ import java.util.stream.Collectors;
  */
 public class PhotoFlagService {
 
+    protected static final Logger LOG = Logger.getLogger(PhotoFlagService.class);
+
     @Inject
-    PhotoRepository repository;
+    public PhotoRepository repository;
     @Inject
-    Transformer transformer;
+    public Transformer transformer;
 
     /**
      * Set of photos, which are flagged
@@ -57,7 +59,7 @@ public class PhotoFlagService {
                 .filter(p -> p.getStatus() == PhotoStatus.FLAGGED)
                 .collect(Collectors.toList());
 
-        SysLog.logSysInfo(String.format("Fetched %s flagged photos", photos.size()));
+        LOG.info(String.format("Fetched %s flagged photos", photos.size()));
         List<PhotoDto> responseDto = transformer.transformPhotos(photos);
         return responseDto;
     }
@@ -72,7 +74,7 @@ public class PhotoFlagService {
     public PhotoDto getFlaggedPhoto(Long photoId) throws SQLException {
         Photo photo = findFlaggedPhoto(photoId);
 
-        SysLog.logSysInfo(String.format("Fetched flagged photo %s", photo.getId()));
+        LOG.info(String.format("Fetched flagged photo %s", photo.getId()));
         PhotoDto responseDto = transformer.transform(photo);
         return responseDto;
     }
@@ -86,7 +88,8 @@ public class PhotoFlagService {
      */
     public byte[] getFlaggedPhotoData(Long photoId) throws SQLException {
         Photo photo = findFlaggedPhoto(photoId);
-        SysLog.logSysInfo(String.format("Fetched flagged photo %s data", photo.getId()));
+
+        LOG.info(String.format("Fetched flagged photo %s data", photo.getId()));
         return photo.getData();
     }
 
@@ -109,7 +112,7 @@ public class PhotoFlagService {
         photo.setStatus(newStatus);
         repository.update(photo);
 
-        SysLog.logSysInfo(String.format("Set flagged photo %s status %s", photo.getId(), status));
+        LOG.info(String.format("Set flagged photo %s status %s", photo.getId(), status));
         PhotoDto photoDto = transformer.transform(photo);
         return photoDto;
     }

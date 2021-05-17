@@ -20,7 +20,8 @@
 
 package org.wahlzeit.agent;
 
-import org.wahlzeit.utils.SysLog;
+import jakarta.inject.Singleton;
+import org.apache.log4j.Logger;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,41 +29,18 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * The AgentManager singleton manages all Agent instances.
  */
+@Singleton
 public class AgentManager {
 
-    /**
-     *
-     */
-    protected static AgentManager instance = null;
-
-    /**
-     * @methodtype initialization
-     */
-    protected static void initInstance() {
-        getInstance().addAgent(new NotifyAboutPraiseAgent());
-    }
-
-    /**
-     *
-     */
-    public static synchronized AgentManager getInstance() {
-        if (instance == null) {
-            instance = new AgentManager();
-            initInstance();
-        }
-        return instance;
-    }
+    private static final Logger LOG = Logger.getLogger(AgentManager.class);
 
     /**
      *
      */
     protected final Map<String, AgentThread> threads = new ConcurrentHashMap<>();
 
-    /**
-     *
-     */
-    protected AgentManager() {
-        // do nothing
+    public AgentManager() {
+        addAgent(new NotifyAboutPraiseAgent());
     }
 
     /**
@@ -89,7 +67,7 @@ public class AgentManager {
     public void startThread(AgentThread thread) {
         thread.start();
         String name = thread.getAgent().getName();
-        SysLog.logSysInfo("agent", name, "agent/thread was started");
+        LOG.info("agent " + name + " agent/thread was started");
     }
 
     /**
@@ -109,15 +87,16 @@ public class AgentManager {
         }
 
         String agentName = thread.getAgent().getName();
-        SysLog.logSysInfo("agent", agentName, "agent/thread was stopped");
+        LOG.info("agent " + agentName + " agent/thread was stopped");
     }
 
     /**
      * @methodtype get
      */
-    public Agent getAgent(String name) {
+    @SuppressWarnings("unchecked")
+    public <T extends Agent> T getAgent(String name) {
         AgentThread thread = threads.get(name);
-        return thread.getAgent();
+        return (T) thread.getAgent();
     }
 
     /**

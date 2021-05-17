@@ -20,8 +20,8 @@
 
 package org.wahlzeit.database;
 
+import org.apache.log4j.Logger;
 import org.wahlzeit.utils.SysConfig;
-import org.wahlzeit.utils.SysLog;
 
 import java.sql.*;
 import java.util.Set;
@@ -34,6 +34,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author dirkriehle
  */
 public class DatabaseConnection {
+
+    protected static final Logger LOG = Logger.getLogger(DatabaseConnection.class);
 
     /**
      *
@@ -53,7 +55,7 @@ public class DatabaseConnection {
         DatabaseConnection result;
         if (POOL.isEmpty()) {
             result = new DatabaseConnection("dbc" + dbcId++);
-            SysLog.logCreatedObject("DatabaseConnection", result.getName());
+            LOG.info("New DatabaseConnection " + result.getName());
         } else {
             result = POOL.iterator().next();
             POOL.remove(result);
@@ -75,18 +77,18 @@ public class DatabaseConnection {
         do {
             try {
                 DatabaseConnection.ensureDatabaseConnection();
-                SysLog.logSysInfo("[success] Service check for URL " + dbUrl);
+                LOG.info("[success] Service check for URL " + dbUrl);
                 return true;
             } catch (final SQLException e) {
                 final String msg = String.format("[%d/%d] Retry service check for URL %s", retryCounter, retries, dbUrl);
-                SysLog.logSysInfo(msg);
+                LOG.info(msg);
                 doSleep(sleepTimeBetweenRetries);
             }
 
             retryCounter--;
         } while (retryCounter > 0);
 
-        SysLog.logSysError("[failure] Service check for URL  " + dbUrl);
+        LOG.info("[failure] Service check for URL  " + dbUrl);
         return false;
     }
 
@@ -104,7 +106,7 @@ public class DatabaseConnection {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException ex) {
-            SysLog.logThrowable(ex);
+            LOG.error("No Postgresql.driver provided", ex);
         }
     }
 
@@ -116,7 +118,7 @@ public class DatabaseConnection {
         String dbUser = SYS_CONFIG.getDbUserAsString();
         String dbPassword = SYS_CONFIG.getDbPasswordAsString();
         Connection result = DriverManager.getConnection(dbConnection, dbUser, dbPassword);
-        SysLog.logSysInfo("opening database connection: " + result.toString());
+        LOG.info("opening database connection: " + result.toString());
         return result;
     }
 
@@ -124,7 +126,7 @@ public class DatabaseConnection {
      *
      */
     public static void closeConnection(Connection cn) throws SQLException {
-        SysLog.logSysInfo("closing database connection: " + cn.toString());
+        LOG.info("closing database connection: " + cn.toString());
         cn.close();
     }
 
@@ -163,7 +165,7 @@ public class DatabaseConnection {
         try {
             result = (rdbmsConnection != null) && !rdbmsConnection.isClosed();
         } catch (SQLException ex) {
-            SysLog.logThrowable(ex);
+            LOG.info(ex);
         }
 
         return result;

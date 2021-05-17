@@ -25,6 +25,7 @@ import org.wahlzeit.database.repository.Persistent;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 
 public class User extends Client implements Persistent {
 
@@ -32,7 +33,7 @@ public class User extends Client implements Persistent {
     private String name;
     private String password;
     private Gender gender = Gender.UNDEFINED;
-    private Language language = Language.GERMAN;
+    private Locale language = Locale.GERMAN;
 
     private long creationTime = System.currentTimeMillis();
 
@@ -72,7 +73,7 @@ public class User extends Client implements Persistent {
         password = rset.getString("password");
         rights = AccessRights.getFromInt(rset.getInt("rights"));
         creationTime = rset.getLong("creation_time");
-        language = Language.getFromInt(rset.getInt("language"));
+        language = new Locale(rset.getString("language"));
     }
 
     @Override
@@ -83,7 +84,7 @@ public class User extends Client implements Persistent {
         rset.updateString("password", password);
         rset.updateInt("rights", rights.asInt());
         rset.updateLong("creation_time", creationTime);
-        rset.updateInt("language", language.asInt());
+        rset.updateString("language", language.toString());
     }
 
     /*
@@ -130,7 +131,7 @@ public class User extends Client implements Persistent {
         return gender;
     }
 
-    public Language getLanguage() {
+    public Locale getLanguage() {
         return language;
     }
 

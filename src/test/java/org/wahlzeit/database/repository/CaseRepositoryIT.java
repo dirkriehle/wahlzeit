@@ -1,34 +1,16 @@
 package org.wahlzeit.database.repository;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.wahlzeit.BaseModelTest;
-import org.wahlzeit.model.*;
+import org.wahlzeit.model.Case;
+import org.wahlzeit.model.FlagReason;
+import org.wahlzeit.model.Photo;
+import org.wahlzeit.model.User;
 
 
 public class CaseRepositoryIT extends BaseModelTest {
 
-    UserFactory userFactory;
-    UserRepository userRepository;
-    PhotoFactory photoFactory;
-    PhotoRepository photoRepository;
-
-    CaseFactory factory;
-    CaseRepository repository;
-
-    @Before
-    public void setupDependencies() {
-        userFactory = new UserFactory();
-        userRepository = new UserRepository();
-        userRepository.factory = new UserFactory();
-        photoFactory = new PhotoFactory();
-        photoRepository = new PhotoRepository();
-
-        factory = new CaseFactory();
-        repository = new CaseRepository();
-        repository.factory = new CaseFactory();
-    }
 
     @Test
     public void insertCase() throws Exception {
@@ -39,8 +21,8 @@ public class CaseRepositoryIT extends BaseModelTest {
         photo = photoRepository.insert(photo);
 
         // act
-        Case photoCase = factory.createPhotoCase(user, photo, FlagReason.COPYRIGHT);
-        photoCase = repository.insert(photoCase);
+        Case photoCase = caseFactory.createPhotoCase(user, photo, FlagReason.COPYRIGHT);
+        photoCase = caseRepository.insert(photoCase);
 
         // assert
         Assert.assertNotNull(photoCase);

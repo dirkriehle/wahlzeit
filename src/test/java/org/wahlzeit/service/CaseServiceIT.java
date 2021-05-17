@@ -1,46 +1,25 @@
 package org.wahlzeit.service;
 
-import jakarta.inject.Inject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.wahlzeit.BaseModelTest;
 import org.wahlzeit.api.dto.CaseDto;
-import org.wahlzeit.database.repository.CaseRepository;
-import org.wahlzeit.database.repository.PhotoRepository;
-import org.wahlzeit.database.repository.UserRepository;
-import org.wahlzeit.model.*;
+import org.wahlzeit.model.FlagReason;
+import org.wahlzeit.model.Photo;
+import org.wahlzeit.model.User;
 
 import java.sql.SQLException;
 
 public class CaseServiceIT extends BaseModelTest {
-
-    @Inject
-    CaseService service;
 
     private User user;
     private Photo photo;
 
     @Before
     public void setupDependencies() throws Exception {
-        service = new CaseService();
-        service.transformer = new Transformer();
-        service.photoRepository = new PhotoRepository();
-        service.photoRepository.factory = new PhotoFactory();
-
-        service.factory = new CaseFactory();
-        service.repository = new CaseRepository();
-        service.repository.factory = new CaseFactory();
-
-        UserFactory userFactory = new UserFactory();
-        UserRepository userRepository = new UserRepository();
-        userRepository.factory = userFactory;
         user = userFactory.createUser();
         user = userRepository.insert(user);
-
-        PhotoFactory photoFactory = new PhotoFactory();
-        PhotoRepository photoRepository = new PhotoRepository();
-        photoRepository.factory = photoFactory;
         photo = photoFactory.createPhoto(buildMockImageBytes());
         photo = photoRepository.insert(photo);
     }
@@ -48,7 +27,7 @@ public class CaseServiceIT extends BaseModelTest {
     @Test
     public void test_createCase() throws SQLException {
         // act
-        CaseDto actualCaseDto = service.createCase(user, photo.getId(), FlagReason.COPYRIGHT.asString());
+        CaseDto actualCaseDto = caseService.createCase(user, photo.getId(), FlagReason.COPYRIGHT.asString());
 
         // assert
         Assert.assertNotNull(actualCaseDto);
@@ -62,11 +41,11 @@ public class CaseServiceIT extends BaseModelTest {
     @Test
     public void test_closeCase() throws SQLException {
         // arrange
-        CaseDto expectedCaseDto = service.createCase(user, photo.getId(), FlagReason.COPYRIGHT.asString());
+        CaseDto expectedCaseDto = caseService.createCase(user, photo.getId(), FlagReason.COPYRIGHT.asString());
         System.out.println(expectedCaseDto.getId());
 
         // act
-        CaseDto actualCaseDto = service.closeCase(expectedCaseDto.getId());
+        CaseDto actualCaseDto = caseService.closeCase(expectedCaseDto.getId());
 
         // assert
         Assert.assertNotNull(actualCaseDto);

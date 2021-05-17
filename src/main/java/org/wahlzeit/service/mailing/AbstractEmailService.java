@@ -20,8 +20,8 @@
 
 package org.wahlzeit.service.mailing;
 
+import org.apache.log4j.Logger;
 import org.wahlzeit.model.EmailAddress;
-import org.wahlzeit.utils.SysLog;
 
 import javax.mail.Message;
 
@@ -29,6 +29,8 @@ import javax.mail.Message;
  * Abstract superclass for non-trivial EmailServer implementations.
  */
 public abstract class AbstractEmailService implements EmailService {
+
+    protected static final Logger LOG = Logger.getLogger(AbstractEmailService.class);
 
     /**
      *
@@ -68,8 +70,8 @@ public abstract class AbstractEmailService implements EmailService {
         try {
             sendEmail(from, to, bcc, subject, body);
             return true;
-        } catch (Exception ex) {
-            SysLog.logThrowable(ex);
+        } catch (Exception e) {
+            LOG.error("Failed sending email", e);
             return false;
         }
     }

@@ -2,16 +2,10 @@ package org.wahlzeit.service;
 
 import jakarta.ws.rs.NotFoundException;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.wahlzeit.BaseModelTest;
 import org.wahlzeit.api.dto.PhotoDto;
-import org.wahlzeit.database.repository.PhotoRepository;
-import org.wahlzeit.database.repository.UserRepository;
-import org.wahlzeit.model.PhotoFactory;
 import org.wahlzeit.model.User;
-import org.wahlzeit.model.UserFactory;
-import org.wahlzeit.utils.SysConfig;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -20,33 +14,13 @@ import java.util.Set;
 
 public class PhotoServiceIT extends BaseModelTest {
 
-    private PhotoService service;
-    private UserRepository userRepository;
-    private UserFactory userFactory;
-
-    @Before
-    public void setupDependencies() {
-        service = new PhotoService();
-        service.config = new SysConfig();
-        service.factory = new PhotoFactory();
-        service.repository = new PhotoRepository();
-        service.repository.factory = new PhotoFactory();
-        service.transformer = new Transformer();
-        service.userRepository = new UserRepository();
-        service.userRepository.factory = new UserFactory();
-
-        userFactory = new UserFactory();
-        userRepository = new UserRepository();
-        userRepository.factory = new UserFactory();
-    }
-
     @Test
     public void test_getRandomPhoto() throws SQLException, IOException {
         // arrange
-        service.setupInitialPhotos();
+        photoService.setupInitialPhotos();
 
         // act
-        PhotoDto actualPhoto = service.getRandomPhoto();
+        PhotoDto actualPhoto = photoService.getRandomPhoto();
 
         // assert - doesn't throw an exception
         Assert.assertNotNull(actualPhoto);
@@ -56,7 +30,7 @@ public class PhotoServiceIT extends BaseModelTest {
     @Test
     public void test_getPhotos() throws SQLException {
         // act
-        List<PhotoDto> photoDtos = service.getPhotos();
+        List<PhotoDto> photoDtos = photoService.getPhotos();
 
         // assert
         Assert.assertNotNull(photoDtos);
@@ -70,7 +44,7 @@ public class PhotoServiceIT extends BaseModelTest {
         Set<String> expectedTags = Set.of("tag1", "tag2");
 
         // act
-        PhotoDto responseDto = service.addPhoto(user, buildMockImageBytes(), expectedTags);
+        PhotoDto responseDto = photoService.addPhoto(user, buildMockImageBytes(), expectedTags);
 
         // assert
         Assert.assertNotNull(responseDto);
@@ -86,10 +60,10 @@ public class PhotoServiceIT extends BaseModelTest {
         User user = userFactory.createUser();
         user = userRepository.insert(user);
         Set<String> expectedTags = Set.of("tag1", "tag2");
-        PhotoDto expectedPhoto = service.addPhoto(user, buildMockImageBytes(), expectedTags);
+        PhotoDto expectedPhoto = photoService.addPhoto(user, buildMockImageBytes(), expectedTags);
 
         // act
-        List<PhotoDto> responseDto = service.getFilteredPhotos(null, Set.of("tag1", "tAg 2"));
+        List<PhotoDto> responseDto = photoService.getFilteredPhotos(null, Set.of("tag1", "tAg 2"));
 
         // assert
         final Long expectedPhotoId = expectedPhoto.getId();
@@ -107,10 +81,10 @@ public class PhotoServiceIT extends BaseModelTest {
         User user = userFactory.createUser();
         user = userRepository.insert(user);
         Set<String> expectedTags = Set.of("tag1", "tag2");
-        PhotoDto expectedPhoto = service.addPhoto(user, buildMockImageBytes(), expectedTags);
+        PhotoDto expectedPhoto = photoService.addPhoto(user, buildMockImageBytes(), expectedTags);
 
         // act
-        List<PhotoDto> responseDto = service.getFilteredPhotos(user.getId(), Set.of("tag1", "tAg 2"));
+        List<PhotoDto> responseDto = photoService.getFilteredPhotos(user.getId(), Set.of("tag1", "tAg 2"));
 
         // assert
         Assert.assertEquals(1, responseDto.size());
@@ -122,10 +96,10 @@ public class PhotoServiceIT extends BaseModelTest {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
-        PhotoDto expectedDto = service.addPhoto(user, buildMockImageBytes(), Set.of());
+        PhotoDto expectedDto = photoService.addPhoto(user, buildMockImageBytes(), Set.of());
 
         // act
-        PhotoDto actualDto = service.getPhoto(expectedDto.getId());
+        PhotoDto actualDto = photoService.getPhoto(expectedDto.getId());
 
         // assert
         Assert.assertEquals(user.getId(), actualDto.getUserId());
@@ -140,10 +114,10 @@ public class PhotoServiceIT extends BaseModelTest {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
-        PhotoDto expectedDto = service.addPhoto(user, buildMockImageBytes(), Set.of());
+        PhotoDto expectedDto = photoService.addPhoto(user, buildMockImageBytes(), Set.of());
 
         // act
-        List<PhotoDto> responseDto = service.getFilteredPhotos(user.getId(), Set.of());
+        List<PhotoDto> responseDto = photoService.getFilteredPhotos(user.getId(), Set.of());
 
         // assert
         Assert.assertEquals(1, responseDto.size());
@@ -159,13 +133,13 @@ public class PhotoServiceIT extends BaseModelTest {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
-        PhotoDto expectedDto = service.addPhoto(user, buildMockImageBytes(), Set.of());
+        PhotoDto expectedDto = photoService.addPhoto(user, buildMockImageBytes(), Set.of());
 
         // act
-        PhotoDto responseDto = service.removePhoto(user, expectedDto.getId());
+        PhotoDto responseDto = photoService.removePhoto(user, expectedDto.getId());
 
         // assert
-        service.getPhoto(expectedDto.getId());
+        photoService.getPhoto(expectedDto.getId());
         Assert.assertEquals(user.getId(), responseDto.getUserId());
         Assert.assertEquals(expectedDto.getId(), responseDto.getId());
         Assert.assertEquals(expectedDto.getPath(), responseDto.getPath());
@@ -178,10 +152,10 @@ public class PhotoServiceIT extends BaseModelTest {
         // arrange
         User user = userFactory.createUser();
         user = userRepository.insert(user);
-        PhotoDto expectedDto = service.addPhoto(user, buildMockImageBytes(), Set.of());
+        PhotoDto expectedDto = photoService.addPhoto(user, buildMockImageBytes(), Set.of());
 
         // act
-        PhotoDto responseDto = service.praisePhoto(expectedDto.getId(), 1);
+        PhotoDto responseDto = photoService.praisePhoto(expectedDto.getId(), 1);
 
         // assert
         Assert.assertTrue(responseDto.getPraise() < 6);

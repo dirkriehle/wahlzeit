@@ -22,12 +22,13 @@ package org.wahlzeit.agent;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
+import org.apache.log4j.Logger;
 import org.wahlzeit.database.repository.UserRepository;
-import org.wahlzeit.model.*;
+import org.wahlzeit.model.EmailAddress;
+import org.wahlzeit.model.LanguageConfig;
+import org.wahlzeit.model.Photo;
+import org.wahlzeit.model.User;
 import org.wahlzeit.service.mailing.EmailService;
-import org.wahlzeit.service.mailing.EmailServiceManager;
-import org.wahlzeit.utils.SysLog;
-import org.wahlzeit.utils.UserLog;
 
 import java.sql.SQLException;
 import java.util.Collections;
@@ -41,8 +42,12 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class NotifyAboutPraiseAgent extends Agent {
 
+    private static final Logger LOG = Logger.getLogger(NotifyAboutPraiseAgent.class);
+
     @Inject
     UserRepository userRepository;
+    @Inject
+    EmailService emailService;
 
     /**
      *
@@ -91,7 +96,7 @@ public class NotifyAboutPraiseAgent extends Agent {
                 try {
                     notifyOwner(photo, photos);
                 } catch (SQLException | NotFoundException e) {
-                    SysLog.logThrowable(e);
+                    LOG.error("Failed notify owner", e);
                 }
             }
         }
@@ -103,7 +108,7 @@ public class NotifyAboutPraiseAgent extends Agent {
     protected void notifyOwner(Photo photo, Photo[] photos) throws SQLException, NotFoundException {
         User user = userRepository.findById(photo.getOwnerId()).orElseThrow(NotFoundException::new);
 
-        ModelConfig cfg = LanguageConfigs.get(user.getLanguage());
+        LanguageConfig cfg = LanguageConfig.get(user.getLanguage());
 
         EmailAddress from = cfg.getAdministratorEmailAddress();
         EmailAddress to = user.getEmailAddress();
@@ -115,7 +120,7 @@ public class NotifyAboutPraiseAgent extends Agent {
             Photo current = photos[i];
             if ((current != null) && current.hasSameOwner(photo)) {
                 Long id = current.getId();
-                UserLog.logUserInfo("notifying user: " + user.getName() + " about photo: " + id);
+                LOG.info("notifying user: " + user.getName() + " about photo: " + id);
                 emailBody.append(user.getSiteUrlAsString()).append(id).append(".html\n"); // @TODO Application
                 photos[i] = null;
             }
@@ -125,7 +130,6 @@ public class NotifyAboutPraiseAgent extends Agent {
         emailBody.append(cfg.getNotifyAboutPraiseEmailPostScriptum()).append("\n\n----\n");
         emailBody.append(cfg.getGeneralEmailFooter()).append("\n\n");
 
-        EmailService emailService = EmailServiceManager.getDefaultService();
         emailService.sendEmailIgnoreException(from, to, emailSubject, emailBody.toString());
     }
 

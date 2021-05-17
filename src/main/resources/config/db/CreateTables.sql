@@ -6,7 +6,7 @@ CREATE TABLE users
     creation_time bigint,
     password      text,
     rights        integer,
-    language      integer
+    language      text
 );
 
 CREATE TABLE photos
@@ -41,6 +41,6 @@ CREATE TABLE cases
     decision_time bigint
 );
 
-INSERT INTO users (id, creation_time, name, email_address, "password", rights)
-VALUES (0, 0, 'admin', 'root@localhost', 'admin', 4);
+INSERT INTO users (id, creation_time, name, email_address, password, rights, language)
+VALUES (0, 0, 'admin', 'root@localhost', 'admin', 4, 'de');
 

@@ -20,14 +20,16 @@
 
 package org.wahlzeit.service.mailing;
 
+import org.apache.log4j.Logger;
 import org.wahlzeit.model.EmailAddress;
-import org.wahlzeit.utils.SysLog;
 
 /**
  * A logging mailing service logs email send attempts before sending emails.
  * This is a decorator pattern application.
  */
 public class LoggingEmailService implements EmailService {
+
+    protected static final Logger LOG = Logger.getLogger(LoggingEmailService.class);
 
     /**
      *
@@ -50,7 +52,7 @@ public class LoggingEmailService implements EmailService {
         String toString = (to == null) ? "null" : to.asString();
         String subjectString = (subject == null) ? "null" : subject;
 
-        SysLog.logSysInfo("Called sendEmail from: " + fromString + " to: " + toString + " with subject: " + subjectString);
+        LOG.info("Called sendEmail from: " + fromString + " to: " + toString + " with subject: " + subjectString);
 
         decorated.sendEmail(from, to, subject, body);
     }
@@ -79,7 +81,7 @@ public class LoggingEmailService implements EmailService {
         String bccString = (bcc == null) ? "null" : bcc.asString();
         String subjectString = (subject == null) ? "null" : subject;
 
-        SysLog.logSysInfo("Called sendEmail from: " + fromString + " to: " + toString + " bcc: " + bccString + " with subject: " + subjectString);
+        LOG.info("Called sendEmail from: " + fromString + " to: " + toString + " bcc: " + bccString + " with subject: " + subjectString);
 
         decorated.sendEmail(from, to, bcc, subject, body);
     }

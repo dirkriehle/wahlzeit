@@ -11,9 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.wahlzeit.BaseModelTest;
 import org.wahlzeit.api.filter.AuthenticationFilter;
-import org.wahlzeit.database.repository.UserRepository;
 import org.wahlzeit.model.User;
-import org.wahlzeit.model.UserFactory;
 
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -24,14 +22,9 @@ import java.util.*;
 public class AuthenticationFilterIT extends BaseModelTest {
 
     private AuthenticationFilter filter;
-    private UserRepository userRepository;
-    private UserFactory userFactory;
 
     @Before
     public void setupDependencies() {
-        userFactory = new UserFactory();
-        userRepository = new UserRepository();
-        userRepository.factory = userFactory;
         filter = new AuthenticationFilter();
         filter.userRepository = userRepository;
     }

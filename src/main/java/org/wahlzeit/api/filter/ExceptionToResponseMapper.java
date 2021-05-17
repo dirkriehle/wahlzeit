@@ -25,8 +25,8 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
+import org.apache.log4j.Logger;
 import org.wahlzeit.api.dto.ErrorDto;
-import org.wahlzeit.utils.SysLog;
 
 /*
  * Maps in internal exception to an ErrorDto
@@ -34,6 +34,8 @@ import org.wahlzeit.utils.SysLog;
  */
 @Provider
 public class ExceptionToResponseMapper implements ExceptionMapper<Throwable> {
+
+    protected static final Logger LOG = Logger.getLogger(ExceptionToResponseMapper.class);
 
     @Override
     public Response toResponse(Throwable exception) {
@@ -47,7 +49,7 @@ public class ExceptionToResponseMapper implements ExceptionMapper<Throwable> {
             errorDto = new ErrorDto(thrownException.getMessage());
         } else {
             // All others exceptions are not intended, log then and wrap them up.
-            SysLog.logThrowable(exception);
+            LOG.error("Unhandled error", exception);
             errorDto = new ErrorDto("Unknown error - one may look at the server logs");
         }
 
