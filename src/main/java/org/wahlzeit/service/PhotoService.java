@@ -22,7 +22,6 @@
 package org.wahlzeit.service;
 
 
-import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import jakarta.ws.rs.ForbiddenException;
@@ -39,7 +38,6 @@ import org.wahlzeit.database.repository.UserRepository;
 import org.wahlzeit.model.*;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
@@ -65,30 +63,6 @@ public class PhotoService {
     public PhotoRepository repository;
     @Inject
     public PhotoFactory factory;
-
-    /**
-     * Executed by Jakarta on the first execution of the application
-     * Inserts all photos of the configured directory into the database
-     *
-     * @throws SQLException
-     * @throws IOException
-     */
-    @PostConstruct
-    public void setupInitialPhotos() throws SQLException, IOException {
-        if (!repository.findAll().isEmpty()) {
-            return;
-        }
-
-        int count = 0;
-        ClassLoader classLoader = getClass().getClassLoader();
-        for (String currentFilePath : config.getPhotosPath()) {
-            InputStream is = classLoader.getResourceAsStream(currentFilePath);
-            byte[] imageData = is.readAllBytes();
-            addPhoto(null, imageData, Set.of());
-            count++;
-        }
-        LOG.info(String.format("Initialized wahlzeit with %s photos", count));
-    }
 
     /**
      * Get all photos

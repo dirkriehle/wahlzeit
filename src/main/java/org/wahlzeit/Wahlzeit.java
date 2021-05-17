@@ -28,6 +28,7 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.wahlzeit.agent.AgentManager;
+import org.wahlzeit.api.ServletInitializer;
 import org.wahlzeit.config.WahlzeitConfig;
 import org.wahlzeit.database.repository.CaseRepository;
 import org.wahlzeit.database.repository.PhotoRepository;
@@ -80,13 +81,16 @@ public class Wahlzeit {
                 .packages("org.wahlzeit.api.filter")
                 .packages("org.wahlzeit.api.resource")
                 .packages("org.wahlzeit.api.service")
+                .packages("org.wahlzeit.api.service.mailing")
                 .packages("org.wahlzeit.db.repository")
-                .register(new ServiceInjectBinder());
+                .register(ServletInitializer.class)
+                .register(ServiceInjectBinder.class);
 
         // setup server
-        WebappContext context = new WebappContext("Wahlzeit");
         URI baseUri = UriBuilder.fromUri("http://0.0.0.0/").port(8080).build();
         HttpServer httpServer = GrizzlyHttpServerFactory.createHttpServer(baseUri, config, false);
+
+        WebappContext context = new WebappContext("Wahlzeit");
         context.deploy(httpServer); // Call container startup hooks before starting the httpServer
         httpServer.start();
     }
