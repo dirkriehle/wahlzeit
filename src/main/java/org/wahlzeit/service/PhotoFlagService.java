@@ -43,11 +43,9 @@ public class PhotoFlagService {
     protected static final Logger LOG = Logger.getLogger(PhotoFlagService.class);
 
     @Inject
-    public
-    PhotoRepository repository;
+    public PhotoRepository repository;
     @Inject
-    public
-    Transformer transformer;
+    public Transformer transformer;
 
     /**
      * Set of photos, which are flagged

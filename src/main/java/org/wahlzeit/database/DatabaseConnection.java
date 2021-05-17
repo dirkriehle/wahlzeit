@@ -106,7 +106,7 @@ public class DatabaseConnection {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException ex) {
-            LOG.error("No Postgresql.driver provided",ex);
+            LOG.error("No Postgresql.driver provided", ex);
         }
     }
 
