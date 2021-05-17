@@ -1,7 +1,6 @@
 package org.wahlzeit.database.repository;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.wahlzeit.BaseModelTest;
 import org.wahlzeit.model.*;
@@ -14,23 +13,13 @@ import java.util.Set;
 
 public class PhotoRepositoryIT extends BaseModelTest {
 
-    private PhotoRepository repository;
-    private PhotoFactory factory;
-
-    @Before
-    public void setupDependencies() {
-        repository = new PhotoRepository();
-        factory = new PhotoFactory();
-        repository.factory = factory;
-    }
-
     @Test
     public void test_insertPhoto() throws SQLException, IOException {
         // arrange
-        Photo expectedPhoto = factory.createPhoto(buildMockImageBytes());
+        Photo expectedPhoto = photoFactory.createPhoto(buildMockImageBytes());
 
         // act
-        expectedPhoto = repository.insert(expectedPhoto);
+        expectedPhoto = photoRepository.insert(expectedPhoto);
 
         // assert
         Assert.assertNotNull(expectedPhoto.getId());
@@ -42,11 +31,11 @@ public class PhotoRepositoryIT extends BaseModelTest {
     public void test_getPhotoById() throws SQLException, IOException {
         // arrange
         byte[] expectedData = buildMockImageBytes(200, 192);
-        Photo expectedPhoto = factory.createPhoto(expectedData);
-        expectedPhoto = repository.insert(expectedPhoto);
+        Photo expectedPhoto = photoFactory.createPhoto(expectedData);
+        expectedPhoto = photoRepository.insert(expectedPhoto);
 
         // act
-        Optional<Photo> actualPhotoOpt = repository.findById(expectedPhoto.getId());
+        Optional<Photo> actualPhotoOpt = photoRepository.findById(expectedPhoto.getId());
 
         // assert
         Assert.assertTrue(actualPhotoOpt.isPresent());
@@ -61,15 +50,15 @@ public class PhotoRepositoryIT extends BaseModelTest {
     @Test
     public void test_updatePhoto() throws SQLException, IOException {
         // arrange
-        Photo expectedPhoto = factory.createPhoto(buildMockImageBytes());
-        expectedPhoto = repository.insert(expectedPhoto);
+        Photo expectedPhoto = photoFactory.createPhoto(buildMockImageBytes());
+        expectedPhoto = photoRepository.insert(expectedPhoto);
         expectedPhoto.setStatus(PhotoStatus.DELETED);
 
         // act
-        Photo actualPhoto = repository.update(expectedPhoto);
+        Photo actualPhoto = photoRepository.update(expectedPhoto);
 
         // assert
-        Optional<Photo> actualDbPhotoOpt = repository.findById(expectedPhoto.getId());
+        Optional<Photo> actualDbPhotoOpt = photoRepository.findById(expectedPhoto.getId());
         Assert.assertTrue(actualDbPhotoOpt.isPresent());
         Assert.assertEquals(expectedPhoto.getStatus(), actualPhoto.getStatus());
         Assert.assertEquals(expectedPhoto.getStatus(), actualDbPhotoOpt.get().getStatus());
@@ -78,14 +67,14 @@ public class PhotoRepositoryIT extends BaseModelTest {
     @Test
     public void test_deletePhoto() throws SQLException, IOException {
         // arrange
-        Photo expectedPhoto = factory.createPhoto(buildMockImageBytes());
-        expectedPhoto = repository.insert(expectedPhoto);
+        Photo expectedPhoto = photoFactory.createPhoto(buildMockImageBytes());
+        expectedPhoto = photoRepository.insert(expectedPhoto);
 
         // act
-        Photo actualPhoto = repository.delete(expectedPhoto);
+        Photo actualPhoto = photoRepository.delete(expectedPhoto);
 
         // assert
-        Optional<Photo> actualDbPhoto = repository.findById(expectedPhoto.getId());
+        Optional<Photo> actualDbPhoto = photoRepository.findById(expectedPhoto.getId());
         Assert.assertNotNull(actualPhoto);
         Assert.assertTrue(actualDbPhoto.isEmpty());
     }
@@ -93,11 +82,11 @@ public class PhotoRepositoryIT extends BaseModelTest {
     @Test
     public void test_getPhotos() throws SQLException, IOException {
         // arrange
-        Photo expectedPhoto = factory.createPhoto(buildMockImageBytes());
-        repository.insert(expectedPhoto);
+        Photo expectedPhoto = photoFactory.createPhoto(buildMockImageBytes());
+        photoRepository.insert(expectedPhoto);
 
         // act
-        List<Photo> actualPhotos = repository.findAll();
+        List<Photo> actualPhotos = photoRepository.findAll();
 
         // assert
         Assert.assertNotNull(actualPhotos);
@@ -108,11 +97,11 @@ public class PhotoRepositoryIT extends BaseModelTest {
     public void test_getPhotoForUser() throws SQLException, IOException {
         // arrange
         User user = createUser();
-        Photo expectedPhoto = factory.createPhoto(user, buildMockImageBytes(), new Tags());
-        expectedPhoto = repository.insert(expectedPhoto);
+        Photo expectedPhoto = photoFactory.createPhoto(user, buildMockImageBytes(), new Tags());
+        expectedPhoto = photoRepository.insert(expectedPhoto);
 
         // act
-        List<Photo> actualPhotos = repository.findWithFilter(new PhotoFilter(user, new Tags()));
+        List<Photo> actualPhotos = photoRepository.findWithFilter(new PhotoFilter(user, new Tags()));
 
         // assert
         Assert.assertNotNull(actualPhotos);
@@ -128,14 +117,14 @@ public class PhotoRepositoryIT extends BaseModelTest {
         Tags firstTags = new Tags(Set.of("captainamerica"));
         Tags middleTags = new Tags(Set.of("batman"));
         Tags lastTags = new Tags(Set.of("poisonivy"));
-        Photo expectedPhoto = factory.createPhoto(buildMockImageBytes(), expectedTags);
-        expectedPhoto = repository.insert(expectedPhoto);
+        Photo expectedPhoto = photoFactory.createPhoto(buildMockImageBytes(), expectedTags);
+        expectedPhoto = photoRepository.insert(expectedPhoto);
 
         // execute
-        List<Photo> allTags = repository.findWithFilter(new PhotoFilter(null, expectedTags));
-        List<Photo> firstTag = repository.findWithFilter(new PhotoFilter(null, firstTags));
-        List<Photo> middleTag = repository.findWithFilter(new PhotoFilter(null, middleTags));
-        List<Photo> lastTag = repository.findWithFilter(new PhotoFilter(null, lastTags));
+        List<Photo> allTags = photoRepository.findWithFilter(new PhotoFilter(null, expectedTags));
+        List<Photo> firstTag = photoRepository.findWithFilter(new PhotoFilter(null, firstTags));
+        List<Photo> middleTag = photoRepository.findWithFilter(new PhotoFilter(null, middleTags));
+        List<Photo> lastTag = photoRepository.findWithFilter(new PhotoFilter(null, lastTags));
 
         // assert
         final Long expectedId = expectedPhoto.getId();
@@ -148,11 +137,11 @@ public class PhotoRepositoryIT extends BaseModelTest {
     @Test
     public void test_getPhotosForUserButNoTags() throws SQLException, IOException {
         User user = createUser();
-        Photo expectedPhoto = factory.createPhoto(user, buildMockImageBytes(), new Tags());
-        expectedPhoto = repository.insert(expectedPhoto);
+        Photo expectedPhoto = photoFactory.createPhoto(user, buildMockImageBytes(), new Tags());
+        expectedPhoto = photoRepository.insert(expectedPhoto);
 
         // act
-        List<Photo> actualPhotos = repository.findWithFilter(new PhotoFilter(user, new Tags()));
+        List<Photo> actualPhotos = photoRepository.findWithFilter(new PhotoFilter(user, new Tags()));
 
         // assert
         Assert.assertEquals(1, actualPhotos.size());
@@ -164,11 +153,11 @@ public class PhotoRepositoryIT extends BaseModelTest {
         // arrange
         Tags tags = new Tags(Set.of("batman"));
         User user = createUser();
-        Photo expectedPhoto = factory.createPhoto(user, buildMockImageBytes(), tags);
-        expectedPhoto = repository.insert(expectedPhoto);
+        Photo expectedPhoto = photoFactory.createPhoto(user, buildMockImageBytes(), tags);
+        expectedPhoto = photoRepository.insert(expectedPhoto);
 
         // act
-        List<Photo> actualPhotos = repository.findWithFilter(new PhotoFilter(user, tags));
+        List<Photo> actualPhotos = photoRepository.findWithFilter(new PhotoFilter(user, tags));
 
         // assert
         Assert.assertEquals(1, actualPhotos.size());
@@ -178,11 +167,11 @@ public class PhotoRepositoryIT extends BaseModelTest {
     @Test
     public void test_getEmptyTag() throws SQLException, IOException {
         // arrange
-        Photo expectedPhoto = factory.createPhoto(buildMockImageBytes(), new Tags());
-        expectedPhoto = repository.insert(expectedPhoto);
+        Photo expectedPhoto = photoFactory.createPhoto(buildMockImageBytes(), new Tags());
+        expectedPhoto = photoRepository.insert(expectedPhoto);
 
         // act
-        Photo actualPhoto = repository.findById(expectedPhoto.getId()).get();
+        Photo actualPhoto = photoRepository.findById(expectedPhoto.getId()).get();
 
         // assert
         Assert.assertNotNull(actualPhoto);
@@ -194,11 +183,11 @@ public class PhotoRepositoryIT extends BaseModelTest {
         // arrange
         Tags tags = new Tags(Set.of("Captain America", "escaped,S3t", ""));
         Tags expectedTags = new Tags(Set.of("captainamerica", "escapeds3t"));
-        Photo expectedPhoto = factory.createPhoto(buildMockImageBytes(), tags);
-        expectedPhoto = repository.insert(expectedPhoto);
+        Photo expectedPhoto = photoFactory.createPhoto(buildMockImageBytes(), tags);
+        expectedPhoto = photoRepository.insert(expectedPhoto);
 
         // act
-        Photo actualPhoto = repository.findById(expectedPhoto.getId()).get();
+        Photo actualPhoto = photoRepository.findById(expectedPhoto.getId()).get();
 
         // assert
         Assert.assertNotNull(actualPhoto);

@@ -43,8 +43,10 @@ public class PhotoFlagService {
     protected static final Logger LOG = Logger.getLogger(PhotoFlagService.class);
 
     @Inject
+    public
     PhotoRepository repository;
     @Inject
+    public
     Transformer transformer;
 
     /**

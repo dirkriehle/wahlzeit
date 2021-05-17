@@ -40,14 +40,13 @@ public class CaseService {
     protected static final Logger LOG = Logger.getLogger(CaseService.class);
 
     @Inject
-    PhotoRepository photoRepository;
+    public CaseFactory caseFactory;
     @Inject
-    Transformer transformer;
-
+    public CaseRepository caseRepository;
     @Inject
-    CaseFactory factory;
+    public PhotoRepository photoRepository;
     @Inject
-    CaseRepository repository;
+    public Transformer transformer;
 
     /**
      * Returns all existing cases
@@ -56,7 +55,7 @@ public class CaseService {
      * @throws SQLException internal errr
      */
     public List<CaseDto> getAllCases() throws SQLException {
-        List<Case> cases = repository.findAll();
+        List<Case> cases = caseRepository.findAll();
 
         LOG.info(String.format("Fetched %s cases", cases.size()));
         List<CaseDto> responseDto = transformer.transformCases(cases);
@@ -76,8 +75,8 @@ public class CaseService {
         FlagReason flagReason = FlagReason.getFromString(reason);
         Photo photo = photoRepository.findById(photoId).orElseThrow(() -> new NotFoundException("Unknown photoId"));
 
-        Case photoCase = factory.createPhotoCase(flagger, photo, flagReason);
-        photoCase = repository.insert(photoCase);
+        Case photoCase = caseFactory.createPhotoCase(flagger, photo, flagReason);
+        photoCase = caseRepository.insert(photoCase);
 
         LOG.info(String.format("Created case: %s ", photoCase.getId()));
         CaseDto responseDto = transformer.transform(photoCase);
@@ -92,9 +91,9 @@ public class CaseService {
      * @throws SQLException internal error
      */
     public CaseDto closeCase(long caseId) throws SQLException {
-        Case closeCase = repository.findById(caseId).orElseThrow(() -> new NotFoundException("Unknown caseId"));
+        Case closeCase = caseRepository.findById(caseId).orElseThrow(() -> new NotFoundException("Unknown caseId"));
         closeCase.setDecided();
-        closeCase = repository.update(closeCase);
+        closeCase = caseRepository.update(closeCase);
 
         LOG.info(String.format("Closed case: %s ", closeCase.getId()));
         CaseDto responseDto = transformer.transform(closeCase);

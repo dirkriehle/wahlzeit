@@ -36,6 +36,8 @@ import org.wahlzeit.model.CaseFactory;
 import org.wahlzeit.model.PhotoFactory;
 import org.wahlzeit.model.UserFactory;
 import org.wahlzeit.service.*;
+import org.wahlzeit.service.mailing.EmailService;
+import org.wahlzeit.service.mailing.LoggingEmailService;
 import org.wahlzeit.utils.SysConfig;
 
 import java.net.URI;
@@ -50,6 +52,8 @@ public class Wahlzeit {
             bind(SysConfig.class).to(WahlzeitConfig.class);
             // manager
             bind(AgentManager.class).to(AgentManager.class);
+            // email
+            bind(LoggingEmailService.class).to(EmailService.class);
             // factory
             bind(UserFactory.class).to(UserFactory.class);
             bind(PhotoFactory.class).to(PhotoFactory.class);

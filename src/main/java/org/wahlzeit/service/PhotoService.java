@@ -54,12 +54,15 @@ public class PhotoService {
     protected static final Logger LOG = Logger.getLogger(PhotoService.class);
 
     @Inject
+    public
     WahlzeitConfig config;
 
     @Inject
+    public
     UserRepository userRepository;
 
     @Inject
+    public
     AgentManager agentManager;
     @Inject
     public Transformer transformer;
