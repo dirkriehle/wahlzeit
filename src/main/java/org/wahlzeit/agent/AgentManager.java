@@ -20,7 +20,7 @@
 
 package org.wahlzeit.agent;
 
-import org.wahlzeit.utils.SysLog;
+import org.apache.log4j.Logger;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,6 +29,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * The AgentManager singleton manages all Agent instances.
  */
 public class AgentManager {
+
+    private static final Logger LOG = Logger.getLogger(AgentManager.class);
 
     /**
      *
@@ -89,7 +91,7 @@ public class AgentManager {
     public void startThread(AgentThread thread) {
         thread.start();
         String name = thread.getAgent().getName();
-        SysLog.logSysInfo("agent", name, "agent/thread was started");
+        LOG.info("agent " + name + " agent/thread was started");
     }
 
     /**
@@ -109,7 +111,7 @@ public class AgentManager {
         }
 
         String agentName = thread.getAgent().getName();
-        SysLog.logSysInfo("agent", agentName, "agent/thread was stopped");
+        LOG.info("agent " +  agentName + " agent/thread was stopped");
     }
 
     /**

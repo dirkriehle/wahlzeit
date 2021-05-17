@@ -21,9 +21,9 @@
 package org.wahlzeit.model;
 
 
+import org.apache.log4j.Logger;
 import org.wahlzeit.config.AbstractConfig;
 import org.wahlzeit.utils.SysConfig;
-import org.wahlzeit.utils.SysLog;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +37,8 @@ import java.text.SimpleDateFormat;
  * Subclasses provide the parameters and language-specific handling of text and data.
  */
 public abstract class AbstractModelConfig extends AbstractConfig implements ModelConfig {
+
+    protected static final Logger LOG = Logger.getLogger(AbstractModelConfig.class);
 
     /**
      *
@@ -64,7 +66,7 @@ public abstract class AbstractModelConfig extends AbstractConfig implements Mode
             InputStream propertyStream = getClass().getResourceAsStream(languagePath);
             loadProperties(propertyStream);
         } catch (IOException e) {
-            SysLog.logThrowable(e);
+            LOG.error("Failed initializing language " + myLanguage, e);
         }
     }
 

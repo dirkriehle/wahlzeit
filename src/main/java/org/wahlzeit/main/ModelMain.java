@@ -21,10 +21,10 @@
 package org.wahlzeit.main;
 
 
+import org.apache.log4j.Logger;
 import org.wahlzeit.config.WahlzeitConfig;
 import org.wahlzeit.database.DatabaseConnection;
 import org.wahlzeit.database.SessionManager;
-import org.wahlzeit.utils.SysLog;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,6 +38,8 @@ import java.util.stream.Collectors;
  */
 public abstract class ModelMain extends AbstractMain {
 
+    protected static final Logger LOG = Logger.getLogger(ModelMain.class);
+
     private final WahlzeitConfig config;
 
     protected ModelMain(WahlzeitConfig config) {
@@ -49,7 +51,7 @@ public abstract class ModelMain extends AbstractMain {
      */
     public void startUp() throws Exception {
         super.startUp();
-        if (!hasGlobals()) {
+        if (!hasPhotoTable()) {
             tearDownDatabase();
             setUpDatabase();
         }
@@ -58,11 +60,11 @@ public abstract class ModelMain extends AbstractMain {
     /**
      *
      */
-    protected boolean hasGlobals() throws SQLException {
+    protected boolean hasPhotoTable() throws SQLException {
         DatabaseConnection dbc = mainSession.ensureDatabaseConnection();
         Connection conn = dbc.getRdbmsConnection();
         DatabaseMetaData dbm = conn.getMetaData();
-        ResultSet tables = dbm.getTables(null, null, "globals", null);
+        ResultSet tables = dbm.getTables(null, null, "photos", null);
         return tables.next();
     }
 
@@ -99,7 +101,7 @@ public abstract class ModelMain extends AbstractMain {
         String query = new BufferedReader(new InputStreamReader(inputStream))
                 .lines()
                 .collect(Collectors.joining(System.lineSeparator()));
-        SysLog.logQuery(query);
+        LOG.info("Executing script: " + query);
 
         Statement stmt = conn.createStatement();
         stmt.execute(query);

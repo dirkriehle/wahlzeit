@@ -26,12 +26,12 @@ import jakarta.inject.Singleton;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
+import org.apache.log4j.Logger;
 import org.wahlzeit.api.auth.AccessRights;
 import org.wahlzeit.api.dto.UserDto;
 import org.wahlzeit.database.repository.UserRepository;
 import org.wahlzeit.model.User;
 import org.wahlzeit.model.UserFactory;
-import org.wahlzeit.utils.SysLog;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,6 +42,8 @@ import java.util.List;
  */
 @Singleton
 public class UserService {
+
+    protected static final Logger LOG = Logger.getLogger(UserService.class);
 
     @Inject
     public Transformer transformer;
@@ -63,7 +65,7 @@ public class UserService {
         for (User photo : userList) {
             responseDto.add(transformer.transform(photo));
         }
-        SysLog.logSysInfo(String.format("Fetched %s users", responseDto.size()));
+        LOG.info(String.format("Fetched %s users", responseDto.size()));
         return responseDto;
     }
 
@@ -77,7 +79,7 @@ public class UserService {
     public UserDto getUser(Long userId) throws SQLException {
         User user = repository.findById(userId).orElseThrow(() -> new NotFoundException("Unknown UserId"));
 
-        SysLog.logSysInfo(String.format("Got user by id: %s ", user.getId()));
+        LOG.info(String.format("Got user by id: %s ", user.getId()));
         UserDto responseDto = transformer.transform(user);
         return responseDto;
     }
@@ -105,7 +107,7 @@ public class UserService {
         User createdUser = factory.createUser(username, email, plainPassword, AccessRights.USER);
         createdUser = repository.insert(createdUser);
 
-        SysLog.logSysInfo(String.format("Created user: %s ", createdUser.getId()));
+        LOG.info(String.format("Created user: %s ", createdUser.getId()));
         UserDto responseDto = transformer.transform(createdUser);
         return responseDto;
     }
@@ -122,7 +124,7 @@ public class UserService {
         User loginUser = repository.findByNameOrEmailAndPassword(identifier, password)
                 .orElseThrow(() -> new NotFoundException("Invalid credentials"));
 
-        SysLog.logSysInfo(String.format("Logged user in: %s ", loginUser.getId()));
+        LOG.info(String.format("Logged user in: %s ", loginUser.getId()));
         UserDto responseDto = transformer.transform(loginUser);
         return responseDto;
     }
@@ -137,7 +139,7 @@ public class UserService {
     public UserDto deleteUser(User user) throws SQLException {
         User deletedUser = repository.delete(user);
 
-        SysLog.logSysInfo(String.format("Deleted user: %s ", deletedUser.getId()));
+        LOG.info(String.format("Deleted user: %s ", deletedUser.getId()));
         UserDto responseDto = transformer.transform(deletedUser);
         return responseDto;
     }

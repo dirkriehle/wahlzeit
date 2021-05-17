@@ -20,33 +20,35 @@
 
 package org.wahlzeit.service.mailing;
 
+import org.apache.log4j.Logger;
 import org.wahlzeit.model.EmailAddress;
-import org.wahlzeit.utils.SysLog;
 
 /**
  * @author dirk
  */
 public class NullEmailService implements EmailService {
 
+    protected static final Logger LOG = Logger.getLogger(NullEmailService.class);
+
     @Override
     public void sendEmail(EmailAddress from, EmailAddress to, String subject, String body) {
-        SysLog.logSysInfo("Called sendEmail (no bcc) on null implementation");
+        LOG.info("Called sendEmail (no bcc) on null implementation");
     }
 
     @Override
     public boolean sendEmailIgnoreException(EmailAddress from, EmailAddress to, String subject, String body) {
-        SysLog.logSysInfo("Called sendEmailIgnoreException (no bcc) on null implementation");
+        LOG.info("Called sendEmailIgnoreException (no bcc) on null implementation");
         return true;
     }
 
     @Override
     public void sendEmail(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body) {
-        SysLog.logSysInfo("Called sendEmail (with bcc) on null implementation");
+        LOG.info("Called sendEmail (with bcc) on null implementation");
     }
 
     @Override
     public boolean sendEmailIgnoreException(EmailAddress from, EmailAddress to, EmailAddress bcc, String subject, String body) {
-        SysLog.logSysInfo("Called sendEmailIgnoreException (with bcc) on null implementation");
+        LOG.info("Called sendEmailIgnoreException (with bcc) on null implementation");
         return true;
     }
 

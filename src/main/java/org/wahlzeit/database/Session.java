@@ -21,13 +21,15 @@
 package org.wahlzeit.database;
 
 
-import org.wahlzeit.utils.SysLog;
+import org.apache.log4j.Logger;
 
 /**
  * A Session object maintains a DatabaseConnection and helps track processing time. Typically, there is one for each
  * working thread, be it a system thread or a web session.
  */
 public class Session {
+
+    protected static final Logger LOG = Logger.getLogger(Session.class);
 
     /**
      * Session state
@@ -72,7 +74,7 @@ public class Session {
             try {
                 databaseConnection = DatabaseConnection.ensureDatabaseConnection();
             } catch (Throwable t) {
-                SysLog.logThrowable(t);
+                LOG.error("Failed ensuring database connection", t);
             }
         }
 

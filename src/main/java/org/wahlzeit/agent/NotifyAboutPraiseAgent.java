@@ -22,12 +22,11 @@ package org.wahlzeit.agent;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
+import org.apache.log4j.Logger;
 import org.wahlzeit.database.repository.UserRepository;
 import org.wahlzeit.model.*;
 import org.wahlzeit.service.mailing.EmailService;
 import org.wahlzeit.service.mailing.EmailServiceManager;
-import org.wahlzeit.utils.SysLog;
-import org.wahlzeit.utils.UserLog;
 
 import java.sql.SQLException;
 import java.util.Collections;
@@ -40,6 +39,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author dirkriehle
  */
 public class NotifyAboutPraiseAgent extends Agent {
+
+    private static final Logger LOG = Logger.getLogger(NotifyAboutPraiseAgent.class);
 
     @Inject
     UserRepository userRepository;
@@ -91,7 +92,7 @@ public class NotifyAboutPraiseAgent extends Agent {
                 try {
                     notifyOwner(photo, photos);
                 } catch (SQLException | NotFoundException e) {
-                    SysLog.logThrowable(e);
+                    LOG.error("Failed notify owner", e);
                 }
             }
         }
@@ -115,7 +116,7 @@ public class NotifyAboutPraiseAgent extends Agent {
             Photo current = photos[i];
             if ((current != null) && current.hasSameOwner(photo)) {
                 Long id = current.getId();
-                UserLog.logUserInfo("notifying user: " + user.getName() + " about photo: " + id);
+                LOG.info("notifying user: " + user.getName() + " about photo: " + id);
                 emailBody.append(user.getSiteUrlAsString()).append(id).append(".html\n"); // @TODO Application
                 photos[i] = null;
             }

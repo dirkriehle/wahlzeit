@@ -34,12 +34,12 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.ext.Provider;
+import org.apache.log4j.Logger;
 import org.wahlzeit.api.auth.AccessRights;
 import org.wahlzeit.api.auth.PrincipalUser;
 import org.wahlzeit.api.dto.ErrorDto;
 import org.wahlzeit.database.repository.UserRepository;
 import org.wahlzeit.model.User;
-import org.wahlzeit.utils.SysLog;
 
 import java.lang.reflect.Method;
 import java.security.Principal;
@@ -52,6 +52,8 @@ import java.util.*;
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
+
+    protected static final Logger LOG = Logger.getLogger(AuthenticationFilter.class);
 
     private static final String AUTHENTICATION_SCHEME = "Basic ";
 
@@ -160,7 +162,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         try {
             return userRepository.findByNameOrEmailAndPassword(email, password);
         } catch (SQLException sqlException) {
-            SysLog.logThrowable(sqlException);
+            LOG.error("Cannot find user", sqlException);
             return Optional.empty();
         }
     }

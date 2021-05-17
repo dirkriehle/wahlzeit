@@ -21,9 +21,9 @@
 
 package org.wahlzeit.database.repository;
 
+import org.apache.log4j.Logger;
 import org.wahlzeit.database.DatabaseConnection;
 import org.wahlzeit.database.SessionManager;
-import org.wahlzeit.utils.SysLog;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,6 +39,8 @@ import java.util.Optional;
  * @param <T> to represent Persistent
  */
 public abstract class AbstractRepository<T extends Persistent> implements Repository<T> {
+
+    protected static final Logger LOG = Logger.getLogger(AbstractRepository.class);
 
     /*
      * template methods
@@ -175,7 +177,7 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
                     toUpdate.writeOn(resultSet);
                     resultSet.updateRow();
                 } else {
-                    SysLog.logSysError("Persistent to found: " + toUpdate.getId());
+                    LOG.error("Persistent was not found: " + toUpdate.getId());
                 }
             }
         }
@@ -208,7 +210,7 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
      * @methodtype get
      */
     protected PreparedStatement getReadingStatement(String query) throws SQLException {
-        SysLog.logQuery(query);
+        LOG.info("ReadingStatement: " + query);
 
         DatabaseConnection dbc = getDatabaseConnection();
         return dbc.getReadingStatement(query);
@@ -218,7 +220,7 @@ public abstract class AbstractRepository<T extends Persistent> implements Reposi
      * @methodtype get
      */
     protected PreparedStatement getUpdatingStatement(String query) throws SQLException {
-        SysLog.logQuery(query);
+        LOG.info("UpdatingStatement: " + query);
 
         DatabaseConnection dbc = getDatabaseConnection();
         return dbc.getUpdatingStatement(query);

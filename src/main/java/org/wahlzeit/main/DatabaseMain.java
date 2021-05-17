@@ -21,11 +21,13 @@
 package org.wahlzeit.main;
 
 
+import org.apache.log4j.Logger;
 import org.wahlzeit.config.WahlzeitConfig;
 import org.wahlzeit.database.SessionManager;
-import org.wahlzeit.utils.SysLog;
 
 public class DatabaseMain extends ModelMain {
+
+    protected static final Logger LOG = Logger.getLogger(DatabaseMain.class);
 
     public DatabaseMain(WahlzeitConfig config) {
         super(config);
@@ -33,6 +35,6 @@ public class DatabaseMain extends ModelMain {
 
     public void shutDown() {
         SessionManager.dropSession();
-        SysLog.logSysInfo("Shutting down database");
+        LOG.info("Shutting down database");
     }
 }

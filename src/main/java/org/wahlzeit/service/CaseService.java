@@ -23,11 +23,11 @@ package org.wahlzeit.service;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
+import org.apache.log4j.Logger;
 import org.wahlzeit.api.dto.CaseDto;
 import org.wahlzeit.database.repository.CaseRepository;
 import org.wahlzeit.database.repository.PhotoRepository;
 import org.wahlzeit.model.*;
-import org.wahlzeit.utils.SysLog;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -36,6 +36,8 @@ import java.util.List;
  * Business logic of case
  */
 public class CaseService {
+
+    protected static final Logger LOG = Logger.getLogger(CaseService.class);
 
     @Inject
     PhotoRepository photoRepository;
@@ -55,7 +57,8 @@ public class CaseService {
      */
     public List<CaseDto> getAllCases() throws SQLException {
         List<Case> cases = repository.findAll();
-        SysLog.logSysInfo(String.format("Fetched %s cases", cases.size()));
+
+        LOG.info(String.format("Fetched %s cases", cases.size()));
         List<CaseDto> responseDto = transformer.transformCases(cases);
         return responseDto;
     }
@@ -76,7 +79,7 @@ public class CaseService {
         Case photoCase = factory.createPhotoCase(flagger, photo, flagReason);
         photoCase = repository.insert(photoCase);
 
-        SysLog.logSysInfo(String.format("Created case: %s ", photoCase.getId()));
+        LOG.info(String.format("Created case: %s ", photoCase.getId()));
         CaseDto responseDto = transformer.transform(photoCase);
         return responseDto;
     }
@@ -93,7 +96,7 @@ public class CaseService {
         closeCase.setDecided();
         closeCase = repository.update(closeCase);
 
-        SysLog.logSysInfo(String.format("Closed case: %s ", closeCase.getId()));
+        LOG.info(String.format("Closed case: %s ", closeCase.getId()));
         CaseDto responseDto = transformer.transform(closeCase);
         return responseDto;
     }

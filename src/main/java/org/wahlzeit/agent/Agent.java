@@ -21,12 +21,14 @@
 package org.wahlzeit.agent;
 
 
-import org.wahlzeit.utils.SysLog;
+import org.apache.log4j.Logger;
 
 /**
  * An Agent executes background tasks.
  */
 public abstract class Agent implements Runnable {
+
+    private static final Logger LOG = Logger.getLogger(Agent.class);
 
     /**
      *
@@ -76,17 +78,17 @@ public abstract class Agent implements Runnable {
     public void run() {
         synchronized (Agent.class) {
             String agentName = "agent" + id++;
-            SysLog.logInfo("started new agent", agentName);
+            LOG.info("started new agent: " + agentName);
         }
 
         while (!isToStop) {
             try {
-                SysLog.logSysInfo("going to sleep for: " + (period / 1000) + " seconds");
+                LOG.info("going to sleep for: " + (period / 1000) + " seconds");
                 Thread.sleep(period);
             } catch (Exception ex) {
                 // do nothing
             }
-            SysLog.logSysInfo("just woke up");
+            LOG.info("just woke up");
             doRun();
         }
     }
