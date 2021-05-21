@@ -7,7 +7,7 @@
     modal-header="Log in"
     modal-button="Log in"
   >
-    <div class="failed" v-if="failed">Login Failed</div>
+    <div class="failed" v-if="failed">Login Failed: {{ error }}</div>
     <div class="form-floating mb-3">
       <input
         type="email"
@@ -36,16 +36,18 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Modal from "@/components/modals/Modal.vue";
+import { ApiThing } from "@/ApiThing";
 
 @Options({
-  emits: ["login"],
-  props: { btnClass: "" },
+  props: { btnClass: "", api: ApiThing },
   components: { Modal }
 })
 export default class Login extends Vue {
   name = "";
   password = "";
   failed = false;
+  error = "";
+  api: ApiThing | null = null;
 
   loginEnter(event: KeyboardEvent) {
     if (event.key === "Enter") {
@@ -54,27 +56,15 @@ export default class Login extends Vue {
   }
 
   async login() {
-    await fetch("http://localhost:8080/api/user/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        email: this.name,
-        password: this.password
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        const name = data["email"];
-        const password = data["password"];
-        console.log(`${name}:${password}`);
-        const auth = btoa(`${name}:${password}`);
-        this.$emit("login", auth);
+    await this.api
+      ?.login(this.name, this.password)
+      .then(() => {
         document.getElementById("closeModal")?.click();
+        location.reload();
       })
-      .catch(() => {
+      .catch(error => {
         this.failed = true;
+        this.error = error;
       });
   }
 }

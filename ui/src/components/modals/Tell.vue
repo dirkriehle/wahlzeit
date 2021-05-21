@@ -52,13 +52,10 @@ import Modal from "@/components/modals/Modal.vue";
 @Options({
   components: { Modal },
   props: {
-    btnClass: "",
-    auth: ""
+    btnClass: ""
   }
 })
 export default class Tell extends Vue {
-  auth = "";
-
   get fromMail() {
     return "todo";
   }

@@ -42,13 +42,10 @@ import Modal from "@/components/modals/Modal.vue";
 @Options({
   components: { Modal },
   props: {
-    btnClass: "",
-    auth: ""
+    btnClass: ""
   }
 })
 export default class Report extends Vue {
-  auth = "";
-
   report() {
     console.log("TODO: report");
   }

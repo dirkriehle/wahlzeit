@@ -22,7 +22,6 @@ import Report from "@/components/modals/Report.vue";
 @Options({
   components: { Tell, Message, Report },
   props: {
-    auth: "",
     photo: 0
   }
 })

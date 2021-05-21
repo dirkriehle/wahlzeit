@@ -7,9 +7,7 @@
 import { Options, Vue } from "vue-class-component";
 
 @Options({
-  props: {
-    auth: ""
-  }
+  props: {}
 })
 export default class Description extends Vue {}
 </script>

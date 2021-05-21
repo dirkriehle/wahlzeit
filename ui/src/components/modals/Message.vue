@@ -43,12 +43,10 @@ import Modal from "@/components/modals/Modal.vue";
   components: { Modal },
   props: {
     btnClass: "",
-    auth: "",
     toUser: ""
   }
 })
 export default class Message extends Vue {
-  auth = "";
   toUser = "";
 
   get toMail() {

@@ -64,7 +64,7 @@
                 </router-link>
               </li>
               <li>
-                <Upload btnClass="dropdown-item" :auth="auth" />
+                <Upload btnClass="dropdown-item" :api="api" />
               </li>
               <li><a class="dropdown-item" href="#">My Photos</a></li>
               <li><a class="dropdown-item" href="#">Settings</a></li>
@@ -74,7 +74,7 @@
             <a class="nav-link" @click="logout()" href="#">Log out</a>
           </li>
           <li v-if="!isLoggedIn" class="nav-item">
-            <Login btnClass="nav-link" @login="login" />
+            <Login btnClass="nav-link" :api="api" />
           </li>
           <li v-if="!isLoggedIn" class="nav-item">
             <a class="nav-link" @click="login()" href="#">Sign up</a>
@@ -85,7 +85,7 @@
   </nav>
 
   <main class="container">
-    <router-view :auth="auth" :isLoggedIn="isLoggedIn" />
+    <router-view :api="api" />
   </main>
 </template>
 
@@ -93,31 +93,24 @@
 import { Options, Vue } from "vue-class-component";
 import Login from "@/components/modals/Login.vue";
 import Upload from "@/components/modals/Upload.vue";
+import { ApiThing } from "@/ApiThing";
 
 @Options({
   components: { Login, Upload }
 })
 export default class App extends Vue {
-  isLoggedIn = false;
-  auth: string | null = "";
-
-  login(auth: string) {
-    this.auth = auth;
-    this.isLoggedIn = true;
-    sessionStorage.setItem("auth", auth);
-    console.log(this.auth);
-  }
+  api: ApiThing | null = null;
 
   logout() {
-    this.isLoggedIn = false;
-    sessionStorage.removeItem("auth");
+    this.api?.logout();
+  }
+
+  get isLoggedIn() {
+    return this.api?.isLoggedIn;
   }
 
   created() {
-    this.auth = sessionStorage.getItem("auth");
-    if (this.auth) {
-      this.isLoggedIn = true;
-    }
+    this.api = new ApiThing();
   }
 }
 </script>

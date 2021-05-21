@@ -27,17 +27,18 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Modal from "@/components/modals/Modal.vue";
+import { ApiThing } from "@/ApiThing";
 
 @Options({
   components: { Modal },
   props: {
     btnClass: "",
-    auth: ""
+    api: ApiThing
   }
 })
 export default class Upload extends Vue {
   file: File | null = null;
-  auth = "";
+  api: ApiThing | null = null;
   errors = "";
   success = false;
 
@@ -53,23 +54,16 @@ export default class Upload extends Vue {
       this.errors = "No files selected";
       return;
     }
-    fetch("http://localhost:8080/api/photo", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Basic ${this.auth}`
-      },
-      body: this.file
-    })
-      .then(response => response.json())
-      .then(data => {
-        const id = data["id"];
+    this.api
+      ?.uploadPhoto(this.file)
+      .then(photo => {
+        const id = photo.id;
         this.$router.push({ name: "Photo", params: { id: id } });
         this.success = true;
       })
       .catch(reason => {
         this.errors = "Something went wrong when trying to upload the file.";
-        console.log(`Error uploading file: ${reason}`);
+        console.error(`Error uploading file: ${reason}`);
       });
   }
 }

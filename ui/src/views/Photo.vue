@@ -4,7 +4,7 @@
       <img class="img-fluid" :src="src" />
     </div>
     <div class="col-md-2 border border-3 rounded-3">
-      <Praise :photo="id" :auth="auth" />
+      <Praise :photo="id" :api="api" />
     </div>
   </div>
   <div class="row">
@@ -12,7 +12,7 @@
       <Description />
     </div>
     <div class="col-md-2 border border-3 rounded-3">
-      <PhotoActions :photo="id" :auth="auth" />
+      <PhotoActions :photo="id" :api="api" />
     </div>
   </div>
 </template>
@@ -22,27 +22,22 @@ import { Options, Vue } from "vue-class-component";
 import Praise from "@/components/Praise.vue";
 import PhotoActions from "@/components/PhotoActions.vue";
 import Description from "@/components/Description.vue";
+import { ApiThing } from "@/ApiThing";
 
 @Options({
   components: { Praise, PhotoActions, Description },
-  props: { id: "", auth: "" }
+  props: { id: "", api: ApiThing }
 })
 export default class Photo extends Vue {
   src = "";
   id = "";
-  auth = "";
+  api: ApiThing | null = null;
 
   async mounted() {
-    this.src = await fetch(`http://localhost:8080/api/photo/${this.id}`, {
-      method: "get",
-      headers: {
-        Authorization: `Basic ${this.auth}`
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        return `http://localhost:8080${data["path"]}`;
-      });
+    const image = await this.api?.getPhoto(this.id).then(photo => {
+      return `http://localhost:8080${photo.path}`;
+    });
+    this.src = image ? image : "error";
   }
 }
 </script>

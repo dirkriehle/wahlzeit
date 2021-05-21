@@ -23,7 +23,6 @@ import { Options, Vue } from "vue-class-component";
 
 @Options({
   props: {
-    auth: "",
     photo: 0
   }
 })
