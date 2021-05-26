@@ -50,7 +50,6 @@ class ApiThing {
       }
       init.headers["Authorization"] = `Basic ${this.auth}`;
     }
-    console.log(init);
     const response = await fetch(`http://localhost:8080/api/${endpoint}`, init);
     if (response.ok) {
       return await response.json();
@@ -87,8 +86,37 @@ class ApiThing {
     return this.request(`photo/${id}`, "GET");
   }
 
-  async uploadPhoto(file: File): Promise<Photo> {
-    return this.request("photo", "POST", file, true);
+  async uploadPhoto(file: File, tags: string[] = []): Promise<Photo> {
+    let endpoint = "photo";
+    if (tags.length > 0) {
+      endpoint += "?tags=";
+      endpoint += tags.join("&tags=");
+    }
+    return this.request(endpoint, "POST", file, true);
+  }
+
+  async removePhoto(id: number): Promise<Photo> {
+    return this.request(`photo/${id}`, "DELETE");
+  }
+
+  async praisePhoto(id: number, value: number): Promise<Photo> {
+    return this.request(`photo/${id}/praise`, "POST", value);
+  }
+
+  async listPhotos(userid: number | null = null, tags: string[] = []) {
+    const params = new URLSearchParams();
+    if (userid != null) {
+      params.append("user", userid.toString());
+    }
+    for (const tag of tags) {
+      params.append("tags", tag);
+    }
+    let endpoint = "photo";
+    if (params.toString().length > 0) {
+      endpoint += "?";
+      endpoint += params.toString();
+    }
+    return this.request(endpoint, "GET");
   }
 }
 

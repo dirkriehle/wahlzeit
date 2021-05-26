@@ -1,13 +1,14 @@
 <template>
-  By: username<br />
-  Tags: tag1, tag2
+  By: {{ username }}<br />
+  Tags: {{ tags.join(", ") }}<br />
+  Praise Score: {{ praise }}
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 
 @Options({
-  props: {}
+  props: { username: "", tags: Array, praise: 0 }
 })
 export default class Description extends Vue {}
 </script>

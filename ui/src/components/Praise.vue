@@ -20,14 +20,20 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import { ApiThing } from "@/ApiThing";
 
 @Options({
   props: {
-    photo: 0
+    photoId: 0,
+    api: ApiThing
   }
 })
 export default class Praise extends Vue {
+  api: ApiThing | null = null;
+  photoId = 0;
+
   praise(n: number) {
+    this.api?.praisePhoto(this.photoId, n);
     console.log(`TODO: praise ${n}`);
   }
 
