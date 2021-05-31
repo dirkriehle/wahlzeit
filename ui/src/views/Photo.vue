@@ -9,10 +9,14 @@
   </div>
   <div class="row">
     <div class="col-md-10 border border-3 rounded-3">
-      <Description :username="username" :tags="tags" :praise="praise" />
+      <Description
+        :username="username"
+        :tags="photo?.tags"
+        :praise="photo?.praise"
+      />
     </div>
     <div class="col-md-2 border border-3 rounded-3">
-      <PhotoActions :photo="id" :api="api" />
+      <PhotoActions :api="api" :photo="photo" />
     </div>
   </div>
 </template>
@@ -22,7 +26,7 @@ import { Options, Vue } from "vue-class-component";
 import Praise from "@/components/Praise.vue";
 import PhotoActions from "@/components/PhotoActions.vue";
 import Description from "@/components/Description.vue";
-import { ApiThing } from "@/ApiThing";
+import { ApiThing, Photo as PhotoDto } from "@/ApiThing";
 
 @Options({
   components: { Praise, PhotoActions, Description },
@@ -32,21 +36,23 @@ export default class Photo extends Vue {
   src = "";
   id = "";
   api: ApiThing | null = null;
-  praise = 0;
+  photo: PhotoDto | null = null;
   username = "";
-  tags: string[] = [];
 
   mounted() {
     this.api
       ?.getPhoto(this.id)
       .then(photo => {
+        this.photo = photo;
         this.src = `http://localhost:8080${photo.path}`;
-        this.praise = photo.praise;
-        this.tags = photo.tags;
         return photo.userId;
       })
       .then(userid => {
-        // TODO get username
+        if (this.api) return this.api.getUser(userid);
+        throw "no api object";
+      })
+      .then(user => {
+        this.username = user.name;
       });
   }
 }

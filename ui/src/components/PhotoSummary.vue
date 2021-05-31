@@ -1,28 +1,49 @@
 <template>
   <div class="row border border-3">
-    <div class="col-4">Thumbnail</div>
+    <div class="col-4">
+      <router-link :to="{ name: 'Photo', params: { id: photo?.id } }">
+        <img class="img-fluid" :src="`http://localhost:8080${photo?.path}`" />
+      </router-link>
+    </div>
     <div class="col-5">
-      <div>praise: <b>f</b></div>
+      <div>
+        praise: <b>{{ photo.praise }}</b>
+      </div>
       <div>status: <b>status</b></div>
       <div>date: <b>date</b></div>
-      <div>tags: <b>tag1, tag2</b></div>
-      <div>link: <b>url</b></div>
+      <div>
+        tags: <b>{{ photo.tags.join(", ") }}</b>
+      </div>
+      <div>
+        <b>
+          <router-link :to="{ name: 'Photo', params: { id: photo?.id } }"
+            >link
+          </router-link>
+        </b>
+      </div>
     </div>
     <div class="col-3">
-      <PhotoActions />
+      <PhotoActions :api="api" :photo="photo" />
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import PhotoActions from "@/components/PhotoActions.vue";
+import { ApiThing, Photo } from "@/ApiThing";
 
 @Options({
   components: { PhotoActions },
-  props: { id: "" }
+  props: {
+    api: null,
+    photo: null
+  }
 })
-export default class PhotoSummary extends Vue {}
+export default class PhotoSummary extends Vue {
+  api: ApiThing | null = null;
+  photo: Photo | null = null;
+}
 </script>
 
 <style scoped></style>

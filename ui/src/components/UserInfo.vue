@@ -8,7 +8,9 @@
         <div>Number of Photos: <b>n</b></div>
         <div>Account status: <b>state</b></div>
         <div>Member since: <b>date</b></div>
-        <div>Email address: <b>mail</b></div>
+        <div>
+          Email address: <b>{{ user?.email }}</b>
+        </div>
       </div>
       <div class="col-3">
         <UserActions />
@@ -17,15 +19,18 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import UserActions from "@/components/UserActions.vue";
+import { User } from "@/ApiThing";
 
 @Options({
   components: { UserActions },
-  props: { id: "" }
+  props: { user: null }
 })
-export default class User extends Vue {}
+export default class UserInfo extends Vue {
+  user: User | null = null;
+}
 </script>
 
 <style scoped></style>

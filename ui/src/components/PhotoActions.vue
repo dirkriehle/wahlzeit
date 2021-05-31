@@ -18,16 +18,21 @@ import { Options, Vue } from "vue-class-component";
 import Tell from "@/components/modals/Tell.vue";
 import Message from "@/components/modals/Message.vue";
 import Report from "@/components/modals/Report.vue";
+import { ApiThing, Photo } from "@/ApiThing";
 
 @Options({
   components: { Tell, Message, Report },
   props: {
-    photo: 0
+    api: null,
+    photo: null
   }
 })
 export default class PhotoActions extends Vue {
-  own() {
-    return false;
+  api: ApiThing | null = null;
+  photo: Photo | null = null;
+
+  own(): boolean {
+    return this.photo?.userId == this.api?.user?.id;
   }
 
   edit() {

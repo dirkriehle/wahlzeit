@@ -1,6 +1,6 @@
 <template>
   By: {{ username }}<br />
-  Tags: {{ tags.join(", ") }}<br />
+  Tags: {{ tags?.join(", ") }}<br />
   Praise Score: {{ praise }}
 </template>
 

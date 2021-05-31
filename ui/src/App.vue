@@ -50,15 +50,7 @@
               <li>
                 <router-link
                   class="dropdown-item"
-                  :to="{ name: 'User', params: { id: 2 } }"
-                >
-                  My Page
-                </router-link>
-              </li>
-              <li>
-                <router-link
-                  class="dropdown-item"
-                  :to="{ name: 'Photo', params: { id: 1 } }"
+                  :to="{ name: 'User', params: { id: api?.user.id } }"
                 >
                   My Page
                 </router-link>

@@ -9,7 +9,7 @@ interface Photo {
 }
 
 interface User {
-  id2: number;
+  id: number;
   name: string;
   email: string;
 }
@@ -32,22 +32,14 @@ class ApiThing {
     return this.auth != null;
   }
 
-  async request(
-    endpoint: string,
-    method: string,
-    body: any = null,
-    auth = false
-  ) {
+  async request(endpoint: string, method: string, body: any = null) {
     const init: RequestInit = {};
     init.method = method;
     if (body) {
       init.body = body;
     }
     init.headers = { "Content-Type": "application/json" };
-    if (auth) {
-      if (!this.auth) {
-        throw "Not logged in";
-      }
+    if (this.auth) {
       init.headers["Authorization"] = `Basic ${this.auth}`;
     }
     const response = await fetch(`http://localhost:8080/api/${endpoint}`, init);
@@ -82,6 +74,18 @@ class ApiThing {
     sessionStorage.removeItem("user");
   }
 
+  async signup(name: string, email: string, password: string): Promise<User> {
+    return this.request(
+      "user",
+      "POST",
+      JSON.stringify({
+        name: name,
+        email: email,
+        password: password
+      })
+    );
+  }
+
   async getPhoto(id: string): Promise<Photo> {
     return this.request(`photo/${id}`, "GET");
   }
@@ -92,7 +96,7 @@ class ApiThing {
       endpoint += "?tags=";
       endpoint += tags.join("&tags=");
     }
-    return this.request(endpoint, "POST", file, true);
+    return this.request(endpoint, "POST", file);
   }
 
   async removePhoto(id: number): Promise<Photo> {
@@ -118,6 +122,18 @@ class ApiThing {
     }
     return this.request(endpoint, "GET");
   }
+
+  async getUsers() {
+    return this.request("user", "GET");
+  }
+
+  async getUser(id: number): Promise<User> {
+    return this.request(`user/${id}`, "GET");
+  }
+
+  async deleteUser() {
+    return this.request("user", "DELETE");
+  }
 }
 
-export { ApiThing, Photo };
+export { ApiThing, Photo, User };
