@@ -13,7 +13,7 @@
 import { Options, Vue } from "vue-class-component";
 import UserInfo from "@/components/UserInfo.vue";
 import PhotoSummary from "@/components/PhotoSummary.vue";
-import { ApiThing, User as UserDto, Photo } from "@/ApiThing";
+import { ApiThing, Photo, User } from "@/ApiThing";
 
 @Options({
   components: { UserInfo, PhotoSummary },
@@ -22,10 +22,10 @@ import { ApiThing, User as UserDto, Photo } from "@/ApiThing";
     api: ApiThing
   }
 })
-export default class User extends Vue {
+export default class UserView extends Vue {
   id = "";
   api: ApiThing | null = null;
-  user: UserDto | null = null;
+  user: User | null = null;
   photos: Photo[] | null = null;
 
   async mounted() {

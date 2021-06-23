@@ -2,7 +2,7 @@
   <div class="row border border-3">
     <div class="col-4">
       <router-link :to="{ name: 'Photo', params: { id: photo?.id } }">
-        <img class="img-fluid" :src="`http://localhost:8080${photo?.path}`" />
+        <img class="img-fluid" :src="src" />
       </router-link>
     </div>
     <div class="col-5">
@@ -43,6 +43,10 @@ import { ApiThing, Photo } from "@/ApiThing";
 export default class PhotoSummary extends Vue {
   api: ApiThing | null = null;
   photo: Photo | null = null;
+
+  get src() {
+    return this.photo?.path;
+  }
 }
 </script>
 

@@ -34,7 +34,6 @@ export default class Praise extends Vue {
 
   praise(n: number) {
     this.api?.praisePhoto(this.photoId, n);
-    console.log(`TODO: praise ${n}`);
   }
 
   skip() {

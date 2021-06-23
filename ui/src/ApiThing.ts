@@ -42,7 +42,7 @@ class ApiThing {
     if (this.auth) {
       init.headers["Authorization"] = `Basic ${this.auth}`;
     }
-    const response = await fetch(`http://localhost:8080/api/${endpoint}`, init);
+    const response = await fetch(`/api/${endpoint}`, init);
     if (response.ok) {
       return await response.json();
     } else {

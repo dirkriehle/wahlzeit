@@ -14,7 +14,7 @@ import { ApiThing } from "@/ApiThing";
     api: ApiThing
   }
 })
-export default class Home extends Vue {
-  auth: ApiThing | null = null;
+export default class HomeView extends Vue {
+  api: ApiThing | null = null;
 }
 </script>

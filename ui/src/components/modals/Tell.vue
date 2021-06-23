@@ -1,7 +1,7 @@
 <template>
   <Modal
     :btn-class="btnClass"
-    id="tellmodal"
+    :id="`tell${photo?.id}modal`"
     @confirm="tell"
     modal-link="Tell"
     modal-header="Tell"
@@ -48,16 +48,22 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Modal from "@/components/modals/Modal.vue";
+import { ApiThing, Photo } from "@/ApiThing";
 
 @Options({
   components: { Modal },
   props: {
-    btnClass: ""
+    btnClass: "",
+    api: null,
+    photo: null
   }
 })
 export default class Tell extends Vue {
+  api: ApiThing | null = null;
+  photo: Photo | null = null;
+
   get fromMail() {
-    return "todo";
+    return this.api?.user?.email;
   }
 
   tell() {

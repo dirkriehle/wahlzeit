@@ -2,7 +2,7 @@
   <div class="container border border-3">
     <div class="row">
       <div class="col-3">
-        Profile Photo
+        No Profile Photo
       </div>
       <div class="col-6">
         <div>Number of Photos: <b>n</b></div>
