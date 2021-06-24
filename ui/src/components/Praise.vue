@@ -20,20 +20,18 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import { ApiThing } from "@/ApiThing";
+import { wahlzeitApi } from "@/WahlzeitApi";
 
 @Options({
   props: {
-    photoId: 0,
-    api: ApiThing
+    photoId: 0
   }
 })
 export default class Praise extends Vue {
-  api: ApiThing | null = null;
   photoId = 0;
 
   praise(n: number) {
-    this.api?.praisePhoto(this.photoId, n);
+    wahlzeitApi.praisePhoto(this.photoId, n);
   }
 
   skip() {

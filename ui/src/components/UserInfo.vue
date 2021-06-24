@@ -22,7 +22,7 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import UserActions from "@/components/UserActions.vue";
-import { User } from "@/ApiThing";
+import { User } from "@/WahlzeitApi";
 
 @Options({
   components: { UserActions },

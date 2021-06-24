@@ -14,7 +14,7 @@ interface User {
   email: string;
 }
 
-class ApiThing {
+class WahlzeitApi {
   auth: string | null;
   user: User | null;
 
@@ -136,4 +136,6 @@ class ApiThing {
   }
 }
 
-export { ApiThing, Photo, User };
+const wahlzeitApi = new WahlzeitApi();
+
+export { WahlzeitApi, wahlzeitApi, Photo, User };

@@ -36,10 +36,10 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Modal from "@/components/modals/Modal.vue";
-import { ApiThing } from "@/ApiThing";
+import { wahlzeitApi } from "@/WahlzeitApi";
 
 @Options({
-  props: { btnClass: "", api: ApiThing },
+  props: { btnClass: "" },
   components: { Modal }
 })
 export default class Login extends Vue {
@@ -47,7 +47,6 @@ export default class Login extends Vue {
   password = "";
   failed = false;
   error = "";
-  api: ApiThing | null = null;
 
   loginEnter(event: KeyboardEvent) {
     if (event.key === "Enter") {
@@ -56,16 +55,13 @@ export default class Login extends Vue {
   }
 
   async login() {
-    await this.api
-      ?.login(this.name, this.password)
-      .then(() => {
-        document.getElementById("closeModal")?.click();
-        location.reload();
-      })
-      .catch(error => {
-        this.failed = true;
-        this.error = error;
-      });
+    try {
+      await wahlzeitApi.login(this.name, this.password);
+      location.reload();
+    } catch (error) {
+      this.failed = true;
+      this.error = error;
+    }
   }
 }
 </script>

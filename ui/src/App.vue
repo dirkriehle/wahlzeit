@@ -36,37 +36,22 @@
               About
             </router-link>
           </li>
-          <li v-if="isLoggedIn" class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="dropdown01"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
+          <li v-if="isLoggedIn" class="nav-item">
+            <router-link
+              class="nav-link"
+              :to="{ name: 'User', params: { id: userid } }"
             >
-              User
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="dropdown01">
-              <li>
-                <router-link
-                  class="dropdown-item"
-                  :to="{ name: 'User', params: { id: api?.user.id } }"
-                >
-                  My Page
-                </router-link>
-              </li>
-              <li>
-                <Upload btnClass="dropdown-item" :api="api" />
-              </li>
-              <li><a class="dropdown-item" href="#">My Photos</a></li>
-              <li><a class="dropdown-item" href="#">Settings</a></li>
-            </ul>
+              My Page
+            </router-link>
+          </li>
+          <li v-if="isLoggedIn" class="nav-item">
+            <Upload btnClass="nav-link" />
           </li>
           <li v-if="isLoggedIn" class="nav-item">
             <a class="nav-link" @click="logout()" href="#">Log out</a>
           </li>
           <li v-if="!isLoggedIn" class="nav-item">
-            <Login btnClass="nav-link" :api="api" />
+            <Login btnClass="nav-link" />
           </li>
           <li v-if="!isLoggedIn" class="nav-item">
             <a class="nav-link" @click="login()" href="#">Sign up</a>
@@ -77,7 +62,7 @@
   </nav>
 
   <main class="container">
-    <router-view :api="api" />
+    <router-view />
   </main>
 </template>
 
@@ -85,24 +70,22 @@
 import { Options, Vue } from "vue-class-component";
 import Login from "@/components/modals/Login.vue";
 import Upload from "@/components/modals/Upload.vue";
-import { ApiThing } from "@/ApiThing";
+import { wahlzeitApi } from "@/WahlzeitApi";
 
 @Options({
   components: { Login, Upload }
 })
 export default class App extends Vue {
-  api: ApiThing | null = null;
-
   logout() {
-    this.api?.logout();
+    wahlzeitApi.logout();
   }
 
   get isLoggedIn() {
-    return this.api?.isLoggedIn;
+    return wahlzeitApi.isLoggedIn;
   }
 
-  created() {
-    this.api = new ApiThing();
+  get userid() {
+    return wahlzeitApi.user?.id;
   }
 }
 </script>

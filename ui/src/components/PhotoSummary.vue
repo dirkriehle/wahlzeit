@@ -16,14 +16,14 @@
       </div>
       <div>
         <b>
-          <router-link :to="{ name: 'Photo', params: { id: photo?.id } }"
-            >link
+          <router-link :to="{ name: 'Photo', params: { id: photo?.id } }">
+            link
           </router-link>
         </b>
       </div>
     </div>
     <div class="col-3">
-      <PhotoActions :api="api" :photo="photo" />
+      <PhotoActions :photo="photo" />
     </div>
   </div>
 </template>
@@ -31,17 +31,13 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import PhotoActions from "@/components/PhotoActions.vue";
-import { ApiThing, Photo } from "@/ApiThing";
+import { Photo } from "@/WahlzeitApi";
 
 @Options({
   components: { PhotoActions },
-  props: {
-    api: null,
-    photo: null
-  }
+  props: { photo: null }
 })
 export default class PhotoSummary extends Vue {
-  api: ApiThing | null = null;
   photo: Photo | null = null;
 
   get src() {

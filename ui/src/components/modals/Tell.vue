@@ -48,22 +48,20 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Modal from "@/components/modals/Modal.vue";
-import { ApiThing, Photo } from "@/ApiThing";
+import { wahlzeitApi, Photo } from "@/WahlzeitApi";
 
 @Options({
   components: { Modal },
   props: {
     btnClass: "",
-    api: null,
     photo: null
   }
 })
 export default class Tell extends Vue {
-  api: ApiThing | null = null;
   photo: Photo | null = null;
 
   get fromMail() {
-    return this.api?.user?.email;
+    return wahlzeitApi.user?.email;
   }
 
   tell() {

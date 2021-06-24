@@ -27,18 +27,16 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Modal from "@/components/modals/Modal.vue";
-import { ApiThing } from "@/ApiThing";
+import { wahlzeitApi } from "@/WahlzeitApi";
 
 @Options({
   components: { Modal },
   props: {
-    btnClass: "",
-    api: ApiThing
+    btnClass: ""
   }
 })
 export default class Upload extends Vue {
   file: File | null = null;
-  api: ApiThing | null = null;
   errors = "";
   success = false;
 
@@ -49,22 +47,20 @@ export default class Upload extends Vue {
     }
   }
 
-  upload() {
+  async upload() {
     if (this.file == null) {
       this.errors = "No files selected";
       return;
     }
-    this.api
-      ?.uploadPhoto(this.file)
-      .then(photo => {
-        const id = photo.id;
-        this.$router.push({ name: "Photo", params: { id: id } });
-        this.success = true;
-      })
-      .catch(reason => {
-        this.errors = "Something went wrong when trying to upload the file.";
-        console.error(`Error uploading file: ${reason}`);
-      });
+    try {
+      const photo = await wahlzeitApi.uploadPhoto(this.file);
+      const id = photo.id;
+      await this.$router.push({ name: "Photo", params: { id: id } });
+      this.success = true;
+    } catch (error) {
+      this.errors = "Something went wrong when trying to upload the file.";
+      console.error(`Error uploading file: ${error}`);
+    }
   }
 }
 </script>

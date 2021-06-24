@@ -41,9 +41,7 @@ import Modal from "@/components/modals/Modal.vue";
 
 @Options({
   components: { Modal },
-  props: {
-    btnClass: ""
-  }
+  props: { btnClass: "" }
 })
 export default class Report extends Vue {
   report() {

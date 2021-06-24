@@ -4,15 +4,15 @@
       <img class="img-fluid" :src="src" />
     </div>
     <div class="col-md-2 border border-3 rounded-3">
-      <Praise :photo-id="id" :api="api" />
+      <Praise :photo-id="id" />
     </div>
   </div>
   <div class="row">
     <div class="col-md-10 border border-3 rounded-3">
-      <Description :api="api" :photo="photo" />
+      <Description :photo="photo" :user="user" />
     </div>
     <div class="col-md-2 border border-3 rounded-3">
-      <PhotoActions :api="api" :photo="photo" />
+      <PhotoActions :photo="photo" />
     </div>
   </div>
 </template>
@@ -22,32 +22,20 @@ import { Options, Vue } from "vue-class-component";
 import Praise from "@/components/Praise.vue";
 import PhotoActions from "@/components/PhotoActions.vue";
 import Description from "@/components/Description.vue";
-import { ApiThing, Photo, User } from "@/ApiThing";
+import { wahlzeitApi, Photo, User } from "@/WahlzeitApi";
 
 @Options({
   components: { Praise, PhotoActions, Description },
-  props: { id: "", api: ApiThing }
+  props: { id: "" }
 })
 export default class PhotoView extends Vue {
   id = "";
-  api: ApiThing | null = null;
   photo: Photo | null = null;
   user: User | null = null;
 
-  mounted() {
-    this.api
-      ?.getPhoto(this.id)
-      .then(photo => {
-        this.photo = photo;
-        return photo.userId;
-      })
-      .then(userid => {
-        if (this.api) return this.api.getUser(userid);
-        throw "no api object";
-      })
-      .then(user => {
-        this.user = user;
-      });
+  async mounted() {
+    this.photo = await wahlzeitApi.getPhoto(this.id);
+    this.user = await wahlzeitApi.getUser(this.photo.userId);
   }
 
   get src() {

@@ -4,7 +4,7 @@
 
   <div class="container border border-3">
     <template v-for="photo in photos" :key="photo.id">
-      <PhotoSummary :api="api" :photo="photo" />
+      <PhotoSummary :photo="photo" />
     </template>
   </div>
 </template>
@@ -13,31 +13,20 @@
 import { Options, Vue } from "vue-class-component";
 import UserInfo from "@/components/UserInfo.vue";
 import PhotoSummary from "@/components/PhotoSummary.vue";
-import { ApiThing, Photo, User } from "@/ApiThing";
+import { wahlzeitApi, Photo, User } from "@/WahlzeitApi";
 
 @Options({
   components: { UserInfo, PhotoSummary },
-  props: {
-    id: "",
-    api: ApiThing
-  }
+  props: { id: "" }
 })
 export default class UserView extends Vue {
   id = "";
-  api: ApiThing | null = null;
   user: User | null = null;
   photos: Photo[] | null = null;
 
   async mounted() {
-    await this.api
-      ?.getUser(parseInt(this.id))
-      .then(user => {
-        this.user = user;
-        return this.api?.listPhotos(user.id);
-      })
-      .then(photos => {
-        this.photos = photos;
-      });
+    this.user = await wahlzeitApi.getUser(parseInt(this.id));
+    this.photos = await wahlzeitApi.listPhotos(this.user.id);
   }
 }
 </script>

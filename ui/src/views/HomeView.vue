@@ -6,15 +6,10 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import { ApiThing } from "@/ApiThing";
 
 @Options({
   components: {},
-  props: {
-    api: ApiThing
-  }
+  props: {}
 })
-export default class HomeView extends Vue {
-  api: ApiThing | null = null;
-}
+export default class HomeView extends Vue {}
 </script>
