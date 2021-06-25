@@ -7,22 +7,13 @@
     modal-header="Report"
     modal-button="Report"
   >
-    <select class="form-select" aria-label="Reason">
-      <option selected>Reason</option>
-      <option value="1">One</option>
-      <option value="2">Two</option>
-      <option value="3">Three</option>
+    <select class="form-select" aria-label="Reason" v-model="reason">
+      <option disabled="disabled" value="">Select Reason</option>
+      <option value="mismatch">Mismatch</option>
+      <option value="offensive">Offensive</option>
+      <option value="copyright">Copyright infringement</option>
+      <option value="other">Other</option>
     </select>
-
-    <div class="form-floating mb-3">
-      <input
-        type="email"
-        class="form-control"
-        id="mail"
-        placeholder="name@example.com"
-      />
-      <label for="mail">Email</label>
-    </div>
 
     <div class="input-group">
       <span class="input-group-text">Explanation</span>
@@ -30,6 +21,7 @@
         class="form-control"
         aria-label="Explanation"
         rows="4"
+        v-model="explanation"
       ></textarea>
     </div>
   </Modal>
@@ -38,14 +30,23 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Modal from "@/components/modals/Modal.vue";
+import { Photo, wahlzeitApi } from "@/WahlzeitApi";
 
 @Options({
   components: { Modal },
-  props: { btnClass: "" }
+  props: {
+    btnClass: "",
+    photo: null
+  }
 })
 export default class Report extends Vue {
+  photo: Photo | null = null;
+  reason = "";
+  explanation = "";
+
   report() {
-    console.log("TODO: report");
+    if (this.photo)
+      wahlzeitApi.reportPhoto(this.photo, this.reason, this.explanation);
   }
 }
 </script>

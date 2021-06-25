@@ -134,6 +134,10 @@ class WahlzeitApi {
   async deleteUser() {
     return this.request("user", "DELETE");
   }
+
+  async reportPhoto(photo: Photo, reason: string, explanation: string) {
+    throw "report photo not implemented by the API";
+  }
 }
 
 const wahlzeitApi = new WahlzeitApi();
