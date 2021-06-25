@@ -4,11 +4,13 @@
     <template v-if="own()">
       <button class="btn btn-secondary" @click="edit">Edit</button>
       <button class="btn btn-danger" @click="delet">Delete</button>
+      <!-- not supported by API
       <button class="btn btn-secondary" @click="select">Select</button>
+      -->
     </template>
     <template v-else>
       <Message btn-class="btn btn-secondary" />
-      <Report btn-class="btn btn-danger" />
+      <Report btn-class="btn btn-danger" :photo="photo" />
     </template>
   </div>
 </template>

@@ -78,6 +78,7 @@ import { wahlzeitApi } from "@/WahlzeitApi";
 export default class App extends Vue {
   logout() {
     wahlzeitApi.logout();
+    location.reload();
   }
 
   get isLoggedIn() {
