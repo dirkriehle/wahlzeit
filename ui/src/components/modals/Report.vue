@@ -1,7 +1,7 @@
 <template>
   <Modal
     :btn-class="btnClass"
-    id="reportmodal"
+    :id="uid('')"
     @confirm="report"
     modal-link="Report"
     modal-header="Report"
@@ -43,6 +43,10 @@ export default class Report extends Vue {
   photo: Photo | null = null;
   reason = "";
   explanation = "";
+
+  uid(id: string) {
+    return `report-modal-${this.photo?.id}-${id}`;
+  }
 
   report() {
     if (this.photo)

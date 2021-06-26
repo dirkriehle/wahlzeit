@@ -2,14 +2,16 @@
   <div class="d-grid gap-2">
     <Tell btnClass="btn btn-secondary" :photo="photo" />
     <template v-if="own()">
+      <!-- editing photo info not supported by API
       <button class="btn btn-secondary" @click="edit">Edit</button>
+      -->
       <button class="btn btn-danger" @click="delet">Delete</button>
-      <!-- not supported by API
+      <!-- profile picture not supported by API
       <button class="btn btn-secondary" @click="select">Select</button>
       -->
     </template>
     <template v-else>
-      <Message btn-class="btn btn-secondary" />
+      <Message btn-class="btn btn-secondary" :photo="photo" :owner="owner" />
       <Report btn-class="btn btn-danger" :photo="photo" />
     </template>
   </div>
@@ -46,7 +48,7 @@ export default class PhotoActions extends Vue {
   }
 
   delet() {
-    console.log("delete");
+    wahlzeitApi.removePhoto(this.photo?.id);
   }
 
   select() {

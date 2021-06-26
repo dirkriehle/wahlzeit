@@ -1,7 +1,7 @@
 <template>
   <Modal
     :btn-class="btnClass"
-    :id="`tell${photo?.id}modal`"
+    :id="uid('')"
     @confirm="tell"
     modal-link="Tell"
     modal-header="Tell"
@@ -11,36 +11,32 @@
       <input
         type="email"
         class="form-control"
-        id="fromMail"
+        :id="uid('toMail')"
         placeholder="name@example.com"
-        :value="fromMail"
+        v-model="toMail"
       />
-      <label for="fromMail">From</label>
-    </div>
-
-    <div class="form-floating mb-3">
-      <input
-        type="email"
-        class="form-control"
-        id="toMail"
-        placeholder="name@example.com"
-      />
-      <label for="toMail">To</label>
+      <label :for="uid('toMail')">To</label>
     </div>
 
     <div class="form-floating mb-3">
       <input
         type="text"
         class="form-control"
-        id="subject"
+        :id="uid('subject')"
         placeholder="name@example.com"
+        v-model="subject"
       />
-      <label for="subject">Subject</label>
+      <label :for="uid('subject')">Subject</label>
     </div>
 
     <div class="input-group">
       <span class="input-group-text">Message</span>
-      <textarea class="form-control" aria-label="Message" rows="4"></textarea>
+      <textarea
+        class="form-control"
+        aria-label="Message"
+        rows="4"
+        v-model="text"
+      ></textarea>
     </div>
   </Modal>
 </template>
@@ -59,6 +55,13 @@ import { wahlzeitApi, Photo } from "@/WahlzeitApi";
 })
 export default class Tell extends Vue {
   photo: Photo | null = null;
+  toMail = "";
+  subject = "";
+  text = "";
+
+  uid(id: string) {
+    return `message-modal-${this.photo?.id}-${id}`;
+  }
 
   get fromMail() {
     return wahlzeitApi.user?.email;
