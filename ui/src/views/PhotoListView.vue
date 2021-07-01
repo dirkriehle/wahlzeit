@@ -15,14 +15,16 @@ import { wahlzeitApi, Photo } from "@/WahlzeitApi";
   props: { tags: "" }
 })
 export default class PhotoListView extends Vue {
-  tags = "";
+  tags: string[] | string = [];
   photos: Photo[] | null = null;
 
   async mounted() {
-    this.photos = await wahlzeitApi.listPhotos(
-      null,
-      this.tags.split(RegExp(", ?"))
-    );
+    let tags = this.tags;
+    if (!Array.isArray(tags)) {
+      tags = [tags];
+    }
+    console.log(tags);
+    this.photos = await wahlzeitApi.listPhotos(null, tags);
   }
 }
 </script>

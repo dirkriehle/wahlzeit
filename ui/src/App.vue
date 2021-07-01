@@ -57,7 +57,7 @@
             <Signup btn-class="nav-link" />
           </li>
         </ul>
-        <form class="d-flex">
+        <div class="d-flex">
           <input
             class="form-control me-2"
             type="search"
@@ -65,10 +65,10 @@
             aria-label="Search for tags"
             v-model="searchTags"
           />
-          <button class="btn btn-outline-success" @click="search" type="submit">
+          <button class="btn btn-outline-success" @click="search">
             Search
           </button>
-        </form>
+        </div>
       </div>
     </div>
   </nav>
@@ -101,10 +101,10 @@ export default class App extends Vue {
   }
 
   async search() {
-    // FIXME some error looses the query parameter
+    const tags = this.searchTags.split(RegExp(", ?"));
     await this.$router.push({
       name: "PhotoList",
-      query: { tags: this.searchTags }
+      query: { tags: tags }
     });
   }
 
