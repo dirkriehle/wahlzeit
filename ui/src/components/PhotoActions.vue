@@ -48,7 +48,7 @@ export default class PhotoActions extends Vue {
   }
 
   delet() {
-    wahlzeitApi.removePhoto(this.photo?.id);
+    if (this.photo) wahlzeitApi.removePhoto(this.photo.id);
   }
 
   select() {

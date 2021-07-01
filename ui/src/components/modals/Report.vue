@@ -7,7 +7,7 @@
     modal-header="Report"
     modal-button="Report"
   >
-    <select class="form-select" aria-label="Reason" v-model="reason">
+    <select class="form-select mb-3" aria-label="Reason" v-model="reason">
       <option disabled="disabled" value="">Select Reason</option>
       <option value="mismatch">Mismatch</option>
       <option value="offensive">Offensive</option>

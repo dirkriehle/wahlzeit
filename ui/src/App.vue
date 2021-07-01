@@ -45,18 +45,30 @@
             </router-link>
           </li>
           <li v-if="isLoggedIn" class="nav-item">
-            <Upload btnClass="nav-link" />
+            <Upload btn-class="nav-link" />
           </li>
           <li v-if="isLoggedIn" class="nav-item">
             <a class="nav-link" @click="logout()" href="#">Log out</a>
           </li>
           <li v-if="!isLoggedIn" class="nav-item">
-            <Login btnClass="nav-link" />
+            <Login btn-class="nav-link" />
           </li>
           <li v-if="!isLoggedIn" class="nav-item">
-            <a class="nav-link" @click="login()" href="#">Sign up</a>
+            <Signup btn-class="nav-link" />
           </li>
         </ul>
+        <form class="d-flex">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search for tags"
+            aria-label="Search for tags"
+            v-model="searchTags"
+          />
+          <button class="btn btn-outline-success" @click="search" type="submit">
+            Search
+          </button>
+        </form>
       </div>
     </div>
   </nav>
@@ -69,16 +81,31 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Login from "@/components/modals/Login.vue";
+import Signup from "@/components/modals/Signup.vue";
 import Upload from "@/components/modals/Upload.vue";
 import { wahlzeitApi } from "@/WahlzeitApi";
 
 @Options({
-  components: { Login, Upload }
+  components: {
+    Login,
+    Upload,
+    Signup
+  }
 })
 export default class App extends Vue {
+  searchTags = "";
+
   logout() {
     wahlzeitApi.logout();
     location.reload();
+  }
+
+  async search() {
+    // FIXME some error looses the query parameter
+    await this.$router.push({
+      name: "PhotoList",
+      query: { tags: this.searchTags }
+    });
   }
 
   get isLoggedIn() {

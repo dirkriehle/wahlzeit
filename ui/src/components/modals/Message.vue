@@ -44,7 +44,6 @@ import { Photo, User } from "@/WahlzeitApi";
   }
 })
 export default class Message extends Vue {
-  toUser = "";
   photo: Photo | null = null;
   owner: User | null = null;
   subject = "";

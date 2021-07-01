@@ -3,20 +3,18 @@
   <UserInfo :user="user" />
 
   <div class="container border border-3">
-    <template v-for="photo in photos" :key="photo.id">
-      <PhotoSummary :photo="photo" />
-    </template>
+    <PhotoList :photos="photos" />
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import UserInfo from "@/components/UserInfo.vue";
-import PhotoSummary from "@/components/PhotoSummary.vue";
+import PhotoList from "@/components/PhotoList.vue";
 import { wahlzeitApi, Photo, User } from "@/WahlzeitApi";
 
 @Options({
-  components: { UserInfo, PhotoSummary },
+  components: { UserInfo, PhotoList },
   props: { id: "" }
 })
 export default class UserView extends Vue {

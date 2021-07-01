@@ -60,7 +60,7 @@ export default class Tell extends Vue {
   text = "";
 
   uid(id: string) {
-    return `message-modal-${this.photo?.id}-${id}`;
+    return `tell-modal-${this.photo?.id}-${id}`;
   }
 
   get fromMail() {

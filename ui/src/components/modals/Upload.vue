@@ -9,11 +9,21 @@
   >
     <div v-if="!success">
       <input
-        class="form-control"
+        class="form-control mb-3"
         type="file"
         @change="onFileChange"
         ref="files"
       />
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="floatingInput"
+          placeholder="tags"
+          v-model="tags"
+        />
+        <label for="floatingInput">tags</label>
+      </div>
       <div class="errors">
         {{ errors }}
       </div>
@@ -37,6 +47,7 @@ import { wahlzeitApi } from "@/WahlzeitApi";
 })
 export default class Upload extends Vue {
   file: File | null = null;
+  tags = "";
   errors = "";
   success = false;
 
@@ -53,7 +64,12 @@ export default class Upload extends Vue {
       return;
     }
     try {
-      const photo = await wahlzeitApi.uploadPhoto(this.file);
+      let tags: string[] = [];
+      if (this.tags) {
+        tags = this.tags.split(RegExp(", ?"));
+      }
+      console.log(tags);
+      const photo = await wahlzeitApi.uploadPhoto(this.file, tags);
       const id = photo.id;
       await this.$router.push({ name: "Photo", params: { id: id } });
       this.success = true;

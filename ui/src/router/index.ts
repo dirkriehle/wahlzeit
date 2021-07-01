@@ -3,6 +3,7 @@ import HomeView from "@/views/HomeView.vue";
 import AboutView from "@/views/AboutView.vue";
 import UserView from "@/views/UserView.vue";
 import PhotoView from "@/views/PhotoView.vue";
+import PhotoListView from "@/views/PhotoListView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -26,6 +27,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "Photo",
     component: PhotoView,
     props: true
+  },
+  {
+    path: "/list",
+    name: "PhotoList",
+    component: PhotoListView,
+    props: route => ({ tags: route.query.tags || "" })
   }
 ];
 
