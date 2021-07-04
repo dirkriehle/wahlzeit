@@ -73,7 +73,9 @@ public class User extends Client implements Persistent {
         password = rset.getString("password");
         rights = AccessRights.getFromInt(rset.getInt("rights"));
         creationTime = rset.getLong("creation_time");
-        language = new Locale(rset.getString("language"));
+        // FIXME this throws a NullPointerException when logging into the default admin user
+        // new Locale(rset.getString("language"));
+        language = null;
     }
 
     @Override
