@@ -20,6 +20,8 @@ services:
     restart: "no"
     ports:
       - 8090:8080
+    networks:
+      - backend
 
   backend:
     image: wahlzeit
@@ -37,7 +39,7 @@ services:
     image: nginx:1.17.1-alpine
     volumes:
       - ./nginx:/etc/nginx/conf.d
-      # - ./pathToVue:/usr/share/nginx/html
+      - ./ui/dist:/usr/share/nginx/html
     ports:
       - 8080:80
     networks:
