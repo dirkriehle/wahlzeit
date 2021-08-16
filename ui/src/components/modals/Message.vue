@@ -31,30 +31,30 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import Modal from "@/components/modals/Modal.vue";
-import { Photo, User } from "@/WahlzeitApi";
+import { Options, Vue } from 'vue-class-component';
 
+import Modal from '../../components/modals/Modal.vue';
+import { Photo, User } from '../../WahlzeitApi';
 @Options({
   components: { Modal },
   props: {
-    btnClass: "",
+    btnClass: '',
     photo: null,
-    owner: null
-  }
+    owner: null,
+  },
 })
 export default class Message extends Vue {
   photo: Photo | null = null;
   owner: User | null = null;
-  subject = "";
-  text = "";
+  subject = '';
+  text = '';
 
-  uid(id: string) {
-    return `message-modal-${this.photo?.id}-${id}`;
+  uid(id: string): string {
+    return `message-modal-${this.photo?.id ?? '??'}-${id}`;
   }
 
-  messag() {
-    console.log("TODO: tell");
+  messag(): void {
+    console.log('TODO: tell');
   }
 }
 </script>

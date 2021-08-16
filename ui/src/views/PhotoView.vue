@@ -18,27 +18,28 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import Praise from "@/components/Praise.vue";
-import PhotoActions from "@/components/PhotoActions.vue";
-import Description from "@/components/Description.vue";
-import { wahlzeitApi, Photo, User } from "@/WahlzeitApi";
+import { Options, Vue } from 'vue-class-component';
+
+import Description from '../components/Description.vue';
+import PhotoActions from '../components/PhotoActions.vue';
+import Praise from '../components/Praise.vue';
+import { Photo, User, wahlzeitApi } from '../WahlzeitApi';
 
 @Options({
   components: { Praise, PhotoActions, Description },
-  props: { id: "" }
+  props: { id: '' },
 })
 export default class PhotoView extends Vue {
-  id = "";
+  id = '';
   photo: Photo | null = null;
   user: User | null = null;
 
-  async mounted() {
+  async mounted(): Promise<void> {
     this.photo = await wahlzeitApi.getPhoto(this.id);
     this.user = await wahlzeitApi.getUser(this.photo.userId);
   }
 
-  get src() {
+  get src(): string | undefined {
     return this.photo?.path;
   }
 }

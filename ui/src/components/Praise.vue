@@ -19,23 +19,24 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import { wahlzeitApi } from "@/WahlzeitApi";
+import { Options, Vue } from 'vue-class-component';
+
+import { wahlzeitApi } from '../WahlzeitApi';
 
 @Options({
   props: {
-    photoId: 0
-  }
+    photoId: 0,
+  },
 })
 export default class Praise extends Vue {
   photoId = 0;
 
-  praise(n: number) {
-    wahlzeitApi.praisePhoto(this.photoId, n);
+  async praise(n: number): Promise<void> {
+    await wahlzeitApi.praisePhoto(this.photoId, n);
   }
 
-  skip() {
-    console.log("TODO: skip praise");
+  skip(): void {
+    console.log('TODO: skip praise');
   }
 }
 </script>

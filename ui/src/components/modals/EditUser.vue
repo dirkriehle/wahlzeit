@@ -32,26 +32,27 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import Modal from "@/components/modals/Modal.vue";
+import { Options, Vue } from 'vue-class-component';
+
+import Modal from '../../components/modals/Modal.vue';
 
 @Options({
   components: { Modal },
   props: {
-    btnClass: ""
-  }
+    btnClass: '',
+  },
 })
 export default class EditUser extends Vue {
-  get email() {
-    return "todo mail";
+  get email(): string {
+    return 'todo mail';
   }
 
-  get username() {
-    return "todo name";
+  get username(): string {
+    return 'todo name';
   }
 
-  edit() {
-    console.log("TODO: edit user");
+  edit(): void {
+    console.log('TODO: edit user');
   }
 }
 </script>

@@ -4,15 +4,16 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import PhotoView from "@/views/PhotoView.vue";
+import { Options, Vue } from 'vue-class-component';
+
+import PhotoView from '../views/PhotoView.vue';
 
 @Options({
   components: { PhotoView },
-  props: {}
+  props: {},
 })
 export default class HomeView extends Vue {
-  get randomPhotoId() {
+  get randomPhotoId(): number {
     return 5;
   }
 }

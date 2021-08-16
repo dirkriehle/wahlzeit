@@ -28,54 +28,53 @@
         {{ errors }}
       </div>
     </div>
-    <div v-else class="success">
-      Upload successful!
-    </div>
+    <div v-else class="success">Upload successful!</div>
   </Modal>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import Modal from "@/components/modals/Modal.vue";
-import { wahlzeitApi } from "@/WahlzeitApi";
+import { Options, Vue } from 'vue-class-component';
+
+import Modal from '../../components/modals/Modal.vue';
+import { wahlzeitApi } from '../../WahlzeitApi';
 
 @Options({
   components: { Modal },
   props: {
-    btnClass: ""
-  }
+    btnClass: '',
+  },
 })
 export default class Upload extends Vue {
   file: File | null = null;
-  tags = "";
-  errors = "";
+  tags = '';
+  errors = '';
   success = false;
 
-  onFileChange(event: Event) {
+  onFileChange(event: Event): void {
     const target = event.target as HTMLInputElement;
     if (target.files) {
       this.file = target.files[0];
     }
   }
 
-  async upload() {
+  async upload(): Promise<void> {
     if (this.file == null) {
-      this.errors = "No files selected";
+      this.errors = 'No files selected';
       return;
     }
     try {
       let tags: string[] = [];
       if (this.tags) {
-        tags = this.tags.split(RegExp(", ?"));
+        tags = this.tags.split(RegExp(', ?'));
       }
       console.log(tags);
       const photo = await wahlzeitApi.uploadPhoto(this.file, tags);
       const id = photo.id;
-      await this.$router.push({ name: "Photo", params: { id: id } });
+      await this.$router.push({ name: 'Photo', params: { id: id } });
       this.success = true;
     } catch (error) {
-      this.errors = "Something went wrong when trying to upload the file.";
-      console.error(`Error uploading file: ${error}`);
+      this.errors = 'Something went wrong when trying to upload the file.';
+      console.error(`Error uploading file: ${JSON.stringify(error)}`);
     }
   }
 }

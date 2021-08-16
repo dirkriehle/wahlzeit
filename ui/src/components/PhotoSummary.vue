@@ -12,7 +12,7 @@
       <div>status: <b>status</b></div>
       <div>date: <b>date</b></div>
       <div>
-        tags: <b>{{ photo.tags.join(", ") }}</b>
+        tags: <b>{{ photo.tags.join(', ') }}</b>
       </div>
       <div>
         <b>
@@ -29,18 +29,19 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import PhotoActions from "@/components/PhotoActions.vue";
-import { Photo } from "@/WahlzeitApi";
+import { Options, Vue } from 'vue-class-component';
+
+import PhotoActions from '../components/PhotoActions.vue';
+import { Photo } from '../WahlzeitApi';
 
 @Options({
   components: { PhotoActions },
-  props: { photo: null }
+  props: { photo: null },
 })
 export default class PhotoSummary extends Vue {
   photo: Photo | null = null;
 
-  get src() {
+  get src(): string | undefined {
     return this.photo?.path;
   }
 }

@@ -42,33 +42,34 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import Modal from "@/components/modals/Modal.vue";
-import { wahlzeitApi, Photo } from "@/WahlzeitApi";
+import { Options, Vue } from 'vue-class-component';
+
+import Modal from '../../components/modals/Modal.vue';
+import { Photo, wahlzeitApi } from '../../WahlzeitApi';
 
 @Options({
   components: { Modal },
   props: {
-    btnClass: "",
-    photo: null
-  }
+    btnClass: '',
+    photo: null,
+  },
 })
 export default class Tell extends Vue {
   photo: Photo | null = null;
-  toMail = "";
-  subject = "";
-  text = "";
+  toMail = '';
+  subject = '';
+  text = '';
 
-  uid(id: string) {
-    return `tell-modal-${this.photo?.id}-${id}`;
+  uid(id: string): string {
+    return `tell-modal-${this.photo?.id ?? '??'}-${id}`;
   }
 
-  get fromMail() {
+  get fromMail(): string | undefined {
     return wahlzeitApi.user?.email;
   }
 
-  tell() {
-    console.log("TODO: tell");
+  tell(): void {
+    console.log('TODO: tell');
   }
 }
 </script>

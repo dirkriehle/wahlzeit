@@ -34,33 +34,34 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import Modal from "@/components/modals/Modal.vue";
-import { wahlzeitApi } from "@/WahlzeitApi";
+import { Options, Vue } from 'vue-class-component';
+
+import Modal from '../../components/modals/Modal.vue';
+import { wahlzeitApi } from '../../WahlzeitApi';
 
 @Options({
-  props: { btnClass: "" },
-  components: { Modal }
+  props: { btnClass: '' },
+  components: { Modal },
 })
 export default class Login extends Vue {
-  name = "";
-  password = "";
+  name = '';
+  password = '';
   failed = false;
-  error = "";
+  error = '';
 
-  loginEnter(event: KeyboardEvent) {
-    if (event.key === "Enter") {
-      this.login();
+  async loginEnter(event: KeyboardEvent): Promise<void> {
+    if (event.key === 'Enter') {
+      await this.login();
     }
   }
 
-  async login() {
+  async login(): Promise<void> {
     try {
       await wahlzeitApi.login(this.name, this.password);
       location.reload();
     } catch (error) {
       this.failed = true;
-      this.error = error;
+      this.error = error as string;
     }
   }
 }

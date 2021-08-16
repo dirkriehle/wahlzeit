@@ -26,7 +26,7 @@
             ></button>
           </div>
           <div class="modal-body">
-            <slot />
+            <slot></slot>
           </div>
           <div class="modal-footer">
             <button
@@ -52,26 +52,26 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { Options, Vue } from 'vue-class-component';
 
 @Options({
-  emits: ["confirm"],
+  emits: ['confirm'],
   props: {
-    btnClass: "",
-    id: "",
-    modalLink: "",
-    modalHeader: "",
-    modalButton: ""
-  }
+    btnClass: '',
+    id: '',
+    modalLink: '',
+    modalHeader: '',
+    modalButton: '',
+  },
 })
 export default class Modal extends Vue {
-  id = "";
+  id = '';
 
-  confirm() {
-    this.$emit("confirm");
+  confirm(): void {
+    this.$emit('confirm');
   }
 
-  get refid() {
+  get refid(): string {
     return `#${this.id}`;
   }
 }

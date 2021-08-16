@@ -4,19 +4,20 @@
     {{ user?.name }}
   </router-link>
   <br />
-  Tags: {{ photo?.tags.join(", ") }}<br />
+  Tags: {{ photo?.tags.join(', ') }}<br />
   Praise Score: {{ photo?.praise }}
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import { Photo, User } from "@/WahlzeitApi";
+import { Options, Vue } from 'vue-class-component';
+
+import { Photo, User } from '../WahlzeitApi';
 
 @Options({
   props: {
     user: null,
-    photo: null
-  }
+    photo: null,
+  },
 })
 export default class Description extends Vue {
   user: User | null = null;
