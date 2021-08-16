@@ -17,7 +17,7 @@ import { Photo, wahlzeitApi } from '../WahlzeitApi';
 })
 export default class PhotoListView extends Vue {
   tags: string[] | string = [];
-  photos: Photo[] | null = null;
+  photos: Photo[] = [];
 
   async mounted(): Promise<void> {
     let tags = this.tags;
@@ -25,7 +25,7 @@ export default class PhotoListView extends Vue {
       tags = [tags];
     }
     console.log(tags);
-    this.photos = await wahlzeitApi.listPhotos(null, tags);
+    this.photos = await wahlzeitApi.listPhotos(undefined, tags);
   }
 }
 </script>

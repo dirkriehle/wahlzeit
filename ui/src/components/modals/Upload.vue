@@ -45,20 +45,20 @@ import { wahlzeitApi } from '../../WahlzeitApi';
   },
 })
 export default class Upload extends Vue {
-  file: File | null = null;
+  file?: File;
   tags = '';
   errors = '';
   success = false;
 
   onFileChange(event: Event): void {
     const target = event.target as HTMLInputElement;
-    if (target.files) {
+    if (target.files != null) {
       this.file = target.files[0];
     }
   }
 
   async upload(): Promise<void> {
-    if (this.file == null) {
+    if (this.file === undefined) {
       this.errors = 'No files selected';
       return;
     }

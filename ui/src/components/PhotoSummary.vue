@@ -36,10 +36,10 @@ import { Photo } from '../WahlzeitApi';
 
 @Options({
   components: { PhotoActions },
-  props: { photo: null },
+  props: { photo: undefined },
 })
 export default class PhotoSummary extends Vue {
-  photo: Photo | null = null;
+  photo?: Photo;
 
   get src(): string | undefined {
     return this.photo?.path;

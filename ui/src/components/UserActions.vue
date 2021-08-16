@@ -17,7 +17,6 @@ import EditUser from '../components/modals/EditUser.vue';
 
 @Options({
   components: { EditUser },
-  props: { photo: 0 },
 })
 export default class UserActions extends Vue {
   own(): boolean {

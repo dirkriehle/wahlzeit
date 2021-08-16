@@ -25,10 +25,10 @@ import { User } from '../WahlzeitApi';
 
 @Options({
   components: { UserActions },
-  props: { user: null },
+  props: { user: undefined },
 })
 export default class UserInfo extends Vue {
-  user: User | null = null;
+  user?: User;
 }
 </script>
 

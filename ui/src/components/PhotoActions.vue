@@ -32,13 +32,13 @@ import { Photo, User, wahlzeitApi } from '../WahlzeitApi';
     Report,
   },
   props: {
-    photo: null,
-    owner: null,
+    photo: undefined,
+    owner: undefined,
   },
 })
 export default class PhotoActions extends Vue {
-  photo: Photo | null = null;
-  owner: User | null = null;
+  photo?: Photo;
+  owner?: User;
 
   own(): boolean {
     return this.photo?.userId === wahlzeitApi.user?.id;
@@ -49,7 +49,7 @@ export default class PhotoActions extends Vue {
   }
 
   async deletePhoto(): Promise<void> {
-    if (this.photo) {
+    if (this.photo !== undefined) {
       await wahlzeitApi.removePhoto(this.photo.id);
     }
   }

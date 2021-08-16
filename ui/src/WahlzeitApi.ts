@@ -15,21 +15,21 @@ interface User {
 }
 
 class WahlzeitApi {
-  auth: string | null;
-  user: User | null;
+  auth?: string;
+  user?: User;
 
   constructor() {
-    this.auth = sessionStorage.getItem('auth');
+    this.auth = sessionStorage.getItem('auth') || undefined;
     const userJson = sessionStorage.getItem('user');
     if (userJson) {
       this.user = JSON.parse(userJson) as User;
     } else {
-      this.user = null;
+      this.user = undefined;
     }
   }
 
   get isLoggedIn(): boolean {
-    return this.auth != null;
+    return this.auth !== undefined;
   }
 
   async request(
@@ -71,8 +71,8 @@ class WahlzeitApi {
   }
 
   logout(): void {
-    this.auth = null;
-    this.user = null;
+    this.auth = undefined;
+    this.user = undefined;
     sessionStorage.removeItem('auth');
     sessionStorage.removeItem('user');
   }
@@ -110,12 +110,9 @@ class WahlzeitApi {
     return (await this.request(`photo/${id}/praise`, 'POST', value)) as Photo;
   }
 
-  async listPhotos(
-    userid: number | null = null,
-    tags: string[] = [],
-  ): Promise<Photo[]> {
+  async listPhotos(userid?: number, tags: string[] = []): Promise<Photo[]> {
     const params = new URLSearchParams();
-    if (userid != null) {
+    if (userid !== undefined) {
       params.append('user', userid.toString());
     }
     for (const tag of tags) {

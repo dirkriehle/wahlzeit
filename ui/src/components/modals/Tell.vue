@@ -51,11 +51,11 @@ import { Photo, wahlzeitApi } from '../../WahlzeitApi';
   components: { Modal },
   props: {
     btnClass: '',
-    photo: null,
+    photo: undefined,
   },
 })
 export default class Tell extends Vue {
-  photo: Photo | null = null;
+  photo?: Photo;
   toMail = '';
   subject = '';
   text = '';

@@ -15,7 +15,7 @@ import { Photo } from '../WahlzeitApi';
     PhotoSummary,
   },
   props: {
-    photos: null,
+    photos: [],
   },
 })
 export default class PhotoList extends Vue {

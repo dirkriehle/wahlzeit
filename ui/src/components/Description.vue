@@ -15,13 +15,13 @@ import { Photo, User } from '../WahlzeitApi';
 
 @Options({
   props: {
-    user: null,
-    photo: null,
+    user: undefined,
+    photo: undefined,
   },
 })
 export default class Description extends Vue {
-  user: User | null = null;
-  photo: Photo | null = null;
+  user?: User;
+  photo?: Photo;
 }
 </script>
 

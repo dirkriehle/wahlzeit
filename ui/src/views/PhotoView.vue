@@ -31,8 +31,8 @@ import { Photo, User, wahlzeitApi } from '../WahlzeitApi';
 })
 export default class PhotoView extends Vue {
   id = '';
-  photo: Photo | null = null;
-  user: User | null = null;
+  photo?: Photo;
+  user?: User;
 
   async mounted(): Promise<void> {
     this.photo = await wahlzeitApi.getPhoto(this.id);

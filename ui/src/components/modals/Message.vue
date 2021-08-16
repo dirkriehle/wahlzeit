@@ -39,13 +39,13 @@ import { Photo, User } from '../../WahlzeitApi';
   components: { Modal },
   props: {
     btnClass: '',
-    photo: null,
-    owner: null,
+    photo: undefined,
+    owner: undefined,
   },
 })
 export default class Message extends Vue {
-  photo: Photo | null = null;
-  owner: User | null = null;
+  photo?: Photo;
+  owner?: User;
   subject = '';
   text = '';
 

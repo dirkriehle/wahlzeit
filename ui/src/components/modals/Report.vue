@@ -37,11 +37,11 @@ import { Photo, wahlzeitApi } from '../../WahlzeitApi';
   components: { Modal },
   props: {
     btnClass: '',
-    photo: null,
+    photo: undefined,
   },
 })
 export default class Report extends Vue {
-  photo: Photo | null = null;
+  photo?: Photo;
   reason = '';
   explanation = '';
 
