@@ -33,8 +33,9 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
+import { Photo } from '../../api/PhotoApi';
+import { User } from '../../api/UserApi';
 import Modal from '../../components/modals/Modal.vue';
-import { Photo, User } from '../../WahlzeitApi';
 @Options({
   components: { Modal },
   props: {

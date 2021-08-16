@@ -31,8 +31,8 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
+import { Photo } from '../api/PhotoApi';
 import PhotoActions from '../components/PhotoActions.vue';
-import { Photo } from '../WahlzeitApi';
 
 @Options({
   components: { PhotoActions },

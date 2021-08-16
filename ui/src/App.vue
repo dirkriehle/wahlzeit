@@ -39,7 +39,7 @@
           <li v-if="isLoggedIn" class="nav-item">
             <router-link
               class="nav-link"
-              :to="{ name: 'User', params: { id: userid } }"
+              :to="{ name: 'User', params: { id: userId } }"
             >
               My Page
             </router-link>
@@ -81,10 +81,10 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
+import { wahlzeitApi } from './api/WahlzeitApi';
 import Login from './components/modals/Login.vue';
 import Signup from './components/modals/Signup.vue';
 import Upload from './components/modals/Upload.vue';
-import { wahlzeitApi } from './WahlzeitApi';
 
 @Options({
   components: {
@@ -113,8 +113,8 @@ export default class App extends Vue {
     return wahlzeitApi.isLoggedIn;
   }
 
-  get userid(): number | undefined {
-    return wahlzeitApi.user?.id;
+  get userId(): number | undefined {
+    return wahlzeitApi.currentUser?.id;
   }
 }
 </script>

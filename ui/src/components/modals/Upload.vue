@@ -35,8 +35,8 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
+import { photoApi } from '../../api/PhotoApi';
 import Modal from '../../components/modals/Modal.vue';
-import { wahlzeitApi } from '../../WahlzeitApi';
 
 @Options({
   components: { Modal },
@@ -68,7 +68,7 @@ export default class Upload extends Vue {
         tags = this.tags.split(RegExp(', ?'));
       }
       console.log(tags);
-      const photo = await wahlzeitApi.uploadPhoto(this.file, tags);
+      const photo = await photoApi.uploadPhoto(this.file, tags);
       const id = photo.id;
       await this.$router.push({ name: 'Photo', params: { id: id } });
       this.success = true;

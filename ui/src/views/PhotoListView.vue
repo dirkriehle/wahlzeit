@@ -8,8 +8,8 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
+import { Photo, photoApi } from '../api/PhotoApi';
 import PhotoList from '../components/PhotoList.vue';
-import { Photo, wahlzeitApi } from '../WahlzeitApi';
 
 @Options({
   components: { PhotoList },
@@ -25,7 +25,7 @@ export default class PhotoListView extends Vue {
       tags = [tags];
     }
     console.log(tags);
-    this.photos = await wahlzeitApi.listPhotos(undefined, tags);
+    this.photos = await photoApi.listPhotos(undefined, tags);
   }
 }
 </script>

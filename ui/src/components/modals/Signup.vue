@@ -47,8 +47,8 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
+import { wahlzeitApi } from '../../api/WahlzeitApi';
 import Modal from '../../components/modals/Modal.vue';
-import { wahlzeitApi } from '../../WahlzeitApi';
 
 @Options({
   props: { btnClass: '' },

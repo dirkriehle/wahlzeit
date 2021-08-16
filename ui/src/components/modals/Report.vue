@@ -30,8 +30,8 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
+import { Photo, photoApi } from '../../api/PhotoApi';
 import Modal from '../../components/modals/Modal.vue';
-import { Photo, wahlzeitApi } from '../../WahlzeitApi';
 
 @Options({
   components: { Modal },
@@ -51,7 +51,7 @@ export default class Report extends Vue {
 
   async report(): Promise<void> {
     if (this.photo) {
-      await wahlzeitApi.reportPhoto(this.photo, this.reason, this.explanation);
+      await photoApi.reportPhoto(this.photo, this.reason, this.explanation);
     }
   }
 }

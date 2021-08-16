@@ -20,8 +20,8 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
+import { User } from '../api/UserApi';
 import UserActions from '../components/UserActions.vue';
-import { User } from '../WahlzeitApi';
 
 @Options({
   components: { UserActions },

@@ -20,10 +20,12 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
+import { Photo, photoApi } from '../api/PhotoApi';
+import { User } from '../api/UserApi';
+import { wahlzeitApi } from '../api/WahlzeitApi';
 import Message from '../components/modals/Message.vue';
 import Report from '../components/modals/Report.vue';
 import Tell from '../components/modals/Tell.vue';
-import { Photo, User, wahlzeitApi } from '../WahlzeitApi';
 
 @Options({
   components: {
@@ -41,7 +43,7 @@ export default class PhotoActions extends Vue {
   owner?: User;
 
   own(): boolean {
-    return this.photo?.userId === wahlzeitApi.user?.id;
+    return this.photo?.userId === wahlzeitApi.currentUser?.id;
   }
 
   edit(): void {
@@ -50,7 +52,7 @@ export default class PhotoActions extends Vue {
 
   async deletePhoto(): Promise<void> {
     if (this.photo !== undefined) {
-      await wahlzeitApi.removePhoto(this.photo.id);
+      await photoApi.removePhoto(this.photo.id);
     }
   }
 

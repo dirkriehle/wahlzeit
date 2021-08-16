@@ -20,10 +20,11 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
+import { Photo, photoApi } from '../api/PhotoApi';
+import { User, userApi } from '../api/UserApi';
 import Description from '../components/Description.vue';
 import PhotoActions from '../components/PhotoActions.vue';
 import Praise from '../components/Praise.vue';
-import { Photo, User, wahlzeitApi } from '../WahlzeitApi';
 
 @Options({
   components: { Praise, PhotoActions, Description },
@@ -35,8 +36,8 @@ export default class PhotoView extends Vue {
   user?: User;
 
   async mounted(): Promise<void> {
-    this.photo = await wahlzeitApi.getPhoto(this.id);
-    this.user = await wahlzeitApi.getUser(this.photo.userId);
+    this.photo = await photoApi.getPhoto(this.id);
+    this.user = await userApi.getUser(this.photo.userId);
   }
 
   get src(): string | undefined {

@@ -10,9 +10,10 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
+import { Photo, photoApi } from '../api/PhotoApi';
+import { User, userApi } from '../api/UserApi';
 import PhotoList from '../components/PhotoList.vue';
 import UserInfo from '../components/UserInfo.vue';
-import { Photo, User, wahlzeitApi } from '../WahlzeitApi';
 
 @Options({
   components: { UserInfo, PhotoList },
@@ -24,8 +25,8 @@ export default class UserView extends Vue {
   photos: Photo[] = [];
 
   async mounted(): Promise<void> {
-    this.user = await wahlzeitApi.getUser(Number.parseInt(this.id, 10));
-    this.photos = await wahlzeitApi.listPhotos(this.user.id);
+    this.user = await userApi.getUser(Number.parseInt(this.id, 10));
+    this.photos = await photoApi.listPhotos(this.user.id);
   }
 }
 </script>

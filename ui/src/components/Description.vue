@@ -11,7 +11,8 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
-import { Photo, User } from '../WahlzeitApi';
+import { Photo } from '../api/PhotoApi';
+import { User } from '../api/UserApi';
 
 @Options({
   props: {

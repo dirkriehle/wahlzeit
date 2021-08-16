@@ -7,8 +7,8 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
+import { Photo } from '../api/PhotoApi';
 import PhotoSummary from '../components/PhotoSummary.vue';
-import { Photo } from '../WahlzeitApi';
 
 @Options({
   components: {

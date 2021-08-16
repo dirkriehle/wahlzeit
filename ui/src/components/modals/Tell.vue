@@ -44,8 +44,9 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
+import { Photo } from '../../api/PhotoApi';
+import { wahlzeitApi } from '../../api/WahlzeitApi';
 import Modal from '../../components/modals/Modal.vue';
-import { Photo, wahlzeitApi } from '../../WahlzeitApi';
 
 @Options({
   components: { Modal },
@@ -65,7 +66,7 @@ export default class Tell extends Vue {
   }
 
   get fromMail(): string | undefined {
-    return wahlzeitApi.user?.email;
+    return wahlzeitApi.currentUser?.email;
   }
 
   tell(): void {

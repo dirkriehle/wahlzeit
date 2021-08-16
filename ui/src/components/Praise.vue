@@ -21,7 +21,7 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 
-import { wahlzeitApi } from '../WahlzeitApi';
+import { photoApi } from '../api/PhotoApi';
 
 @Options({
   props: {
@@ -32,7 +32,7 @@ export default class Praise extends Vue {
   photoId = 0;
 
   async praise(n: number): Promise<void> {
-    await wahlzeitApi.praisePhoto(this.photoId, n);
+    await photoApi.praisePhoto(this.photoId, n);
   }
 
   skip(): void {
