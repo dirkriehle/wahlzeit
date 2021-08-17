@@ -24,11 +24,12 @@ RUN ./gradlew assemble
 #########################################################
 # Second stage: image to run the application            #
 #########################################################
-FROM jetty:9.4-jre11-slim
-
+FROM adoptopenjdk/openjdk11:alpine
 
 # Pull the built files from the builder container
-COPY --from=builder /builder/build/libs/*.war /var/lib/jetty/webapps/wahlzeit.war
+COPY --from=builder /builder/build/libs/*-all.jar /app.jar
+RUN mkdir src
 
 # Expose port
 EXPOSE 8080
+ENTRYPOINT ["java","-jar","/app.jar"]

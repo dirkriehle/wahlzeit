@@ -45,20 +45,27 @@ POSTGRES_PASSWORD: wahlzeit
 
 Before you can start Wahlzeit a PostgreSQL instance need to be reachable (see above).
 
-To build and run Wahlzeit you can use `./gradlew appRun` (on Windows: `gradlew.bat appRun`). 
+To build and run Wahlzeit you can use `./gradlew run` (on Windows: `gradlew.bat run`). 
 This will build the app and start an embedded Jetty server to serve the app.
 
-If the app is successfully built you can reach the ui under [``http://localhost:8080/wahlzeit``](http://localhost:8080/wahlzeit).
+If the app is successfully built you can reach the ui under [``http://localhost:8080/``](http://localhost:8080/).
 
 ### Run Wahlzeit inside a Docker container
 - Build the Docker image `docker-compose build` or `docker build -t wahlzeit .`
 - Run the Docker container `docker-compose up` to start the app and the database.
-- Open [`http://localhost:8080/wahlzeit`](http://localhost:8080/wahlzeit) to try out Wahlzeit inside a Docker container
+- Open [`http://localhost:8080/`](http://localhost:8080/) to try out Wahlzeit inside a Docker container
 
 ### Test
 
 To run all unit test use `./gradlew test` (on Windows: `gradlew.bat test`). 
 It will list all test with an indicator if a test failed or succeed.
+
+### Integration Test
+
+To run all integration test use `./gradlew testIT` (on Windows: `gradlew.bat testIT`).
+You will need a running database, a described above.
+It will list all unit test with an indicator if a test failed or succeed.
+
 
 ### Debug
 
