@@ -6,25 +6,26 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import PhotoList from "@/components/PhotoList.vue";
-import { wahlzeitApi, Photo } from "@/WahlzeitApi";
+import { Options, Vue } from 'vue-class-component';
+
+import { Photo, photoApi } from '../api/PhotoApi';
+import PhotoList from '../components/PhotoList.vue';
 
 @Options({
   components: { PhotoList },
-  props: { tags: "" }
+  props: { tags: '' },
 })
 export default class PhotoListView extends Vue {
   tags: string[] | string = [];
-  photos: Photo[] | null = null;
+  photos: Photo[] = [];
 
-  async mounted() {
+  async mounted(): Promise<void> {
     let tags = this.tags;
     if (!Array.isArray(tags)) {
       tags = [tags];
     }
     console.log(tags);
-    this.photos = await wahlzeitApi.listPhotos(null, tags);
+    this.photos = await photoApi.listPhotos(undefined, tags);
   }
 }
 </script>

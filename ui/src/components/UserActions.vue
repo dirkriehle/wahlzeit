@@ -2,35 +2,37 @@
   <div class="d-grid gap-2">
     <template v-if="own()">
       <EditUser btn-class="btn btn-secondary" />
-      <button class="btn btn-danger" @click="delet">Change Password</button>
+      <button class="btn btn-danger" @click="deleteUser">
+        Change Password
+      </button>
     </template>
     <template v-else></template>
   </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import EditUser from "@/components/modals/EditUser.vue";
+import { Options, Vue } from 'vue-class-component';
+
+import EditUser from '../components/modals/EditUser.vue';
 
 @Options({
   components: { EditUser },
-  props: { photo: 0 }
 })
 export default class UserActions extends Vue {
-  own() {
+  own(): boolean {
     return true;
   }
 
-  edit() {
-    console.log("edit");
+  edit(): void {
+    console.log('edit');
   }
 
-  delet() {
-    console.log("delete");
+  deleteUser(): void {
+    console.log('delete');
   }
 
-  select() {
-    console.log("select");
+  select(): void {
+    console.log('select');
   }
 }
 </script>

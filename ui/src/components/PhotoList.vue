@@ -5,17 +5,18 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import PhotoSummary from "@/components/PhotoSummary.vue";
-import { Photo } from "@/WahlzeitApi";
+import { Options, Vue } from 'vue-class-component';
+
+import { Photo } from '../api/PhotoApi';
+import PhotoSummary from '../components/PhotoSummary.vue';
 
 @Options({
   components: {
-    PhotoSummary
+    PhotoSummary,
   },
   props: {
-    photos: null
-  }
+    photos: [],
+  },
 })
 export default class PhotoList extends Vue {
   photos: Photo[] = [];

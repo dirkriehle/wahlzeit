@@ -39,7 +39,7 @@
           <li v-if="isLoggedIn" class="nav-item">
             <router-link
               class="nav-link"
-              :to="{ name: 'User', params: { id: userid } }"
+              :to="{ name: 'User', params: { id: userId } }"
             >
               My Page
             </router-link>
@@ -79,41 +79,42 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import Login from "@/components/modals/Login.vue";
-import Signup from "@/components/modals/Signup.vue";
-import Upload from "@/components/modals/Upload.vue";
-import { wahlzeitApi } from "@/WahlzeitApi";
+import { Options, Vue } from 'vue-class-component';
+
+import { wahlzeitApi } from './api/WahlzeitApi';
+import Login from './components/modals/Login.vue';
+import Signup from './components/modals/Signup.vue';
+import Upload from './components/modals/Upload.vue';
 
 @Options({
   components: {
     Login,
     Upload,
-    Signup
-  }
+    Signup,
+  },
 })
 export default class App extends Vue {
-  searchTags = "";
+  searchTags = '';
 
-  logout() {
+  logout(): void {
     wahlzeitApi.logout();
     location.reload();
   }
 
-  async search() {
-    const tags = this.searchTags.split(RegExp(", ?"));
+  async search(): Promise<void> {
+    const tags = this.searchTags.split(RegExp(', ?'));
     await this.$router.push({
-      name: "PhotoList",
-      query: { tags: tags }
+      name: 'PhotoList',
+      query: { tags: tags },
     });
   }
 
-  get isLoggedIn() {
+  get isLoggedIn(): boolean {
     return wahlzeitApi.isLoggedIn;
   }
 
-  get userid() {
-    return wahlzeitApi.user?.id;
+  get userId(): number | undefined {
+    return wahlzeitApi.currentUser?.id;
   }
 }
 </script>

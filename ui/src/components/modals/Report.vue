@@ -28,29 +28,31 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import Modal from "@/components/modals/Modal.vue";
-import { Photo, wahlzeitApi } from "@/WahlzeitApi";
+import { Options, Vue } from 'vue-class-component';
+
+import { Photo, photoApi } from '../../api/PhotoApi';
+import Modal from '../../components/modals/Modal.vue';
 
 @Options({
   components: { Modal },
   props: {
-    btnClass: "",
-    photo: null
-  }
+    btnClass: '',
+    photo: undefined,
+  },
 })
 export default class Report extends Vue {
-  photo: Photo | null = null;
-  reason = "";
-  explanation = "";
+  photo?: Photo;
+  reason = '';
+  explanation = '';
 
-  uid(id: string) {
-    return `report-modal-${this.photo?.id}-${id}`;
+  uid(id: string): string {
+    return `report-modal-${this.photo?.id ?? '??'}-${id}`;
   }
 
-  report() {
-    if (this.photo)
-      wahlzeitApi.reportPhoto(this.photo, this.reason, this.explanation);
+  async report(): Promise<void> {
+    if (this.photo) {
+      await photoApi.reportPhoto(this.photo, this.reason, this.explanation);
+    }
   }
 }
 </script>

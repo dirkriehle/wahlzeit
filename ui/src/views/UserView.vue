@@ -8,23 +8,25 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import UserInfo from "@/components/UserInfo.vue";
-import PhotoList from "@/components/PhotoList.vue";
-import { wahlzeitApi, Photo, User } from "@/WahlzeitApi";
+import { Options, Vue } from 'vue-class-component';
+
+import { Photo, photoApi } from '../api/PhotoApi';
+import { User, userApi } from '../api/UserApi';
+import PhotoList from '../components/PhotoList.vue';
+import UserInfo from '../components/UserInfo.vue';
 
 @Options({
   components: { UserInfo, PhotoList },
-  props: { id: "" }
+  props: { id: '' },
 })
 export default class UserView extends Vue {
-  id = "";
-  user: User | null = null;
-  photos: Photo[] | null = null;
+  id = '';
+  user?: User;
+  photos: Photo[] = [];
 
-  async mounted() {
-    this.user = await wahlzeitApi.getUser(parseInt(this.id));
-    this.photos = await wahlzeitApi.listPhotos(this.user.id);
+  async mounted(): Promise<void> {
+    this.user = await userApi.getUser(Number.parseInt(this.id, 10));
+    this.photos = await photoApi.listPhotos(this.user.id);
   }
 }
 </script>

@@ -1,45 +1,49 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import HomeView from "@/views/HomeView.vue";
-import AboutView from "@/views/AboutView.vue";
-import UserView from "@/views/UserView.vue";
-import PhotoView from "@/views/PhotoView.vue";
-import PhotoListView from "@/views/PhotoListView.vue";
+import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
+
+import AboutView from '../views/AboutView.vue';
+import HomeView from '../views/HomeView.vue';
+import PhotoListView from '../views/PhotoListView.vue';
+import PhotoView from '../views/PhotoView.vue';
+import UserView from '../views/UserView.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/",
-    name: "Home",
-    component: HomeView
+    path: '/',
+    name: 'Home',
+    component: HomeView,
   },
   {
-    path: "/about",
-    name: "About",
-    component: AboutView
+    path: '/about',
+    name: 'About',
+    component: AboutView,
   },
   {
-    path: "/user/:id",
-    name: "User",
+    path: '/user/:id',
+    name: 'User',
     component: UserView,
-    props: true
+    props: true,
   },
   {
-    path: "/photo/:id",
-    name: "Photo",
+    path: '/photo/:id',
+    name: 'Photo',
     component: PhotoView,
-    props: true
+    props: true,
   },
   {
-    path: "/list",
-    name: "PhotoList",
+    path: '/list',
+    name: 'PhotoList',
     component: PhotoListView,
-    props: route => ({ tags: route.query.tags || "" })
-  }
+    props: (route): Record<string, unknown> => ({
+      tags: route.query.tags || '',
+    }),
+  },
 ];
 
 const router = createRouter({
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   history: createWebHistory(process.env.BASE_URL),
   routes: routes,
-  linkActiveClass: "active"
+  linkActiveClass: 'active',
 });
 
 export default router;

@@ -5,7 +5,7 @@
       <!-- editing photo info not supported by API
       <button class="btn btn-secondary" @click="edit">Edit</button>
       -->
-      <button class="btn btn-danger" @click="delet">Delete</button>
+      <button class="btn btn-danger" @click="deletePhoto">Delete</button>
       <!-- profile picture not supported by API
       <button class="btn btn-secondary" @click="select">Select</button>
       -->
@@ -18,42 +18,47 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import Tell from "@/components/modals/Tell.vue";
-import Message from "@/components/modals/Message.vue";
-import Report from "@/components/modals/Report.vue";
-import { wahlzeitApi, Photo, User } from "@/WahlzeitApi";
+import { Options, Vue } from 'vue-class-component';
+
+import { Photo, photoApi } from '../api/PhotoApi';
+import { User } from '../api/UserApi';
+import { wahlzeitApi } from '../api/WahlzeitApi';
+import Message from '../components/modals/Message.vue';
+import Report from '../components/modals/Report.vue';
+import Tell from '../components/modals/Tell.vue';
 
 @Options({
   components: {
     Tell,
     Message,
-    Report
+    Report,
   },
   props: {
-    photo: null,
-    owner: null
-  }
+    photo: undefined,
+    owner: undefined,
+  },
 })
 export default class PhotoActions extends Vue {
-  photo: Photo | null = null;
-  owner: User | null = null;
+  photo?: Photo;
+  owner?: User;
 
   own(): boolean {
-    return this.photo?.userId == wahlzeitApi.user?.id;
+    return this.photo?.userId === wahlzeitApi.currentUser?.id;
   }
 
-  edit() {
-    console.log("edit");
+  edit(): void {
+    console.log('edit');
   }
 
-  delet() {
-    if (this.photo) wahlzeitApi.removePhoto(this.photo.id);
+  async deletePhoto(): Promise<void> {
+    if (this.photo !== undefined) {
+      await photoApi.removePhoto(this.photo.id);
+    }
   }
 
-  select() {
+  select(): void {
     console.error(
-      "PhotoActions: profile pictures are not supported by the api"
+      'PhotoActions: profile pictures are not supported by the api',
     );
   }
 }
