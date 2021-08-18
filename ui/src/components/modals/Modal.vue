@@ -57,15 +57,19 @@ import { Options, Vue } from 'vue-class-component';
 @Options({
   emits: ['confirm'],
   props: {
-    btnClass: '',
-    id: '',
-    modalLink: '',
-    modalHeader: '',
-    modalButton: '',
+    btnClass: String,
+    id: String,
+    modalLink: String,
+    modalHeader: String,
+    modalButton: String,
   },
 })
 export default class Modal extends Vue {
-  id = '';
+  btnClass!: string;
+  id!: string;
+  modalLink!: string;
+  modalHeader!: string;
+  modalButton!: string;
 
   confirm(): void {
     this.$emit('confirm');
