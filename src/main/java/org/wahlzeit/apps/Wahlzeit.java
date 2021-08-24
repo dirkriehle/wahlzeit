@@ -20,6 +20,9 @@
 
 package org.wahlzeit.apps;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
 import org.wahlzeit.main.ServiceMain;
 import org.wahlzeit.services.LogBuilder;
 
@@ -32,6 +35,19 @@ import java.util.logging.Logger;
 /**
  * A simple ServletContextListener to startup and shutdown the Flowers application.
  */
+//Fixme: Just a example
+@OpenAPIDefinition(
+		info = @Info(
+				title = "Wahlzeit",
+				version = "1.0",
+				description = "API",
+				license = @License(name = "AGPL-3.0 License", url = "https://github.com/dirkriehle/wahlzeit/blob/main/LICENSE.txt")//,
+				//contact = @Contact(url = "http://gigantic-server.com", name = "Fred", email = "Fred@gigagantic-server.com")
+		)//,
+		//tags = { @Tag(name = "Tag 1", description = "desc 1", externalDocs = @ExternalDocumentation(description = "docs desc"))	},
+		//externalDocs = @ExternalDocumentation(description = "definition docs desc"),
+		//security = { @SecurityRequirement(name = "req 1", scopes = {"a", "b"}) }
+)
 public class Wahlzeit implements ServletContextListener {
 
 	private static final Logger log = Logger.getLogger(Wahlzeit.class.getName());
