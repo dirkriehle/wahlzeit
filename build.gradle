@@ -8,9 +8,16 @@ buildscript {
     }
 }
 
+plugins {
+    id "io.swagger.core.v3.swagger-gradle-plugin" version "2.1.10"
+}
+
 repositories {
     maven {
+/*
         url 'https://maven-central.storage.googleapis.com'
+*/
+        url "https://plugins.gradle.org/m2/"
     }
     jcenter()
     mavenCentral()
@@ -19,6 +26,7 @@ repositories {
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'appengine'
+apply plugin: "io.swagger.core.v3.swagger-gradle-plugin"
 
 wrapper {
 	gradleVersion = '4.10'
@@ -45,7 +53,10 @@ dependencies {
     appengineSdk "com.google.appengine:appengine-java-sdk:${appengineVersion}"
     compile "com.google.appengine:appengine-api-1.0-sdk:${appengineVersion}"
     compile "com.google.appengine.tools:appengine-gcs-client:+"
-    
+
+    compile "io.swagger.core.v3:swagger-gradle-plugin:2.1.10"
+    implementation group: 'io.swagger.core.v3', name: 'swagger-core', version: '2.1.10'
+    compile "com.fasterxml.jackson.core:jackson-core:2.12.4"
     compile 'com.googlecode.objectify:objectify:5.1.21'
     //compile 'javax.servlet:servlet-api:2.5' // GAE works with only with 2.5
     compile 'commons-fileupload:commons-fileupload:1.3.3'
@@ -74,6 +85,17 @@ test {
                 }
             }
         }
+}
+
+task('generateSwagger'){
+    resolve {
+        outputFileName = 'openapi'
+        outputFormat = 'YAML'
+        prettyPrint = 'TRUE'
+        classpath = sourceSets.main.runtimeClasspath
+        resourcePackages = ['org.wahlzeit']
+        outputDir = file('openApi')
+    }
 }
 
 appengine {
