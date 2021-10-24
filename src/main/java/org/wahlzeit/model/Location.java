@@ -4,7 +4,14 @@ public class Location {
 
     /**
      * The coordinate of the location.
-     * Cannot be null.
      */
     public Coordinate coordinate;
+
+    /**
+     * 
+     * @methodtype constructor
+     */
+    public Location(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
 }
