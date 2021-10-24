@@ -107,10 +107,20 @@ public class Photo extends DataObject {
 	 * 
 	 * @methodtype constructor
 	 */
-	public Photo(PhotoId myId) {
+	public Photo(PhotoId myId, Location location) {
 		id = myId;
+		this.location = location;
 		
 		incWriteCount();
+	}
+
+	
+	/**
+	 * 
+	 * @methodtype constructor
+	 */
+	public Photo(PhotoId myId) {
+		this(myId, null);
 	}
 	
 	/**
