@@ -3,12 +3,15 @@ FROM adoptopenjdk/openjdk11-openj9:alpine-slim
 # Copy Gradle file
 COPY *.gradle /app/
 
-# Copy sources
-COPY src /app/src
-
 # Copy Gradle resources
 COPY gradle /app/gradle
 COPY gradlew /app/gradlew
+
+# Since this is the first execution of gradlew, it will download the gradle binary.
+RUN ./gradlew -v
+
+# Copy sources
+COPY src /app/src
 
 WORKDIR /app
 
