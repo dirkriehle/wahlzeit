@@ -8,12 +8,15 @@ WORKDIR /builder
 # Copy Gradle file
 COPY *.gradle /builder/
 
-# Copy sources
-COPY src /builder/src
-
 # Copy Gradle resources
 COPY gradle /builder/gradle
 COPY gradlew /builder/gradlew
+
+# Since this is the first execution of gradlew, it will download the gradle binary.
+RUN ./gradlew -v
+
+# Copy sources
+COPY src /builder/src
 
 # Test project
 RUN ./gradlew test
