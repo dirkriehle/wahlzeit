@@ -5,7 +5,7 @@ public class Location {
     /**
      * The coordinate of the location.
      */
-    public Coordinate coordinate;
+    protected Coordinate coordinate;
 
     /**
      * 
@@ -13,5 +13,13 @@ public class Location {
      */
     public Location(Coordinate coordinate) {
         this.coordinate = coordinate;
+    }
+
+    /**
+     * 
+     * @methodtype get
+     */
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 }
