@@ -93,7 +93,7 @@ public class Photo extends DataObject {
 	 * The location of the photo.
 	 * Can be null.
 	 */
-	public Location location;
+	protected Location location;
 
 	/**
 	 * 
@@ -251,6 +251,23 @@ public class Photo extends DataObject {
 	public String getCaption(ModelConfig cfg) {
 		return cfg.asPhotoCaption(ownerName, ownerHomePage);
 	}
+
+	/**
+	 * 
+	 * @methodthpe get
+	 */
+	 public Location getLocation() {
+		return location;
+	 }
+
+	 /**
+	  * 
+	  * @methodtype set
+	  */
+	 public void setLocation(Location location) {
+		this.location = location;
+		incWriteCount();
+	 }
 
 	/**
 	 * 
