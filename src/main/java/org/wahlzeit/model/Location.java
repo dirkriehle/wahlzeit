@@ -22,4 +22,17 @@ public class Location {
     public Coordinate getCoordinate() {
         return coordinate;
     }
+
+    /**
+     * 
+     * returns true if locations contain equal coordinates
+     */
+    @Override
+    public boolean equals(Object object) {
+        if(object == null || object.getClass() != Location.class) {
+            return false;
+        }
+        Location location = (Location) object;
+        return this.coordinate.equals(location.coordinate);
+    }
 }
