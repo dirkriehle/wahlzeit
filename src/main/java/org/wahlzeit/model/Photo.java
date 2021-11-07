@@ -102,25 +102,32 @@ public class Photo extends DataObject {
 		id = PhotoId.getNextId();
 		incWriteCount();
 	}
-	
 	/**
 	 * 
 	 * @methodtype constructor
 	 */
-	public Photo(PhotoId myId, Location location) {
-		id = myId;
+	public Photo(Location location) {
+		this();
 		this.location = location;
-		
-		incWriteCount();
 	}
-
 	
 	/**
 	 * 
 	 * @methodtype constructor
 	 */
 	public Photo(PhotoId myId) {
-		this(myId, null);
+		id = myId;
+
+		incWriteCount();
+	}
+
+	/**
+	 * 
+	 * @methodtype constructor
+	 */
+	public Photo(PhotoId myId, Location location) {
+		this(myId);
+		this.location = location;
 	}
 	
 	/**
@@ -171,6 +178,7 @@ public class Photo extends DataObject {
 	 * 
 	 */
 	public void writeOn(ResultSet rset) throws SQLException {
+		
 		rset.updateInt("id", id.asInt());
 		rset.updateInt("owner_id", ownerId);
 		rset.updateString("owner_name", ownerName);
@@ -184,7 +192,9 @@ public class Photo extends DataObject {
 		rset.updateInt("status", status.asInt());
 		rset.updateInt("praise_sum", praiseSum);
 		rset.updateInt("no_votes", noVotes);
-		rset.updateLong("creation_time", creationTime);		
+		rset.updateLong("creation_time", creationTime);
+		Coordinate c = location.getCoordinate();
+		rset.updateString("location", "coordinate: x=" + c.getX() + ", y=" + c.getY() + ", z=" +c.getZ());
 	}
 
 	/**
