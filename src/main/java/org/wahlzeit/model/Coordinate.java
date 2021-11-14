@@ -1,6 +1,13 @@
 package org.wahlzeit.model;
 
+import java.util.Objects;
+
 public class Coordinate {
+
+    /**
+     * threshold for comparing coordinate values
+     */
+    private final double EPSILON = 0.001;
 
     /**
      * The x, y, z components of the coordinate
@@ -68,7 +75,10 @@ public class Coordinate {
         if(coordinate == null) {
             return false;
         }
-        return coordinate.x == this.x && coordinate.y == this.y && coordinate.z == this.z;
+        boolean xEqual = Math.abs(coordinate.x - this.x) <= EPSILON;
+        boolean yEqual = Math.abs(coordinate.y - this.y) <= EPSILON;
+        boolean zEqual = Math.abs(coordinate.z - this.z) <= EPSILON;
+        return xEqual && yEqual && zEqual;
     }
     /**
      * Returns true if the parameter is an object of the class coordinate
@@ -83,5 +93,10 @@ public class Coordinate {
             return false;
         }
         return this.isEqual((Coordinate) object);
+    }
+// TODO make hashCode work for equal coordinates (not just identical ones)
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, z);
     }
 }
