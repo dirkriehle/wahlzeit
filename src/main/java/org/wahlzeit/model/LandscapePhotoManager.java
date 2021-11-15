@@ -5,16 +5,16 @@ import java.sql.*;
 public class LandscapePhotoManager extends PhotoManager {
 
     /**
+	 * 
+	 */
+	protected static final LandscapePhotoManager instance = new LandscapePhotoManager();
+
+    /**
 	 * @Methodtype constructor
 	 */
 	public LandscapePhotoManager() {
 		photoTagCollector = LandscapePhotoFactory.getInstance().createPhotoTagCollector();
 	}
-
-    /**
-	 * 
-	 */
-	protected static final LandscapePhotoManager instance = new LandscapePhotoManager();
 	
 	/**
 	 * 
