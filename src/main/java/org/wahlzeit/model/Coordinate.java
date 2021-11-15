@@ -94,7 +94,7 @@ public class Coordinate {
         }
         return this.isEqual((Coordinate) object);
     }
-// TODO make hashCode work for equal coordinates (not just identical ones)
+    
     @Override
     public int hashCode() {
         return Objects.hash(x, y, z);
