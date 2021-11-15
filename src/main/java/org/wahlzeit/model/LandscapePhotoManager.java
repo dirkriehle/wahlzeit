@@ -14,7 +14,7 @@ public class LandscapePhotoManager extends PhotoManager {
     /**
 	 * 
 	 */
-	protected static final PhotoManager instance = new PhotoManager();
+	protected static final LandscapePhotoManager instance = new LandscapePhotoManager();
 	
 	/**
 	 * 
