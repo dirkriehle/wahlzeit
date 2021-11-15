@@ -24,6 +24,14 @@ public class LandscapePhoto extends Photo {
 	 * 
 	 * @methodtype constructor
 	 */
+    public LandscapePhoto(Location location) {
+        super(location);
+    }
+
+    /**
+	 * 
+	 * @methodtype constructor
+	 */
     public LandscapePhoto(PhotoId myId, Location location) {
         super(myId, location);
     }
