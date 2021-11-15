@@ -15,6 +15,13 @@ public class LandscapePhotoManager extends PhotoManager {
 	public LandscapePhotoManager() {
 		photoTagCollector = LandscapePhotoFactory.getInstance().createPhotoTagCollector();
 	}
+
+	/**
+	 * 
+	 */
+	public static LandscapePhotoManager getInstance() {
+		return instance;
+	}
 	
 	/**
 	 * 
