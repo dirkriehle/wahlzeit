@@ -16,7 +16,7 @@ public class LandscapePhotoFactory extends PhotoFactory {
 	/**
 	 * Public singleton access method.
 	 */
-	public static synchronized PhotoFactory getInstance() {
+	public static synchronized LandscapePhotoFactory getInstance() {
 		if (instance == null) {
 			SysLog.logSysInfo("setting generic PhotoFactory");
 			setInstance(new LandscapePhotoFactory());
@@ -38,7 +38,7 @@ public class LandscapePhotoFactory extends PhotoFactory {
 	}
 	
 	/**
-	 * no constructor needed in static context
+	 *
 	 */
 	protected LandscapePhotoFactory() {
 		// do nothing
