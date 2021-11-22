@@ -8,8 +8,8 @@ public class LocationTest {
     
     @Test
     public void testLocation() {
-        Coordinate coordinate = new Coordinate(1.1, 2.4, 5.3);
-        Location location = new Location(coordinate);
-        assertEquals(coordinate, location.getCoordinate());
+        CartesianCoordinate CartesianCoordinate = new CartesianCoordinate(1.1, 2.4, 5.3);
+        Location location = new Location(CartesianCoordinate);
+        assertEquals(CartesianCoordinate, location.getCoordinate());
     }
 }
