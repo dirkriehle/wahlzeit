@@ -3,7 +3,7 @@ package org.wahlzeit.model;
 public class Location {
 
     /**
-     * The CartesianCoordinate of the location.
+     * The coordinate of the location.
      */
     protected Coordinate coordinate;
 

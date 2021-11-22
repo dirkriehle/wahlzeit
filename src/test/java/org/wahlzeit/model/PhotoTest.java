@@ -10,10 +10,10 @@ public class PhotoTest {
 
     @Test
     public void testPhoto() {
-        CartesianCoordinate CartesianCoordinate1 = new CartesianCoordinate(0.5, 7.8, 1.9);
-        CartesianCoordinate CartesianCoordinate2 = new CartesianCoordinate(0.5, 3, 7.2);
-        Location location1 = new Location(CartesianCoordinate1);
-        Location location2 = new Location(CartesianCoordinate2);
+        CartesianCoordinate cartesianCoordinate1 = new CartesianCoordinate(0.5, 7.8, 1.9);
+        CartesianCoordinate cartesianCoordinate2 = new CartesianCoordinate(0.5, 3, 7.2);
+        Location location1 = new Location(cartesianCoordinate1);
+        Location location2 = new Location(cartesianCoordinate2);
         Photo photo1 = new Photo(location1);
         Photo photo2 = new Photo(location2);
         assertNotEquals(photo1.getId(), photo2.getId());
