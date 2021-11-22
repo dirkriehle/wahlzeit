@@ -141,7 +141,7 @@ public class SphericCoordinate implements Coordinate {
 
         double centralAngle = Math.acos(Math.sin(phi1) * Math.sin(phi2) + Math.cos(phi1) * Math.cos(phi2) * Math.cos(deltaTheta));
 
-        return radius * centralAngle;
+        return centralAngle;
     }
     
 }
