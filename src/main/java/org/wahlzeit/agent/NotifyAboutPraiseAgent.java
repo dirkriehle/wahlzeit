@@ -22,7 +22,8 @@ package org.wahlzeit.agent;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.wahlzeit.database.repository.UserRepository;
 import org.wahlzeit.model.EmailAddress;
 import org.wahlzeit.model.LanguageConfig;
@@ -42,7 +43,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class NotifyAboutPraiseAgent extends Agent {
 
-    private static final Logger LOG = Logger.getLogger(NotifyAboutPraiseAgent.class);
+    private static final Logger LOG = LogManager.getLogger(NotifyAboutPraiseAgent.class);
 
     @Inject
     UserRepository userRepository;

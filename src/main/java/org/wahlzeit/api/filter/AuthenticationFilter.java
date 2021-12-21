@@ -34,7 +34,8 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.ext.Provider;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.wahlzeit.api.auth.AccessRights;
 import org.wahlzeit.api.auth.PrincipalUser;
 import org.wahlzeit.api.dto.ErrorDto;
@@ -53,7 +54,7 @@ import java.util.*;
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
 
-    protected static final Logger LOG = Logger.getLogger(AuthenticationFilter.class);
+    protected static final Logger LOG = LogManager.getLogger(AuthenticationFilter.class);
 
     private static final String AUTHENTICATION_SCHEME = "Basic ";
 

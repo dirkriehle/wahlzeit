@@ -21,7 +21,8 @@
 package org.wahlzeit.agent;
 
 import jakarta.inject.Singleton;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Singleton
 public class AgentManager {
 
-    private static final Logger LOG = Logger.getLogger(AgentManager.class);
+    private static final Logger LOG = LogManager.getLogger(AgentManager.class);
 
     /**
      *

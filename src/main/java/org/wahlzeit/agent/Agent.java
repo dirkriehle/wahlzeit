@@ -21,14 +21,15 @@
 package org.wahlzeit.agent;
 
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * An Agent executes background tasks.
  */
 public abstract class Agent implements Runnable {
 
-    private static final Logger LOG = Logger.getLogger(Agent.class);
+    private static final Logger LOG = LogManager.getLogger(Agent.class);
 
     /**
      *

@@ -21,7 +21,8 @@
 package org.wahlzeit.database;
 
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A Session object maintains a DatabaseConnection and helps track processing time. Typically, there is one for each
@@ -29,7 +30,7 @@ import org.apache.log4j.Logger;
  */
 public class Session {
 
-    protected static final Logger LOG = Logger.getLogger(Session.class);
+    protected static final Logger LOG = LogManager.getLogger(Session.class);
 
     /**
      * Session state

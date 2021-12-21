@@ -10,7 +10,8 @@ repositories {
 
 dependencies {
     implementation 'org.postgresql:postgresql:9.3-1104-jdbc41'
-    implementation 'log4j:log4j:1.2.17'
+    implementation 'org.apache.logging.log4j:log4j-api:2.17.0'
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.0'
     implementation 'com.sun.mail:javax.mail:1.6.2'
 
     implementation group: 'org.glassfish.jersey.containers', name: 'jersey-container-grizzly2-servlet', version: '3.0.2'

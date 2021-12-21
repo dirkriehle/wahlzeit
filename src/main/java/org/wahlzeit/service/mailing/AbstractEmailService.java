@@ -20,7 +20,8 @@
 
 package org.wahlzeit.service.mailing;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.wahlzeit.model.EmailAddress;
 
 import javax.mail.Message;
@@ -30,7 +31,7 @@ import javax.mail.Message;
  */
 public abstract class AbstractEmailService implements EmailService {
 
-    protected static final Logger LOG = Logger.getLogger(AbstractEmailService.class);
+    protected static final Logger LOG = LogManager.getLogger(AbstractEmailService.class);
 
     /**
      *

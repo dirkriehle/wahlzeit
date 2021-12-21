@@ -28,7 +28,8 @@ import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.wahlzeit.agent.AgentManager;
 import org.wahlzeit.agent.NotifyAboutPraiseAgent;
 import org.wahlzeit.api.dto.PhotoDto;
@@ -49,7 +50,7 @@ import java.util.stream.Collectors;
 @Singleton
 public class PhotoService {
 
-    protected static final Logger LOG = Logger.getLogger(PhotoService.class);
+    protected static final Logger LOG = LogManager.getLogger(PhotoService.class);
 
     @Inject
     public WahlzeitConfig config;

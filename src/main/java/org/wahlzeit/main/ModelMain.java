@@ -21,7 +21,8 @@
 package org.wahlzeit.main;
 
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.wahlzeit.config.WahlzeitConfig;
 import org.wahlzeit.database.DatabaseConnection;
 import org.wahlzeit.database.SessionManager;
@@ -38,7 +39,7 @@ import java.util.stream.Collectors;
  */
 public abstract class ModelMain extends AbstractMain {
 
-    protected static final Logger LOG = Logger.getLogger(ModelMain.class);
+    protected static final Logger LOG = LogManager.getLogger(ModelMain.class);
 
     private final WahlzeitConfig config;
 
