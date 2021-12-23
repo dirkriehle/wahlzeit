@@ -26,7 +26,8 @@ import jakarta.inject.Singleton;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.wahlzeit.api.auth.AccessRights;
 import org.wahlzeit.api.dto.UserDto;
 import org.wahlzeit.database.repository.UserRepository;
@@ -43,7 +44,7 @@ import java.util.List;
 @Singleton
 public class UserService {
 
-    protected static final Logger LOG = Logger.getLogger(UserService.class);
+    protected static final Logger LOG = LogManager.getLogger(UserService.class);
 
     @Inject
     public Transformer transformer;

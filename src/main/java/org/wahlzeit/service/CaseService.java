@@ -23,7 +23,8 @@ package org.wahlzeit.service;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.wahlzeit.api.dto.CaseDto;
 import org.wahlzeit.database.repository.CaseRepository;
 import org.wahlzeit.database.repository.PhotoRepository;
@@ -37,7 +38,7 @@ import java.util.List;
  */
 public class CaseService {
 
-    protected static final Logger LOG = Logger.getLogger(CaseService.class);
+    protected static final Logger LOG = LogManager.getLogger(CaseService.class);
 
     @Inject
     public CaseFactory caseFactory;

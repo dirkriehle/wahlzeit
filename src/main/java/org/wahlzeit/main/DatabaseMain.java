@@ -21,13 +21,14 @@
 package org.wahlzeit.main;
 
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.wahlzeit.config.WahlzeitConfig;
 import org.wahlzeit.database.SessionManager;
 
 public class DatabaseMain extends ModelMain {
 
-    protected static final Logger LOG = Logger.getLogger(DatabaseMain.class);
+    protected static final Logger LOG = LogManager.getLogger(DatabaseMain.class);
 
     public DatabaseMain(WahlzeitConfig config) {
         super(config);

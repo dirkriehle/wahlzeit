@@ -21,7 +21,8 @@
 
 package org.wahlzeit.database.repository;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.wahlzeit.database.DatabaseConnection;
 import org.wahlzeit.database.SessionManager;
 
@@ -40,7 +41,7 @@ import java.util.Optional;
  */
 public abstract class AbstractRepository<T extends Persistent> implements Repository<T> {
 
-    protected static final Logger LOG = Logger.getLogger(AbstractRepository.class);
+    protected static final Logger LOG = LogManager.getLogger(AbstractRepository.class);
 
     /*
      * template methods

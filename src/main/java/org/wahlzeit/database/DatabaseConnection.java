@@ -20,7 +20,9 @@
 
 package org.wahlzeit.database;
 
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.wahlzeit.utils.SysConfig;
 
 import java.sql.*;
@@ -35,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DatabaseConnection {
 
-    protected static final Logger LOG = Logger.getLogger(DatabaseConnection.class);
+    protected static final Logger LOG = LogManager.getLogger(DatabaseConnection.class);
 
     /**
      *

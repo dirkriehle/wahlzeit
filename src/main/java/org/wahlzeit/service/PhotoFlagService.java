@@ -24,7 +24,8 @@ package org.wahlzeit.service;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotFoundException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.wahlzeit.api.dto.PhotoDto;
 import org.wahlzeit.database.repository.PhotoRepository;
 import org.wahlzeit.model.Photo;
@@ -40,7 +41,7 @@ import java.util.stream.Collectors;
  */
 public class PhotoFlagService {
 
-    protected static final Logger LOG = Logger.getLogger(PhotoFlagService.class);
+    protected static final Logger LOG = LogManager.getLogger(PhotoFlagService.class);
 
     @Inject
     public PhotoRepository repository;

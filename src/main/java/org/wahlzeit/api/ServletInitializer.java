@@ -23,7 +23,8 @@ package org.wahlzeit.api;
 
 import jakarta.inject.Inject;
 import jakarta.servlet.annotation.WebListener;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.glassfish.jersey.server.monitoring.ApplicationEvent;
 import org.glassfish.jersey.server.monitoring.ApplicationEventListener;
 import org.glassfish.jersey.server.monitoring.RequestEvent;
@@ -42,7 +43,7 @@ import java.util.Set;
 @WebListener
 public class ServletInitializer implements ApplicationEventListener {
 
-    private static final Logger LOG = Logger.getLogger(ServletInitializer.class);
+    private static final Logger LOG = LogManager.getLogger(ServletInitializer.class);
 
     @Inject
     AgentManager agentManager;

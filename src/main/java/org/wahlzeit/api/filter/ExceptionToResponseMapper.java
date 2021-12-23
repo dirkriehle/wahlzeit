@@ -25,7 +25,8 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.wahlzeit.api.dto.ErrorDto;
 
 /*
@@ -35,7 +36,7 @@ import org.wahlzeit.api.dto.ErrorDto;
 @Provider
 public class ExceptionToResponseMapper implements ExceptionMapper<Throwable> {
 
-    protected static final Logger LOG = Logger.getLogger(ExceptionToResponseMapper.class);
+    protected static final Logger LOG = LogManager.getLogger(ExceptionToResponseMapper.class);
 
     @Override
     public Response toResponse(Throwable exception) {
